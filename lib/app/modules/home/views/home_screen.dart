@@ -65,12 +65,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   ontap: () {},
                 ),
                 heightBox8,
-                PsychoSupportCard(
-                  status: 'Available',
-                  price: '500',
-                  time: '60',
-                  imagePath: AssetsPath.doctor,
-                  title: 'Find Balance & Clarity',
+                SizedBox(
+                  height: 175,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
+                        child: PsychoSupportCard(
+                          status: 'Available',
+                          price: '500',
+                          time: '60',
+                          imagePath: AssetsPath.doctor,
+                          title: 'Find Balance & Clarity',
+                        ),
+                      );
+                    },
+                  ),
                 ),
                 heightBox12,
                 SeeAllSection(
@@ -78,7 +91,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   ontap: () {},
                 ),
                 heightBox8,
-                ProductCard(name: 'Sunscreen',price: '49.99',imagePath: AssetsPath.medichine,)
+                SizedBox(
+                  height: 134,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
+                        child: ProductCard(
+                          name: 'Sunscreen',
+                          price: '49.99',
+                          imagePath: AssetsPath.medichine,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -87,4 +117,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
