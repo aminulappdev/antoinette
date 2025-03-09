@@ -1,9 +1,10 @@
 import 'package:antoinette/app/modules/home/widgets/grid_feature.dart';
 import 'package:antoinette/app/modules/home/widgets/header_section.dart';
-import 'package:antoinette/app/modules/home/widgets/product_card.dart';
+import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/home/widgets/psycho_support_card.dart';
 import 'package:antoinette/app/modules/home/widgets/see_all_section.dart';
 import 'package:antoinette/app/modules/home/widgets/welcome_text.dart';
+import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -87,8 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 heightBox12,
                 SeeAllSection(
-                  title: 'Expert Psychological Support at Your Fingertips',
-                  ontap: () {},
+                  title: 'Shop Your Health Must-Haves',
+                  ontap: () {
+                    Navigator.pushNamed(context, ProductScreen.routeName,arguments: true);
+                  },
                 ),
                 heightBox8,
                 SizedBox(
