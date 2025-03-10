@@ -26,7 +26,7 @@ class _ProductScreenState extends State<ProductScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomSearchBar(shouldBackButton: widget.shouldBackButton,),
+                CustomSearchBar(shouldBackButton: widget.shouldBackButton,shouldfontButton: false,),
                 heightBox12,
                 SizedBox(
                   width: 200.w,

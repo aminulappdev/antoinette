@@ -1,12 +1,15 @@
-
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final bool shouldBackButton;
+  final bool shouldfontButton;
+
   const CustomSearchBar({
-    super.key, required this.shouldBackButton,
+    super.key,
+    required this.shouldBackButton,
+    required this.shouldfontButton,
   });
 
   @override
@@ -14,21 +17,25 @@ class CustomSearchBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-       shouldBackButton ?  GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: CircleAvatar(
-            backgroundColor: Theme.of(context).primaryColor,
-            radius: 24.r,
-            child: Icon(
-              Icons.arrow_back,
-            ),
-          ),
-        ) : Container(),
+        shouldBackButton
+            ? GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  radius: 24.r,
+                  child: Icon(
+                    Icons.arrow_back,
+                  ),
+                ),
+              )
+            : Container(),
         Container(
           height: 48.h,
-          width: shouldBackButton ? 310.w : (MediaQuery.of(context).size.width - 26).w,
+          width: (shouldBackButton == true || shouldfontButton == true)
+              ? 310.w
+              : (MediaQuery.of(context).size.width - 26).w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
@@ -69,6 +76,20 @@ class CustomSearchBar extends StatelessWidget {
             ],
           ),
         ),
+        shouldfontButton
+            ? GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  radius: 24.r,
+                  child: Icon(
+                    Icons.add,
+                  ),
+                ),
+              )
+            : Container(),
       ],
     );
   }

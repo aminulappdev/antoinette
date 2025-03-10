@@ -15,6 +15,7 @@ class AssetsPath {
   static const String angle = '$imagePath/angle.png';
   static const String angry = '$imagePath/angry.png';
   static const String muscle = '$imagePath/muscle.png';
+  static const String womenBookRead = '$imagePath/womenBookRead.jpg';
 
 
 }

@@ -1,8 +1,10 @@
+import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/home/views/home_screen.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
+import 'package:antoinette/app/modules/therapy/views/letter_screen.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,8 +26,9 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
     ProductScreen(
       shouldBackButton: false,
     ),
-    CheckOutScreen(),
-    SignInScreen(),
+    CheckInScreen(),
+    LetterScreen(),
+    DearDiaryScreen()
   ];
 
   @override
@@ -116,7 +119,8 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, DearDiaryScreen.routeName);
+                    selectedKey = 4;
+                    setState(() {});
                   },
                   child: Container(
                     height: 55.h,
