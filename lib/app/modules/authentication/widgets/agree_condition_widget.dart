@@ -21,7 +21,6 @@ class _AgreeConditionCheckState extends State<AgreeConditionCheck> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Checkbox(
-          
           value: isChecked,
           onChanged: (bool? value) {
             setState(() {
@@ -42,9 +41,7 @@ class _AgreeConditionCheckState extends State<AgreeConditionCheck> {
                     style: TextStyle(
                         decoration: TextDecoration.underline,
                         color: Colors.black)),
-                TextSpan(
-                    text: 'and ',
-                    style: TextStyle(color: Colors.black)),
+                TextSpan(text: 'and ', style: TextStyle(color: Colors.black)),
                 TextSpan(
                     text: 'Privacy Policy',
                     style: TextStyle(

@@ -1,6 +1,9 @@
+import 'package:antoinette/app/modules/checkIn/views/custom_status_screen.dart';
+import 'package:antoinette/app/modules/checkIn/widgets/add_checkIn_feature.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/toggle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,6 +16,8 @@ class AddCheckInScreen extends StatefulWidget {
 }
 
 class _AddCheckInScreenState extends State<AddCheckInScreen> {
+  bool togggleActive = false;
+  bool isToggled = false;
   int hours = 0, minutes = 15, seconds = 0;
 
   // void _showCustomPicker(BuildContext context) {
@@ -41,6 +46,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
         body: Padding(
           padding: EdgeInsets.all(12.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomAppBar(name: 'Add Check-In'),
               heightBox12,
@@ -57,6 +63,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                   )
                 ],
               ),
+              SizedBox(height: 250,),
 
 // Text(
 //               "$hours hours  $minutes min  $seconds sec",
@@ -68,10 +75,85 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
 //               child: Text("Select Time"),
 //             ),
 
-              SizedBox(
-                height: 500,
+              heightBox12,
+
+              Row(
+                children: [
+                  Icon(
+                    Icons.search,
+                    size: 22,
+                  ),
+                  widthBox4,
+                  Text(
+                    'Quick Check-In',
+                    style: GoogleFonts.poppins(fontSize: 15),
+                  )
+                ],
               ),
-              GradientElevatedButton(onPressed: () {}, text: 'Check-In')
+
+              heightBox12,
+              Row(
+                children: [
+                  AddCheckInFeature(
+                    icon: '🏍️',
+                    feature: 'Going on ',
+                  ),
+                  widthBox12,
+                  AddCheckInFeature(
+                    icon: '🏍️',
+                    feature: 'Going on',
+                  ),
+                ],
+              ),
+
+              heightBox12,
+              Row(
+                children: [
+                  AddCheckInFeature(
+                    icon: '🏍️',
+                    feature: 'Going on ',
+                  ),
+                  widthBox12,
+                  AddCheckInFeature(
+                    icon: '🏍️',
+                    feature: 'Going on',
+                  ),
+                ],
+              ),
+              heightBox12,
+              AddCheckInFeature(
+                icon: '🏍️',
+                feature: 'Going on',
+              ),
+              heightBox12,
+              Row(
+                children: [
+                  Icon(
+                    Icons.access_time,
+                    size: 22,
+                  ),
+                  widthBox4,
+                  Text(
+                    'Set Check-In Timer',
+                    style: GoogleFonts.poppins(fontSize: 15),
+                  )
+                ],
+              ),
+
+              heightBox12,
+              Row(
+                children: [
+                  ToggleButton(isToggled: isToggled, onToggle: (bool value) {  },),
+                  widthBox4,
+                  Text('sunan 01975566236')
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              GradientElevatedButton(onPressed: () {
+                         Navigator.pushNamed(context, CustomStatusScreen.routeName);
+              }, text: 'Check-In')
             ],
           ),
         ),
@@ -79,3 +161,5 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
     );
   }
 }
+
+
