@@ -19,7 +19,7 @@ class TextTherapyScreen extends StatefulWidget {
 }
 
 class _TextTherapyScreenState extends State<TextTherapyScreen> {
-  List<CameraDescription>? cameras; // Nullable to handle initialization
+  List<CameraDescription>? cameras;
   final List<Map<String, dynamic>> messageList = [
     {
       "text": "I have some loads, can you transfer them to Dhaka safely?",

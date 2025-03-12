@@ -33,6 +33,7 @@ import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/modules/Letters/views/article_details_screen.dart';
 import 'package:antoinette/app/modules/Letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/Letters/views/podcast_details.dart';
+import 'package:antoinette/app/modules/session/views/session_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/camera_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/healing_note_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/text_therapy_screen.dart';
@@ -73,6 +74,7 @@ class AppRoutes {
     // Session Section
     SessionDetailsScreen.routeName: (context) => const SessionDetailsScreen(),
     SessionFormScreen.routeName: (context) => const SessionFormScreen(),
+    SessionScreen.routeName: (context) => const SessionScreen(),
 
     // Dear Diary Section
     DearDiaryScreen.routeName: (context) => const DearDiaryScreen(),

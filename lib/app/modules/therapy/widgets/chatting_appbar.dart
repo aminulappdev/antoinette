@@ -1,19 +1,42 @@
-
+import 'package:antoinette/app/modules/therapy/views/camera_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomChatAppBar extends StatelessWidget {
+class CustomChatAppBar extends StatefulWidget {
   final String name;
-  
+
   const CustomChatAppBar({
-    super.key, required this.name,
+    super.key,
+    required this.name,
   });
 
   @override
-  Widget build(BuildContext context) {
+  State<CustomChatAppBar> createState() => _CustomChatAppBarState();
+}
 
+class _CustomChatAppBarState extends State<CustomChatAppBar> {
+  List<CameraDescription>? cameras; // Nullable to handle initialization
+  @override
+  void initState() {
+    super.initState();
+    _initializeCamera();
+  }
+
+  // Method to initialize cameras
+  Future<void> _initializeCamera() async {
+    try {
+      cameras = await availableCameras();
+      setState(() {});
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -29,15 +52,13 @@ class CustomChatAppBar extends StatelessWidget {
             ),
           ),
         ),
-        
         Text(
-          name,
+          widget.name,
           style: GoogleFonts.poppins(
             fontSize: 18.sp,
             color: Color(0xff626262),
             fontWeight: FontWeight.w500,
           ),
-        
         ),
         Row(
           children: [
@@ -45,11 +66,26 @@ class CustomChatAppBar extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(
-                Icons.videocam_sharp,
-                size: 30,
+              child: GestureDetector(
+                onTap: () {
+                  if (cameras != null && cameras!.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CameraScreen(cameras: cameras!),
+                      ),
+                    );
+                  } else {
+                    print('No cameras available');
+                  }
+                },
+                child: Icon(
+                  Icons.videocam_sharp,
+                  size: 30,
+                ),
               ),
-            ),widthBox8,
+            ),
+            widthBox8,
             GestureDetector(
               onTap: () {
                 Navigator.pop(context);

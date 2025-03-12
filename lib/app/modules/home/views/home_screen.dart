@@ -1,3 +1,6 @@
+import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
+import 'package:antoinette/app/modules/Letters/views/letter_screen.dart';
+import 'package:antoinette/app/modules/home/models/grid_view_model.dart';
 import 'package:antoinette/app/modules/home/widgets/grid_feature.dart';
 import 'package:antoinette/app/modules/home/widgets/header_section.dart';
 import 'package:antoinette/app/modules/product/widgets/product_card.dart';
@@ -5,6 +8,8 @@ import 'package:antoinette/app/modules/home/widgets/psycho_support_card.dart';
 import 'package:antoinette/app/modules/home/widgets/see_all_section.dart';
 import 'package:antoinette/app/modules/home/widgets/welcome_text.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
+import 'package:antoinette/app/modules/session/views/session_details.dart';
+import 'package:antoinette/app/modules/session/views/session_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +23,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<HomepageGridModel> gridList = [
+    HomepageGridModel(
+        icon: Icons.hearing,
+        title: 'A Listening Ear',
+        subtitle: '( Therapy Sessions )',
+        navigationPath: SessionDetailsScreen.routeName),
+    HomepageGridModel(
+      icon: Icons.shopping_cart,
+      title: 'Little Luxuries',
+      subtitle: '( Shop for wellness & self-care products)',
+      navigationPath: ProductScreen.routeName,
+    ),
+    HomepageGridModel(
+        icon: Icons.menu_book,
+        title: 'Letters to You',
+        subtitle: '(Podcasts, articles & videos for your journey )',
+        navigationPath: LetterScreen.routeName),
+    HomepageGridModel(
+        icon: Icons.check_circle,
+        title: 'Safe Notes',
+        subtitle: '(Check-In)',
+        navigationPath: CheckInScreen.routeName),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 heightBox16,
                 WelcomeTextHomePage(
                   time: 'Morning',
-                  name: 'Sarah',
+                  name: 'Sarah 👋',
                 ),
                 Padding(
                   padding:
@@ -51,11 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisSpacing: 24,
                           crossAxisCount: 2),
                       itemBuilder: (context, index) {
-                        return GridFeature(
-                          icon: Icons.shopping_bag,
-                          title: 'Little Luxuries',
-                          subtitle:
-                              '( Shop for wellness & self-care products )',
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, gridList[index].navigationPath,
+                                arguments: true);
+                          },
+                          child: GridFeature(
+                            icon: gridList[index].icon,
+                            title: gridList[index].title,
+                            subtitle: gridList[index].subtitle,
+                          ),
                         );
                       },
                     ),
@@ -63,34 +98,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SeeAllSection(
                   title: 'Expert Psychological Support at Your Fingertips',
-                  ontap: () {},
+                  ontap: () {
+                    Navigator.pushNamed(context, SessionScreen.routeName,
+                        arguments: true);
+                  },
                 ),
                 heightBox8,
-                SizedBox(
-                  height: 175,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w),
-                        child: PsychoSupportCard(
-                          status: 'Available',
-                          price: '500',
-                          time: '60',
-                          imagePath: AssetsPath.doctor,
-                          title: 'Find Balance & Clarity',
-                        ),
-                      );
-                    },
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, SessionDetailsScreen.routeName);
+                  },
+                  child: SizedBox(
+                    height: 175,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w),
+                          child: PsychoSupportCard(
+                            status: 'Available',
+                            price: '500',
+                            time: '60',
+                            imagePath: AssetsPath.doctor,
+                            title: 'Find Balance & Clarity',
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
                 heightBox12,
                 SeeAllSection(
                   title: 'Shop Your Health Must-Haves',
                   ontap: () {
-                    Navigator.pushNamed(context, ProductScreen.routeName,arguments: true);
+                    Navigator.pushNamed(context, ProductScreen.routeName,
+                        arguments: true);
                   },
                 ),
                 heightBox8,

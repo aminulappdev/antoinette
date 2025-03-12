@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/product/widgets/policy_custom_row.dart';
@@ -5,6 +6,7 @@ import 'package:antoinette/app/modules/product/widgets/see_more_button.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
+import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/product_caresoul_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -204,6 +206,30 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     },
                   ),
                 ),
+                heightBox12,
+                 Container(
+                  height: 70,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: SizedBox(
+                          width: 159,
+                          height: 42,
+                          child: GradientElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, CheckInScreen.routeName);
+                              }, text: 'Buy now'),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

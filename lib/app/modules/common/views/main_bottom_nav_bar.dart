@@ -1,6 +1,5 @@
 import 'package:antoinette/app/modules/checkIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/panic_button_screen.dart';
-import 'package:antoinette/app/modules/common/views/time_picker.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/home/views/home_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
@@ -29,7 +28,7 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
       shouldBackButton: false,
     ),
     const HealingNoteScreen(),
-    CheckInScreen(),
+   const ProfileScreen(),
     const DearDiaryScreen()
   ];
 
