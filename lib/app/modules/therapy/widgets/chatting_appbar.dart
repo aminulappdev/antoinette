@@ -1,4 +1,5 @@
 
+import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,14 +39,27 @@ class CustomChatAppBar extends StatelessWidget {
           ),
         
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.error_outline,
-            size: 30,
-          ),
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.videocam_sharp,
+                size: 30,
+              ),
+            ),widthBox8,
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.error_outline,
+                size: 30,
+              ),
+            ),
+          ],
         ),
       ],
     );
