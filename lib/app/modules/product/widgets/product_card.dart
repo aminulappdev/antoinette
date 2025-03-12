@@ -1,4 +1,3 @@
-import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_datails_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';

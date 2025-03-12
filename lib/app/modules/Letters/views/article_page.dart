@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/therapy/views/article_details_screen.dart';
+import 'package:antoinette/app/modules/Letters/views/article_details_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,13 +1,15 @@
 import 'package:antoinette/app/modules/checkIn/views/check_in_screen.dart';
-import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
+import 'package:antoinette/app/modules/common/views/panic_button_screen.dart';
+import 'package:antoinette/app/modules/common/views/time_picker.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
-import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/home/views/home_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/modules/profile/views/profile_screen.dart';
+import 'package:antoinette/app/modules/therapy/views/healing_note_screen.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class MainButtonNavbarScreen extends StatefulWidget {
   static const String routeName = '/mainbottom-nav-screen';
@@ -21,19 +23,37 @@ class MainButtonNavbarScreen extends StatefulWidget {
 class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
   int selectedKey = 0;
 
-  List<Widget> screens = const [
-    HomeScreen(),
-    ProductScreen(
+  List<Widget> screens = [
+    const HomeScreen(),
+    const ProductScreen(
       shouldBackButton: false,
     ),
+    const HealingNoteScreen(),
     CheckInScreen(),
-    ProfileScreen(),
-    DearDiaryScreen()
+    const DearDiaryScreen()
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, PanicButtonScreen.routeName);
+        },
+        child: Container(
+          height: 60,
+          width: 60,
+          
+          decoration: BoxDecoration(
+            color: AppColors.iconButtonThemeColor,
+            borderRadius: BorderRadius.circular(100)
+          ),
+          child: Center(
+            child: Icon(Icons.error,size: 50,color: Colors.white,),
+          ),
+        ),
+      ),
       body: screens[selectedKey],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12.0),

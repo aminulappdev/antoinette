@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/therapy/views/podcast_details.dart';
+import 'package:antoinette/app/modules/Letters/views/podcast_details.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';

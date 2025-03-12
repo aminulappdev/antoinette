@@ -1,4 +1,3 @@
-import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/profile/views/account_screen.dart';
 import 'package:antoinette/app/modules/profile/views/address_screen.dart';
 import 'package:antoinette/app/modules/profile/views/info_screen.dart';

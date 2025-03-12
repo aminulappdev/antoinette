@@ -1,11 +1,14 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:antoinette/app/modules/checkIn/views/custom_status_screen.dart';
 import 'package:antoinette/app/modules/checkIn/widgets/add_checkIn_feature.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/toggle_button.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AddCheckInScreen extends StatefulWidget {
   static const String routeName = '/add-check-screen';
@@ -19,25 +22,25 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
   bool togggleActive = false;
   bool isToggled = false;
   int hours = 0, minutes = 15, seconds = 0;
+  Duration _selectedDuration = const Duration(minutes: 15);
+  late final Timer _timer; // Ensure _timer is initialized
 
-  // void _showCustomPicker(BuildContext context) {
-  //   Picker(
-  //     adapter: NumberPickerAdapter(data: [
-  //       NumberPickerColumn(begin: 0, end: 23, suffix: Text(" hours")),
-  //       NumberPickerColumn(begin: 0, end: 59, suffix: Text(" min")),
-  //       NumberPickerColumn(begin: 0, end: 59, suffix: Text(" sec")),
-  //     ]),
-  //     selecteds: [hours, minutes, seconds],
-  //     title: Text("Select Time"),
-  //     onConfirm: (Picker picker, List<int> values) {
-  //       setState(() {
-  //         hours = values[0];
-  //         minutes = values[1];
-  //         seconds = values[2];
-  //       });
-  //     },
-  //   ).showModal(context);
-  // }
+  // Initialize timer (if needed) in your screen lifecycle
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the timer here if you're using it (e.g., for some countdown)
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      // Your timer logic here
+    });
+  }
+
+  // Dispose the timer when widget is removed from widget tree
+  @override
+  void dispose() {
+    _timer.cancel();  // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +66,21 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                   )
                 ],
               ),
-              SizedBox(height: 250,),
-
-// Text(
-//               "$hours hours  $minutes min  $seconds sec",
-//               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//             ),
-//             SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () => _showCustomPicker(context),
-//               child: Text("Select Time"),
-//             ),
-
+              Container(
+                height: 230,
+                color: Colors.transparent,
+                child: CupertinoTimerPicker(
+                  
+                  mode: CupertinoTimerPickerMode.hms,
+                  initialTimerDuration: _selectedDuration,
+                  onTimerDurationChanged: (Duration newDuration) {
+                    setState(() {
+                      _selectedDuration = newDuration;
+                    });
+                  },
+                ),
+              ),
               heightBox12,
-
               Row(
                 children: [
                   Icon(
@@ -90,7 +94,6 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                   )
                 ],
               ),
-
               heightBox12,
               Row(
                 children: [
@@ -105,7 +108,6 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                   ),
                 ],
               ),
-
               heightBox12,
               Row(
                 children: [
@@ -139,11 +141,17 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                   )
                 ],
               ),
-
               heightBox12,
               Row(
                 children: [
-                  ToggleButton(isToggled: isToggled, onToggle: (bool value) {  },),
+                  ToggleButton(
+                    isToggled: isToggled,
+                    onToggle: (bool value) {
+                      setState(() {
+                        isToggled = value; // Handle toggle state change
+                      });
+                    },
+                  ),
                   widthBox4,
                   Text('sunan 01975566236')
                 ],
@@ -151,9 +159,12 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
               SizedBox(
                 height: 50,
               ),
-              GradientElevatedButton(onPressed: () {
-                         Navigator.pushNamed(context, CustomStatusScreen.routeName);
-              }, text: 'Check-In')
+              GradientElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, CustomStatusScreen.routeName);
+                },
+                text: 'Check-In',
+              )
             ],
           ),
         ),
@@ -161,5 +172,3 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
     );
   }
 }
-
-

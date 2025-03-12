@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/therapy/views/letter_bar.dart';
+import 'package:antoinette/app/modules/Letters/views/letter_bar.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
 
