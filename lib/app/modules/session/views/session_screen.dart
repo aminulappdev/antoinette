@@ -44,14 +44,14 @@ class _SessionScreenState extends State<SessionScreen> {
                 ),
                 heightBox12,
                 SizedBox(
-                  height: 700, 
-                  width: 245,                             
+                  height: 700.h, 
+                  width: 245.w,                             
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: 5,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 6),
+                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 6.h),
                         child: PsychoSupportCard(
                           status: 'Available',
                           price: '500',

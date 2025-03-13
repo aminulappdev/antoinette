@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PanicButtonScreen extends StatefulWidget {
@@ -39,7 +40,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
     return SafeArea(
         child: Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.all(16.0.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -50,32 +51,32 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
                    Navigator.pop(context);
                 },
                 child: CircleAvatar(
-                  radius: 24,
+                  radius: 24.r,
                   backgroundColor: Color(0xffA57EA5).withOpacity(0.1),
                   child: Icon(Icons.close, color: Colors.black),
                 ),
               ),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 40.h),
             Text(
               'Are you in danger?',
               style: GoogleFonts.poppins(
-                  fontSize: 32, fontWeight: FontWeight.bold),
+                  fontSize: 32.sp, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               'Hold for 3 seconds to send an alert.',
-              style: GoogleFonts.poppins(fontSize: 16, color: Colors.grey[600]),
+              style: GoogleFonts.poppins(fontSize: 16.sp, color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 150),
+            SizedBox(height: 150.h),
             GestureDetector(
               onLongPress: _onLongPress, 
               onLongPressEnd: _onLongPressEnd, 
               child: Container(
-                height: 217,
-                width: 217,
+                height: 217.h,
+                width: 217.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isPressed ? Colors.green : Color(0xffFA7875),
@@ -91,7 +92,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
                   child: Text(
                     isPressed ? 'Alert Sent!' : 'Panic Button',
                     style: GoogleFonts.poppins(
-                        fontSize: 22,
+                        fontSize: 22.sp,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
@@ -134,8 +135,8 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
                   });
                 },
                 child: Container(
-                  height: 32,
-                  width: 120,
+                  height: 32.h,
+                  width: 120.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Color(0xff305FA1).withOpacity(0.1),
@@ -155,8 +156,8 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
                   // Handle NO action (can add an emergency function here)
                 },
                 child: Container(
-                  height: 32,
-                  width: 120,
+                  height: 32.h,
+                  width: 120.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Color(0xffA13430).withOpacity(0.1),
@@ -165,7 +166,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
                   child: Center(
                     child: Text(
                       'NO',
-                      style: TextStyle(color: Color(0xffA13430), fontSize: 14),
+                      style: TextStyle(color: Color(0xffA13430), fontSize: 14.sp),
                     ),
                   ),
                 ),

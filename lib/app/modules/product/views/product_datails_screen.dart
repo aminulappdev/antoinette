@@ -189,7 +189,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 heightBox8,
                 SizedBox(
-                  height: 134,
+                  height: 134.h,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -208,7 +208,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 heightBox12,
                  Container(
-                  height: 70,
+                  height: 70.h,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -219,8 +219,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: SizedBox(
-                          width: 159,
-                          height: 42,
+                          width: 159.w,
+                          height: 42.h,
                           child: GradientElevatedButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, CheckInScreen.routeName);

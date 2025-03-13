@@ -38,7 +38,7 @@ class _VerifyEmailScreenWithForgotState extends State<VerifyEmailScreenWithForgo
                 CircleAvatar(
                   backgroundColor: Color(0xFFD9A48E).withValues(alpha: 0.1),
                   backgroundImage: AssetImage(AssetsPath.emailLogo),
-                  radius: 36,
+                  radius: 36.r,
                 ),
                 heightBox16,
                 AuthHeaderText(title: 'Check Email',subtitle:  'Please check your email to verify your account.',titleFontSize: 20,subtitleFontSize: 12,sizeBoxHeight: 210,),

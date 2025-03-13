@@ -25,7 +25,7 @@ class InfoScreen extends StatelessWidget {
                 heightBox8,
                 Text(
                   appBarTitle,
-                  style: GoogleFonts.poppins(fontSize: 16,fontWeight: FontWeight.w500),
+                  style: GoogleFonts.poppins(fontSize: 16.sp,fontWeight: FontWeight.w500),
                   textAlign: TextAlign.justify,
                 ),
                 heightBox4,

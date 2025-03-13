@@ -21,7 +21,7 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.all(16.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

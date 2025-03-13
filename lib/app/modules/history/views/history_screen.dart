@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/history/views/history_bar_screen.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HistoryScreen extends StatefulWidget {
   static const String routeName = '/history-screen';
@@ -16,7 +17,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return  SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding:  EdgeInsets.all(12.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

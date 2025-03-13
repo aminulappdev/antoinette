@@ -16,7 +16,7 @@ class AccountScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.all(16.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -26,7 +26,7 @@ class AccountScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    radius: 25,
+                    radius: 25.r,
                     backgroundImage: AssetImage(AssetsPath.womenBookRead),
                   ),
                   widthBox8,
@@ -40,7 +40,7 @@ class AccountScreen extends StatelessWidget {
                       Text(
                         'aminul@gmail.com',
                         style: GoogleFonts.poppins(
-                            fontSize: 12, color: Color(0xff626262)),
+                            fontSize: 12.sp, color: Color(0xff626262)),
                       ),
                     ],
                   )
@@ -52,12 +52,12 @@ class AccountScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Full Name',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
                   ),
                   Icon(
                     Icons.edit_outlined,
                     color: AppColors.iconButtonThemeColor,
-                    size: 18,
+                    size: 18.h,
                   )
                 ],
               ),
@@ -73,12 +73,12 @@ class AccountScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Email',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
                   ),
                   Icon(
                     Icons.edit_outlined,
                     color: AppColors.iconButtonThemeColor,
-                    size: 18,
+                    size: 18.sp,
                   )
                 ],
               ),
@@ -94,12 +94,12 @@ class AccountScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Contact',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
                   ),
                   Icon(
                     Icons.edit_outlined,
                     color: AppColors.iconButtonThemeColor,
-                    size: 18,
+                    size: 18.h,
                   )
                 ],
               ),
@@ -111,7 +111,7 @@ class AccountScreen extends StatelessWidget {
 
               ),
 
-              SizedBox(height: 200,),
+              SizedBox(height: 200.h,),
               GradientElevatedButton(onPressed: () {
                 
               }, text: 'Save')

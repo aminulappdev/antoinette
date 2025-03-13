@@ -2,6 +2,7 @@ import 'package:antoinette/app/modules/session/views/about.dart';
 import 'package:antoinette/app/modules/session/views/reception.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SessionBar extends StatefulWidget {
   const SessionBar({super.key});
@@ -50,7 +51,7 @@ class _SessionBarState extends State<SessionBar> {
                       decoration: selectedPage == 1
                           ? TextDecoration.underline
                           : TextDecoration.none,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: selectedPage == 1
                           ? Color(0xffD9A48E)

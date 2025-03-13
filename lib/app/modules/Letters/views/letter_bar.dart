@@ -4,6 +4,7 @@ import 'package:antoinette/app/modules/Letters/views/videos_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LetterBar extends StatefulWidget {
   const LetterBar({super.key});
@@ -35,7 +36,7 @@ class _LetterBarState extends State<LetterBar> {
                         decoration: selectedPage == 0
                             ? TextDecoration.underline
                             : TextDecoration.none,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         color: selectedPage == 0
                             ? Color(0xffD9A48E)
@@ -53,7 +54,7 @@ class _LetterBarState extends State<LetterBar> {
                       decoration: selectedPage == 1
                           ? TextDecoration.underline
                           : TextDecoration.none,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: selectedPage == 1
                           ? Color(0xffD9A48E)
@@ -72,7 +73,7 @@ class _LetterBarState extends State<LetterBar> {
                       decoration: selectedPage == 2
                           ? TextDecoration.underline
                           : TextDecoration.none,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: selectedPage == 2
                           ? Color(0xffD9A48E)

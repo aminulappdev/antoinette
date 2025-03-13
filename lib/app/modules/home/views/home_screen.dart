@@ -69,9 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                       EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
                   child: SizedBox(
-                    height: 290,
+                    height: 290.h,
                     child: GridView.builder(
                       itemCount: 4,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 heightBox8,
                 SizedBox(
-                  height: 134,
+                  height: 134.h,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,

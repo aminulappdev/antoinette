@@ -55,12 +55,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          radius: 21,
+                          radius: 21.r,
                           backgroundColor: Theme.of(context).primaryColor,
                           child: Icon(Icons.email_sharp),
                         ),
                         SizedBox(
-                          width: 250,
+                          width: 250.w,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -71,7 +71,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                         ),
                         CircleAvatar(
-                          radius: 21,
+                          radius: 21.r,
                           backgroundColor: AppColors.iconButtonThemeColor,
                           child: Icon(Icons.arrow_forward,color: Colors.white,),
                         ),

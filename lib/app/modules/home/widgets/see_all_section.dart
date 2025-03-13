@@ -30,12 +30,12 @@ class SeeAllSection extends StatelessWidget {
               Text(
                 'See all..',
                 style: GoogleFonts.poppins(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: AppColors.iconButtonThemeColor),
               ),
               widthBox4,
               CircleAvatar(
-                  radius: 16, child: Icon(Icons.arrow_forward))
+                  radius: 16.r, child: Icon(Icons.arrow_forward))
             ],
           ),
         )

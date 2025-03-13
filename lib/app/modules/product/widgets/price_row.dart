@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PriceRow extends StatelessWidget {
@@ -22,11 +23,11 @@ class PriceRow extends StatelessWidget {
       children: [
         Text(
           name,
-          style: GoogleFonts.poppins(fontSize: nameSize),
+          style: GoogleFonts.poppins(fontSize: nameSize.sp),
         ),
         Text(
           price,
-          style: GoogleFonts.poppins(fontSize: priceSize),
+          style: GoogleFonts.poppins(fontSize: priceSize.sp),
         ),
       ],
     );

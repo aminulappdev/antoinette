@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/dear_diary/widgets/custom_pichart.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/health_condition_card.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/mental_status.dart';
+import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
@@ -30,20 +31,50 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                 CustomAppBar(name: 'Dear Diary'),
                 heightBox12,
                 CustomSearchBar(
-                  shouldfontButton: true,
+                  shouldfontButton: false,
                   shouldBackButton: false,
                 ),
                 
                 heightBox12,
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 42.h,
+                      width: 310.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: const Color.fromARGB(255, 202, 200, 200)),
+                        color: Color(0xffEDE6E4),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Center(child: Icon(Icons.add,color: AppColors.iconButtonThemeColor,),),
+                    ),
+                    GestureDetector(
+                onTap: () {
+                 
+                },
+                child: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  radius: 24.r,
+                  child: Icon(
+                    Icons.lock,
+                  ),
+                ),
+              )
+                  ],
+                ),
+
+                heightBox12,
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 185,
+                  height: 185.h,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12.r)),
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                         EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

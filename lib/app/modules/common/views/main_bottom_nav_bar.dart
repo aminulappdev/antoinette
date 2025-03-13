@@ -41,28 +41,28 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
           Navigator.pushNamed(context, PanicButtonScreen.routeName);
         },
         child: Container(
-          height: 60,
-          width: 60,
+          height: 60.h,
+          width: 60.w,
           
           decoration: BoxDecoration(
             color: AppColors.iconButtonThemeColor,
             borderRadius: BorderRadius.circular(100)
           ),
           child: Center(
-            child: Icon(Icons.error,size: 50,color: Colors.white,),
+            child: Icon(Icons.error,size: 50.h,color: Colors.white,),
           ),
         ),
       ),
       body: screens[selectedKey],
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding:  EdgeInsets.all(12.0.h),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(50.0), // Set the border radius here
+                    BorderRadius.circular(50.0.r), // Set the border radius here
               ),
               elevation: 2,
               child: Container(
@@ -97,7 +97,7 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
                             ? Icons.shopping_cart
                             : Icons.shopping_cart_outlined,
                         color: AppColors.iconButtonThemeColor,
-                        size: 28,
+                        size: 28.h,
                       ),
                     ),
                     GestureDetector(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:antoinette/app/modules/checkIn/views/custom_status_screen.dart';
 import 'package:antoinette/app/modules/checkIn/widgets/add_checkIn_feature.dart';
@@ -29,16 +30,14 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize the timer here if you're using it (e.g., for some countdown)
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      // Your timer logic here
     });
   }
 
   // Dispose the timer when widget is removed from widget tree
   @override
   void dispose() {
-    _timer.cancel();  // Cancel the timer when the widget is disposed
+    _timer.cancel();  
     super.dispose();
   }
 
@@ -47,7 +46,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -57,17 +56,17 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 children: [
                   Icon(
                     Icons.access_time,
-                    size: 22,
+                    size: 22.sp,
                   ),
                   widthBox4,
                   Text(
                     'Set Check-In Timer',
-                    style: GoogleFonts.poppins(fontSize: 15),
+                    style: GoogleFonts.poppins(fontSize: 15.sp),
                   )
                 ],
               ),
               Container(
-                height: 230,
+                height: 230.h,
                 color: Colors.transparent,
                 child: CupertinoTimerPicker(
                   
@@ -85,12 +84,12 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 children: [
                   Icon(
                     Icons.search,
-                    size: 22,
+                    size: 22.sp,
                   ),
                   widthBox4,
                   Text(
                     'Quick Check-In',
-                    style: GoogleFonts.poppins(fontSize: 15),
+                    style: GoogleFonts.poppins(fontSize: 15.sp),
                   )
                 ],
               ),
@@ -132,12 +131,12 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 children: [
                   Icon(
                     Icons.access_time,
-                    size: 22,
+                    size: 22.h,
                   ),
                   widthBox4,
                   Text(
                     'Set Check-In Timer',
-                    style: GoogleFonts.poppins(fontSize: 15),
+                    style: GoogleFonts.poppins(fontSize: 15.sp),
                   )
                 ],
               ),
@@ -157,7 +156,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 ],
               ),
               SizedBox(
-                height: 50,
+                height: 50.h,
               ),
               GradientElevatedButton(
                 onPressed: () {

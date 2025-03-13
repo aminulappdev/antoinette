@@ -77,13 +77,12 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 500,
+                        width: 500.w,
                         child: PinCodeTextField(
                           length: 4,
                           animationType: AnimationType.fade,
                           keyboardType: TextInputType.number,
                           pinTheme: PinTheme(
-                            
                               borderWidth: 0.2,
                               shape: PinCodeFieldShape.box,
                               borderRadius: BorderRadius.circular(12.r),
@@ -92,7 +91,7 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                               fieldHeight: 70.h,
                               fieldWidth: 70.h,
                               activeFillColor: Colors.white,
-                              inactiveFillColor: Colors.white, 
+                              inactiveFillColor: Colors.white,
                               selectedFillColor: Colors.white),
                           animationDuration: const Duration(milliseconds: 300),
                           backgroundColor: Colors.transparent,
@@ -103,14 +102,12 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                       heightBox8,
                       GradientElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, ResetPasswordScreen.routeName);
+                          Navigator.pushNamed(
+                              context, ResetPasswordScreen.routeName);
                         },
                         text: 'Confirm',
                       ),
-
-                     
                       heightBox12,
-
                       Obx(
                         () => Visibility(
                           visible: !enableResendCodeButtom.value,
@@ -119,8 +116,10 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                               resendOTP();
                             },
                             child: Text('Resend code',
-                                style:
-                                    GoogleFonts.poppins(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w500)),
+                                style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500)),
                           ),
                           child: RichText(
                             text: TextSpan(
@@ -128,15 +127,15 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                                 TextSpan(
                                     text: 'Resend code',
                                     style: GoogleFonts.poppins(
-                                        color: Colors.black,fontSize: 16.sp)),
+                                        color: Colors.black, fontSize: 16.sp)),
                                 TextSpan(
                                     text: '$remainingTime',
                                     style: GoogleFonts.poppins(
-                                        color: Colors.orange,fontSize: 16.sp)),
+                                        color: Colors.orange, fontSize: 16.sp)),
                                 TextSpan(
                                     text: 's',
                                     style: GoogleFonts.poppins(
-                                        color: Colors.black,fontSize: 16.sp)),
+                                        color: Colors.black, fontSize: 16.sp)),
                               ],
                             ),
                           ),

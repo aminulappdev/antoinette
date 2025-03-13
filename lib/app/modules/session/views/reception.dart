@@ -58,7 +58,7 @@ class _ReceptionState extends State<Reception> {
                           value: option,
                           child: Text(
                             option,
-                            style: GoogleFonts.poppins(fontSize: 12),
+                            style: GoogleFonts.poppins(fontSize: 12.sp),
                           ),
                         );
                       }).toList(),

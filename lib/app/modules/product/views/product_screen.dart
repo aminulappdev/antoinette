@@ -37,7 +37,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
                 heightBox12,
                 SizedBox(
-                  height: 700,
+                  height: 700.h,
                   child: GridView.builder(
                     itemCount: 12,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -47,7 +47,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         crossAxisCount: 2),
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        padding:  EdgeInsets.symmetric(horizontal: 8.w),
                         child: ProductCard(
                             name: 'Sunscream',
                             price: '50.00',

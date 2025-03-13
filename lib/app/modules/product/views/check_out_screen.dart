@@ -63,7 +63,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 Text(
                   'Price Details',
                   style: GoogleFonts.poppins(
-                      fontSize: 15, fontWeight: FontWeight.w500),
+                      fontSize: 15.sp, fontWeight: FontWeight.w500),
                 ),
                 heightBox12,
                 PriceRow(
@@ -81,7 +81,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 ),
                 heightBox4,
                 Container(
-                  height: 1.5,
+                  height: 1.5.h,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.grey,
                 ),
@@ -96,7 +96,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   height: 230,
                 ),
                 Container(
-                  height: 70,
+                  height: 70.h,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -105,10 +105,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        padding:  EdgeInsets.symmetric(horizontal: 12.w),
                         child: SizedBox(
-                          width: 159,
-                          height: 42,
+                          width: 159.w,
+                          height: 42.h,
                           child: GradientElevatedButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, SessionDetailsScreen.routeName);

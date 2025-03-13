@@ -17,7 +17,7 @@ class ProfileInfo extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-          radius: 25,
+          radius: 25.r,
           backgroundImage: AssetImage(imagePath),
         ),
         widthBox8,

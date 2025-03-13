@@ -46,7 +46,7 @@ class OnboardingPage extends StatelessWidget {
                   },
                   child: CircleAvatar(
                     backgroundColor: Color.fromARGB(162, 243, 213, 248),
-                    radius: 24,
+                    radius: 24.r,
                     child: Icon(
                       Icons.arrow_back,
                     ),

@@ -81,7 +81,7 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
                 },
                 child: Icon(
                   Icons.videocam_sharp,
-                  size: 30,
+                  size: 30.h,
                 ),
               ),
             ),
@@ -92,7 +92,7 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
               },
               child: Icon(
                 Icons.error_outline,
-                size: 30,
+                size: 30.h,
               ),
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ArticleDetailsScreen extends StatefulWidget {
@@ -17,26 +18,26 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
+                padding:  EdgeInsets.symmetric(vertical: 2.h),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
                         context, ArticleDetailsScreen.routeName);
                   },
                   child: Container(
-                    height: 200,
+                    height: 200.h,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(AssetsPath.womenBookRead)),
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding:  EdgeInsets.all(12.0.h),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,7 +59,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                           GestureDetector(
                             onTap: () {},
                             child: CircleAvatar(
-                              radius: 21,
+                              radius: 21.r,
                               backgroundColor:
                                   Color(0xff000000).withOpacity(0.1),
                               child: Icon(
@@ -82,43 +83,43 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                 children: [
                   Text(
                     'Author: Dr. Sophia Williams',
-                    style: GoogleFonts.poppins(fontSize: 12),
+                    style: GoogleFonts.poppins(fontSize: 12.sp),
                   ),
                   Text(
                     'Published Date: Feb 7, 2025',
-                    style: GoogleFonts.poppins(fontSize: 12),
+                    style: GoogleFonts.poppins(fontSize: 12.sp),
                   ),
                 ],
               ),
               heightBox4,
               Text(
                 'Introduction',
-                style: GoogleFonts.poppins(fontSize: 15),
+                style: GoogleFonts.poppins(fontSize: 15.sp),
               ),
               heightBox4,
               Text(
                 'In our fast-paced world, mental and physical health are often treated as separate entities. However, science continues to reveal that our mind and body are deeply interconnected. Stress, anxiety, and emotional struggles can manifest as physical symptoms, just as physical habits—like movement and nutrition—can significantly impact mental well-being. Welcome to Mind & Body Space, where we explore how to create harmony between the two.',
-                style: GoogleFonts.poppins(fontSize: 10),textAlign: TextAlign.justify,
+                style: GoogleFonts.poppins(fontSize: 10.sp),textAlign: TextAlign.justify,
               ),
               heightBox4,
               Text(
                 'The Science Behind the Mind-Body Connection',
-                style: GoogleFonts.poppins(fontSize: 15),
+                style: GoogleFonts.poppins(fontSize: 15.sp),
               ),
               heightBox4,
               Text(
                 'In our fast-paced world, mental and physical health are often treated as separate entities. However, science continues to reveal that our mind and body are deeply interconnected. Stress, anxiety, and emotional struggles can manifest as physical symptoms, just as physical habits—like movement and nutrition—can significantly impact mental well-being. Welcome to Mind & Body Space, where we explore how to create harmony between the two.',
-                style: GoogleFonts.poppins(fontSize: 10),textAlign: TextAlign.justify,
+                style: GoogleFonts.poppins(fontSize: 10.sp),textAlign: TextAlign.justify,
               ),
               heightBox4,
               Text(
                 'Sleep: The Foundation of Mental & Physical Wellness',
-                style: GoogleFonts.poppins(fontSize: 15),
+                style: GoogleFonts.poppins(fontSize: 15.sp),
               ),
               heightBox4,
               Text(
                 'In our fast-paced world, mental and physical health are often treated as separate entities. However, science continues to reveal that our mind and body are deeply interconnected. Stress, anxiety, and emotional struggles can manifest as physical symptoms, just as physical habits—like movement and nutrition—can significantly impact mental well-being. Welcome to Mind & Body Space, where we explore how to create harmony between the two.',
-                style: GoogleFonts.poppins(fontSize: 10),textAlign: TextAlign.justify,
+                style: GoogleFonts.poppins(fontSize: 10.sp),textAlign: TextAlign.justify,
               ),
             ],
           ),

@@ -15,7 +15,7 @@ class Liner extends StatelessWidget {
         children: [
           Container(
             width: 140.w,
-            height: 1.5,
+            height: 1.5.h,
             color: Color.fromARGB(255, 193, 191, 191),
           ),
           Text(
@@ -24,7 +24,7 @@ class Liner extends StatelessWidget {
           ),
           Container(
             width: 140.w,
-            height: 1.5,
+            height: 1.5.h,
             color: const Color.fromARGB(255, 193, 191, 191),
           ),
         ],

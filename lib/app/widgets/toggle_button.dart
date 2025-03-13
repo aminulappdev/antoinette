@@ -1,5 +1,6 @@
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ToggleButton extends StatefulWidget {
   const ToggleButton({
@@ -36,8 +37,8 @@ class _ToggleButtonState extends State<ToggleButton> {
     return GestureDetector(
       onTap: _toggle,
       child: Container(
-        width: 49,
-        height: 28,
+        width: 49.w,
+        height: 28.h,
         decoration: BoxDecoration(
           color: AppColors.iconButtonThemeColor,
           borderRadius: BorderRadius.circular(100),
@@ -49,9 +50,9 @@ class _ToggleButtonState extends State<ToggleButton> {
               curve: Curves.easeInOut,
               left: _isToggled ? 24 : 2,
               top: 2,
-              child: const CircleAvatar(
+              child:  CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: 12,
+                radius: 12.r,
               ),
             ),
           ],

@@ -2,6 +2,7 @@ import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CompletedScreen extends StatefulWidget {
@@ -21,11 +22,11 @@ class _CompletedScreenState extends State<CompletedScreen> {
         itemCount: 2,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
+            padding:  EdgeInsets.symmetric(vertical: 2.h, horizontal: 12.w),
             child: Card(
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: 169,
+                height: 169.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.white),
@@ -38,8 +39,8 @@ class _CompletedScreenState extends State<CompletedScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            height: 61,
-                            width: 97,
+                            height: 61.h,
+                            width: 97.w,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 image: DecorationImage(
@@ -54,13 +55,13 @@ class _CompletedScreenState extends State<CompletedScreen> {
                           ),
                           widthBox8,
                           SizedBox(
-                            width: 200,
+                            width: 200.w,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   'Find Balance & Clarity',
-                                  style: GoogleFonts.poppins(fontSize: 15),
+                                  style: GoogleFonts.poppins(fontSize: 15.sp),
                                 ),
                                 heightBox4,
                                 Row(
@@ -69,11 +70,11 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                   children: [
                                     Text(
                                       'Dr. Jane Smith',
-                                      style: GoogleFonts.poppins(fontSize: 10),
+                                      style: GoogleFonts.poppins(fontSize: 10.sp),
                                     ),
                                     Text(
                                       'Video Therapy',
-                                      style: GoogleFonts.poppins(fontSize: 10),
+                                      style: GoogleFonts.poppins(fontSize: 10.sp),
                                     ),
                                   ],
                                 ),
@@ -84,11 +85,11 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                   children: [
                                     Text(
                                       '25 January 2025',
-                                      style: GoogleFonts.poppins(fontSize: 10),
+                                      style: GoogleFonts.poppins(fontSize: 10.sp),
                                     ),
                                     Text(
                                       '02:00 pm',
-                                      style: GoogleFonts.poppins(fontSize: 10),
+                                      style: GoogleFonts.poppins(fontSize: 10.sp),
                                     ),
                                   ],
                                 )
@@ -103,11 +104,11 @@ class _CompletedScreenState extends State<CompletedScreen> {
                         children: [
                           Text(
                             'Amount Paid',
-                            style: GoogleFonts.poppins(fontSize: 12),
+                            style: GoogleFonts.poppins(fontSize: 12.sp),
                           ),
                           Text(
                             '\$50.00',
-                            style: GoogleFonts.poppins(fontSize: 12),
+                            style: GoogleFonts.poppins(fontSize: 12.sp),
                           ),
                         ],
                       ),

@@ -43,7 +43,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 Text(
                   'Check Email',
                   style: GoogleFonts.poppins(
-                      fontSize: 20, fontWeight: FontWeight.w400),
+                      fontSize: 20.sp, fontWeight: FontWeight.w400),
                 ),
                 heightBox12,
                 SizedBox(
@@ -51,7 +51,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   child: Text(
                     'Please check your email to verify your account.',
                     style: GoogleFonts.poppins(
-                        fontSize: 12, fontWeight: FontWeight.w400),
+                        fontSize: 12.sp, fontWeight: FontWeight.w400),
                     textAlign: TextAlign.center,
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:antoinette/app/modules/profile/widgets/address_card.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AdderssScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class AdderssScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.all(16.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -25,8 +26,8 @@ class AdderssScreen extends StatelessWidget {
                   Navigator.pushNamed(context, AddAdderssScreen.routeName);
                 },
                 child: Container(
-                  height: 66,
-                  width: 263,
+                  height: 66.h,
+                  width: 263.w,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.blue),
                     borderRadius: BorderRadius.circular(20),
@@ -40,7 +41,7 @@ class AdderssScreen extends StatelessWidget {
                         Text(
                           'Add address',
                           style: GoogleFonts.poppins(
-                              fontSize: 14, color: Color(0xff626262)),
+                              fontSize: 14.sp, color: Color(0xff626262)),
                         )
                       ],
                     ),

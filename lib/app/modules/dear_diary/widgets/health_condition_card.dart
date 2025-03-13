@@ -1,4 +1,3 @@
-
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +20,8 @@ class HealthConditionCard extends StatelessWidget {
     required this.time,
     required this.description,
     required this.lockOntap,
-    required this.moreHorizOntap, required this.themeColor,
+    required this.moreHorizOntap,
+    required this.themeColor,
   });
 
   @override

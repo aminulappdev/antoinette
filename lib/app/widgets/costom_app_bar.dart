@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget {
           ),
         
         ),
-        Container(width: 36,)
+        Container(width: 36.w,)
       ],
     );
   }

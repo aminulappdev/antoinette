@@ -3,6 +3,7 @@ import 'package:antoinette/app/modules/history/views/upcoming_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HistoryBar extends StatefulWidget {
   
@@ -35,7 +36,7 @@ class _HistoryBarState extends State<HistoryBar> {
                         decoration: selectedPage == 0
                             ? TextDecoration.underline
                             : TextDecoration.none,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         color: selectedPage == 0
                             ? Color(0xffD9A48E)
@@ -53,7 +54,7 @@ class _HistoryBarState extends State<HistoryBar> {
                       decoration: selectedPage == 1
                           ? TextDecoration.underline
                           : TextDecoration.none,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: selectedPage == 1
                           ? Color(0xffD9A48E)

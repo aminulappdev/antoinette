@@ -18,16 +18,16 @@ class PsychoSupportCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 175,
-      width: 237,
+      height: 175.h,
+      width: 237.w,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8)),
       child: Column(
         children: [
           Container(
-            height: 133,
-            width: 237,
+            height: 133.h,
+            width: 237.w,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage(
@@ -43,7 +43,7 @@ class PsychoSupportCard extends StatelessWidget {
                   Text(
                     status,
                     style: GoogleFonts.poppins(
-                        fontSize: 10, color: Colors.green),
+                        fontSize: 10.sp, color: Colors.green),
                   ),
                   heightBox50,
                   heightBox30,
@@ -54,12 +54,12 @@ class PsychoSupportCard extends StatelessWidget {
                       Text(
                         'Duration: $time mins',
                         style: GoogleFonts.poppins(
-                            fontSize: 12, color: Colors.white),
+                            fontSize: 12.sp, color: Colors.white),
                       ),
                       Text(
                         ' Per session: \$$price',
                         style: GoogleFonts.poppins(
-                            fontSize: 12, color: Colors.white),
+                            fontSize: 12.sp, color: Colors.white),
                       ),
                     ],
                   )
@@ -68,19 +68,19 @@ class PsychoSupportCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 8, vertical: 2),
+            padding:  EdgeInsets.symmetric(
+                horizontal: 8.w, vertical: 2.h),
             child: Row(
               children: [
                 CircleAvatar(
                   backgroundImage: AssetImage(imagePath),
-                  radius: 18,
+                  radius: 18.r,
                 ),
                 widthBox4,
                 Text(
                   title,
                   style: GoogleFonts.poppins(
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       color: Colors.black,
                       fontWeight: FontWeight.w600),
                 ),

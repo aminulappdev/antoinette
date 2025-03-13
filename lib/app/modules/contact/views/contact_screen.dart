@@ -23,7 +23,7 @@ class _ContactScreenState extends State<ContactScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12.0.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -47,7 +47,7 @@ class _ContactScreenState extends State<ContactScreen> {
                                   fontWeight: FontWeight.w500),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              padding:  EdgeInsets.symmetric(vertical: 8.h),
                               child: Row(
                                 children: [
                                   Container(
@@ -58,7 +58,7 @@ class _ContactScreenState extends State<ContactScreen> {
                                         border: Border.all(color: Colors.blue)),
                                     child: Icon(
                                       Icons.edit,
-                                      size: 20,
+                                      size: 20.h,
                                       color: Colors.blue,
                                     ),
                                   ),
@@ -72,7 +72,7 @@ class _ContactScreenState extends State<ContactScreen> {
                                             Border.all(color: Colors.redAccent)),
                                     child: Icon(
                                       Icons.delete,
-                                      size: 20,
+                                      size: 20.h,
                                       color: Colors.redAccent,
                                     ),
                                   )

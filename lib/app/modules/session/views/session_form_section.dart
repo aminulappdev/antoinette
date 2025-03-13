@@ -28,13 +28,13 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                 CustomAppBar(name: 'Let’s Get to Know You'),
                 Text(
                   'This form helps your therapist understand your needs better. Answer as openly as you feel comfortable.',
-                  style: GoogleFonts.cormorantGaramond(fontSize: 15),
+                  style: GoogleFonts.cormorantGaramond(fontSize: 15.sp),
                   textAlign: TextAlign.center,
                 ),
                 heightBox8,
                 Text(
                   'Personal details',
-                  style: GoogleFonts.poppins(fontSize: 15),
+                  style: GoogleFonts.poppins(fontSize: 15.sp),
                 ),
                 heightBox8,
                 Text('Full Name',

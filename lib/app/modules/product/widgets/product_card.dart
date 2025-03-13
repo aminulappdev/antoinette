@@ -20,16 +20,16 @@ class ProductCard extends StatelessWidget {
         Navigator.pushNamed(context, ProductDetailScreen.routeName);
       },
       child: Container(
-        height: 134,
-        width: 156,
+        height: 134.h,
+        width: 156.w,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8)),
         child: Column(
           children: [
             Container(
-              height: 100,
-              width: 156,
+              height: 100.h,
+              width: 156.h,
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
@@ -42,15 +42,15 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 8, vertical: 2),
+              padding:  EdgeInsets.symmetric(
+                  horizontal: 8.w, vertical: 2.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     name,
                     style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
                   ),
@@ -58,7 +58,7 @@ class ProductCard extends StatelessWidget {
                   Text(
                     '\$$price',
                     style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
                   ),

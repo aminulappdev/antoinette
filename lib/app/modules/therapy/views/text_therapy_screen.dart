@@ -53,7 +53,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding:  EdgeInsets.all(12.0.h),
           child: Column(
             children: [
               CustomChatAppBar(name: 'Dr. Jane Smith'),
@@ -74,7 +74,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                         children: [
                           Text(
                             '11:30 AM',
-                            style: TextStyle(fontSize: 10),
+                            style: TextStyle(fontSize: 10.sp),
                           ),
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 5.h),
@@ -90,7 +90,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                             child: Text(
                               message['text'],
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   color: message['isSent']
                                       ? Color(0xffD9A48E)
                                       : Colors.black),
@@ -109,8 +109,8 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      height: 42,
-                      width: 42,
+                      height: 42.h,
+                      width: 42.h,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(100),
@@ -120,7 +120,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                       ),
                     ),
                     SizedBox(
-                        width: 250,
+                        width: 250.w,
                         child: ChattingFieldWidget(hintText: '  Let it out')),
                     widthBox8,
                     GestureDetector(
@@ -138,8 +138,8 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                         }
                       },
                       child: Container(
-                        height: 42,
-                        width: 42,
+                        height: 42.h,
+                        width: 42.h,
                         decoration: BoxDecoration(
                           color: AppColors.iconButtonThemeColor,
                           borderRadius: BorderRadius.circular(100),

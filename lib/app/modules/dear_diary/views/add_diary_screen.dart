@@ -5,6 +5,7 @@ import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddDiaryScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.0.h),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +54,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: 170,
+                      width: 170.w,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -65,12 +66,12 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                             ],
                           ),
                           heightBox8,
-                          SizedBox(height: 48, child: TextFormField())
+                          SizedBox(height: 48.h, child: TextFormField())
                         ],
                       ),
                     ),
                     SizedBox(
-                      width: 170,
+                      width: 170.w,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -82,7 +83,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                             ],
                           ),
                           heightBox8,
-                          SizedBox(height: 48, child: TextFormField())
+                          SizedBox(height: 48.h, child: TextFormField())
                         ],
                       ),
                     )
@@ -95,7 +96,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                   children: [
                     Text(
                       'Description',
-                      style: GoogleFonts.poppins(fontSize: 14),
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,11 +129,11 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                       Text(
                         'Aminul',
                         style: GoogleFonts.caveat(
-                            fontSize: 12, color: Color(0xffD9A48E)),
+                            fontSize: 12.sp, color: Color(0xffD9A48E)),
                       ),
                       Container(
-                        height: 1,
-                        width: 50,
+                        height: 1.h,
+                        width: 50.w,
                         color: Color(0xffD9A48E),
                       )
                     ],
@@ -142,12 +143,12 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                 Text(
                   'How Are You Feeling Today?',
                   style: GoogleFonts.poppins(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                   ),
                 ),
                 heightBox12,
                 SizedBox(
-                  height: 250,
+                  height: 250.h,
                   child: GridView.builder(
                     itemCount: feelingsList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -159,19 +160,19 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                       return GestureDetector(
                         onTap: () {},
                         child: Container(
-                          height: 44,
-                          width: 172,
+                          height: 44.h,
+                          width: 172.w,
                           decoration: BoxDecoration(
                               color: feelingsList[index].bgColor,
                               border: Border.all(
                                   color: feelingsList[index].borderColor),
                               borderRadius: BorderRadius.circular(8)),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding:  EdgeInsets.symmetric(horizontal: 8.w),
                             child: Row(
                               children: [
                                 CircleAvatar(
-                                  radius: 10,
+                                  radius: 10.r,
                                   backgroundColor: Colors.transparent,
                                   backgroundImage:
                                       AssetImage(feelingsList[index].emojiPath),
@@ -180,7 +181,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                                 Text(
                                   feelingsList[index].name,
                                   style: GoogleFonts.poppins(
-                                      fontSize: 14,
+                                      fontSize: 14.sp,
                                       color: feelingsList[index].fontColor),
                                 )
                               ],

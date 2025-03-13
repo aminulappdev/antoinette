@@ -1,6 +1,7 @@
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PodcastDetailsScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding:  EdgeInsets.all(12.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -29,7 +30,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                       Navigator.pop(context);
                     },
                     child: CircleAvatar(
-                      radius: 21,
+                      radius: 21.r,
                       backgroundColor: Color(0xff000000).withOpacity(0.1),
                       child: Icon(
                         Icons.arrow_back,
@@ -40,7 +41,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                   GestureDetector(
                     onTap: () {},
                     child: CircleAvatar(
-                      radius: 21,
+                      radius: 21.r,
                       backgroundColor: Color(0xff000000).withOpacity(0.1),
                       child: Icon(
                         Icons.favorite_border_sharp,
@@ -52,7 +53,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
               ),
               heightBox16,
               Container(
-                height: 274,
+                height: 274.h,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
@@ -64,7 +65,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
               heightBox8,
               Text(
                 'The Science of Self-Care',
-                style: GoogleFonts.poppins(fontSize: 15),
+                style: GoogleFonts.poppins(fontSize: 15.sp),
               ),
               heightBox12,
               Row(
@@ -72,11 +73,11 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                 children: [
                   Text(
                     'Author: Dr. Sophia Williams',
-                    style: GoogleFonts.poppins(fontSize: 12),
+                    style: GoogleFonts.poppins(fontSize: 12.sp),
                   ),
                   Text(
                     'Published Date: Feb 7, 2025',
-                    style: GoogleFonts.poppins(fontSize: 12),
+                    style: GoogleFonts.poppins(fontSize: 12.sp),
                   ),
                 ],
               ),
@@ -86,17 +87,17 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
               heightBox30,
               Text(
                 'Next',
-                style: GoogleFonts.poppins(fontSize: 15),
+                style: GoogleFonts.poppins(fontSize: 15.sp),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
+                padding:  EdgeInsets.symmetric(vertical: 4.h),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
                         context, PodcastDetailsScreen.routeName);
                   },
                   child: Container(
-                    height: 104,
+                    height: 104.h,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -106,8 +107,8 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                       child: Row(
                         children: [
                           Container(
-                            height: 84,
-                            width: 73,
+                            height: 84.h,
+                            width: 73.w,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               image: DecorationImage(
@@ -120,21 +121,21 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                width: 120,
+                                width: 120.w,
                                 child: Text(
                                   'The Science of Self-Care',
-                                  style: GoogleFonts.poppins(fontSize: 16),
+                                  style: GoogleFonts.poppins(fontSize: 16.sp),
                                 ),
                               ),
                               SizedBox(
-                                width: 180,
+                                width: 180.w,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      height: 30,
-                                      width: 64,
+                                      height: 30.h,
+                                      width: 64.w,
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(20),
@@ -144,13 +145,13 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                                         child: Text(
                                           'Episod 12',
                                           style:
-                                              GoogleFonts.poppins(fontSize: 10),
+                                              GoogleFonts.poppins(fontSize: 10.sp),
                                         ),
                                       ),
                                     ),
                                     Container(
-                                      height: 30,
-                                      width: 64,
+                                      height: 30.h,
+                                      width: 64.w,
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(20),
@@ -160,7 +161,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                                         child: Text(
                                           '12 min',
                                           style:
-                                              GoogleFonts.poppins(fontSize: 10),
+                                              GoogleFonts.poppins(fontSize: 10.sp),
                                         ),
                                       ),
                                     ),
@@ -171,7 +172,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                           ),
                           widthBox40,
                           CircleAvatar(
-                            radius: 21,
+                            radius: 21.r,
                             backgroundColor: Color(0xffA57EA5),
                             child: Icon(Icons.play_arrow),
                           )

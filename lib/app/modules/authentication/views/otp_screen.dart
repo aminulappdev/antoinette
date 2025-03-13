@@ -77,29 +77,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // SizedBox(
-                      //   // width: 500,
-                      //   child: PinCodeTextField(
-                      //     length: 4,
-                      //     animationType: AnimationType.fade,
-                      //     keyboardType: TextInputType.number,
-                      //     pinTheme: PinTheme(
-                      //         borderWidth: 0.2,
-                      //       shape: PinCodeFieldShape.circle,
-                      //         borderRadius: BorderRadius.circular(100.r),
-                      //         inactiveColor: const Color.fromARGB(218, 222, 220,
-                      //             220), // Border color when not filled
-                      //         fieldHeight: 40.h,
-                      //         fieldWidth: 40.h,
-                      //         activeFillColor: Colors.white,
-                      //         inactiveFillColor: Colors.white,
-                      //         selectedFillColor: Colors.white),
-                      //     animationDuration: const Duration(milliseconds: 300),
-                      //     backgroundColor: Colors.transparent,
-                      //     enableActiveFill: true,
-                      //     appContext: context,
-                      //   ),
-                      // ),
+      
                       PinCodeTextField(
                         length: 6,
                         obscureText: false,

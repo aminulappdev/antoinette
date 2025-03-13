@@ -43,7 +43,7 @@ class _DropDownButtonState extends State<DropDownButton> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: EdgeInsets.symmetric(horizontal: 6.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -80,7 +80,7 @@ class _DropDownButtonState extends State<DropDownButton> {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(8)),
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding:  EdgeInsets.all(4.0.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

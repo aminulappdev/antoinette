@@ -20,14 +20,14 @@ class AddressCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: isShowBatch ? 102 : 80,
-      width: 353,
+      height: isShowBatch ? 102.h : 80.h,
+      width: 353.w,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -72,8 +72,8 @@ class AddressCardWidget extends StatelessWidget {
             isShowBatch
                 ? Center(
                     child: Container(
-                      height: 24,
-                      width: 124,
+                      height: 24.h,
+                      width: 124.w,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: const Color(0xffD9A48E))),
@@ -81,7 +81,7 @@ class AddressCardWidget extends StatelessWidget {
                           child: Text(
                         'Default shipping',
                         style: GoogleFonts.poppins(
-                            fontSize: 10, color: Color(0xffD9A48E)),
+                            fontSize: 10.sp, color: Color(0xffD9A48E)),
                       )),
                     ),
                   )

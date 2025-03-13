@@ -31,7 +31,7 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                 CustomAppBar(name: 'Session Details'),
                 heightBox12,
                 Container(
-                  height: 200,
+                  height: 200.h,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
@@ -48,7 +48,7 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                       style: GoogleFonts.poppins(fontSize: 15.sp),
                     ),
                     SizedBox(
-                      width: 70,
+                      width: 70.w,
                       child: RichText(
                           text: TextSpan(
                               text: '\$53.00',
