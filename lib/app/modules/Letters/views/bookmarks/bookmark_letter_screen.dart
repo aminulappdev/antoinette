@@ -17,15 +17,17 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   Widget build(BuildContext context) {
     return  SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-            padding:  EdgeInsets.all(12.0.h),
-              child: CustomAppBar(name: 'Bookmarks'),
-            ),
-            BookmarkBar(),           
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+              padding:  EdgeInsets.all(12.0.h),
+                child: CustomAppBar(name: 'Bookmarks'),
+              ),
+              BookmarkBar(),           
+            ],
+          ),
         ),
       ),
     );

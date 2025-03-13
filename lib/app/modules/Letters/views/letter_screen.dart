@@ -15,12 +15,14 @@ class _LetterScreenState extends State<LetterScreen> {
   Widget build(BuildContext context) {
     return  SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomAppBar(name: 'Letters to you'),
-            LetterBar(),           
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomAppBar(name: 'Letters to you'),
+              LetterBar(),           
+            ],
+          ),
         ),
       ),
     );
