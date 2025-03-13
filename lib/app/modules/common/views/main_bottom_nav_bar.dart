@@ -1,4 +1,3 @@
-import 'package:antoinette/app/modules/checkIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/panic_button_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/home/views/home_screen.dart';

@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/dear_diary/widgets/status_card.dart';
+import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,8 +38,6 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
     });
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -47,9 +46,9 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
         children: [
           Container(
             height: 27.h,
-            width: 90.w,
+            width: 100.w,
             decoration: BoxDecoration(
-              color: Colors.purple,
+              color: AppColors.iconButtonThemeColor,
               borderRadius: BorderRadius.circular(50),
             ),
             child: Padding(
@@ -75,7 +74,7 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
                           _isDropdownOpen
                               ? Icons.arrow_drop_up
                               : Icons.arrow_drop_down,
-                          color: Colors.purple,
+                          color: AppColors.iconButtonThemeColor,
                           size: 16,
                         ),
                       ),
@@ -86,54 +85,57 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
             ),
           ),
           if (_isDropdownOpen) ...[
-            // Dropdown list of months
-            Column(
-              children: [
-                for (var month in [
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                  'July',
-                  'August',
-                  'September',
-                  'October',
-                  'November',
-                  'December',
-                ])
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedMonth = month;
-                        _isDropdownOpen = false;
-                      });
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(2.0.h),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 2.h, horizontal: 8.w),
-                        decoration: BoxDecoration(
-                          color: Colors.purple.shade100,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          month,
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Padding(
+                  padding: EdgeInsets.all(4.0.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (var month in [
+                        'January',
+                        'February',
+                        'March',
+                        'April',
+                        'May',
+                        'June',
+                        'July',
+                        'August',
+                        'September',
+                        'October',
+                        'November',
+                        'December',
+                      ])
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedMonth = month;
+                              _isDropdownOpen = false;
+                            });
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(2.0.h),
+                            child: Text(
+                              month,
+                              style: TextStyle(
+                                fontSize: 10.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                    ],
                   ),
-              ],
-            )
+                ),
+              ),
+            ),
           ],
-          SizedBox(height: 12.h), // Replaced heightBox12
+          SizedBox(height: 12.h),
           Row(
             children: [
               Column(
@@ -142,31 +144,31 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
                     percent: widget.sadPercent,
                     emojiPath: AssetsPath.sad,
                   ),
-                  SizedBox(height: 10.h), // Replaced heightBox10
+                  SizedBox(height: 10.h),
                   StatusCard(
                     percent: widget.angryPercent,
                     emojiPath: AssetsPath.angry,
                   ),
-                  SizedBox(height: 10.h), // Replaced heightBox10
+                  SizedBox(height: 10.h),
                   StatusCard(
                     percent: widget.musclePercent,
                     emojiPath: AssetsPath.muscle,
                   ),
                 ],
               ),
-              SizedBox(width: 14.w), // Replaced widthBox14
+              SizedBox(width: 14.w),
               Column(
                 children: [
                   StatusCard(
                     percent: widget.tiredPercent,
                     emojiPath: AssetsPath.tired,
                   ),
-                  SizedBox(height: 10.h), // Replaced heightBox10
+                  SizedBox(height: 10.h),
                   StatusCard(
                     percent: widget.happyPercent,
                     emojiPath: AssetsPath.happy,
                   ),
-                  SizedBox(height: 10.h), // Replaced heightBox10
+                  SizedBox(height: 10.h),
                   StatusCard(
                     percent: widget.anglePercent,
                     emojiPath: AssetsPath.angle,

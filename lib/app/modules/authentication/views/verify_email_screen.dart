@@ -1,3 +1,5 @@
+import 'package:antoinette/app/modules/authentication/views/otp_screen.dart';
+import 'package:antoinette/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/borderRectangleButton.dart';
@@ -58,7 +60,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 heightBox30,
                 GradientElevatedButton(
                   onPressed: () {
-                  
+                   Navigator.pushNamed(context, OTPVerifyScreen.routeName);
                   },
                   text: 'Confirm Now',
                 ),
@@ -66,7 +68,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 BorderRectangleButton(
                   name: 'Skip',
                   ontap: () {
-
+                     Navigator.pushNamed(context, SignUpScreen.routeName);
                   },
                 ),
               ],

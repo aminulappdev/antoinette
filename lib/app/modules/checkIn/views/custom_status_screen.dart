@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
+import 'package:antoinette/app/modules/checkIn/views/check_in_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -34,7 +35,7 @@ class _CustomStatusScreenState extends State<CustomStatusScreen> {
               TextFormField(),
               SizedBox(height: 50.h,),
               GradientElevatedButton(onPressed: () {
-                Navigator.pushNamed(context, AddCheckInScreen.routeName);
+                Navigator.pushNamed(context, CheckInScreen.routeName);
               }, text: '+ Add Check-In')
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/product/widgets/checkout_user_info.dart';
 import 'package:antoinette/app/modules/product/widgets/deliveryCard.dart';
 import 'package:antoinette/app/modules/product/widgets/delivery_option_row.dart';
@@ -111,7 +112,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           height: 42.h,
                           child: GradientElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, SessionDetailsScreen.routeName);
+                                Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
                               }, text: 'Place order'),
                         ),
                       ),

@@ -1,5 +1,7 @@
 
 
+import 'package:antoinette/app/modules/Letters/views/letter_screen.dart';
+import 'package:antoinette/app/modules/Letters/views/podcast_details.dart';
 import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
 import 'package:antoinette/app/modules/checkIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/checkIn/views/custom_status_screen.dart';
@@ -18,6 +20,7 @@ import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
+import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_letter_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
@@ -30,9 +33,7 @@ import 'package:antoinette/app/modules/profile/views/info_screen.dart';
 import 'package:antoinette/app/modules/profile/views/profile_screen.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/modules/session/views/session_form_section.dart';
-import 'package:antoinette/app/modules/Letters/views/article_details_screen.dart';
-import 'package:antoinette/app/modules/Letters/views/letter_screen.dart';
-import 'package:antoinette/app/modules/Letters/views/podcast_details.dart';
+import 'package:antoinette/app/modules/letters/views/article_details_screen.dart';
 import 'package:antoinette/app/modules/session/views/session_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/camera_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/healing_note_screen.dart';
@@ -84,10 +85,13 @@ class AppRoutes {
      HealingNoteScreen.routeName: (context) => const HealingNoteScreen(),
      TextTherapyScreen.routeName: (context) => const TextTherapyScreen(),
      CameraScreen.routeName: (context) => const CameraScreen(cameras: [],),
+    
 
+    // Letter Section
     LetterScreen.routeName: (context) => const LetterScreen(),
     ArticleDetailsScreen.routeName: (context) => const ArticleDetailsScreen(),
     PodcastDetailsScreen.routeName: (context) => const PodcastDetailsScreen(),
+    BookmarkScreen.routeName: (context) => const BookmarkScreen(),
 
 
     CheckInScreen.routeName: (context) => const CheckInScreen(),
@@ -114,5 +118,5 @@ class AppRoutes {
    
   };
 
-  static var initialRoute = OnboardingScreen.routeName;
+  static var initialRoute = SplashScreen.routeName;
 }

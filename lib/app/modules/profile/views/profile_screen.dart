@@ -1,3 +1,6 @@
+import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
+import 'package:antoinette/app/modules/history/views/history_screen.dart';
+import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_letter_screen.dart';
 import 'package:antoinette/app/modules/profile/views/account_screen.dart';
 import 'package:antoinette/app/modules/profile/views/address_screen.dart';
 import 'package:antoinette/app/modules/profile/views/info_screen.dart';
@@ -55,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 feature: 'History',
                 icon: Icons.history,
                 ontap: () {
-                  Navigator.pushNamed(context, AccountScreen.routeName);
+                  Navigator.pushNamed(context, HistoryScreen.routeName);
                 },
               ),
               ProfileDrawerFeature(
@@ -69,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 feature: 'Trusted Contacts',
                 icon: Icons.people,
                 ontap: () {
-                  Navigator.pushNamed(context, AccountScreen.routeName);
+                  Navigator.pushNamed(context, ContactScreen.routeName);
                 },
               ),
               ProfileDrawerFeature(
@@ -83,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 feature: 'Bookmarks',
                 icon: Icons.bookmark,
                 ontap: () {
-                  Navigator.pushNamed(context, AccountScreen.routeName);
+                  Navigator.pushNamed(context, BookmarkScreen.routeName);
                 },
               ),
               heightBox8,
@@ -117,8 +120,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ProfileDrawerFeature(
                 feature: 'Policies',
                 icon: Icons.security,
-                ontap: () {
-                  Navigator.pushNamed(context, AccountScreen.routeName);
+                 ontap: () {
+                  Navigator.pushNamed(context, InfoScreen.routeName,
+                      arguments: {
+                        'appBarTitle': 'Privacy and Policies',
+                        'data':
+                            'Lorem ipsum dolor sit amet consectetur. Ultrices id feugiat venenatis habitant mattis viverra elementum purus volutpat. Lacus eu molestie pulvinar rhoncus integer proin elementum. Pretium sit fringilla massa tristique aenean commodo leo. Aliquet viverra amet sit porta elementum et pellentesque posuere. Ullamcorper viverra tortor lobortis viverra auctor egestas. Nulla condimentum ac metus quam turpis gravida ut velit. Porta justo lacus consequat sed platea. Ut dui massa quam elit faucibus consectetur sapien aenean auctor. Felis ipsum amet justo in. Netus amet in egestas sed auctor lorem. Justo ullamcorper velit habitasse lorem eu arcu. Non enim a elit urna eget nibh quisque donec condimentum. Elit ut pellentesque neque in quis at viverra. Nisl etiam tristique odio eget convallis.'
+                      });
                 },
               ),
               ProfileDrawerFeature(

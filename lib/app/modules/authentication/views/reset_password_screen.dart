@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
@@ -117,7 +118,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       heightBox24,
                       GradientElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {}
+                          // if (_formKey.currentState!.validate()) {
+
+                          // }
+                          Navigator.pushNamed(context,SignInScreen.routeName);
                         },
                         text: 'Update Password',
                       ),

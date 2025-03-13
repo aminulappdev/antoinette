@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -144,7 +144,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                   ],
                 ),
                 GradientElevatedButton(onPressed: () {
-                   Navigator.pushNamed(context, DearDiaryScreen.routeName);
+                   Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
                 }, text: 'Submit')
               ],
             ),

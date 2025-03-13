@@ -19,7 +19,7 @@ class PsychoSupportCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 175.h,
-      width: 237.w,
+      width: 238.w,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8)),
@@ -27,7 +27,7 @@ class PsychoSupportCard extends StatelessWidget {
         children: [
           Container(
             height: 133.h,
-            width: 237.w,
+            width: 238.w,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage(

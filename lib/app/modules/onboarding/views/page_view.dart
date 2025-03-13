@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/onboarding/widgets/bullet_point_widget.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
@@ -71,7 +72,7 @@ class OnboardingPage extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {
-                    Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+                    Navigator.pushNamed(context, SignInScreen.routeName);
                 },
                 child: Text(
                   'Skip',
@@ -87,13 +88,12 @@ class OnboardingPage extends StatelessWidget {
           heightBox100,
           heightBox24,
           Text(
-            title,
-            style: GoogleFonts.cormorantGaramond(
-              fontSize: 40.sp,
-              fontWeight: FontWeight.w400,
+              title,
+              style: TextStyle(
+                  fontFamily: 'Cormorant Garamond', fontSize: 40.sp),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
+
           heightBox12,
           Visibility(
             visible: !onBoardingRow,
@@ -101,7 +101,7 @@ class OnboardingPage extends StatelessWidget {
             child: Text(
               subtitle,
               style: TextStyle(
-                  fontFamily: 'Flatlion Personal Use Font', fontSize: 60.sp),
+                  fontFamily: 'Flatlion Personal', fontSize: 60.sp),
               textAlign: TextAlign.center,
             ),
           ),

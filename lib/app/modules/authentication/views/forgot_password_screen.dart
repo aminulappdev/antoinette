@@ -1,3 +1,5 @@
+import 'package:antoinette/app/modules/authentication/views/otp_forgot_screen.dart';
+import 'package:antoinette/app/modules/authentication/views/verify_email_forgot_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
@@ -70,10 +72,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ],
                           ),
                         ),
-                        CircleAvatar(
-                          radius: 21.r,
-                          backgroundColor: AppColors.iconButtonThemeColor,
-                          child: Icon(Icons.arrow_forward,color: Colors.white,),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, VerifyEmailScreenWithForgot.routeName);
+                          },
+                          child: CircleAvatar(
+                            radius: 21.r,
+                            backgroundColor: AppColors.iconButtonThemeColor,
+                            child: Icon(Icons.arrow_forward,color: Colors.white,),
+                          ),
                         ),
                       ],
                     ),

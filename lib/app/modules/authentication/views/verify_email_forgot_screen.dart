@@ -31,7 +31,7 @@ class _VerifyEmailScreenWithForgotState extends State<VerifyEmailScreenWithForgo
               children: [
                 heightBox4,
                 CustomAppBar(
-                  name: 'Verify Email',
+                  name: 'Check Email',
                 ),
                 heightBox100,
 
@@ -41,13 +41,13 @@ class _VerifyEmailScreenWithForgotState extends State<VerifyEmailScreenWithForgo
                   radius: 36.r,
                 ),
                 heightBox16,
-                AuthHeaderText(title: 'Check Email',subtitle:  'Please check your email to verify your account.',titleFontSize: 20,subtitleFontSize: 12,sizeBoxHeight: 210,),
+                AuthHeaderText(title: 'A letter has been sent.',subtitle:  'Your next step is inside your inbox. Check your email to unlock it.',titleFontSize: 20,subtitleFontSize: 12,sizeBoxHeight: 215,),
                 heightBox30,
                 GradientElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, OTPVerifyForgotScreen.routeName);
                   },
-                  text: 'Confirm Now',
+                  text: 'Read My Letter',
                 ),
                 heightBox8,
               

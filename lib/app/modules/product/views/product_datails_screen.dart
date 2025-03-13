@@ -1,5 +1,6 @@
-import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
 import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/product/widgets/policy_custom_row.dart';
 import 'package:antoinette/app/modules/product/widgets/see_more_button.dart';
@@ -223,7 +224,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           height: 42.h,
                           child: GradientElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, CheckInScreen.routeName);
+                                Navigator.pushNamed(context, CheckOutScreen.routeName);
                               }, text: 'Buy now'),
                         ),
                       ),

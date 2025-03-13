@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:flutter/material.dart';
 
@@ -11,11 +12,26 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+  void initState() {
+    _movetoNewScreen();
+    super.initState();
+  }
+
+  Future<void> _movetoNewScreen() async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    Navigator.pushReplacementNamed(context, OnboardingScreen.routeName);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xffD9A48E),
-      body: Center(child: Image(image: AssetImage(AssetsPath.spLogo)),),
+    return SafeArea(
+      child: const Scaffold(
+        backgroundColor: Color(0xffD9A48E),
+        body: Center(
+          child: Image(image: AssetImage(AssetsPath.spLogo)),
+        ),
+      ),
     );
   }
-}    
-
+}

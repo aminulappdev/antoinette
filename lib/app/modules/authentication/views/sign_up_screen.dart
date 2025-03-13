@@ -1,5 +1,5 @@
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
-import 'package:antoinette/app/modules/authentication/views/verify_email_forgot_screen.dart';
+import 'package:antoinette/app/modules/authentication/views/verify_email_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/agree_condition_widget.dart';
 import 'package:antoinette/app/modules/authentication/widgets/footer_section.dart';
 import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart';
@@ -152,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       heightBox24,
                       GradientElevatedButton(
                         onPressed: () {
-                           Navigator.pushNamed(context, VerifyEmailScreenWithForgot.routeName);
+                           Navigator.pushNamed(context, VerifyEmailScreen.routeName);
                         },
                         text: 'Verify Email',
                       ),

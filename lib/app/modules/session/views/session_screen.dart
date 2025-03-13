@@ -45,7 +45,7 @@ class _SessionScreenState extends State<SessionScreen> {
                 heightBox12,
                 SizedBox(
                   height: 700.h, 
-                  width: 245.w,                             
+                  width: 250.w,                             
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: 5,

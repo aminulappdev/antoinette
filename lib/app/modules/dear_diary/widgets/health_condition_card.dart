@@ -69,8 +69,8 @@ class HealthConditionCard extends StatelessWidget {
                   width: 130.w,
                 ),
                 Icon(
-                  Icons.lock_outline,
-                  size: 30.h,
+                  Icons.lock_outline_rounded,
+                  size: 26.h,
                 ),
                 SizedBox(
                   width: 12.w,
@@ -89,15 +89,17 @@ class HealthConditionCard extends StatelessWidget {
               ],
             ),
             heightBox8,
-            Text(
+             Text(
               description,
-              style: GoogleFonts.caveat(
+              style: TextStyle(
+                fontFamily: 'Caveat',
                 fontSize: 14.sp,
                 decoration: TextDecoration.underline,
               ),
               textScaleFactor: 1.25,
               textAlign: TextAlign.justify,
-            )
+            ),
+          
           ],
         ),
       ),

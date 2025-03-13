@@ -1,11 +1,11 @@
 import 'package:antoinette/app/modules/authentication/views/forgot_password_screen.dart';
-import 'package:antoinette/app/modules/authentication/views/otp_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/continue_elevated_button.dart';
 import 'package:antoinette/app/modules/authentication/widgets/footer_section.dart';
 import 'package:antoinette/app/modules/authentication/widgets/forgot_password_row.dart';
 import 'package:antoinette/app/modules/authentication/widgets/liner_widget.dart';
 import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart';
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
@@ -119,7 +119,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       heightBox24,
                       GradientElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, OTPVerifyScreen.routeName);
+                          Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
                         },
                         text: 'Sign in',
                       ),

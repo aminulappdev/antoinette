@@ -81,10 +81,8 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                   ),
                 ],
               ),
-              heightBox100,
-              heightBox100,
-              heightBox50,
-              heightBox30,
+              SizedBox(height: 270.h,),
+              
               Text(
                 'Next',
                 style: GoogleFonts.poppins(fontSize: 15.sp),

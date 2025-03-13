@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:antoinette/app/modules/authentication/views/reset_password_screen.dart';
+import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/borderRectangleButton.dart';
@@ -107,12 +108,15 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                       GradientElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(
-                              context, ResetPasswordScreen.routeName);
+                              context, SignInScreen.routeName);
                         },
                         text: 'Confirm',
                       ),
                       heightBox8,
-                      BorderRectangleButton(name: 'Skip', ontap: () {}),
+                      BorderRectangleButton(name: 'Skip', ontap: () {
+                         Navigator.pushNamed(
+                              context, SignInScreen.routeName);
+                      }),
                       heightBox12,
                       Obx(
                         () => Visibility(

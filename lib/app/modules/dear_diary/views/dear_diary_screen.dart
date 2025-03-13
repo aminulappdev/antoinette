@@ -34,9 +34,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                   shouldfontButton: false,
                   shouldBackButton: false,
                 ),
-                
                 heightBox12,
-                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -44,27 +42,30 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                       height: 42.h,
                       width: 310.w,
                       decoration: BoxDecoration(
-                        border: Border.all(color: const Color.fromARGB(255, 202, 200, 200)),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 202, 200, 200)),
                         color: Color(0xffEDE6E4),
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: Center(child: Icon(Icons.add,color: AppColors.iconButtonThemeColor,),),
+                      child: Center(
+                        child: Icon(
+                          Icons.add,
+                          color: AppColors.iconButtonThemeColor,
+                        ),
+                      ),
                     ),
                     GestureDetector(
-                onTap: () {
-                 
-                },
-                child: CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  radius: 24.r,
-                  child: Icon(
-                    Icons.lock,
-                  ),
-                ),
-              )
+                      onTap: () {},
+                      child: CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        radius: 24.r,
+                        child: Icon(
+                          Icons.lock,
+                        ),
+                      ),
+                    )
                   ],
                 ),
-
                 heightBox12,
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -74,7 +75,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                       borderRadius: BorderRadius.circular(12.r)),
                   child: Padding(
                     padding:
-                         EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
+                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
