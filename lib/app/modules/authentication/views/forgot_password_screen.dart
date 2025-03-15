@@ -80,7 +80,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             radius: 21.r,
                             backgroundColor: AppColors.iconButtonThemeColor,
                             child: Icon(Icons.arrow_forward,color: Colors.white,),
-                          ),
+                          ), 
                         ),
                       ],
                     ),
