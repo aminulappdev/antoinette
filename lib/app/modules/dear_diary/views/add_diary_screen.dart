@@ -106,7 +106,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                         ),
                         widthBox8,
                         DropDownButton(
-                          option: ['Light Mode', 'Dark Mode', 'Eye Mode'],
+                          option: ['cevat', 'poppins', 'outfit'],
                         ),
                       ],
                     )

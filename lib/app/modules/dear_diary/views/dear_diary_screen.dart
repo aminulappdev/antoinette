@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/custom_pichart.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/health_condition_card.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/mental_status.dart';
@@ -47,10 +48,15 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                         color: Color(0xffEDE6E4),
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: Center(
-                        child: Icon(
-                          Icons.add,
-                          color: AppColors.iconButtonThemeColor,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, AddDiaryScreen.routeName);
+                        },
+                        child: Center(
+                          child: Icon(
+                            Icons.add,
+                            color: AppColors.iconButtonThemeColor,
+                          ),
                         ),
                       ),
                     ),
