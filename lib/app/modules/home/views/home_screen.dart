@@ -1,5 +1,5 @@
 import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
-import 'package:antoinette/app/modules/Letters/views/letter_screen.dart';
+import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/home/models/grid_view_model.dart';
 import 'package:antoinette/app/modules/home/widgets/grid_feature.dart';
 import 'package:antoinette/app/modules/home/widgets/header_section.dart';

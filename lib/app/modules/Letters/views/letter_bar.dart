@@ -1,6 +1,6 @@
-import 'package:antoinette/app/modules/Letters/views/article_page.dart';
-import 'package:antoinette/app/modules/Letters/views/podcast_screen.dart';
-import 'package:antoinette/app/modules/Letters/views/videos_screen.dart';
+import 'package:antoinette/app/modules/letters/views/article_page.dart';
+import 'package:antoinette/app/modules/letters/views/podcast_screen.dart';
+import 'package:antoinette/app/modules/letters/views/videos_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';

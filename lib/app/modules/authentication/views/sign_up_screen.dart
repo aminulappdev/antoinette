@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/verify_email_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/agree_condition_widget.dart';
@@ -6,6 +7,7 @@ import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart'
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +23,11 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController nameCtrl = TextEditingController();
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+  TextEditingController numberCtrl = TextEditingController();
+  SignUpController signUpController = SignUpController();
 
   bool _obscureText = true;
 
@@ -56,6 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        controller: nameCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.emailAddress,
                         validator: (String? value) {
@@ -76,6 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        controller: numberCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.emailAddress,
                         validator: (String? value) {
@@ -97,6 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        controller: emailCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.emailAddress,
                         validator: (String? value) {
@@ -120,6 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        controller: passwordCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
                           if (value!.isEmpty) {
@@ -151,9 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       heightBox24,
                       GradientElevatedButton(
-                        onPressed: () {
-                           Navigator.pushNamed(context, VerifyEmailScreen.routeName);
-                        },
+                        onPressed: onTapToNextButton,
                         text: 'Verify Email',
                       ),
                       heightBox12,
@@ -175,5 +184,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> onTapToNextButton() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess = await signUpController.signUp(
+          nameCtrl.text, emailCtrl.text, passwordCtrl.text, numberCtrl.text);
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'New user created');
+          Navigator.pushNamed(context, VerifyEmailScreen.routeName,arguments: signUpController.token);
+
+          // print('My token ---------------------------------------');
+          // print(signUpController.token);
+        } else {
+          if (mounted) {
+            showSnackBarMessage(context, signUpController.errorMessage!, true);
+          }
+        }
+      }
+    }
+  }
+
+  void clearTextField() {
+    emailCtrl.clear();
+    nameCtrl.clear();
+    emailCtrl.clear();
+    passwordCtrl.clear();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    emailCtrl.dispose();
+    nameCtrl.dispose();
+    emailCtrl.dispose();
+    passwordCtrl.dispose();
   }
 }

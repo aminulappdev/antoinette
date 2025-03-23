@@ -77,9 +77,9 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 500.w,
+                       
                         child: PinCodeTextField(
-                          length: 4,
+                          length: 6,
                           animationType: AnimationType.fade,
                           keyboardType: TextInputType.number,
                           pinTheme: PinTheme(
@@ -88,8 +88,8 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                               borderRadius: BorderRadius.circular(12.r),
                               inactiveColor: const Color.fromARGB(218, 222, 220,
                                   220), // Border color when not filled
-                              fieldHeight: 70.h,
-                              fieldWidth: 70.h,
+                              fieldHeight: 20.h,
+                              fieldWidth: 20.h,
                               activeFillColor: Colors.white,
                               inactiveFillColor: Colors.white,
                               selectedFillColor: Colors.white),

@@ -1,7 +1,5 @@
-
-
-import 'package:antoinette/app/modules/Letters/views/letter_screen.dart';
-import 'package:antoinette/app/modules/Letters/views/podcast_details.dart';
+import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
+import 'package:antoinette/app/modules/letters/views/podcast_details.dart';
 import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
 import 'package:antoinette/app/modules/checkIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/checkIn/views/custom_status_screen.dart';
@@ -51,12 +49,22 @@ class AppRoutes {
     // Authentication section
     SignInScreen.routeName: (context) => const SignInScreen(),
     SignUpScreen.routeName: (context) => const SignUpScreen(),
-    VerifyEmailScreen.routeName: (context) => const VerifyEmailScreen(),
+
+    
+     VerifyEmailScreen.routeName: (context) { 
+      final args = ModalRoute.of(context)!.settings.arguments as String;
+      return VerifyEmailScreen(token: args,);},
+      
+
     VerifyEmailScreenWithForgot.routeName: (context) => const VerifyEmailScreenWithForgot(),
     OTPVerifyForgotScreen.routeName: (context) => const OTPVerifyForgotScreen(),
     ResetPasswordScreen.routeName: (context) => const ResetPasswordScreen(),
     ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
-    OTPVerifyScreen.routeName: (context) => const OTPVerifyScreen(),
+
+    
+   OTPVerifyScreen.routeName: (context) { 
+      final args = ModalRoute.of(context)!.settings.arguments as String;
+      return OTPVerifyScreen(token: args,);},
 
 
 

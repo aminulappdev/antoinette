@@ -1,3 +1,5 @@
+import 'package:antoinette/app/modules/authentication/controllers/forgot_password.dart';
+import 'package:antoinette/app/modules/authentication/controllers/sign_in_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/continue_elevated_button.dart';
@@ -7,9 +9,11 @@ import 'package:antoinette/app/modules/authentication/widgets/liner_widget.dart'
 import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart';
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,8 +30,13 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool _obscureText = true; 
-  
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+  SignInController signInController = SignInController();
+  ForgotPasswordController forgotPasswordController =
+      ForgotPasswordController();
+
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        controller: emailCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.emailAddress,
                         validator: (String? value) {
@@ -84,6 +94,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        controller: passwordCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
                           if (value!.isEmpty) {
@@ -111,16 +122,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       ForgotPasswordRow(
-                        
-                        ontap: () {
-                          Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
-                        },
+                        ontap: forgotPasswordBTN,
                       ),
                       heightBox24,
                       GradientElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
-                        },
+                        onPressed: onTapToNextButton,
                         text: 'Sign in',
                       ),
                       Liner(),
@@ -157,5 +163,67 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> onTapToNextButton() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess =
+          await signInController.signIn(emailCtrl.text, passwordCtrl.text);
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Login successfully done');
+          Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+
+          // print('My token ---------------------------------------');
+          // print(signUpController.token);
+        } else {
+          if (mounted) {
+            showSnackBarMessage(context, signInController.errorMessage!, true);
+          }
+        }
+      }
+    }
+  }
+
+  Future<void> forgotPasswordBTN() async {
+    final bool isSuccess =
+        await forgotPasswordController.forgotPassword(emailCtrl.text);
+
+    if (isSuccess) {
+      if (mounted) {
+        Map<String, dynamic> userInfo = {
+          'email': emailCtrl.text,
+          'token': forgotPasswordController.accessToken
+        };
+
+        box.write('fotgot-password-email', userInfo);
+        Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
+
+        // print('My token ---------------------------------------');
+        // print(signUpController.token);
+      } else {
+        if (mounted) {
+          showSnackBarMessage(context, signInController.errorMessage!, true);
+        }
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, signInController.errorMessage!, true);
+      }
+    }
+  }
+
+  void clearTextField() {
+    emailCtrl.clear();
+    passwordCtrl.clear();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    emailCtrl.dispose();
+    passwordCtrl.dispose();
   }
 }

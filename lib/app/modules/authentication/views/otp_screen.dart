@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'package:antoinette/app/modules/authentication/views/reset_password_screen.dart';
+import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
+import 'package:antoinette/app/modules/authentication/controllers/verify_otp_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/borderRectangleButton.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -14,8 +16,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OTPVerifyScreen extends StatefulWidget {
+  final String token;
   static const String routeName = '/otp-screen';
-  const OTPVerifyScreen({super.key});
+  const OTPVerifyScreen({super.key, required this.token});
 
   @override
   State<OTPVerifyScreen> createState() => _OTPVerifyScreenState();
@@ -23,6 +26,9 @@ class OTPVerifyScreen extends StatefulWidget {
 
 class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController otpCtrl = TextEditingController();
+  VerifyOtpController verifyOtpController = VerifyOtpController();
+  SignUpController signUpController = SignUpController();
 
   RxInt remainingTime = 60.obs;
   late Timer timer;
@@ -78,10 +84,10 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-      
                       PinCodeTextField(
                         length: 6,
                         obscureText: false,
+                        controller: otpCtrl,
                         keyboardType: TextInputType.number,
                         animationType: AnimationType.fade,
                         animationDuration: Duration(milliseconds: 300),
@@ -103,20 +109,18 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                         enableActiveFill: true,
                         appContext: context,
                       ),
-
                       heightBox8,
                       GradientElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, SignInScreen.routeName);
-                        },
+                        onPressed: onTapToNextButton,
                         text: 'Confirm',
                       ),
                       heightBox8,
-                      BorderRectangleButton(name: 'Skip', ontap: () {
-                         Navigator.pushNamed(
-                              context, SignInScreen.routeName);
-                      }),
+                      BorderRectangleButton(
+                          name: 'Skip',
+                          ontap: () {
+                            Navigator.pushNamed(
+                                context, SignInScreen.routeName);
+                          }),
                       heightBox12,
                       Obx(
                         () => Visibility(
@@ -166,12 +170,47 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                   ),
                 ),
                 heightBox100,
-                
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> onTapToNextButton() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess =
+          await verifyOtpController.verifyOtp(otpCtrl.text, widget.token);
+      print(
+          'My token ---------------------------------------\n-------\n------');
+      print(widget.token);
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Otp verification successfully done');
+          Navigator.pushNamed(context, SignInScreen.routeName);
+
+          // print('My token ---------------------------------------');
+          // print(signUpController.token);
+        } else {
+          if (mounted) {
+            showSnackBarMessage(
+                context, verifyOtpController.errorMessage!, true);
+          }
+        }
+      }
+    }
+  }
+
+  void clearTextField() {
+    otpCtrl.clear();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    otpCtrl.dispose();
   }
 }
