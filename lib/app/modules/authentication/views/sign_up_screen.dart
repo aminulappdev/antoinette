@@ -31,6 +31,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _obscureText = true;
 
+  bool showButton = false;
+
+  void toggleShowButton() {
+    setState(() {
+      showButton = !showButton;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -158,12 +166,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       AgreeConditionCheck(
-                        ontap: () {},
+                        onChanged: (value) {
+                          setState(() {
+                            showButton = value;
+                          });
+                        },
                       ),
                       heightBox24,
-                      GradientElevatedButton(
-                        onPressed: onTapToNextButton,
-                        text: 'Verify Email',
+                      Visibility(
+                        visible: showButton,
+                        replacement: Opacity(
+                          opacity: 0.5,
+                          child: GradientElevatedButton(
+                            text: 'Verify Email',
+                            onPressed: () {},
+                          ),
+                        ),
+                        child: GradientElevatedButton(
+                          onPressed: onTapToNextButton,
+                          text: 'Verify Email',
+                        ),
                       ),
                       heightBox12,
                       AuthenticationFooterSection(
@@ -194,7 +216,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'New user created');
-          Navigator.pushNamed(context, VerifyEmailScreen.routeName,arguments: signUpController.token);
+          Navigator.pushNamed(context, VerifyEmailScreen.routeName,
+              arguments: signUpController.token);
 
           // print('My token ---------------------------------------');
           // print(signUpController.token);

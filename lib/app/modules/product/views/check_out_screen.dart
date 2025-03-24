@@ -4,7 +4,6 @@ import 'package:antoinette/app/modules/product/widgets/deliveryCard.dart';
 import 'package:antoinette/app/modules/product/widgets/delivery_option_row.dart';
 import 'package:antoinette/app/modules/product/widgets/delivery_price_calculator.dart';
 import 'package:antoinette/app/modules/product/widgets/price_row.dart';
-import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';

@@ -17,19 +17,18 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
- 
- 
+  final info = box.read('fotgot-password-info');
+  String email = '';
+
   @override
   void initState() {
-    // TODO: implement initState
+     email = info['email'];
     super.initState();
-    
+   
   }
-
 
   @override
   Widget build(BuildContext context) {
-   
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -38,7 +37,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
                 heightBox4,
                 CustomAppBar(
                   name: 'Forgot Password',
@@ -86,7 +84,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500)),
                               heightBox8,
-                              Text('userInfo.toString()',
+                              Text(email,
                                   style: GoogleFonts.poppins(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w500)),

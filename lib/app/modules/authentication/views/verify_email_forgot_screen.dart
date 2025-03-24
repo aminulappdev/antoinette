@@ -6,7 +6,7 @@ import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+ 
 
 class VerifyEmailScreenWithForgot extends StatefulWidget {
   static const String routeName = '/verify-email-forgot-screen';
@@ -18,6 +18,13 @@ class VerifyEmailScreenWithForgot extends StatefulWidget {
 
 class _VerifyEmailScreenWithForgotState extends State<VerifyEmailScreenWithForgot> {
   // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+ 
+  @override
+  void initState() {   
+    super.initState();
+    
+  }
 
   @override
   Widget build(BuildContext context) {

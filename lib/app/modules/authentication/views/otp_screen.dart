@@ -179,7 +179,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   }
 
   Future<void> onTapToNextButton() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) { 
       final bool isSuccess =
           await verifyOtpController.verifyOtp(otpCtrl.text, widget.token);
       print(
@@ -191,8 +191,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
           showSnackBarMessage(context, 'Otp verification successfully done');
           Navigator.pushNamed(context, SignInScreen.routeName);
 
-          // print('My token ---------------------------------------');
-          // print(signUpController.token);
+  
         } else {
           if (mounted) {
             showSnackBarMessage(

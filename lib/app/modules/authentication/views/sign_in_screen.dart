@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/authentication/controllers/forgot_password.dart';
+import 'package:antoinette/app/modules/authentication/controllers/forgot_password_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/sign_in_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_up_screen.dart';
@@ -9,7 +9,6 @@ import 'package:antoinette/app/modules/authentication/widgets/liner_widget.dart'
 import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart';
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
-import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -17,6 +16,7 @@ import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -132,17 +132,19 @@ class _SignInScreenState extends State<SignInScreen> {
                       Liner(),
                       ContinueElevatedButton(
                         name: 'Continue with google',
-                        logoPath: AssetsPath.googleLogoUp,
+                        logoPath: AssetsPath.googleLogoUp, ontap: () {
+                          
+                        },
                       ),
                       heightBox12,
                       ContinueElevatedButton(
                         name: 'Continue with apple',
-                        logoPath: AssetsPath.appleLogo,
+                        logoPath: AssetsPath.appleLogo, ontap: () {  },
                       ),
                       heightBox12,
                       ContinueElevatedButton(
                         name: 'Continue with facebook',
-                        logoPath: AssetsPath.fbLogo,
+                        logoPath: AssetsPath.fbLogo, ontap: () {  },
                       ),
                       heightBox12,
                       AuthenticationFooterSection(
@@ -160,10 +162,29 @@ class _SignInScreenState extends State<SignInScreen> {
               ],
             ),
           ),
-        ),
+        ), 
       ),
     );
   }
+
+// Future<void> onTapGoogleSignIn() async {
+//   final bool isSuccess = await Get.find<GoogleAuthController>().signInWithGoogle();
+
+//   if (isSuccess) {
+//     if (context.mounted) {
+//       showSnackBarMessage(context, 'Signed in with Google');   
+//     }
+//   } else {
+//     if (context.mounted) {
+//       showSnackBarMessage(
+//         context,
+//         Get.find<GoogleAuthController>().errorMessage ?? 'Sign-in failed',
+//         true,
+//       );
+//     }
+//   }
+// }
+
 
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
@@ -174,13 +195,15 @@ class _SignInScreenState extends State<SignInScreen> {
         if (mounted) {
           showSnackBarMessage(context, 'Login successfully done');
           Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
-
-          // print('My token ---------------------------------------');
-          // print(signUpController.token);
         } else {
           if (mounted) {
             showSnackBarMessage(context, signInController.errorMessage!, true);
           }
+        }
+      } else {
+        if (mounted) {
+          print('Error show ----------------------------------');
+          showSnackBarMessage(context, signInController.errorMessage!, true);
         }
       }
     }
@@ -192,24 +215,23 @@ class _SignInScreenState extends State<SignInScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        Map<String, dynamic> userInfo = {
-          'email': emailCtrl.text,
-          'token': forgotPasswordController.accessToken
-        };
+        // Map<String, dynamic> userInfo = {
+        //   'email': emailCtrl.text,
+        //   'token': forgotPasswordController.accessToken
+        // };
 
-        box.write('fotgot-password-email', userInfo);
+        // box.write('fotgot-password-info', userInfo);
         Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
 
-        // print('My token ---------------------------------------');
-        // print(signUpController.token);
+      
       } else {
         if (mounted) {
-          showSnackBarMessage(context, signInController.errorMessage!, true);
+          showSnackBarMessage(context, forgotPasswordController.errorMessage!, true);
         }
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, signInController.errorMessage!, true);
+        showSnackBarMessage(context, forgotPasswordController.errorMessage!, true);
       }
     }
   }
@@ -218,7 +240,7 @@ class _SignInScreenState extends State<SignInScreen> {
     emailCtrl.clear();
     passwordCtrl.clear();
   }
-
+  
   @override
   void dispose() {
     super.dispose();

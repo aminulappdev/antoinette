@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class AgreeConditionCheck extends StatefulWidget {
   const AgreeConditionCheck({
     super.key,
-    required this.ontap,
+    required this.onChanged,
   });
 
-  final VoidCallback ontap;
+  final ValueChanged<bool> onChanged;
 
   @override
   State<AgreeConditionCheck> createState() => _AgreeConditionCheckState();
@@ -26,27 +26,33 @@ class _AgreeConditionCheckState extends State<AgreeConditionCheck> {
             setState(() {
               isChecked = value!;
             });
+            widget.onChanged(isChecked); // notify parent
           },
         ),
-        // Wrap the RichText with a Flexible widget
         Flexible(
           child: RichText(
-            text: TextSpan(
+            text: const TextSpan(
               children: [
                 TextSpan(
-                    text: 'I agree to the ',
-                    style: TextStyle(color: Colors.black)),
+                  text: 'I agree to the ',
+                  style: TextStyle(color: Colors.black),
+                ),
                 TextSpan(
-                    text: 'Terms & Conditions ',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Colors.black)),
-                TextSpan(text: 'and ', style: TextStyle(color: Colors.black)),
+                  text: 'Terms & Conditions ',
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.black),
+                ),
                 TextSpan(
-                    text: 'Privacy Policy',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Colors.black)),
+                  text: 'and ',
+                  style: TextStyle(color: Colors.black),
+                ),
+                TextSpan(
+                  text: 'Privacy Policy',
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.black),
+                ),
               ],
             ),
           ),

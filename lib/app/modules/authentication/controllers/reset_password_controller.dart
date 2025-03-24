@@ -1,43 +1,40 @@
-import 'package:antoinette/app/modules/authentication/model/sign_up_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class SignUpController extends GetxController {
+class ResetPasswordController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  String? _token;
-  String? get token => _token;
+  String? _accessToken;
+  String? get accessToken => _accessToken;
 
-  Future<bool> signUp(
-      String name, String email, String password, String number) async {
+  Future<bool> resetPassword(
+      String email, String password, String confirmPassword, String token) async {
     bool isSuccess = false;
 
-    _inProgress = true; 
+    _inProgress = true;
 
     update();
 
     Map<String, dynamic> requestBody = {
-      "name": name,
       "email": email,
-      "password": password,
-      "contactNumber": number
+      "newPassword": password,
+      "confirmPassword": confirmPassword
     };
 
-    final NetworkResponse response =
-        await Get.find<NetworkCaller>().postRequest(Urls.signUp, requestBody);
+    final NetworkResponse response = await Get.find<NetworkCaller>()
+        .postRequest(Urls.resetPassword, requestBody, accesToken: token);
 
     if (response.isSuccess) {
       _errorMessage = null;
       isSuccess = true;
-      
-      final signInModel = SignInModel.fromJson(response.responseData);
-      _token = signInModel.data?.otpToken?.token;
+
+     
     } else {
       _errorMessage = response.errorMessage;
     }

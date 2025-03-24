@@ -21,8 +21,8 @@ class SignInController extends GetxController {
     update();
 
     Map<String, dynamic> requestBody = {
-      "email": "emonhasan7650@gmail.com",
-      "password": "user123"
+      "email": email,
+      "password": password
     };
 
     final NetworkResponse response = await Get.find<NetworkCaller>()

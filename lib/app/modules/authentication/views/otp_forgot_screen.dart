@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'package:antoinette/app/modules/authentication/controllers/resend_otp_controller.dart';
+import 'package:antoinette/app/modules/authentication/controllers/verify_otp_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/reset_password_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/auth_header_text.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -21,18 +25,28 @@ class OTPVerifyForgotScreen extends StatefulWidget {
 
 class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController otpCtrl = TextEditingController();
+  VerifyOtpController verifyOtpController = VerifyOtpController();
+  ResendOTPController resendOTPController = ResendOTPController();
 
   RxInt remainingTime = 60.obs;
   late Timer timer;
   RxBool enableResendCodeButtom = false.obs;
 
+  final info = box.read('fotgot-password-info');
+  String email = '';
+
+ 
   @override
   void initState() {
     resendOTP();
+   
+    email = info['email'];
+
     super.initState();
   }
 
-  void resendOTP() {
+  void resendOTP() async {
     enableResendCodeButtom.value = false;
     remainingTime.value = 60;
     timer = Timer.periodic(
@@ -45,6 +59,23 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
         }
       },
     );
+
+    final bool isSuccess = await resendOTPController.resendOTP(email);
+
+    if (isSuccess) {
+      if (mounted) {
+       
+        showSnackBarMessage(context, 'OTP succsessfully sent');
+      } else {
+        if (mounted) {
+          showSnackBarMessage(context, resendOTPController.errorMessage!, true);
+        }
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, resendOTPController.errorMessage!, true);
+      }
+    }
   }
 
   @override
@@ -77,8 +108,8 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                       
                         child: PinCodeTextField(
+                          controller: otpCtrl,
                           length: 6,
                           animationType: AnimationType.fade,
                           keyboardType: TextInputType.number,
@@ -88,8 +119,8 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                               borderRadius: BorderRadius.circular(12.r),
                               inactiveColor: const Color.fromARGB(218, 222, 220,
                                   220), // Border color when not filled
-                              fieldHeight: 20.h,
-                              fieldWidth: 20.h,
+                              fieldHeight: 55.h,
+                              fieldWidth: 55.h,
                               activeFillColor: Colors.white,
                               inactiveFillColor: Colors.white,
                               selectedFillColor: Colors.white),
@@ -101,10 +132,7 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                       ),
                       heightBox8,
                       GradientElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, ResetPasswordScreen.routeName);
-                        },
+                        onPressed: onTapToNextButton,
                         text: 'Confirm',
                       ),
                       heightBox12,
@@ -150,5 +178,35 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> onTapToNextButton() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess =
+          await verifyOtpController.verifyOtp(otpCtrl.text, resendOTPController.accessToken.toString());
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Otp verification successfully done');
+          Navigator.pushNamed(context, ResetPasswordScreen.routeName);
+        } else {
+          if (mounted) {
+            showSnackBarMessage(
+                context, verifyOtpController.errorMessage!, true);
+          }
+        }
+      }
+    }
+  }
+
+  void clearTextField() {
+    otpCtrl.clear();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    otpCtrl.dispose();
   }
 }
