@@ -3,12 +3,10 @@ import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-class GoogleAuthController extends GetxController {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
+class FacebookAuthController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -18,29 +16,45 @@ class GoogleAuthController extends GetxController {
   String? _token;
   String? get token => _token;
 
-  Future<bool> signInWithGoogle() async {
+  Future<bool> signInWithFacebook() async {
     _inProgress = true;
     update();
 
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        _errorMessage = "Google sign-in was cancelled";
+      final LoginResult result = await FacebookAuth.instance.login();
+
+      // Check if login was successful
+      if (result.status != LoginStatus.success) {
+        _errorMessage = "Facebook sign-in was cancelled or failed";
         _inProgress = false;
         update();
         return false;
       }
 
+      // Retrieve the token from the AccessToken
+      final accessToken = result.accessToken;
+
+      if (accessToken == null ) {
+        _errorMessage = "No access token received";
+        _inProgress = false;
+        update();
+        return false;
+      }
+
+      // Get user details from Facebook
+      final userData = await FacebookAuth.instance.getUserData();
+
       final Map<String, dynamic> requestBody = {
-        "name": googleUser.displayName ?? "User",
-        "email": googleUser.email,
+        "name": userData['name'] ?? "User",
+        "email": userData['email'] ?? "",
         "password": "user123", // fallback for backend
-        "contactNumber": "+1987654321", // hardcoded for now\
-        "token": googleUser.id
+        "contactNumber": "+1987654321", // hardcoded for now
+        "token": accessToken,
       };
 
+      // Send the token and user data to your backend for further authentication
       final NetworkResponse response = await Get.find<NetworkCaller>()
-          .postRequest(Urls.googleAuth, requestBody);
+          .postRequest(Urls.facebookAuth, requestBody);
 
       if (response.isSuccess) {
         _errorMessage = null;

@@ -3,17 +3,19 @@ import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/home/models/grid_view_model.dart';
 import 'package:antoinette/app/modules/home/widgets/grid_feature.dart';
 import 'package:antoinette/app/modules/home/widgets/header_section.dart';
+import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
 import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/home/widgets/psycho_support_card.dart';
 import 'package:antoinette/app/modules/home/widgets/see_all_section.dart';
 import 'package:antoinette/app/modules/home/widgets/welcome_text.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
+import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/modules/session/views/session_screen.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +25,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
+  @override
+  void initState() {
+    
+    super.initState();
+  }
   List<HomepageGridModel> gridList = [
     HomepageGridModel(
         icon: Icons.hearing,
@@ -104,31 +113,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 heightBox8,
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, SessionDetailsScreen.routeName);
-                  },
-                  child: SizedBox(
-                    height: 175,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
-                          child: PsychoSupportCard(
-                            status: 'Available',
-                            price: '500',
-                            time: '60',
-                            imagePath: AssetsPath.doctor,
-                            title: 'Find Balance & Clarity',
-                          ),
-                        );
+                GetBuilder<AllSessionController>(
+                  builder: (controller) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, SessionDetailsScreen.routeName);
                       },
-                    ),
-                  ),
+                      child: SizedBox(
+                        height: 175,
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.w),
+                              child: PsychoSupportCard(
+                               sessionItemModel: controller.sessionsList[index],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  }
                 ),
                 heightBox12,
                 SeeAllSection(
@@ -139,23 +148,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 heightBox8,
-                SizedBox(
-                  height: 134.h,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w),
-                        child: ProductCard(
-                          name: 'Sunscreen',
-                          price: '49.99',
-                          imagePath: AssetsPath.medichine,
-                        ),
-                      );
-                    },
-                  ),
+                GetBuilder<AllProcuctController>(
+                  builder: (controller) {
+                    return SizedBox(
+                      height: 134.h,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.w),
+                            child: ProductCard(
+                            productsModel: controller.productsList[index],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
                 ),
               ],
             ),

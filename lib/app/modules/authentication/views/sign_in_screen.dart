@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/authentication/controllers/forgot_password_controller.dart';
+import 'package:antoinette/app/modules/authentication/controllers/google_auth_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/sign_in_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_up_screen.dart';
@@ -16,6 +17,7 @@ import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -132,21 +134,16 @@ class _SignInScreenState extends State<SignInScreen> {
                       Liner(),
                       ContinueElevatedButton(
                         name: 'Continue with google',
-                        logoPath: AssetsPath.googleLogoUp, ontap: () {
-                          
-                        },
+                        logoPath: AssetsPath.googleLogoUp,
+                        ontap: onTapGoogleSignIn,
                       ),
                       heightBox12,
                       ContinueElevatedButton(
                         name: 'Continue with apple',
-                        logoPath: AssetsPath.appleLogo, ontap: () {  },
+                        logoPath: AssetsPath.appleLogo,
+                        ontap: () {},
                       ),
-                      heightBox12,
-                      ContinueElevatedButton(
-                        name: 'Continue with facebook',
-                        logoPath: AssetsPath.fbLogo, ontap: () {  },
-                      ),
-                      heightBox12,
+                      heightBox12,                  
                       AuthenticationFooterSection(
                         fTextName: 'Don’t have an account? ',
                         fTextColor: Color(0xff33363F),
@@ -162,29 +159,34 @@ class _SignInScreenState extends State<SignInScreen> {
               ],
             ),
           ),
-        ), 
+        ),
       ),
     );
   }
 
-// Future<void> onTapGoogleSignIn() async {
-//   final bool isSuccess = await Get.find<GoogleAuthController>().signInWithGoogle();
+  Future<void> onTapGoogleSignIn() async {
+    // print('Hello ');
+    final bool isSuccess =
+        await Get.find<GoogleAuthController>().signInWithGoogle();
 
-//   if (isSuccess) {
-//     if (context.mounted) {
-//       showSnackBarMessage(context, 'Signed in with Google');   
-//     }
-//   } else {
-//     if (context.mounted) {
-//       showSnackBarMessage(
-//         context,
-//         Get.find<GoogleAuthController>().errorMessage ?? 'Sign-in failed',
-//         true,
-//       );
-//     }
-//   }
-// }
-
+    if (isSuccess) {
+      if (context.mounted) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Signed in with Google');
+        }
+      }
+    } else {
+      if (context.mounted) {
+        if (mounted) {
+          showSnackBarMessage(
+            context,
+            Get.find<GoogleAuthController>().errorMessage ?? 'Sign-in failed',
+            true,
+          );
+        }
+      }
+    }
+  }
 
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
@@ -207,6 +209,8 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       }
     }
+
+    // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
   }
 
   Future<void> forgotPasswordBTN() async {
@@ -215,23 +219,17 @@ class _SignInScreenState extends State<SignInScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        // Map<String, dynamic> userInfo = {
-        //   'email': emailCtrl.text,
-        //   'token': forgotPasswordController.accessToken
-        // };
-
-        // box.write('fotgot-password-info', userInfo);
         Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
-
-      
       } else {
         if (mounted) {
-          showSnackBarMessage(context, forgotPasswordController.errorMessage!, true);
+          showSnackBarMessage(
+              context, forgotPasswordController.errorMessage!, true);
         }
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, forgotPasswordController.errorMessage!, true);
+        showSnackBarMessage(
+            context, forgotPasswordController.errorMessage!, true);
       }
     }
   }
@@ -240,7 +238,7 @@ class _SignInScreenState extends State<SignInScreen> {
     emailCtrl.clear();
     passwordCtrl.clear();
   }
-  
+
   @override
   void dispose() {
     super.dispose();

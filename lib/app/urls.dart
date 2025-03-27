@@ -7,7 +7,12 @@ class Urls {
   static const String forgotPassword = '$_baseUrl/auth/forget-password';
   static const String resendOTP = '$_baseUrl/otp/resend-otp';
   static const String resetPassword = '$_baseUrl/auth/reset-password';
-  static const String googleAuth = '$_baseUrl/users/google';
-
+  static const String googleAuth = '$_baseUrl/auth/google';
+  static const String facebookAuth = '$_baseUrl/auth/facebook';
+  static const String allProductUrl = '$_baseUrl/products';
+  static const String allsessionUrl = '$_baseUrl/sessions';
+  static String productUrlsById(String id,) {
+    return '$_baseUrl/products/$id';
+  }
 
 }

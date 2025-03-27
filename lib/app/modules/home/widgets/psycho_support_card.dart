@@ -1,4 +1,5 @@
 
+import 'package:antoinette/app/modules/session/model/all_session_model.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PsychoSupportCard extends StatelessWidget {
-  final String status;
-  final String time;
-  final String price;
-  final String imagePath;
-  final String title;
+  // final String status;
+  // final String time;
+  // final String price;
+  // final String imagePath;
+  // final String title;
+  final AllSessionItemModel sessionItemModel;
   const PsychoSupportCard({
-    super.key, required this.status, required this.time, required this.price, required this.imagePath, required this.title,
+    super.key, required this.sessionItemModel,
   });
 
   @override
@@ -41,7 +43,7 @@ class PsychoSupportCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    status,
+                    'status',
                     style: GoogleFonts.poppins(
                         fontSize: 10.sp, color: Colors.green),
                   ),
@@ -52,12 +54,12 @@ class PsychoSupportCard extends StatelessWidget {
                         MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Duration: $time mins',
+                        'Duration: time mins',
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp, color: Colors.white),
                       ),
                       Text(
-                        ' Per session: \$$price',
+                        ' Per session: ',
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp, color: Colors.white),
                       ),
@@ -73,12 +75,12 @@ class PsychoSupportCard extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage(imagePath),
+                  backgroundImage: AssetImage(AssetsPath.womenBookRead),
                   radius: 18.r,
                 ),
                 widthBox4,
                 Text(
-                  title,
+                  'title',
                   style: GoogleFonts.poppins(
                       fontSize: 12.sp,
                       color: Colors.black,

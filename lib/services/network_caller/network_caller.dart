@@ -6,11 +6,18 @@ import 'package:logger/logger.dart';
 class NetworkCaller {
   final Logger _logger = Logger();
 
-  Future<NetworkResponse> getRequest(String url, {String? accesToken}) async {
+  Future<NetworkResponse> getRequest(String url,
+      {Map<String, dynamic>? queryParams, String? accesToken}) async {
     try {
-      Uri uri = Uri.parse(url);
       _logRequest(url);
 
+      if (queryParams != null) {
+        url += '?';
+        for (String param in queryParams.keys) {
+          url += '$param=${queryParams[param]}&';
+        }
+      }
+      Uri uri = Uri.parse(url);
       Map<String, String> headers = {
         'content-type': 'application-json',
       };

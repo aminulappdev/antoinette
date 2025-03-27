@@ -21,6 +21,7 @@ import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_letter_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
+import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_datails_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
@@ -76,7 +77,10 @@ class AppRoutes {
     ProductScreen.routeName: (context) { 
       final args = ModalRoute.of(context)!.settings.arguments as bool;
       return ProductScreen(shouldBackButton: args,);},
-    ProductDetailScreen.routeName: (context) => const ProductDetailScreen(),
+    // ProductDetailScreen.routeName: (context) => const ProductDetailScreen(),
+     ProductDetailScreen.routeName: (context) { 
+      final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
+      return ProductDetailScreen(productModel: args,);},
     CheckOutScreen.routeName: (context) => const CheckOutScreen(),
    
 
