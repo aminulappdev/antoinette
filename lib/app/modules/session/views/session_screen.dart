@@ -14,7 +14,7 @@ class SessionScreen extends StatefulWidget {
   const SessionScreen({
     super.key,
   });
-
+ 
   @override
   State<SessionScreen> createState() => _SessionScreenState();
 }
@@ -27,7 +27,7 @@ class _SessionScreenState extends State<SessionScreen> {
   @override
   void initState() { 
     scrollController.addListener(_loadMoreData);
-    allSessionController.getSessionList();
+    // allSessionController.getSessionList();
 
     super.initState();
   }

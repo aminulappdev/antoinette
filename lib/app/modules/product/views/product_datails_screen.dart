@@ -161,7 +161,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           name: 'Replacement Policy',
                           routeName: SignInScreen.routeName,
                         ),
-                      ],
+                      ], 
                     ),
                   ),
                   crossFadeState: _isExpandedPolicy

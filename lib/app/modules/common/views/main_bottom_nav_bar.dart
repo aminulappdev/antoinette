@@ -1,16 +1,12 @@
 import 'package:antoinette/app/modules/common/views/panic_button_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/home/views/home_screen.dart';
-import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/modules/profile/views/profile_screen.dart';
-import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
 import 'package:antoinette/app/modules/therapy/views/healing_note_screen.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 
 class MainButtonNavbarScreen extends StatefulWidget {
@@ -37,15 +33,8 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
   ];
   
 
-AllProcuctController allProcuctController = Get.find<AllProcuctController>();
-AllSessionController allSessionController = Get.find<AllSessionController>();
 
-  @override
-  void initState() {
-    allSessionController.getSessionList();
-    allProcuctController.getProductList();
-    super.initState();
-  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

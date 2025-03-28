@@ -3,7 +3,7 @@ import 'package:antoinette/app/modules/product/model/all_product_pegination_mode
 import 'package:antoinette/app/modules/product/views/product_datails_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/show_snackBar_message.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -78,12 +78,13 @@ class _ProductCardState extends State<ProductCard> {
           ],
         ),
       ),
-    );
+    ); 
   }
 
   Future<void> getProductScreen() async {
-    // print(widget.productsModel.name);
-    // print(widget.productsModel.sId);
+    print('Hello');
+    print(widget.productsModel.name);
+    print(widget.productsModel.sId);
     final bool isSuccess = await procuctDetailsController
         .getProductDetails(widget.productsModel.sId!);
 

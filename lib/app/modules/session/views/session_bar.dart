@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/about.dart';
 import 'package:antoinette/app/modules/session/views/reception.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
@@ -5,13 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SessionBar extends StatefulWidget {
-  const SessionBar({super.key});
-
+   const SessionBar({super.key, required this.sessionDataModel});
+  final SessionDataModel sessionDataModel; 
   @override
   State<SessionBar> createState() => _SessionBarState();
 }
 
 class _SessionBarState extends State<SessionBar> {
+  
+
   int selectedPage = 0;
   @override
   Widget build(BuildContext context) {
@@ -63,7 +66,7 @@ class _SessionBarState extends State<SessionBar> {
           if (selectedPage == 0) ...{
             Reception(),
           } else if (selectedPage == 1) ...{
-            About()
+            About(sessionDataModel: widget.sessionDataModel,)
           }
         ],
       ),

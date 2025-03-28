@@ -4,11 +4,11 @@ import 'package:antoinette/app/modules/home/models/grid_view_model.dart';
 import 'package:antoinette/app/modules/home/widgets/grid_feature.dart';
 import 'package:antoinette/app/modules/home/widgets/header_section.dart';
 import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
-import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/home/widgets/psycho_support_card.dart';
 import 'package:antoinette/app/modules/home/widgets/see_all_section.dart';
 import 'package:antoinette/app/modules/home/widgets/welcome_text.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
+import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/modules/session/views/session_screen.dart';
@@ -18,20 +18,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key}); 
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
+  AllProcuctController allProcuctController = Get.find<AllProcuctController>();
+  AllSessionController allSessionController = Get.find<AllSessionController>();
 
   @override
   void initState() {
-    
+    allSessionController.getSessionList();
+    allProcuctController.getProductList();
     super.initState();
   }
+
   List<HomepageGridModel> gridList = [
     HomepageGridModel(
         icon: Icons.hearing,
@@ -78,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Padding(
                   padding:
-                       EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
                   child: SizedBox(
                     height: 290.h,
                     child: GridView.builder(
@@ -113,32 +116,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 heightBox8,
-                GetBuilder<AllSessionController>(
-                  builder: (controller) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, SessionDetailsScreen.routeName);
+                GetBuilder<AllSessionController>(builder: (controller) {
+                  if (controller.inProgress && controller.page == 1) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                  return SizedBox(
+                    height: 175,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w),
+                          child: PsychoSupportCard(
+                            sessionItemModel: controller.sessionsList[index],
+                          ),
+                        );
                       },
-                      child: SizedBox(
-                        height: 175,
-                        width: MediaQuery.of(context).size.width,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 4.w),
-                              child: PsychoSupportCard(
-                               sessionItemModel: controller.sessionsList[index],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  }
-                ),
+                    ),
+                  );
+                }),
                 heightBox12,
                 SeeAllSection(
                   title: 'Shop Your Health Must-Haves',
@@ -148,26 +146,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 heightBox8,
-                GetBuilder<AllProcuctController>(
-                  builder: (controller) {
-                    return SizedBox(
-                      height: 134.h,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4.w),
-                            child: ProductCard(
+                GetBuilder<AllProcuctController>(builder: (controller) {
+                  if (controller.inProgress && controller.page == 1) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                  return SizedBox(
+                    height: 134.h,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w),
+                          child: ProductCard(
                             productsModel: controller.productsList[index],
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }),
               ],
             ),
           ),

@@ -11,8 +11,12 @@ class Urls {
   static const String facebookAuth = '$_baseUrl/auth/facebook';
   static const String allProductUrl = '$_baseUrl/products';
   static const String allsessionUrl = '$_baseUrl/sessions';
+  static const String allarticlesUrl = '$_baseUrl/articles';
   static String productUrlsById(String id,) {
     return '$_baseUrl/products/$id';
+  }
+  static String sessionUrlsById(String id,) {
+    return '$_baseUrl/sessions/$id';
   }
 
 }

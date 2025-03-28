@@ -1,24 +1,16 @@
-class AllSessionModel {
-  bool? success; 
+class SessionDetailsModel {
+  bool? success;
   int? statusCode;
   String? message;
-  Meta? meta; 
-  List<AllSessionItemModel>? data;
+  SessionDataModel? data;
 
-  AllSessionModel(
-      {this.success, this.statusCode, this.message, this.meta, this.data});
+  SessionDetailsModel({this.success, this.statusCode, this.message, this.data});
 
-  AllSessionModel.fromJson(Map<String, dynamic> json) {
+  SessionDetailsModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
-    if (json['data'] != null) {
-      data = <AllSessionItemModel>[];
-      json['data'].forEach((v) {
-        data!.add(AllSessionItemModel.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? SessionDataModel.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -26,42 +18,14 @@ class AllSessionModel {
     data['success'] = success;
     data['statusCode'] = statusCode;
     data['message'] = message;
-    if (meta != null) {
-      data['meta'] = meta!.toJson();
-    }
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Meta {
-  int? page;
-  int? limit;
-  int? total;
-  int? totalPage;
-
-  Meta({this.page, this.limit, this.total, this.totalPage});
-
-  Meta.fromJson(Map<String, dynamic> json) {
-    page = json['page'];
-    limit = json['limit'];
-    total = json['total'];
-    totalPage = json['totalPage'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    data['limit'] = limit;
-    data['total'] = total;
-    data['totalPage'] = totalPage;
-    return data;
-  }
-}
-
-class AllSessionItemModel {
+class SessionDataModel {
   String? sId;
   String? title;
   String? thumbnail;
@@ -76,8 +40,9 @@ class AllSessionItemModel {
   String? id;
   String? createdAt;
   String? updatedAt;
+  int? iV;
 
-  AllSessionItemModel(
+  SessionDataModel(
       {this.sId,
       this.title,
       this.thumbnail,
@@ -91,9 +56,10 @@ class AllSessionItemModel {
       this.isDeleted,
       this.id,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.iV});
 
-  AllSessionItemModel.fromJson(Map<String, dynamic> json) {
+  SessionDataModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
     thumbnail = json['thumbnail'];
@@ -110,6 +76,7 @@ class AllSessionItemModel {
     id = json['id'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
@@ -130,6 +97,7 @@ class AllSessionItemModel {
     data['id'] = id;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
     return data;
   }
 }
@@ -191,8 +159,15 @@ class User {
   String? email;
   Null contactNumber;
   String? photoUrl;
+  Null age;
 
-  User({this.sId, this.name, this.email, this.contactNumber, this.photoUrl});
+  User(
+      {this.sId,
+      this.name,
+      this.email,
+      this.contactNumber,
+      this.photoUrl,
+      this.age});
 
   User.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -200,6 +175,7 @@ class User {
     email = json['email'];
     contactNumber = json['contactNumber'];
     photoUrl = json['photoUrl'];
+    age = json['age'];
   }
 
   Map<String, dynamic> toJson() {
@@ -209,6 +185,7 @@ class User {
     data['email'] = email;
     data['contactNumber'] = contactNumber;
     data['photoUrl'] = photoUrl;
+    data['age'] = age;
     return data;
   }
 }

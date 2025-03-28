@@ -10,9 +10,10 @@ class PodcastScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(12.0.h),
+    return Padding(
+      padding: EdgeInsets.all(12.0.h),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -20,10 +21,10 @@ class PodcastScreen extends StatelessWidget {
               'Recommended for You',
               style: GoogleFonts.poppins(fontSize: 20.sp),
             ),
-            SizedBox(
-              height: 534.h,
+            Expanded(
+            
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: 7,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding:  EdgeInsets.symmetric(vertical: 4.h),

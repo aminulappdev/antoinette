@@ -24,7 +24,7 @@ class AllSessionController extends GetxController {
   int page = 0;
 
   
-  int? lastPage;
+  int? lastPage; 
 
   Future<bool> getSessionList() async {
     if (_inProgress) {
@@ -35,7 +35,7 @@ class AllSessionController extends GetxController {
     if (lastPage != null && page > lastPage!) return false;
 
     bool isSuccess = false;
-
+ 
     _inProgress = true;
 
     update();

@@ -22,10 +22,8 @@ class _ProductScreenState extends State<ProductScreen> {
   final ScrollController scrollController = ScrollController();
 
   @override
-  void initState() { 
+  void initState() {
     scrollController.addListener(_loadMoreData);
-    allProcuctController.getProductList();
-
     super.initState();
   }
 

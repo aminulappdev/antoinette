@@ -1,11 +1,11 @@
-import 'package:antoinette/app/modules/product/model/all_product_pegination_model.dart';
+import 'package:antoinette/app/modules/letters/model/all_articles_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class AllProcuctController extends GetxController {
+class AllArticlesController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -17,25 +17,24 @@ class AllProcuctController extends GetxController {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
-  List<AllProductItemModel> productsList = [];
-  List<AllProductItemModel> get allProductList => productsList;
+  List<AllArticleItemModel> articlesList = [];
+  List<AllArticleItemModel> get allProductList => articlesList;
 
   final int _limit = 10;
   int page = 0;
 
-  
   int? lastPage;
 
-  Future<bool> getProductList() async {
+  Future<bool> getArticlesList() async {
     if (_inProgress) {
       return false;
     }
     page++;
 
-    if (lastPage != null && page > lastPage!) return false; 
+    if (lastPage != null && page > lastPage!) return false;
 
     bool isSuccess = false;
- 
+
     _inProgress = true;
 
     update();
@@ -43,7 +42,7 @@ class AllProcuctController extends GetxController {
     Map<String, dynamic> queryparam = {'limit': _limit, 'page': page};
 
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
-        Urls.allProductUrl,
+        Urls.allarticlesUrl,
         queryParams: queryparam,
         accesToken: box.read('user-login-access-token'));
 
@@ -51,12 +50,13 @@ class AllProcuctController extends GetxController {
       _errorMessage = null;
       isSuccess = true;
 
-      AllProductPeginationModel allProductPeginationModel =
-          AllProductPeginationModel.fromJson(response.responseData);
-      productsList.addAll(allProductPeginationModel.data ?? []);
+      AllArticlesModel allArticlesModel =
+          AllArticlesModel.fromJson(response.responseData);
 
-      if (allProductPeginationModel.meta?.totalPage != null) {
-        lastPage = allProductPeginationModel.meta!.totalPage;
+      articlesList.addAll(allArticlesModel.data ?? []);
+
+      if (allArticlesModel.meta?.totalPage != null) {
+        lastPage = allArticlesModel.meta!.totalPage;
       }
     } else {
       _errorMessage = response.errorMessage;

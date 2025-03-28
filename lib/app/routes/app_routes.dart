@@ -30,6 +30,7 @@ import 'package:antoinette/app/modules/profile/views/add_address.dart';
 import 'package:antoinette/app/modules/profile/views/address_screen.dart';
 import 'package:antoinette/app/modules/profile/views/info_screen.dart';
 import 'package:antoinette/app/modules/profile/views/profile_screen.dart';
+import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/modules/letters/views/article_details_screen.dart';
@@ -85,7 +86,10 @@ class AppRoutes {
    
 
     // Session Section
-    SessionDetailsScreen.routeName: (context) => const SessionDetailsScreen(),
+    SessionDetailsScreen.routeName: (context) { 
+      final args = ModalRoute.of(context)!.settings.arguments as SessionDataModel;
+      return SessionDetailsScreen(sessionDataModel: args,);},
+    
     SessionFormScreen.routeName: (context) => const SessionFormScreen(),
     SessionScreen.routeName: (context) => const SessionScreen(),
 

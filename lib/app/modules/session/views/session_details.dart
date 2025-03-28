@@ -1,17 +1,19 @@
+import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/session_bar.dart';
 import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/modules/session/widgets/session_schedule.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
-import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/gradiant_elevated_button.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SessionDetailsScreen extends StatefulWidget {
   static const String routeName = '/session-details-screen';
-  const SessionDetailsScreen({super.key});
+  const SessionDetailsScreen({super.key, required this.sessionDataModel});
+   final SessionDataModel sessionDataModel; 
 
   @override
   State<SessionDetailsScreen> createState() => _SessionDetailsScreenState();
@@ -44,14 +46,14 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Find Balance & Clarity',
+                      '${widget.sessionDataModel.title}',
                       style: GoogleFonts.poppins(fontSize: 15.sp),
                     ),
                     SizedBox(
                       width: 70.w,
                       child: RichText(
                           text: TextSpan(
-                              text: '\$53.00',
+                              text: '\$${widget.sessionDataModel.fee}.00',
                               style: GoogleFonts.poppins(
                                   fontSize: 12.sp, color: Colors.black),
                               children: [
@@ -68,10 +70,12 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                   date: 'Monday to Friday',
                   time: '9:00 AM – 3:30 PM ',
                   address:
-                      'Downtown Medical Center, 123 Wellness Ave, City, State, 12345',
+                      '${widget.sessionDataModel.location}',
                 ),
                 heightBox8,
-                SessionBar(),
+                SessionBar(
+               sessionDataModel: widget.sessionDataModel,   
+                ),
                 heightBox12,
                 GradientElevatedButton(
                     onPressed: () {
