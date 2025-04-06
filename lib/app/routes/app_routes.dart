@@ -1,3 +1,5 @@
+import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
+import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/letters/views/podcast_details.dart';
 import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
@@ -42,7 +44,6 @@ import 'package:flutter/material.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> appRoutes = {
-    
     SplashScreen.routeName: (context) => const SplashScreen(),
 
     // Onboarding section
@@ -52,44 +53,55 @@ class AppRoutes {
     SignInScreen.routeName: (context) => const SignInScreen(),
     SignUpScreen.routeName: (context) => const SignUpScreen(),
 
-    
-     VerifyEmailScreen.routeName: (context) { 
+    VerifyEmailScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as String;
-      return VerifyEmailScreen(token: args,);},
-      
+      return VerifyEmailScreen(
+        token: args,
+      );
+    },
 
-    VerifyEmailScreenWithForgot.routeName: (context) => const VerifyEmailScreenWithForgot(),
+    VerifyEmailScreenWithForgot.routeName: (context) =>
+        const VerifyEmailScreenWithForgot(),
     OTPVerifyForgotScreen.routeName: (context) => const OTPVerifyForgotScreen(),
     ResetPasswordScreen.routeName: (context) => const ResetPasswordScreen(),
     ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
 
-    
-   OTPVerifyScreen.routeName: (context) { 
+    OTPVerifyScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as String;
-      return OTPVerifyScreen(token: args,);},
+      return OTPVerifyScreen(
+        token: args,
+      );
+    },
 
-
-
-    MainButtonNavbarScreen.routeName: (context) => const MainButtonNavbarScreen(),
+    MainButtonNavbarScreen.routeName: (context) =>
+        const MainButtonNavbarScreen(),
     PanicButtonScreen.routeName: (context) => const PanicButtonScreen(),
-    
 
     // Product Section
-    ProductScreen.routeName: (context) { 
+    ProductScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as bool;
-      return ProductScreen(shouldBackButton: args,);},
+      return ProductScreen(
+        shouldBackButton: args,
+      );
+    },
     // ProductDetailScreen.routeName: (context) => const ProductDetailScreen(),
-     ProductDetailScreen.routeName: (context) { 
+    ProductDetailScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
-      return ProductDetailScreen(productModel: args,);},
+      return ProductDetailScreen(
+        productModel: args,
+      );
+    },
     CheckOutScreen.routeName: (context) => const CheckOutScreen(),
-   
 
     // Session Section
-    SessionDetailsScreen.routeName: (context) { 
-      final args = ModalRoute.of(context)!.settings.arguments as SessionDataModel;
-      return SessionDetailsScreen(sessionDataModel: args,);},
-    
+    SessionDetailsScreen.routeName: (context) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as SessionDataModel;
+      return SessionDetailsScreen(
+        sessionDataModel: args,
+      );
+    },
+
     SessionFormScreen.routeName: (context) => const SessionFormScreen(),
     SessionScreen.routeName: (context) => const SessionScreen(),
 
@@ -98,27 +110,35 @@ class AppRoutes {
     AddDiaryScreen.routeName: (context) => const AddDiaryScreen(),
 
     // Therapy Section
-     HealingNoteScreen.routeName: (context) => const HealingNoteScreen(),
-     TextTherapyScreen.routeName: (context) => const TextTherapyScreen(),
-     CameraScreen.routeName: (context) => const CameraScreen(cameras: [],),
-    
+    HealingNoteScreen.routeName: (context) => const HealingNoteScreen(),
+    TextTherapyScreen.routeName: (context) => const TextTherapyScreen(),
+    CameraScreen.routeName: (context) => const CameraScreen(
+          cameras: [],
+        ),
 
     // Letter Section
     LetterScreen.routeName: (context) => const LetterScreen(),
-    ArticleDetailsScreen.routeName: (context) => const ArticleDetailsScreen(),
-    PodcastDetailsScreen.routeName: (context) => const PodcastDetailsScreen(),
+    ArticleDetailsScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as ArticleModel;
+      return ArticleDetailsScreen(
+        articleModel: args,
+      );
+    },
+    
+    PodcastDetailsScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as PodcastModel;
+      return PodcastDetailsScreen(
+        podcastModel: args,
+      );
+    },
+
     BookmarkScreen.routeName: (context) => const BookmarkScreen(),
-
-
     CheckInScreen.routeName: (context) => const CheckInScreen(),
     AddCheckInScreen.routeName: (context) => const AddCheckInScreen(),
     CustomStatusScreen.routeName: (context) => const CustomStatusScreen(),
 
-
-
     ContactScreen.routeName: (context) => const ContactScreen(),
     AddContactScreen.routeName: (context) => const AddContactScreen(),
-
 
     HistoryScreen.routeName: (context) => const HistoryScreen(),
 
@@ -127,11 +147,15 @@ class AppRoutes {
     AccountScreen.routeName: (context) => const AccountScreen(),
     AdderssScreen.routeName: (context) => const AdderssScreen(),
     AddAdderssScreen.routeName: (context) => const AddAdderssScreen(),
-    
-    InfoScreen.routeName: (context) { 
-      final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-      return InfoScreen(data: args['data']!,appBarTitle: args['appBarTitle']!,);},
-   
+
+    InfoScreen.routeName: (context) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+      return InfoScreen(
+        data: args['data']!,
+        appBarTitle: args['appBarTitle']!,
+      );
+    },
   };
 
   static var initialRoute = SplashScreen.routeName;

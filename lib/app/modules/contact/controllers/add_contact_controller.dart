@@ -1,21 +1,18 @@
-import 'package:antoinette/app/modules/authentication/model/login_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class SignInController extends GetxController {
+class AddContactController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  String? _accessToken;
-  String? get accessToken => _accessToken;
 
-  Future<bool> signIn(String email, String password) async {
+  Future<bool> addContact(String name, String number) async {
     bool isSuccess = false;
 
     _inProgress = true;
@@ -23,23 +20,18 @@ class SignInController extends GetxController {
     update();
 
     Map<String, dynamic> requestBody = {
-      "email": email,
-      "password": password
+      "user": '67dfad3574eb1ff506ea4f82',
+      "name": name,
+      "contractNumber": number
     };
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.signIn, requestBody);
+        .postRequest(Urls.addContactUrl, requestBody,
+            accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
       _errorMessage = null;
       isSuccess = true;
-
-     final  loginModel = LoginModel.fromJson(response.responseData);
-     box.write('user-login-access-token', loginModel.data!.accessToken);
-   
-
-     print(loginModel.data!.accessToken);
-
     } else {
       _errorMessage = response.errorMessage;
     }
@@ -48,4 +40,4 @@ class SignInController extends GetxController {
     update();
     return isSuccess;
   }
-} 
+}

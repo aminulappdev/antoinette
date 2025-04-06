@@ -10,7 +10,6 @@ import 'package:antoinette/app/modules/home/widgets/welcome_text.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
-import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/modules/session/views/session_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: Icons.hearing,
         title: 'A Listening Ear',
         subtitle: '( Therapy Sessions )',
-        navigationPath: SessionDetailsScreen.routeName),
+        navigationPath: SessionScreen.routeName),
     HomepageGridModel(
       icon: Icons.shopping_cart,
       title: 'Little Luxuries',

@@ -1,11 +1,11 @@
-import 'package:antoinette/app/modules/product/model/product_details_model.dart';
+import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class ProcuctDetailsController extends GetxController {
+class PodcastDetailsController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -15,13 +15,13 @@ class ProcuctDetailsController extends GetxController {
   String? _accessToken; 
   String? get accessToken => _accessToken;
 
-  ProductDetailsModel? productDetailsModel;
+  PodcastDetailsModel? podcastDetailsModel;
 
-  ProductModel? get productModel => productDetailsModel?.data;
+  PodcastModel? get podcastModel => podcastDetailsModel?.data;
 
   int? lastPage;
 
-  Future<bool> getProductDetails(String id) async {
+  Future<bool> getPodcastDetails(String id) async {
    
     bool isSuccess = false; 
 
@@ -30,12 +30,12 @@ class ProcuctDetailsController extends GetxController {
     update();
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.productUrlsById(id), accesToken: box.read('user-login-access-token'));
+        .getRequest(Urls.podcastUrlsById(id), accesToken: box.read('user-login-access-token'));
    
     print('response data is : ${response.responseData}');
 
-    productDetailsModel = ProductDetailsModel.fromJson(response.responseData);
-    print('my id is : $id\nmy data is ${ProductDetailsModel.fromJson(response.responseData).data?.name}');
+    podcastDetailsModel = PodcastDetailsModel.fromJson(response.responseData);
+    print('my id is : $id\nmy data is ${PodcastDetailsModel.fromJson(response.responseData).data?.author}');
 
     if (response.isSuccess) {
       _errorMessage = null;

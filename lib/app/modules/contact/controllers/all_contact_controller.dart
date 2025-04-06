@@ -1,13 +1,15 @@
-import 'package:antoinette/app/modules/authentication/model/login_model.dart';
+import 'package:antoinette/app/modules/contact/model/all_contact_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class SignInController extends GetxController {
+class AllContactController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
+
+ 
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
@@ -15,31 +17,34 @@ class SignInController extends GetxController {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
-  Future<bool> signIn(String email, String password) async {
+
+
+  AllContactModel? _allContactModel;
+  List<AllContactItemModel>? get contactList => _allContactModel?.data;
+
+  Future<bool> getContactList() async {
+  
     bool isSuccess = false;
 
     _inProgress = true;
 
     update();
 
-    Map<String, dynamic> requestBody = {
-      "email": email,
-      "password": password
-    };
-
-    final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.signIn, requestBody);
+   
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
+        Urls.allContacturl,
+        accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
       _errorMessage = null;
-      isSuccess = true;
-
-     final  loginModel = LoginModel.fromJson(response.responseData);
-     box.write('user-login-access-token', loginModel.data!.accessToken);
-   
-
-     print(loginModel.data!.accessToken);
-
+      isSuccess = true;  
+      
+      _allContactModel = AllContactModel.fromJson(response.responseData);
+      
+     print('my data ${response.responseData}'); 
+     print('my data ${_allContactModel!.data?[0].name}');
+     print(contactList?[0].sId);
+      
     } else {
       _errorMessage = response.errorMessage;
     }
@@ -48,4 +53,4 @@ class SignInController extends GetxController {
     update();
     return isSuccess;
   }
-} 
+}

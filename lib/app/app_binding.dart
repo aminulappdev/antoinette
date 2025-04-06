@@ -6,8 +6,13 @@ import 'package:antoinette/app/modules/authentication/controllers/reset_password
 import 'package:antoinette/app/modules/authentication/controllers/sign_in_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/verify_otp_controller.dart';
+import 'package:antoinette/app/modules/contact/controllers/add_contact_controller.dart';
+import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_articles_controller.dart';
+import 'package:antoinette/app/modules/letters/controllers/all_podcast_controller.dart';
+import 'package:antoinette/app/modules/letters/controllers/poscast_details.dart';
 import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
+import 'package:antoinette/app/modules/letters/controllers/article_details_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/product_details_controllers.dart';
 import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
@@ -31,6 +36,12 @@ class ControllerBinder extends Bindings {
     Get.put(AllSessionController());
     Get.put(SessionDetailsController());
     Get.put(AllArticlesController());
+    Get.put(ArticleDetailsController());
+    Get.put(AllPodcastController());
+    Get.put(PodcastDetailsController());
+    Get.put(AddContactController());
+    Get.put(AllContactController());
+
   
     
   }

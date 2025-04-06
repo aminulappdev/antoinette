@@ -12,11 +12,34 @@ class Urls {
   static const String allProductUrl = '$_baseUrl/products';
   static const String allsessionUrl = '$_baseUrl/sessions';
   static const String allarticlesUrl = '$_baseUrl/articles';
-  static String productUrlsById(String id,) {
+  static const String allpodcastUrl = '$_baseUrl/podcasts';
+  static const String addContactUrl = '$_baseUrl/trusted-contracts';
+  static const String allContacturl = '$_baseUrl/trusted-contracts';
+  
+
+
+
+  static String productUrlsById(
+    String id,
+  ) {
     return '$_baseUrl/products/$id';
   }
-  static String sessionUrlsById(String id,) {
+
+  static String sessionUrlsById(
+    String id,
+  ) {
     return '$_baseUrl/sessions/$id';
   }
 
+  static String articleUrlsById(
+    String id,
+  ) {
+    return '$_baseUrl/articles/$id';
+  }
+
+    static String podcastUrlsById(
+    String id,
+  ) {
+    return '$_baseUrl/podcasts/$id';
+  }
 }

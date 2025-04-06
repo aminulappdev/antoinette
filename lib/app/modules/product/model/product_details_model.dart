@@ -1,5 +1,5 @@
 class ProductDetailsModel {
-  bool? success;
+  bool? success; 
   int? statusCode;
   String? message;
   ProductModel? data;
