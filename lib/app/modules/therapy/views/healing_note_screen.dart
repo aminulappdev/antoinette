@@ -28,7 +28,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
               children: [
                
                 heightBox24,
-                CustomSearchBar(shouldBackButton: false, shouldfontButton: false),
+                CustomSearchBar(shouldBackButton: false,),
                 heightBox12,
                 SizedBox(
                   height: 650.h,

@@ -112,6 +112,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                       height: 100.h,
                                     ),
                                     Text(
+                                      maxLines: 2,
                                         '${controller.articlesList[index].description}',
                                         style: GoogleFonts.poppins(
                                             fontSize: 12.sp,

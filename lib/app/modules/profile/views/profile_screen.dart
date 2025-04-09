@@ -23,18 +23,13 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-
-
 class _ProfileScreenState extends State<ProfileScreen> {
-  
-
   @override
   void initState() {
     Get.find<ContentController>().getContent();
     super.initState();
   }
 
- 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,7 +41,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 
                   heightBox12,
                   ProfileInfo(
                     name: '${controller.profileData?.name}',
@@ -64,16 +58,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ProfileDrawerFeature(
                     feature: 'My Orders',
                     icon: Icons.shopping_bag,
-                    ontap: () {
-                     
-                    },
+                    ontap: () {},
                   ),
                   ProfileDrawerFeature(
                     feature: 'History',
                     icon: Icons.history,
-                    ontap: () {
-                    
-                    },
+                    ontap: () {},
                   ),
                   ProfileDrawerFeature(
                     feature: 'Address',
@@ -92,9 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ProfileDrawerFeature(
                     feature: 'Payment',
                     icon: Icons.payment,
-                    ontap: () {
-                     
-                    },
+                    ontap: () {},
                   ),
                   ProfileDrawerFeature(
                     feature: 'Bookmarks',
@@ -104,53 +92,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                   ),
                   heightBox8,
-                 
+                  Text(
+                    'Settings',
+                    style: GoogleFonts.poppins(
+                        fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                  heightBox4,
+                  ProfileDrawerFeature(
+                    feature: 'Notification',
+                    icon: Icons.notifications,
+                    ontap: () {},
+                  ),
+                  heightBox8,
                   Text(
                     'Support',
                     style: GoogleFonts.poppins(
                         fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                   heightBox4,
-                  GetBuilder<ContentController>(
-                    builder: (controller) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ProfileDrawerFeature(
-                            feature: 'Policies',
-                            icon: Icons.security,
-                            ontap: () {
-                              Navigator.pushNamed(context, InfoScreen.routeName,
-                                  arguments: {
-                                    'appBarTitle': 'Privacy and Policies',
-                                    'data':
-                                        ''
-                                  });
-                            },
-                          ),
-                          ProfileDrawerFeature(
-                            feature: 'Help Center',
-                            icon: Icons.help,
-                            ontap: () {
-                             
-                            },
-                          ),
-                          ProfileDrawerFeature(
-                            feature: 'About Us',
-                            icon: Icons.info,
-                            ontap: () {
-                              Navigator.pushNamed(context, InfoScreen.routeName,
-                                  arguments: {
-                                    'appBarTitle': 'About Us',
-                                    'data':
-                                        'Lorem ipsum dolor sit amet consectetur. Ultrices id feugiat venenatis habitant mattis viverra elementum purus volutpat. Lacus eu molestie pulvinar rhoncus integer proin elementum. Pretium sit fringilla massa tristique aenean commodo leo. Aliquet viverra amet sit porta elementum et pellentesque posuere. Ullamcorper viverra tortor lobortis viverra auctor egestas. Nulla condimentum ac metus quam turpis gravida ut velit. Porta justo lacus consequat sed platea. Ut dui massa quam elit faucibus consectetur sapien aenean auctor. Felis ipsum amet justo in. Netus amet in egestas sed auctor lorem. Justo ullamcorper velit habitasse lorem eu arcu. Non enim a elit urna eget nibh quisque donec condimentum. Elit ut pellentesque neque in quis at viverra. Nisl etiam tristique odio eget convallis.'
-                                  });
-                            },
-                          ),
-                        ],
-                      );
-                    }
-                  ),
+                  GetBuilder<ContentController>(builder: (controller) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProfileDrawerFeature(
+                          feature: 'Policies',
+                          icon: Icons.security,
+                          ontap: () {
+                            Navigator.pushNamed(context, InfoScreen.routeName,
+                                arguments: {
+                                  'appBarTitle': 'Privacy and Policies',
+                                  'data':
+                                      '${controller.contentlist?[0].privacyPolicy}'
+                                });
+                          },
+                        ),
+                        ProfileDrawerFeature(
+                          feature: 'Help Center',
+                          icon: Icons.help,
+                          ontap: () {},
+                        ),
+                        ProfileDrawerFeature(
+                          feature: 'Terms & Condition',
+                          icon: Icons.help,
+                          ontap: () {
+                            Navigator.pushNamed(context, InfoScreen.routeName,
+                                arguments: {
+                                  'appBarTitle': 'Terms & Conditions',
+                                  'data':
+                                      '${controller.contentlist?[0].termsAndConditions}'
+                                });
+                          },
+                        ),
+                        ProfileDrawerFeature(
+                          feature: 'About Us',
+                          icon: Icons.info,
+                          ontap: () {
+                            Navigator.pushNamed(
+                                context, InfoScreen.routeName, arguments: {
+                              'appBarTitle': 'About Us',
+                              'data': '${controller.contentlist?[0].aboutUs}'
+                            });
+                          },
+                        ),
+                      ],
+                    );
+                  }),
                   heightBox30,
                   Align(
                     alignment: Alignment.center,

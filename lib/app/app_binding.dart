@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/Letters/controllers/bookmark_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/facebook_auth_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/forgot_password_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/google_auth_controller.dart';
@@ -10,6 +11,7 @@ import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controlle
 import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/add_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
+import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_articles_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_podcast_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/poscast_details.dart';
@@ -53,6 +55,8 @@ class ControllerBinder extends Bindings {
     Get.put(AllCheckInController());
     Get.put(AllSessionSlotByIdController());
     Get.put(ContentController());
+    Get.put(DeleteContactController());
+    Get.put(BookMarkController());
 
   
     

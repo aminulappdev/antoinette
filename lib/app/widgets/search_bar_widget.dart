@@ -1,16 +1,15 @@
-import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final bool shouldBackButton;
-  final bool shouldfontButton;
+  
 
   const CustomSearchBar({
     super.key,
     required this.shouldBackButton,
-    required this.shouldfontButton,
+   
   });
 
   @override
@@ -33,8 +32,8 @@ class CustomSearchBar extends StatelessWidget {
               )
             : Container(),
         Container(
-          height: 48.h,
-          width:(MediaQuery.of(context).size.width - 50).w,
+          height: 48.h,  
+          width:shouldBackButton ? (MediaQuery.of(context).size.width - 80).w : (MediaQuery.of(context).size.width - 30).w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
@@ -65,20 +64,7 @@ class CustomSearchBar extends StatelessWidget {
             ],
           ),
         ),
-        shouldfontButton
-            ? GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, AddDiaryScreen.routeName);
-                },
-                child: CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  radius: 24.r,
-                  child: Icon(
-                    Icons.add,
-                  ),
-                ),
-              )
-            : Container(),
+       
       ],
     );
   }

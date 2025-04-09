@@ -41,10 +41,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${widget.productModel.name}',
-                      style: GoogleFonts.poppins(
-                        fontSize: 24.sp,
+                    Container(
+                      color: Colors.transparent,
+                      width: 280.w,
+                      child: Text(
+                        '${widget.productModel.name}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 24.sp,
+                        ),
                       ),
                     ),
                     Text(
@@ -110,83 +114,79 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ),
                 heightBox4,
-                AnimatedCrossFade(
-                  firstChild: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        PolicyCustomRow(
-                          name: 'Warranty Policy',
-                          routeName: SignInScreen.routeName,
-                        ),
-                        PolicyCustomRow(
-                          name: 'Return & Refund Policy',
-                          routeName: SignInScreen.routeName,
-                        ),
-                        PolicyCustomRow(
-                          name: 'Replacement Policy',
-                          routeName: SignInScreen.routeName,
-                        ),
-                        PolicyCustomRow(
-                          name: 'Return & Refund Policy',
-                          routeName: SignInScreen.routeName,
-                        ),
-                        PolicyCustomRow(
-                          name: 'Replacement Policy',
-                          routeName: SignInScreen.routeName,
-                        ),
+                // AnimatedCrossFade(
+                //   firstChild: Container(
+                //     decoration: BoxDecoration(
+                //         color: Colors.white,
+                //         borderRadius: BorderRadius.circular(12)),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         PolicyCustomRow(
+                //           name: 'Warranty Policy',
+                //           routeName: SignInScreen.routeName,
+                //         ),
+                //         PolicyCustomRow(
+                //           name: 'Return & Refund Policy',
+                //           routeName: SignInScreen.routeName,
+                //         ),
+                //         PolicyCustomRow(
+                //           name: 'Replacement Policy',
+                //           routeName: SignInScreen.routeName,
+                //         ),
+                //         PolicyCustomRow(
+                //           name: 'Return & Refund Policy',
+                //           routeName: SignInScreen.routeName,
+                //         ),
+                //         PolicyCustomRow(
+                //           name: 'Replacement Policy',
+                //           routeName: SignInScreen.routeName,
+                //         ),
                         
-                      ],
-                    ),
-                  ),
-                  secondChild: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        PolicyCustomRow(
-                          name: 'Warranty Policy',
-                          routeName: SignInScreen.routeName,
-                        ),
-                        PolicyCustomRow(
-                          name: 'Return & Refund Policy',
-                          routeName: SignInScreen.routeName,
-                        ),
-                        PolicyCustomRow(
-                          name: 'Replacement Policy',
-                          routeName: SignInScreen.routeName,
-                        ),
-                      ], 
-                    ),
-                  ),
-                  crossFadeState: _isExpandedPolicy
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: Duration(milliseconds: 300),
-                ),
-                SizedBox(height: 8.h),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isExpandedPolicy = !_isExpandedPolicy;
-                        });
-                      },
-                      child: SeeMoreButton(
-                        isExpanded: _isExpandedPolicy,
-                      )),
-                ),
-                Text(
-                  'You might also like',
-                  style: GoogleFonts.poppins(
-                      fontSize: 15.sp, fontWeight: FontWeight.w500),
-                ),
+                //       ],
+                //     ),
+                //   ),
+                //   secondChild: Container(
+                //     decoration: BoxDecoration(
+                //         color: Colors.white,
+                //         borderRadius: BorderRadius.circular(12)),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         PolicyCustomRow(
+                //           name: 'Warranty Policy',
+                //           routeName: SignInScreen.routeName,
+                //         ),
+                //         PolicyCustomRow(
+                //           name: 'Return & Refund Policy',
+                //           routeName: SignInScreen.routeName,
+                //         ),
+                //         PolicyCustomRow(
+                //           name: 'Replacement Policy',
+                //           routeName: SignInScreen.routeName,
+                //         ),
+                //       ], 
+                //     ),
+                //   ),
+                //   crossFadeState: _isExpandedPolicy
+                //       ? CrossFadeState.showFirst
+                //       : CrossFadeState.showSecond,
+                //   duration: Duration(milliseconds: 300),
+                // ),
+                // SizedBox(height: 8.h),
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: GestureDetector(
+                //       onTap: () {
+                //         setState(() {
+                //           _isExpandedPolicy = !_isExpandedPolicy;
+                //         });
+                //       },
+                //       child: SeeMoreButton(
+                //         isExpanded: _isExpandedPolicy,
+                //       )),
+                // ),
+              
                 heightBox8,
                 // SizedBox(
                 //   height: 134.h,

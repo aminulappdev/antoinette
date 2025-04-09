@@ -32,7 +32,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
               
                 heightBox12,
                 CustomSearchBar(
-                  shouldfontButton: false,
+               
                   shouldBackButton: false,
                 ),
                 heightBox12,

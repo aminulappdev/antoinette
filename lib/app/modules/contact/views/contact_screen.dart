@@ -1,8 +1,10 @@
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
+import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/views/add_contact_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -18,6 +20,8 @@ class ContactScreen extends StatefulWidget {
 
 class _ContactScreenState extends State<ContactScreen> {
   final AllContactController allContactController = AllContactController();
+  final DeleteContactController deleteContactController = DeleteContactController(); 
+
 
   @override
   void initState() {
@@ -34,7 +38,7 @@ class _ContactScreenState extends State<ContactScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomAppBar(name: 'Add Trusted Contacts'),
+                CustomAppBar(name: 'Trusted Contacts'),
                 heightBox12,
                 GetBuilder<AllContactController>(builder: (controller) {
                   if (controller.inProgress) {
@@ -43,7 +47,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   return SizedBox(
                       height: 550,
                       child: ListView.builder(
-                        itemCount: 1,
+                        itemCount: controller.contactList?.length,
                         itemBuilder: (context, index) {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,18 +82,23 @@ class _ContactScreenState extends State<ContactScreen> {
                                       ),
                                     ),
                                     widthBox8,
-                                    Container(
-                                      height: 28.h,
-                                      width: 28.h,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          border: Border.all(
-                                              color: Colors.redAccent)),
-                                      child: Icon(
-                                        Icons.delete,
-                                        size: 20.h,
-                                        color: Colors.redAccent,
+                                    InkWell(
+                                      onTap: (){
+                                        deleteContact('${controller.contactList?[index].sId}');
+                                      },
+                                      child: Container(
+                                        height: 28.h,
+                                        width: 28.h,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            border: Border.all(
+                                                color: Colors.redAccent)),
+                                        child: Icon(
+                                          Icons.delete,
+                                          size: 20.h,
+                                          color: Colors.redAccent,
+                                        ),
                                       ),
                                     )
                                   ],
@@ -109,5 +118,30 @@ class _ContactScreenState extends State<ContactScreen> {
             )),
       ),
     );
+  }
+
+   Future<void> deleteContact(String id) async {
+    
+      final bool isSuccess =
+          await deleteContactController.deleteContactById(id);
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Contact added');
+          Get.find<AllContactController>().getContactList();     
+        } else {
+          if (mounted) {
+            showSnackBarMessage(
+                context, deleteContactController.errorMessage!, true);
+          }
+        }
+      } else {
+        if (mounted) {
+          // print('Error show ----------------------------------');
+          showSnackBarMessage(
+              context, deleteContactController.errorMessage!, true);
+        }
+      
+    }
   }
 }

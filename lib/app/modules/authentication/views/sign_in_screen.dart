@@ -142,7 +142,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         logoPath: AssetsPath.appleLogo,
                         ontap: () {},
                       ),
-                      heightBox12,                  
+                      heightBox12,
                       AuthenticationFooterSection(
                         fTextName: 'Don’t have an account? ',
                         fTextColor: Color(0xff33363F),
@@ -195,7 +195,11 @@ class _SignInScreenState extends State<SignInScreen> {
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'Login successfully done');
-          Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            MainButtonNavbarScreen.routeName,
+            (Route<dynamic> route) => false,
+          );
         } else {
           if (mounted) {
             showSnackBarMessage(context, signInController.errorMessage!, true);

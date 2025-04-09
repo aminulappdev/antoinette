@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/update_profile_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
@@ -51,7 +52,7 @@ void initState() {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomAppBar(name: 'Account'),
+                  CustomAppBar(name: 'Update profile'),
                   heightBox12,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -159,9 +160,11 @@ void initState() {
         if (mounted) {
           Get.find<ProfileController>().getProfileData();
           showSnackBarMessage(context, 'Profile updated');
+          Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
           
         } else {
           if (mounted) {
+            
             showSnackBarMessage(
                 context, updateProfileController.errorMessage!, true);
           }

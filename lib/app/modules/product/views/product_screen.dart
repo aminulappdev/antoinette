@@ -49,7 +49,7 @@ class _ProductScreenState extends State<ProductScreen> {
               children: [
                 CustomSearchBar(
                   shouldBackButton: widget.shouldBackButton,
-                  shouldfontButton: false,
+              
                 ),
                 heightBox12,
                 SizedBox(

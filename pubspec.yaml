@@ -37,6 +37,7 @@ dependencies:
   firebase_auth: ^5.5.1
   flutter_facebook_auth: ^7.1.1
   audioplayers: ^6.4.0
+  flutter_html: ^3.0.0
   
   
 

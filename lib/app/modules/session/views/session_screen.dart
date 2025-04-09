@@ -54,7 +54,7 @@ class _SessionScreenState extends State<SessionScreen> {
               children: [
                 CustomSearchBar(
                   shouldBackButton: true,
-                  shouldfontButton: false,
+                
                 ),
                 heightBox12,
                 Align(

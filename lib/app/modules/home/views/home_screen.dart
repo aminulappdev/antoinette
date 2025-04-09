@@ -9,6 +9,7 @@ import 'package:antoinette/app/modules/home/widgets/see_all_section.dart';
 import 'package:antoinette/app/modules/home/widgets/welcome_text.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/modules/product/widgets/product_card.dart';
+import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
 import 'package:antoinette/app/modules/session/views/session_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    Get.find<ProfileController>().getProfileData();
     allSessionController.getSessionList();
     allProcuctController.getProductList();
     super.initState();
@@ -74,9 +76,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTapPublic: () {},
                 ),
                 heightBox16,
-                WelcomeTextHomePage(
-                  time: 'Morning',
-                  name: 'Sarah 👋',
+                GetBuilder<ProfileController>(
+                  builder: (controller) {
+                    return WelcomeTextHomePage(
+                      time: 'Morning',
+                      name: '${controller.profileData?.name} 👋',
+                    );
+                  }
                 ),
                 Padding(
                   padding:

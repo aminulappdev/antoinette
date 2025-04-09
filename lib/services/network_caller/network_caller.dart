@@ -114,6 +114,46 @@ class NetworkCaller {
     }
   }
 
+  Future<NetworkResponse> deleteRequest(String url,
+      {Map<String, dynamic>? queryParams, String? accesToken}) async {
+    try {
+      _logRequest(url);
+
+      if (queryParams != null) {
+        url += '?';
+        for (String param in queryParams.keys) {
+          url += '$param=${queryParams[param]}&';
+        }
+      }
+      Uri uri = Uri.parse(url);
+      Map<String, String> headers = {
+        'content-type': 'application-json',
+      };
+
+      if (accesToken != null) {
+        headers['Authorization'] = accesToken;
+      }
+
+      var response = await delete(uri, headers: headers);
+      _logResponse(url, response.statusCode, response.headers, response.body);
+      if (response.statusCode == 200) {
+        final debugMessage = jsonDecode(response.body);
+        return NetworkResponse(
+          isSuccess: true,
+          statusCode: response.statusCode,
+          responseData: debugMessage,
+        );
+      } else {
+        return NetworkResponse(
+            isSuccess: false, statusCode: response.statusCode);
+      }
+    } catch (e) {
+      _logResponse(url, -1, null, '', e.toString());
+      return NetworkResponse(
+          isSuccess: false, statusCode: -1, errorMessage: e.toString());
+    }
+  }
+
   void _logRequest(String url,
       [Map<String, dynamic>? headers, Map<String, dynamic>? body]) {
     _logger.i('URL => $url\nHeaders => $headers\nBODY => $body');

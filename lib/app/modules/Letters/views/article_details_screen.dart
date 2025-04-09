@@ -1,8 +1,13 @@
+import 'package:antoinette/app/modules/Letters/controllers/bookmark_controller.dart';
 import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
+import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -16,6 +21,16 @@ class ArticleDetailsScreen extends StatefulWidget {
 }
 
 class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
+
+  final BookMarkController bookMarkController = BookMarkController();
+   late String userId;
+  ProfileController profileController = Get.find<ProfileController>();
+
+  @override
+  void initState() {
+    userId = profileController.profileData!.sId!;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     String? isoDate = widget.articleModel.publishedAt;
@@ -64,7 +79,9 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              bookmark('${widget.articleModel.sId}',userId);
+                            },
                             child: CircleAvatar(
                               radius: 21.r,
                               backgroundColor:
@@ -132,5 +149,30 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
         ),
       ),
     );
+  }
+
+   Future<void> bookmark(String user, String reference) async {
+   
+      final bool isSuccess =
+          await bookMarkController.addBookmark(user,reference,'Article');
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Contact added');
+        
+        } else {
+          if (mounted) {
+            showSnackBarMessage(
+                context, bookMarkController.errorMessage!, true);
+          }
+        }
+      } else {
+        if (mounted) {
+          // print('Error show ----------------------------------');
+          showSnackBarMessage(
+              context, bookMarkController.errorMessage!, true);
+        }
+      
+    }
   }
 }
