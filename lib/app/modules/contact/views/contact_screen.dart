@@ -17,14 +17,11 @@ class ContactScreen extends StatefulWidget {
 }
 
 class _ContactScreenState extends State<ContactScreen> {
+  final AllContactController allContactController = AllContactController();
 
- final AllContactController allContactController = AllContactController();
- 
   @override
-  void initState()  {
-     allContactController.getContactList();
-    
-    print(allContactController.accessToken);
+  void initState() {
+    Get.find<AllContactController>().getContactList();
     super.initState();
   }
 
@@ -39,75 +36,78 @@ class _ContactScreenState extends State<ContactScreen> {
               children: [
                 CustomAppBar(name: 'Add Trusted Contacts'),
                 heightBox12,
-                GetBuilder<AllContactController>(
-                  builder: (controller) {
-                    return SizedBox(
-                        height: 550,
-                        child: ListView.builder(
-                          itemCount: 1,
-                          itemBuilder: (context, index) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                               
-                                Text(
-                                  '${controller.contactList?[index]}',
-                                  style: GoogleFonts.poppins(
-                                     fontSize: 17.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  '01976672506',
-                                  style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(vertical: 8.h),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 28.h,
-                                        width: 28.h,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(100),
-                                            border: Border.all(color: Colors.blue)),
-                                        child: Icon(
-                                          Icons.edit,
-                                          size: 20.h,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                      widthBox8,
-                                      Container(
-                                        height: 28.h,
-                                        width: 28.h,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(100),
-                                            border:
-                                                Border.all(color: Colors.redAccent)),
-                                        child: Icon(
-                                          Icons.delete,
-                                          size: 20.h,
-                                          color: Colors.redAccent,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ));
+                GetBuilder<AllContactController>(builder: (controller) {
+                  if (controller.inProgress) {
+                    return Center(child: CircularProgressIndicator());
                   }
-                ),
-                GradientElevatedButton(onPressed: () {
-                           Navigator.pushNamed(context, AddContactScreen.routeName);
-                }, text: '+ Add Contact')
+                  return SizedBox(
+                      height: 550,
+                      child: ListView.builder(
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${controller.contactList?[index].name}',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                '01976672506',
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.h),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 28.h,
+                                      width: 28.h,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          border:
+                                              Border.all(color: Colors.blue)),
+                                      child: Icon(
+                                        Icons.edit,
+                                        size: 20.h,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    widthBox8,
+                                    Container(
+                                      height: 28.h,
+                                      width: 28.h,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          border: Border.all(
+                                              color: Colors.redAccent)),
+                                      child: Icon(
+                                        Icons.delete,
+                                        size: 20.h,
+                                        color: Colors.redAccent,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ));
+                }),
+                GradientElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, AddContactScreen.routeName);
+                    },
+                    text: '+ Add Contact')
               ],
             )),
       ),
     );
   }
-
-  
 }

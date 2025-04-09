@@ -29,7 +29,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomAppBar(name: 'Dear Diary'),
+              
                 heightBox12,
                 CustomSearchBar(
                   shouldfontButton: false,

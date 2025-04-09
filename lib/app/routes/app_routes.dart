@@ -134,9 +134,15 @@ class AppRoutes {
 
     BookmarkScreen.routeName: (context) => const BookmarkScreen(),
     CheckInScreen.routeName: (context) => const CheckInScreen(),
-    AddCheckInScreen.routeName: (context) => const AddCheckInScreen(),
-    CustomStatusScreen.routeName: (context) => const CustomStatusScreen(),
+    
+    AddCheckInScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as String;
+      return AddCheckInScreen(customStatus: args,
+        
+      );
+    },
 
+    CustomStatusScreen.routeName: (context) => const CustomStatusScreen(),
     ContactScreen.routeName: (context) => const ContactScreen(),
     AddContactScreen.routeName: (context) => const AddContactScreen(),
 
@@ -146,7 +152,14 @@ class AppRoutes {
     ProfileScreen.routeName: (context) => const ProfileScreen(),
     AccountScreen.routeName: (context) => const AccountScreen(),
     AdderssScreen.routeName: (context) => const AdderssScreen(),
-    AddAdderssScreen.routeName: (context) => const AddAdderssScreen(),
+    
+    AddAdderssScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as String;
+      return AddAdderssScreen(
+        type: args,
+      );
+    },
+   
 
     InfoScreen.routeName: (context) {
       final args =

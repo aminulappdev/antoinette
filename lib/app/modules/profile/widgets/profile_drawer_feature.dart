@@ -20,43 +20,44 @@ class ProfileDrawerFeature extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding:  EdgeInsets.only(bottom: 8.h),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 12.r,
-                    backgroundColor: Color(0xffA57EA5).withAlpha(10),
-                    child: Center(
-                      child: Icon(
-                        icon,
-                        color: AppColors.iconButtonThemeColor,
-                        size: 18.sp,
+      child: InkWell(
+        onTap: ontap,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 12.r,
+                      backgroundColor: Color(0xffA57EA5).withAlpha(10),
+                      child: Center(
+                        child: Icon(
+                          icon,
+                          color: AppColors.iconButtonThemeColor,
+                          size: 18.sp,
+                        ),
                       ),
                     ),
-                  ),
-                  widthBox8,
-                  Text(
-                    feature,
-                    style: GoogleFonts.poppins(fontSize: 14.sp),
-                  ),
-                ],
-              ),
-              GestureDetector(
-                  onTap: ontap,
-                  child: Icon(Icons.arrow_forward)),
-            ],
-          ),
-          heightBox4,
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 1,
-            color: Colors.grey,
-          ),
-        ],
+                    widthBox8,
+                    Text(
+                      feature,
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
+                  ],
+                ),
+                Icon(Icons.arrow_forward),
+              ],
+            ),
+            heightBox4,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 1,
+              color: Colors.grey,
+            ),
+          ],
+        ),
       ),
     );
   }

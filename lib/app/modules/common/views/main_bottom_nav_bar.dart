@@ -2,11 +2,14 @@ import 'package:antoinette/app/modules/common/views/panic_button_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/home/views/home_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
+import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/views/profile_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/healing_note_screen.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
 
 
 class MainButtonNavbarScreen extends StatefulWidget {
@@ -32,8 +35,11 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
     const DearDiaryScreen()
   ];
   
-
-
+   @override
+  void initState() {
+    Get.find<ProfileController>().getProfileData();
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {

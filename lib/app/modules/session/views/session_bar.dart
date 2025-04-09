@@ -64,7 +64,7 @@ class _SessionBarState extends State<SessionBar> {
             ],
           ),
           if (selectedPage == 0) ...{
-            Reception(),
+            Reception(sessionDataModel: widget.sessionDataModel,),
           } else if (selectedPage == 1) ...{
             About(sessionDataModel: widget.sessionDataModel,)
           }

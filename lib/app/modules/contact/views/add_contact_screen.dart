@@ -4,7 +4,6 @@ import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -104,7 +103,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
         }
       } else {
         if (mounted) {
-          print('Error show ----------------------------------');
+          // print('Error show ----------------------------------');
           showSnackBarMessage(
               context, addContactController.errorMessage!, true);
         }

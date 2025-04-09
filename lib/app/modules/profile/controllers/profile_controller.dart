@@ -1,45 +1,42 @@
-import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
+import 'package:antoinette/app/modules/profile/model/profile_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class ArticleDetailsController extends GetxController {
+class ProfileController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  String? _accessToken; 
+  String? _accessToken;
   String? get accessToken => _accessToken;
- 
-  ArticlesDetailsModel? articlesDetailsModel;
 
-  ArticleModel? get articleModel => articlesDetailsModel?.data;
+  ProfileModel? profileModel;
+  ProfileData? get profileData => profileModel?.data;
 
-  int? lastPage;
-
-  Future<bool> getArticleDetails(String id) async {
-   
-    bool isSuccess = false; 
+  Future<bool> getProfileData() async {
+    bool isSuccess = false;
 
     _inProgress = true;
 
     update();
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.articleUrlsById(id), accesToken: box.read('user-login-access-token'));
-   
-    print('response data is : ${response.responseData}');
-
-    articlesDetailsModel = ArticlesDetailsModel.fromJson(response.responseData);
-    print('my id is : $id\nmy data is ${ArticlesDetailsModel.fromJson(response.responseData).data?.author}');
+        .getRequest(Urls.profileUrl, accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
       _errorMessage = null;
       isSuccess = true;
+        
+      profileModel = ProfileModel.fromJson(response.responseData);
+      print('Controller data..................................');
+      print(profileModel?.data?.email);
+   
+
     } else {
       _errorMessage = response.errorMessage;
     }
@@ -48,4 +45,4 @@ class ArticleDetailsController extends GetxController {
     update();
     return isSuccess;
   }
-}
+} 
