@@ -33,60 +33,62 @@ class _PsychoSupportCardState extends State<PsychoSupportCard> {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8)),
-        child: Column(
-          children: [
-            Container(
-              height: 133.h,
-              width: 238.w,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                        AssetsPath.psycoSupport,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: 133.h,
+                width: 238.w,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          AssetsPath.psycoSupport,
+                        ),
+                        fit: BoxFit.fill),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                       ' ${widget.sessionItemModel.status}',
+                        style: GoogleFonts.poppins(
+                            fontSize: 10.sp, color: Colors.green),
                       ),
-                      fit: BoxFit.fill),
-                  borderRadius: BorderRadius.circular(8)),
-              child: Padding(
-                padding: EdgeInsets.all(8.0.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                     ' ${widget.sessionItemModel.status}',
-                      style: GoogleFonts.poppins(
-                          fontSize: 10.sp, color: Colors.green),
-                    ),
-                    heightBox50,
-                    heightBox30,
-                    Text(
-                      'Per session: ${widget.sessionItemModel.fee}\$',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp, color: Colors.white),
-                    )
-                  ],
+                      heightBox50,
+                      heightBox30,
+                      Text(
+                        'Per session: ${widget.sessionItemModel.fee}\$',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp, color: Colors.white),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding:  EdgeInsets.symmetric(
-                  horizontal: 8.w, vertical: 2.h),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage(AssetsPath.womenBookRead),
-                    radius: 18.r,
-                  ),
-                  widthBox4,
-                  Text(
-                    '${widget.sessionItemModel.title}',
-                    style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
-            )
-          ],
+              Padding(
+                padding:  EdgeInsets.symmetric(
+                    horizontal: 8.w, vertical: 2.h),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: AssetImage(AssetsPath.womenBookRead),
+                      radius: 16.r,
+                    ),
+                    widthBox4,
+                    Text(
+                      '${widget.sessionItemModel.title}',
+                      style: GoogleFonts.poppins(
+                          fontSize: 12.sp,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

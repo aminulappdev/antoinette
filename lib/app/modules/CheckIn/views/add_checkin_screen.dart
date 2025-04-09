@@ -1,8 +1,12 @@
 import 'dart:async';
-
+import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controller.dart';
+import 'package:antoinette/app/modules/checkIn/controllers/counter_controller.dart';
+import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:antoinette/app/modules/checkIn/views/custom_status_screen.dart';
 import 'package:antoinette/app/modules/checkIn/widgets/add_checkIn_feature.dart';
@@ -12,33 +16,46 @@ import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/toggle_button.dart';
 
 class AddCheckInScreen extends StatefulWidget {
+  final String customStatus;
   static const String routeName = '/add-check-screen';
-  const AddCheckInScreen({super.key});
+  const AddCheckInScreen({
+    super.key,
+    required this.customStatus,
+  });
 
   @override
   State<AddCheckInScreen> createState() => _AddCheckInScreenState();
 }
 
 class _AddCheckInScreenState extends State<AddCheckInScreen> {
-  bool togggleActive = false;
+  String? quickChekIn;
+  bool isSelectedTR = false;
+  bool isSelectedGOD = false;
+  bool isSelectedTA = false;
+  bool isSelectedTWA = false;
+  bool isSelectedCS = false;
   bool isToggled = false;
   int hours = 0, minutes = 15, seconds = 0;
   Duration _selectedDuration = const Duration(minutes: 15);
-  late final Timer _timer; // Ensure _timer is initialized
+  // List to store selected toggled contacts
+  List<String> selectedContacts = [];
+  late String userId;
 
-  // Initialize timer (if needed) in your screen lifecycle
+  AddCheckInController addCheckInController = AddCheckInController();
+
+  // Countdown Controller
+  CountdownController countdownController = Get.put(CountdownController()); // Use GetX for countdown
+
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-    });
+    Get.find<AllContactController>().getContactList();
   }
 
-  // Dispose the timer when widget is removed from widget tree
   @override
   void dispose() {
-    _timer.cancel();  
     super.dispose();
+    countdownController.stopCountdown(); // Stop the countdown when the page is disposed
   }
 
   @override
@@ -69,7 +86,6 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 height: 230.h,
                 color: Colors.transparent,
                 child: CupertinoTimerPicker(
-                  
                   mode: CupertinoTimerPickerMode.hms,
                   initialTimerDuration: _selectedDuration,
                   onTimerDurationChanged: (Duration newDuration) {
@@ -98,12 +114,32 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 children: [
                   AddCheckInFeature(
                     icon: '🏍️',
-                    feature: 'Going on ',
+                    feature: 'Taking a ride',
+                    ontap: () {
+                      quickChekIn = 'Taking a ride';
+                      isSelectedTR = true;
+                      isSelectedGOD = false;
+                      isSelectedTA = false;
+                      isSelectedTWA = false;
+                      isSelectedCS = false;
+                      setState(() {});
+                    },
+                    isSelectedf: isSelectedTR,
                   ),
                   widthBox12,
                   AddCheckInFeature(
-                    icon: '🏍️',
-                    feature: 'Going on',
+                    icon: '💕',
+                    feature: 'Going on a date',
+                    ontap: () {
+                      quickChekIn = 'Going on a date';
+                      isSelectedTR = false;
+                      isSelectedGOD = true;
+                      isSelectedTA = false;
+                      isSelectedTWA = false;
+                      isSelectedCS = false;
+                      setState(() {});
+                    },
+                    isSelectedf: isSelectedGOD,
                   ),
                 ],
               ),
@@ -111,20 +147,46 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
               Row(
                 children: [
                   AddCheckInFeature(
-                    icon: '🏍️',
-                    feature: 'Going on ',
+                    icon: '💼',
+                    feature: 'Travel alone',
+                    ontap: () {
+                      quickChekIn = 'Travel alone';
+                      isSelectedTR = false;
+                      isSelectedGOD = false;
+                      isSelectedTA = true;
+                      isSelectedTWA = false;
+                      isSelectedCS = false;
+                      setState(() {});
+                    },
+                    isSelectedf: isSelectedTA,
                   ),
                   widthBox12,
                   AddCheckInFeature(
                     icon: '🏍️',
-                    feature: 'Going on',
+                    feature: 'Taking a walk alone',
+                    ontap: () {
+                      quickChekIn = 'Taking a walk alone';
+                      isSelectedTR = false;
+                      isSelectedGOD = false;
+                      isSelectedTA = false;
+                      isSelectedTWA = true;
+                      isSelectedCS = false;
+                      setState(() {});
+                    },
+                    isSelectedf: isSelectedTWA,
                   ),
                 ],
               ),
               heightBox12,
               AddCheckInFeature(
-                icon: '🏍️',
-                feature: 'Going on',
+                icon: '📝',
+                feature: widget.customStatus == ''
+                    ? 'Add custom status'
+                    : widget.customStatus,
+                ontap: () {
+                  Navigator.pushNamed(context, CustomStatusScreen.routeName);
+                },
+                isSelectedf: isSelectedCS,
               ),
               heightBox12,
               Row(
@@ -141,33 +203,88 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 ],
               ),
               heightBox12,
-              Row(
-                children: [
-                  ToggleButton(
-                    isToggled: isToggled,
-                    onToggle: (bool value) {
-                      setState(() {
-                        isToggled = value; // Handle toggle state change
-                      });
-                    },
-                  ),
-                  widthBox4,
-                  Text('sunan 01975566236')
-                ],
+              GetBuilder<AllContactController>(
+                builder: (controller) {
+                  if (controller.inProgress) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  return SizedBox(
+                    height: 180,
+                    child: ListView.builder(
+                      itemCount: controller.contactList?.length,
+                      itemBuilder: (context, index) {
+                        var contactId = controller.contactList?[index].sId;
+                        var contact = controller.contactList?[index].name;
+                        userId = controller.contactList![index].user!.sId!;
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            children: [
+                              ToggleButton(
+                                isToggled: selectedContacts.contains(contactId),
+                                onToggle: (bool value) {
+                                  setState(() {
+                                    if (value) {
+                                      selectedContacts.add(contactId!);
+                                    } else {
+                                      selectedContacts.remove(contactId);
+                                    }
+                                  });
+                                },
+                              ),
+                              widthBox4,
+                              Text(contact!),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
               SizedBox(
-                height: 50.h,
+                height: 10.h,
               ),
               GradientElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, CustomStatusScreen.routeName);
+                  onTapToNextButton();
                 },
                 text: 'Check-In',
-              )
+              ),
+              SizedBox(height: 1.h),
+              // Display countdown from CountdownController
+              Obx(() {
+                var remainingTime = countdownController.remainingTime.value;
+                return Text(
+                  'Time Left: ${remainingTime.inMinutes}:${remainingTime.inSeconds % 60}',
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                );
+              })
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> onTapToNextButton() async {
+    if (quickChekIn != null) {
+      final bool isSuccess = await addCheckInController.addCheckIn(
+          userId, _selectedDuration.toString(), quickChekIn!, selectedContacts);
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Checking Added');
+          // Start countdown only when check-in is successful
+          countdownController.startCountdown(_selectedDuration);
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, addCheckInController.errorMessage!, true);
+        }
+      }
+    }
   }
 }

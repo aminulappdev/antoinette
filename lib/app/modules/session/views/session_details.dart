@@ -1,3 +1,4 @@
+
 import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/session_bar.dart';
 import 'package:antoinette/app/modules/session/views/session_form_section.dart';
@@ -8,6 +9,7 @@ import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class SessionDetailsScreen extends StatefulWidget {
@@ -20,6 +22,8 @@ class SessionDetailsScreen extends StatefulWidget {
 }
 
 class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
+
+ 
   @override
   Widget build(BuildContext context) {
     return SafeArea(

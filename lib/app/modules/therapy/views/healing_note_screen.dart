@@ -18,7 +18,7 @@ class HealingNoteScreen extends StatefulWidget {
 class _HealingNoteScreenState extends State<HealingNoteScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return SafeArea( 
       child: Scaffold(
         body: Padding(
           padding: EdgeInsets.all(12.0.h),
@@ -26,7 +26,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomAppBar(name: 'Healing notes'),
+               
                 heightBox24,
                 CustomSearchBar(shouldBackButton: false, shouldfontButton: false),
                 heightBox12,

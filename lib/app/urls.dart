@@ -1,6 +1,5 @@
 class Urls {
   static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
-
   static const String signUp = '$_baseUrl/users/register';
   static const String verifOtp = '$_baseUrl/otp/verify-otp';
   static const String signIn = '$_baseUrl/auth/login';
@@ -15,6 +14,11 @@ class Urls {
   static const String allpodcastUrl = '$_baseUrl/podcasts';
   static const String addContactUrl = '$_baseUrl/trusted-contracts';
   static const String allContacturl = '$_baseUrl/trusted-contracts';
+  static const String profileUrl = '$_baseUrl/users/my-profile';
+  static const String updateProfileUrl = '$_baseUrl/users/update-my-profile';
+  static const String addCheckIn = '$_baseUrl/check-in';
+  static const String allCheckInUrl = '$_baseUrl/check-in'; 
+  static const String contentUrl = '$_baseUrl/contents'; 
   
 
 
@@ -41,5 +45,11 @@ class Urls {
     String id,
   ) {
     return '$_baseUrl/podcasts/$id';
+  }
+
+  static String sessionSlotById(
+    String id,
+  ) {
+    return '$_baseUrl/session-slots/session/$id';
   }
 }

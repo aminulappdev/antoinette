@@ -34,9 +34,7 @@ class CustomSearchBar extends StatelessWidget {
             : Container(),
         Container(
           height: 48.h,
-          width: (shouldBackButton == true || shouldfontButton == true)
-              ? 310.w
-              : (MediaQuery.of(context).size.width - 26).w,
+          width:(MediaQuery.of(context).size.width - 50).w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
@@ -46,7 +44,7 @@ class CustomSearchBar extends StatelessWidget {
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
                 child: Icon(
                   Icons.search_rounded,
                   size: 30.h,
@@ -63,17 +61,7 @@ class CustomSearchBar extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: CircleAvatar(
-                  child: Center(
-                    child: Icon(
-                      Icons.tune,
-                      color: AppColors.iconButtonThemeColor,
-                    ),
-                  ),
-                ),
-              ),
+             
             ],
           ),
         ),
