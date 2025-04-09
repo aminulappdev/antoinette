@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ContactScreen extends StatefulWidget {
   static const String routeName = '/contact-screen';
-  const ContactScreen({super.key});
+  const ContactScreen({super.key}); 
 
   @override
   State<ContactScreen> createState() => _ContactScreenState();

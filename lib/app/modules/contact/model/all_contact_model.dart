@@ -16,7 +16,7 @@ class AllContactModel {
     if (json['data'] != null) {
       data = <AllContactItemModel>[];
       json['data'].forEach((v) {
-        data!.add(AllContactItemModel.fromJson(v));
+        data!.add(AllContactItemModel.fromJson(v)); 
       });
     }
   }
