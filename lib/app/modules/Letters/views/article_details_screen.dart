@@ -1,12 +1,15 @@
+import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class ArticleDetailsScreen extends StatefulWidget {
+  final ArticleModel articleModel;
   static const String routeName = '/article-details-screen';
-  const ArticleDetailsScreen({super.key});
+  const ArticleDetailsScreen({super.key, required this.articleModel});
 
   @override
   State<ArticleDetailsScreen> createState() => _ArticleDetailsScreenState();
@@ -15,6 +18,10 @@ class ArticleDetailsScreen extends StatefulWidget {
 class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    String? isoDate = widget.articleModel.publishedAt;
+    DateTime parsedDate = DateTime.parse(isoDate!);
+    String readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -23,7 +30,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:  EdgeInsets.symmetric(vertical: 2.h),
+                padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
@@ -34,10 +41,10 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(AssetsPath.womenBookRead)),
+                            image: AssetImage(AssetsPath.womenBookRead),fit: BoxFit.fill),
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(
-                      padding:  EdgeInsets.all(12.0.h),
+                      padding: EdgeInsets.all(12.0.h),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,21 +82,17 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                 ),
               ),
               Text(
-                'Mind & Body Space: The Connection Between Mental and Physical Well-being',
-                style: GoogleFonts.poppins(fontSize: 15),
+                '${widget.articleModel.title}',
+                style: GoogleFonts.poppins(fontSize: 16),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Author: Dr. Sophia Williams',
-                    style: GoogleFonts.poppins(fontSize: 12.sp),
-                  ),
-                  Text(
-                    'Published Date: Feb 7, 2025',
-                    style: GoogleFonts.poppins(fontSize: 12.sp),
-                  ),
-                ],
+              Text(
+                'Author: ${widget.articleModel.author}',
+                style: GoogleFonts.poppins(fontSize: 12.sp),
+              ),
+              heightBox4,
+              Text(
+                'Published Date: $readableDate',
+                style: GoogleFonts.poppins(fontSize: 12.sp),
               ),
               heightBox4,
               Text(
@@ -99,7 +102,8 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
               heightBox4,
               Text(
                 'In our fast-paced world, mental and physical health are often treated as separate entities. However, science continues to reveal that our mind and body are deeply interconnected. Stress, anxiety, and emotional struggles can manifest as physical symptoms, just as physical habits—like movement and nutrition—can significantly impact mental well-being. Welcome to Mind & Body Space, where we explore how to create harmony between the two.',
-                style: GoogleFonts.poppins(fontSize: 10.sp),textAlign: TextAlign.justify,
+                style: GoogleFonts.poppins(fontSize: 10.sp),
+                textAlign: TextAlign.justify,
               ),
               heightBox4,
               Text(
@@ -109,7 +113,8 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
               heightBox4,
               Text(
                 'In our fast-paced world, mental and physical health are often treated as separate entities. However, science continues to reveal that our mind and body are deeply interconnected. Stress, anxiety, and emotional struggles can manifest as physical symptoms, just as physical habits—like movement and nutrition—can significantly impact mental well-being. Welcome to Mind & Body Space, where we explore how to create harmony between the two.',
-                style: GoogleFonts.poppins(fontSize: 10.sp),textAlign: TextAlign.justify,
+                style: GoogleFonts.poppins(fontSize: 10.sp),
+                textAlign: TextAlign.justify,
               ),
               heightBox4,
               Text(
@@ -119,7 +124,8 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
               heightBox4,
               Text(
                 'In our fast-paced world, mental and physical health are often treated as separate entities. However, science continues to reveal that our mind and body are deeply interconnected. Stress, anxiety, and emotional struggles can manifest as physical symptoms, just as physical habits—like movement and nutrition—can significantly impact mental well-being. Welcome to Mind & Body Space, where we explore how to create harmony between the two.',
-                style: GoogleFonts.poppins(fontSize: 10.sp),textAlign: TextAlign.justify,
+                style: GoogleFonts.poppins(fontSize: 10.sp),
+                textAlign: TextAlign.justify,
               ),
             ],
           ),

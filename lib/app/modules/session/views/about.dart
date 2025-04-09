@@ -1,11 +1,12 @@
+import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class About extends StatefulWidget {
-  const About({super.key});
-
+  const About({super.key, required this.sessionDataModel});
+  final SessionDataModel sessionDataModel; 
   @override
   State<About> createState() => _AboutState();
 }
@@ -24,7 +25,7 @@ class _AboutState extends State<About> {
         ),
         heightBox4,
         Text(
-          '"Connect with a licensed psychologist for a private and secure therapy session. Choose between text or video consultations and get the support you need—anytime, anywhere.',
+          '${widget.sessionDataModel.description}',
           style: GoogleFonts.poppins(
             fontSize: 12.sp,
           ),
@@ -38,21 +39,21 @@ class _AboutState extends State<About> {
         ),
         heightBox4,
         Text(
-          '"Connect with a licensed psychologist for a private and secure therapy session. Choose between text or video consultations and get the support you need—anytime, anywhere.',
+          '${widget.sessionDataModel.therapist?.bio}',
           style: GoogleFonts.poppins(
             fontSize: 12.sp,
           ),
         ),
         heightBox12,
         Text(
-          'About Therapist',
+          'Therapist Certificats',
           style: GoogleFonts.poppins(
             fontSize: 15.sp,
           ),
         ),
         heightBox4,
         Text(
-          '"Connect with a licensed psychologist for a private and secure therapy session. Choose between text or video consultations and get the support you need—anytime, anywhere.',
+          '${widget.sessionDataModel.therapist?.achievement}',
           style: GoogleFonts.poppins(
             fontSize: 12.sp,
           ),
@@ -66,7 +67,7 @@ class _AboutState extends State<About> {
         ),
         heightBox4,
         Text(
-          '\$50 per session',
+          '\$${widget.sessionDataModel.fee} per session',
           style: GoogleFonts.poppins(
             fontSize: 12.sp,
           ),

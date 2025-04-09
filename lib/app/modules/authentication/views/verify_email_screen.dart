@@ -10,8 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
+  final String  token;
   static const String routeName = '/verify-email-screen';
-  const VerifyEmailScreen({super.key});
+  const VerifyEmailScreen({super.key, required this.token,});
 
   @override
   State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
@@ -60,7 +61,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 heightBox30,
                 GradientElevatedButton(
                   onPressed: () {
-                   Navigator.pushNamed(context, OTPVerifyScreen.routeName);
+                   Navigator.pushNamed(context, OTPVerifyScreen.routeName,arguments: widget.token);
                   },
                   text: 'Confirm Now',
                 ),

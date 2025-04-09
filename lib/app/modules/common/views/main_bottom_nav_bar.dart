@@ -10,9 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class MainButtonNavbarScreen extends StatefulWidget {
-  static const String routeName = '/mainbottom-nav-screen';
+  static  String routeName = '/mainbottom-nav-screen';
 
-  const MainButtonNavbarScreen({super.key});
+   const MainButtonNavbarScreen({super.key});
 
   @override
   State<MainButtonNavbarScreen> createState() => _MainButtonNavbarScreenState();
@@ -20,7 +20,8 @@ class MainButtonNavbarScreen extends StatefulWidget {
 
 class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
   int selectedKey = 0;
-
+  
+  
   List<Widget> screens = [
     const HomeScreen(),
     const ProductScreen(
@@ -30,7 +31,10 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
    const ProfileScreen(),
     const DearDiaryScreen()
   ];
+  
 
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

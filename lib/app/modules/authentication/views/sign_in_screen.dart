@@ -1,3 +1,6 @@
+import 'package:antoinette/app/modules/authentication/controllers/forgot_password_controller.dart';
+import 'package:antoinette/app/modules/authentication/controllers/google_auth_controller.dart';
+import 'package:antoinette/app/modules/authentication/controllers/sign_in_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/continue_elevated_button.dart';
@@ -10,9 +13,12 @@ import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -26,8 +32,13 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool _obscureText = true; 
-  
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+  SignInController signInController = SignInController();
+  ForgotPasswordController forgotPasswordController =
+      ForgotPasswordController();
+
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        controller: emailCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.emailAddress,
                         validator: (String? value) {
@@ -84,6 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        controller: passwordCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
                           if (value!.isEmpty) {
@@ -111,34 +124,26 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       ForgotPasswordRow(
-                        
-                        ontap: () {
-                          Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
-                        },
+                        ontap: forgotPasswordBTN,
                       ),
                       heightBox24,
                       GradientElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
-                        },
+                        onPressed: onTapToNextButton,
                         text: 'Sign in',
                       ),
                       Liner(),
                       ContinueElevatedButton(
                         name: 'Continue with google',
                         logoPath: AssetsPath.googleLogoUp,
+                        ontap: onTapGoogleSignIn,
                       ),
                       heightBox12,
                       ContinueElevatedButton(
                         name: 'Continue with apple',
                         logoPath: AssetsPath.appleLogo,
+                        ontap: () {},
                       ),
-                      heightBox12,
-                      ContinueElevatedButton(
-                        name: 'Continue with facebook',
-                        logoPath: AssetsPath.fbLogo,
-                      ),
-                      heightBox12,
+                      heightBox12,                  
                       AuthenticationFooterSection(
                         fTextName: 'Don’t have an account? ',
                         fTextColor: Color(0xff33363F),
@@ -157,5 +162,88 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> onTapGoogleSignIn() async {
+    // print('Hello ');
+    final bool isSuccess =
+        await Get.find<GoogleAuthController>().signInWithGoogle();
+
+    if (isSuccess) {
+      if (context.mounted) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Signed in with Google');
+        }
+      }
+    } else {
+      if (context.mounted) {
+        if (mounted) {
+          showSnackBarMessage(
+            context,
+            Get.find<GoogleAuthController>().errorMessage ?? 'Sign-in failed',
+            true,
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> onTapToNextButton() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess =
+          await signInController.signIn(emailCtrl.text, passwordCtrl.text);
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Login successfully done');
+          Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+        } else {
+          if (mounted) {
+            showSnackBarMessage(context, signInController.errorMessage!, true);
+          }
+        }
+      } else {
+        if (mounted) {
+          print('Error show ----------------------------------');
+          showSnackBarMessage(context, signInController.errorMessage!, true);
+        }
+      }
+    }
+
+    // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+  }
+
+  Future<void> forgotPasswordBTN() async {
+    final bool isSuccess =
+        await forgotPasswordController.forgotPassword(emailCtrl.text);
+
+    if (isSuccess) {
+      if (mounted) {
+        Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, forgotPasswordController.errorMessage!, true);
+        }
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, forgotPasswordController.errorMessage!, true);
+      }
+    }
+  }
+
+  void clearTextField() {
+    emailCtrl.clear();
+    passwordCtrl.clear();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    emailCtrl.dispose();
+    passwordCtrl.dispose();
   }
 }

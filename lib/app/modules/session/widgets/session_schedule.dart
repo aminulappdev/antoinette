@@ -50,6 +50,7 @@ class SessionSchedule extends StatelessWidget {
           ],
         ),
         Row(
+          
           children: [
             Icon(Icons.location_on_outlined),
             widthBox4,

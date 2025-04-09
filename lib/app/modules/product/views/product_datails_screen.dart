@@ -1,21 +1,20 @@
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
-import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
-import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/product/widgets/policy_custom_row.dart';
 import 'package:antoinette/app/modules/product/widgets/see_more_button.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/product_caresoul_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart'; 
 
 class ProductDetailScreen extends StatefulWidget {
+  final ProductModel productModel; 
   static const String routeName = '/product-details-screen';
-  const ProductDetailScreen({super.key});
+  const ProductDetailScreen({super.key, required this.productModel, });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -43,13 +42,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Sunscreen',
+                      '${widget.productModel.name}',
                       style: GoogleFonts.poppins(
                         fontSize: 24.sp,
                       ),
                     ),
                     Text(
-                      '\$89.99',
+                      '\$${widget.productModel.amount}',
                       style: GoogleFonts.poppins(
                           fontSize: 16.h, fontWeight: FontWeight.w500),
                     ),
@@ -67,7 +66,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Product Name: UltraShield SPF 50+ Sunscreen'),
-                      Text('Brand: SunGuard'),
+                      Text('Brand: ${widget.productModel.category!.title}'),
                       Text('Type: Broad-Spectrum Protection'),
                       Text('SPF: 50+'),
                       Text('Formulation: Lotion'),
@@ -86,7 +85,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Product Name: UltraShield SPF 50+ Sunscreen'),
-                      Text('Brand: SunGuard'),
+                      Text('Brand: ${widget.productModel.category!.title}'),
                       Text('Type: Broad-Spectrum Protection'),
                       Text('SPF: 50+'),
                       Text('Formulation: Lotion'),
@@ -162,7 +161,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           name: 'Replacement Policy',
                           routeName: SignInScreen.routeName,
                         ),
-                      ],
+                      ], 
                     ),
                   ),
                   crossFadeState: _isExpandedPolicy
@@ -189,24 +188,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       fontSize: 15.sp, fontWeight: FontWeight.w500),
                 ),
                 heightBox8,
-                SizedBox(
-                  height: 134.h,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w),
-                        child: ProductCard(
-                          name: 'Sunscreen',
-                          price: '49.99',
-                          imagePath: AssetsPath.medichine,
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                // SizedBox(
+                //   height: 134.h,
+                //   width: MediaQuery.of(context).size.width,
+                //   child: ListView.builder(
+                //     scrollDirection: Axis.horizontal,
+                //     itemCount: 5,
+                //     itemBuilder: (context, index) {
+                //       return Padding(
+                //         padding: EdgeInsets.symmetric(horizontal: 4.w),
+                //         child: ProductCard(
+                //           name: 'Sunscreen',
+                //           price: '49.99',
+                //           imagePath: AssetsPath.medichine,
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
                 heightBox12,
                  Container(
                   height: 70.h,
@@ -238,4 +237,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
     );
   }
+
+
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "951355397363",
+    "project_id": "amira-foundation",
+    "storage_bucket": "amira-foundation.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951355397363:android:665e07a760f53c12cbd386",
+        "android_client_info": {
+          "package_name": "com.example.antoinette"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWq2Pfo-YWzu4HxomRbGkE2wNZ2bcJvgg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

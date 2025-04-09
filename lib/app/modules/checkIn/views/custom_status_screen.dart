@@ -1,4 +1,3 @@
-import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
 import 'package:antoinette/app/modules/checkIn/views/check_in_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
