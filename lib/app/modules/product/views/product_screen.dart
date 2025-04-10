@@ -58,7 +58,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     'Shop Your Health Must-Haves',
                     style: GoogleFonts.poppins(fontSize: 20),
                   ),
-                ),
+                ), 
                 heightBox12,
                 SizedBox(
                   height: 700.h,

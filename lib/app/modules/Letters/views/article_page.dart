@@ -62,7 +62,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                   child: ListView.builder(
                     itemCount: controller.articlesList.length,
                     itemBuilder: (context, index) {
-                      if (controller.articlesList[index].status ==
+                      if (controller.articlesList[index].status == 
                           'published') {
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 2.h),

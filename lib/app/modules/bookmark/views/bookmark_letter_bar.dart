@@ -1,7 +1,6 @@
 
-
-import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_article_page.dart';
-import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_podcast_screen.dart';
+import 'package:antoinette/app/modules/bookmark/views/bookmark_article_page.dart';
+import 'package:antoinette/app/modules/bookmark/views/bookmark_podcast_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
-import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_letter_screen.dart';
+
+
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
 import 'package:antoinette/app/modules/profile/controllers/content_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../bookmark/views/bookmark_letter_screen.dart';
 import '../../common/views/notification_screen.dart';
 
 class ProfileScreen extends StatefulWidget {

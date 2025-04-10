@@ -1,4 +1,6 @@
-import 'package:antoinette/app/modules/Letters/controllers/bookmark_controller.dart';
+import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_controller.dart';
+import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_details_controller.dart';
+import 'package:antoinette/app/modules/bookmark/controller/bookmark_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/facebook_auth_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/forgot_password_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/google_auth_controller.dart';
@@ -57,6 +59,8 @@ class ControllerBinder extends Bindings {
     Get.put(ContentController());
     Get.put(DeleteContactController());
     Get.put(BookMarkController());
+    Get.put(BookmarkArticlesController());
+    Get.put(BookmarkArticleDetailsController());
 
   
     

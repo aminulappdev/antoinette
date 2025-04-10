@@ -1,6 +1,11 @@
+
+import 'package:antoinette/app/modules/bookmark/model/bookmark_article_details_model.dart';
+import 'package:antoinette/app/modules/bookmark/views/bookmark_article_details_page.dart';
 import 'package:antoinette/app/modules/common/views/notification_screen.dart';
 import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
+
+
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/letters/views/podcast_details.dart';
 import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
@@ -21,7 +26,7 @@ import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
-import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_letter_screen.dart';
+
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
@@ -43,6 +48,8 @@ import 'package:antoinette/app/modules/therapy/views/camera_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/healing_note_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/text_therapy_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../modules/bookmark/views/bookmark_letter_screen.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> appRoutes = {
@@ -133,6 +140,14 @@ class AppRoutes {
       final args = ModalRoute.of(context)!.settings.arguments as ArticleModel;
       return ArticleDetailsScreen(
         articleModel: args,
+      );
+    },
+
+    // ignore: equal_keys_in_map
+    BookmarkArticleDetailsScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as BookmarkArticleItemModel;
+      return BookmarkArticleDetailsScreen(
+        bookmarkArticleItemModel: args,
       );
     },
     

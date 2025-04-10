@@ -1,44 +1,33 @@
-
-import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_controller.dart';
-import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
+import 'package:antoinette/app/modules/bookmark/model/bookmark_article_details_model.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-class ArticleDetailsScreen extends StatefulWidget {
-  final ArticleModel articleModel;
-  static const String routeName = '/article-details-screen';
-  const ArticleDetailsScreen({super.key, required this.articleModel});
+class BookmarkArticleDetailsScreen extends StatefulWidget {
+  final BookmarkArticleItemModel bookmarkArticleItemModel;
+  static const String routeName = '/bookmark-article-details-screen';
+  const BookmarkArticleDetailsScreen({super.key, required this.bookmarkArticleItemModel});
 
   @override
-  State<ArticleDetailsScreen> createState() => _ArticleDetailsScreenState();
+  State<BookmarkArticleDetailsScreen> createState() => _BookmarkArticleDetailsScreenState();
 }
 
-class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
+class _BookmarkArticleDetailsScreenState extends State<BookmarkArticleDetailsScreen> {
 
   final BookMarkController bookMarkController = BookMarkController();
-  late String userId;
-  ProfileController profileController = Get.find<ProfileController>();
+  
 
   bool isBookmarked = false; // Track whether the article is bookmarked or not
 
-  @override
-  void initState() {
-    super.initState();
-    userId = profileController.profileData!.sId!;
-    // Check if the article is already bookmarked
-    
-  }
+  
 
   @override
   Widget build(BuildContext context) {
-    String? isoDate = widget.articleModel.publishedAt;
+    String? isoDate = widget.bookmarkArticleItemModel.reference?.publishedAt;
     DateTime parsedDate = DateTime.parse(isoDate!);
     String readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
 
@@ -54,7 +43,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
-                        context, ArticleDetailsScreen.routeName);
+                        context, BookmarkArticleDetailsScreen.routeName);
                   },
                   child: Container(
                     height: 200.h,
@@ -89,7 +78,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                               setState(() {
                                 isBookmarked = !isBookmarked;
                               });
-                              bookmark(userId, '${widget.articleModel.sId}');
+                             
                             },
                             child: CircleAvatar(
                               radius: 21.r,
@@ -110,11 +99,11 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                 ),
               ),
               Text(
-                '${widget.articleModel.title}',
+                '${widget.bookmarkArticleItemModel.reference?.title}',
                 style: GoogleFonts.poppins(fontSize: 16),
               ),
               Text(
-                'Author: ${widget.articleModel.author}',
+                'Author: ${widget.bookmarkArticleItemModel.reference?.author}',
                 style: GoogleFonts.poppins(fontSize: 12.sp),
               ),
               heightBox4,
@@ -162,17 +151,5 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
     );
   }
 
-  Future<void> bookmark(String user, String reference) async {
-    final bool isSuccess = await bookMarkController.addBookmark(user, reference, 'Article');
-
-    if (isSuccess) {
-      if (mounted) {
-        showSnackBarMessage(context, 'Bookmark ${isBookmarked ? 'added' : 'removed'}');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context, bookMarkController.errorMessage!, true);
-      }
-    }
-  }
+ 
 }

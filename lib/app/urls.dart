@@ -22,6 +22,8 @@ class Urls {
   static const String contentUrl = '$_baseUrl/contents'; 
   static const String bookmarkUrl = '$_baseUrl/content-bookmarks'; 
   static const String bookingSessionUrl = '$_baseUrl/bookings'; 
+  static const String bookmarkArticleUrl = '$_baseUrl/content-bookmarks/my-bookmarks'; 
+
    
 
 
@@ -41,6 +43,12 @@ class Urls {
     String id,
   ) {
     return '$_baseUrl/articles/$id';
+  }
+
+  static String bookmarkarticleUrlsById(
+    String id,
+  ) {
+    return '$_baseUrl/content-bookmarks/$id';
   }
 
     static String podcastUrlsById(
