@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
 import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_letter_screen.dart';
+import 'package:antoinette/app/modules/order/views/order_bar.dart';
 import 'package:antoinette/app/modules/profile/controllers/content_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/views/account_screen.dart';
@@ -13,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../common/views/notification_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile-screen';
@@ -58,7 +61,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ProfileDrawerFeature(
                     feature: 'My Orders',
                     icon: Icons.shopping_bag,
-                    ontap: () {},
+                    ontap: () {
+                        Navigator.pushNamed(context, OrderBarScreen.routeName);
+                    },
                   ),
                   ProfileDrawerFeature(
                     feature: 'History',
@@ -101,7 +106,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ProfileDrawerFeature(
                     feature: 'Notification',
                     icon: Icons.notifications,
-                    ontap: () {},
+                    ontap: () {
+                       Navigator.pushNamed(context, NotificationScreen.routeName);
+                    },
                   ),
                   heightBox8,
                   Text(

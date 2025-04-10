@@ -82,7 +82,7 @@ class AllSessionSlotByIdController extends GetxController {
   }
 
   // Get the available time slots for the selected date
-  List<String> getTimeSlotsForSelectedDate() {
+  List<String> getTimeSlotsForSelectedDate(DateTime dateTime) {
     if (_selectedDate == null) return [];
 
     List<String> timeSlots = [];

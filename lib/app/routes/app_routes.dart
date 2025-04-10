@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/common/views/notification_screen.dart';
 import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
@@ -23,6 +24,7 @@ import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/letters/views/bookmarks/bookmark_letter_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
+import 'package:antoinette/app/modules/order/views/order_bar.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_datails_screen.dart';
@@ -48,6 +50,8 @@ class AppRoutes {
 
     // Onboarding section
     OnboardingScreen.routeName: (context) => const OnboardingScreen(),
+    NotificationScreen.routeName: (context) => const NotificationScreen(),
+    OrderBarScreen.routeName: (context) => const OrderBarScreen(),
 
     // Authentication section
     SignInScreen.routeName: (context) => const SignInScreen(),
@@ -91,7 +95,14 @@ class AppRoutes {
         productModel: args,
       );
     },
-    CheckOutScreen.routeName: (context) => const CheckOutScreen(),
+
+    CheckOutScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
+      return CheckOutScreen(
+        productModel: args,
+      );
+    },
+    // CheckOutScreen.routeName: (context) => const CheckOutScreen(),
 
     // Session Section
     SessionDetailsScreen.routeName: (context) {

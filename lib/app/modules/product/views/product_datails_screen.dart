@@ -1,7 +1,5 @@
-import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
-import 'package:antoinette/app/modules/product/widgets/policy_custom_row.dart';
 import 'package:antoinette/app/modules/product/widgets/see_more_button.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
@@ -23,7 +21,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   bool _isExpandedProduct = false;
-  bool _isExpandedPolicy = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -214,8 +212,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Text('\$${widget.productModel.amount}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: SizedBox(
@@ -223,7 +226,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           height: 42.h,
                           child: GradientElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, CheckOutScreen.routeName);
+                                Navigator.pushNamed(context, CheckOutScreen.routeName,arguments: widget.productModel);
                               }, text: 'Buy now'),
                         ),
                       ),

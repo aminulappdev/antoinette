@@ -21,6 +21,7 @@ class Urls {
   static const String allCheckInUrl = '$_baseUrl/check-in'; 
   static const String contentUrl = '$_baseUrl/contents'; 
   static const String bookmarkUrl = '$_baseUrl/content-bookmarks'; 
+  static const String bookingSessionUrl = '$_baseUrl/bookings'; 
    
 
 

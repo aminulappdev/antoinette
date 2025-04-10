@@ -7,7 +7,6 @@ import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -23,14 +22,19 @@ class ArticleDetailsScreen extends StatefulWidget {
 class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
 
   final BookMarkController bookMarkController = BookMarkController();
-   late String userId;
+  late String userId;
   ProfileController profileController = Get.find<ProfileController>();
+
+  bool isBookmarked = false; // Track whether the article is bookmarked or not
 
   @override
   void initState() {
-    userId = profileController.profileData!.sId!;
     super.initState();
+    userId = profileController.profileData!.sId!;
+    // Check if the article is already bookmarked
+    
   }
+
   @override
   Widget build(BuildContext context) {
     String? isoDate = widget.articleModel.publishedAt;
@@ -56,7 +60,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(AssetsPath.womenBookRead),fit: BoxFit.fill),
+                            image: AssetImage(AssetsPath.womenBookRead), fit: BoxFit.fill),
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(
                       padding: EdgeInsets.all(12.0.h),
@@ -80,15 +84,21 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              bookmark('${widget.articleModel.sId}',userId);
+                              // Toggle the bookmark status
+                              setState(() {
+                                isBookmarked = !isBookmarked;
+                              });
+                              bookmark(userId, '${widget.articleModel.sId}');
                             },
                             child: CircleAvatar(
                               radius: 21.r,
                               backgroundColor:
                                   Color(0xff000000).withOpacity(0.1),
                               child: Icon(
-                                Icons.favorite_border_sharp,
-                                color: Colors.white,
+                                isBookmarked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border_sharp,
+                                color: isBookmarked ? Colors.red : Colors.white,
                               ),
                             ),
                           ),
@@ -151,28 +161,17 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
     );
   }
 
-   Future<void> bookmark(String user, String reference) async {
-   
-      final bool isSuccess =
-          await bookMarkController.addBookmark(user,reference,'Article');
+  Future<void> bookmark(String user, String reference) async {
+    final bool isSuccess = await bookMarkController.addBookmark(user, reference, 'Article');
 
-      if (isSuccess) {
-        if (mounted) {
-          showSnackBarMessage(context, 'Contact added');
-        
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, bookMarkController.errorMessage!, true);
-          }
-        }
-      } else {
-        if (mounted) {
-          // print('Error show ----------------------------------');
-          showSnackBarMessage(
-              context, bookMarkController.errorMessage!, true);
-        }
-      
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Bookmark ${isBookmarked ? 'added' : 'removed'}');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, bookMarkController.errorMessage!, true);
+      }
     }
   }
 }

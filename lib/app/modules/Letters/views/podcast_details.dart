@@ -1,17 +1,20 @@
+import 'package:antoinette/app/modules/letters/controllers/bookmark_controller.dart';
 import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
 import 'package:antoinette/app/modules/letters/views/player_widget.dart';
+import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class PodcastDetailsScreen extends StatefulWidget {
   final PodcastModel podcastModel;
   static const String routeName = '/podcast-details-screen';
-
   const PodcastDetailsScreen({super.key, required this.podcastModel});
 
   @override
@@ -19,11 +22,18 @@ class PodcastDetailsScreen extends StatefulWidget {
 }
 
 class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
+
+  final BookMarkController bookMarkController = BookMarkController();
+  late String userId;
+  ProfileController profileController = Get.find<ProfileController>();
   late AudioPlayer player;
+   bool isBookmarked = false; // Track whether the article is bookmarked or not
+  
 
   @override
   void initState() {
     super.initState();
+    userId = profileController.profileData!.sId!;
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
     player.setSource(UrlSource( widget.podcastModel.fileLink ?? ''));
@@ -58,11 +68,21 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                     setState(() {
+                                isBookmarked = !isBookmarked;
+                              });
+                              bookmark(userId, '${widget.podcastModel.sId}');
+                    },
                     child: CircleAvatar(
                       radius: 21.r,
                       backgroundColor: const Color(0xff000000).withOpacity(0.1),
-                      child: const Icon(Icons.favorite_border_sharp, color: Colors.white),
+                      child:Icon(
+                                isBookmarked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border_sharp,
+                                color: isBookmarked ? Colors.red : Colors.white,
+                              ),
                     ),
                   )
                 ],
@@ -105,6 +125,20 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
         ),
       ),
     );
+  }
+
+   Future<void> bookmark(String user, String reference) async {
+    final bool isSuccess = await bookMarkController.addBookmark(user, reference, 'Podcast');
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Bookmark added');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, bookMarkController.errorMessage!, true);
+      }
+    }
   }
 
   @override

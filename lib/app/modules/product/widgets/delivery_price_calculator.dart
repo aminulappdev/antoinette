@@ -19,7 +19,7 @@ class DeliveryPriceCalulator extends StatelessWidget {
     required this.minusTap,
     required this.plusTap,
   });
-
+ 
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -29,33 +29,51 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16.r),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Visibility(
-            visible: !showBackButton,
-            replacement: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {          
-                    pageController.previousPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Color.fromARGB(162, 243, 213, 248),
-                    radius: 24.r,
-                    child: Icon(
-                      Icons.arrow_back,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Visibility(
+              visible: !showBackButton,
+              replacement: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {          
+                      pageController.previousPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Color.fromARGB(162, 243, 213, 248),
+                      radius: 24.r,
+                      child: Icon(
+                        Icons.arrow_back,
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+                    },
+                    child: Text(
+                      'Skip',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        color: AppColors.iconButtonThemeColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+                      Navigator.pushNamed(context, SignInScreen.routeName);
                   },
                   child: Text(
                     'Skip',
@@ -66,46 +84,30 @@ class OnboardingPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],
-            ),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                    Navigator.pushNamed(context, SignInScreen.routeName);
-                },
-                child: Text(
-                  'Skip',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16.sp,
-                    color: AppColors.iconButtonThemeColor,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
               ),
             ),
-          ),
-          heightBox100,
-          heightBox24,
-          Text(
-              title,
-              style: TextStyle(
-                  fontFamily: 'Cormorant Garamond', fontSize: 40.sp),
-              textAlign: TextAlign.center,
+            heightBox100,
+            heightBox24,
+            Text(
+                title,
+                style: TextStyle(
+                    fontFamily: 'Cormorant Garamond', fontSize: 40.sp),
+                textAlign: TextAlign.center,
+              ),
+        
+            heightBox12,
+            Visibility(
+              visible: !onBoardingRow,
+              replacement: BulletPointsWidget(),
+              child: Text(
+                subtitle,
+                style: TextStyle(
+                    fontFamily: 'Flatlion Personal', fontSize: 60.sp),
+                textAlign: TextAlign.center,
+              ),
             ),
-
-          heightBox12,
-          Visibility(
-            visible: !onBoardingRow,
-            replacement: BulletPointsWidget(),
-            child: Text(
-              subtitle,
-              style: TextStyle(
-                  fontFamily: 'Flatlion Personal', fontSize: 60.sp),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

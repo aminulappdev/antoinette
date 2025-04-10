@@ -40,7 +40,7 @@ class _ToggleButtonState extends State<ToggleButton> {
         width: 49.w,
         height: 28.h,
         decoration: BoxDecoration(
-          color: AppColors.iconButtonThemeColor,
+          color: _isToggled ? AppColors.iconButtonThemeColor : Colors.grey, // Grey when unselected
           borderRadius: BorderRadius.circular(100),
         ),
         child: Stack(
@@ -50,7 +50,7 @@ class _ToggleButtonState extends State<ToggleButton> {
               curve: Curves.easeInOut,
               left: _isToggled ? 24 : 2,
               top: 2,
-              child:  CircleAvatar(
+              child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 12.r,
               ),
