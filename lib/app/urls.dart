@@ -23,7 +23,10 @@ class Urls {
   static const String bookmarkUrl = '$_baseUrl/content-bookmarks'; 
   static const String bookingSessionUrl = '$_baseUrl/bookings'; 
   static const String bookmarkArticleUrl = '$_baseUrl/content-bookmarks/my-bookmarks'; 
-
+  static const String addDiariesUrl = '$_baseUrl/dear-dairies'; 
+  static const String setJournalKeyUrl = '$_baseUrl/journal-key/add-key'; 
+  static const String changeJournalKeyUrl = '$_baseUrl/journal-key/change-key'; 
+  static const String accessJournalKeyUrl = '$_baseUrl/journal-key/access-journal'; 
    
 
 
@@ -45,7 +48,7 @@ class Urls {
     return '$_baseUrl/articles/$id';
   }
 
-  static String bookmarkarticleUrlsById(
+  static String bookmarkContentUrlsById(
     String id,
   ) {
     return '$_baseUrl/content-bookmarks/$id';

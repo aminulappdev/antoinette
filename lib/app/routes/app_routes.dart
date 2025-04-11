@@ -1,7 +1,11 @@
 
 import 'package:antoinette/app/modules/bookmark/model/bookmark_article_details_model.dart';
+import 'package:antoinette/app/modules/bookmark/model/bookmark_podcast_details_model.dart';
 import 'package:antoinette/app/modules/bookmark/views/bookmark_article_details_page.dart';
+import 'package:antoinette/app/modules/bookmark/views/bookmark_podcast_details_screen.dart';
 import 'package:antoinette/app/modules/common/views/notification_screen.dart';
+import 'package:antoinette/app/modules/dear_diary/views/change_password_screen.dart';
+import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
 import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
 
@@ -126,6 +130,8 @@ class AppRoutes {
     // Dear Diary Section
     DearDiaryScreen.routeName: (context) => const DearDiaryScreen(),
     AddDiaryScreen.routeName: (context) => const AddDiaryScreen(),
+    SetJournalPasswordScreen.routeName: (context) => const SetJournalPasswordScreen(),
+    ChangeJournalPasswordScreen.routeName: (context) => const ChangeJournalPasswordScreen(),
 
     // Therapy Section
     HealingNoteScreen.routeName: (context) => const HealingNoteScreen(),
@@ -145,7 +151,7 @@ class AppRoutes {
 
     // ignore: equal_keys_in_map
     BookmarkArticleDetailsScreen.routeName: (context) {
-      final args = ModalRoute.of(context)!.settings.arguments as BookmarkArticleItemModel;
+      final args = ModalRoute.of(context)!.settings.arguments as BookmarkArticleDetailsItemModel;
       return BookmarkArticleDetailsScreen(
         bookmarkArticleItemModel: args,
       );
@@ -155,6 +161,13 @@ class AppRoutes {
       final args = ModalRoute.of(context)!.settings.arguments as PodcastModel;
       return PodcastDetailsScreen(
         podcastModel: args,
+      );
+    },
+
+    BookMarkPodcastDetailsScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as BookmarkPodcastDetailsItemModel;
+      return BookMarkPodcastDetailsScreen(
+        bookmarkPodcastDetailsItemModel: args,
       );
     },
 

@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/Letters/controllers/all_bookmark_item_controller.dart';
+import 'package:antoinette/app/modules/bookmark/model/all_bookmark_article_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
@@ -20,7 +20,7 @@ class BookmarkArticlesController extends GetxController {
   List<AllBookmarkArticleItemModel> bookmarkarticlesList = [];
   List<AllBookmarkArticleItemModel> get bookmarkArticleList => bookmarkarticlesList;
 
-  final int _limit = 10;
+  final int _limit = 4;
   int page = 0;
   String modeType = 'Article';
 

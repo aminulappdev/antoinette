@@ -1,32 +1,30 @@
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_controller.dart';
-import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
+import 'package:antoinette/app/modules/bookmark/model/bookmark_podcast_details_model.dart';
 import 'package:antoinette/app/modules/letters/views/player_widget.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
-class PodcastDetailsScreen extends StatefulWidget {
-  final PodcastModel podcastModel;
-  static const String routeName = '/podcast-details-screen';
-  const PodcastDetailsScreen({super.key, required this.podcastModel});
+class BookMarkPodcastDetailsScreen extends StatefulWidget {
+   final BookmarkPodcastDetailsItemModel bookmarkPodcastDetailsItemModel;
+  static const String routeName = '/bookmark-podcast-details-screen';
+  const BookMarkPodcastDetailsScreen({super.key, required this.bookmarkPodcastDetailsItemModel});
 
   @override
-  State<PodcastDetailsScreen> createState() => _PodcastDetailsScreenState();
+  State<BookMarkPodcastDetailsScreen> createState() => _BookMarkPodcastDetailsScreenState();
 }
 
-class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
+class _BookMarkPodcastDetailsScreenState extends State<BookMarkPodcastDetailsScreen> {
   final BookMarkController bookMarkController = BookMarkController();
   late String userId;
   ProfileController profileController = Get.find<ProfileController>();
   late AudioPlayer player;
-  bool isBookmarked = false; // Track whether the article is bookmarked or not
+  bool isBookmarked = false;
 
   @override
   void initState() {
@@ -34,14 +32,14 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
     userId = profileController.profileData!.sId!;
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
-    player.setSource(UrlSource(widget.podcastModel.fileLink ?? ''));
+    player.setSource(UrlSource(widget.bookmarkPodcastDetailsItemModel.reference?.fileLink ?? ''));
   }
 
   @override
   Widget build(BuildContext context) {
-    String? isoDate = widget.podcastModel.publishedAt;
-    DateTime parsedDate = DateTime.parse(isoDate!);
-    String readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
+    // String? isoDate = widget.bookmarkPodcastModel.publishedAt;
+    // DateTime parsedDate = DateTime.parse(isoDate!);
+    // String readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
 
     return SafeArea(
       child: Scaffold(
@@ -62,25 +60,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                       backgroundColor: const Color(0xff000000).withOpacity(0.1),
                       child: const Icon(Icons.arrow_back, color: Colors.white),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isBookmarked = !isBookmarked;
-                      });
-                      bookmark(userId, '${widget.podcastModel.sId}');
-                    },
-                    child: CircleAvatar(
-                      radius: 21.r,
-                      backgroundColor: const Color(0xff000000).withOpacity(0.1),
-                      child: Icon(
-                        isBookmarked
-                            ? Icons.favorite
-                            : Icons.favorite_border_sharp,
-                        color: isBookmarked ? Colors.red : Colors.white,
-                      ),
-                    ),
-                  )
+                  ),             
                 ],
               ),
               heightBox16,
@@ -97,7 +77,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
               ),
               heightBox8,
               Text(
-                widget.podcastModel.title ?? '',
+                 widget.bookmarkPodcastDetailsItemModel.reference?.title ?? '',
                 style: GoogleFonts.poppins(fontSize: 15.sp),
               ),
               heightBox12,
@@ -105,13 +85,13 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Author: ${widget.podcastModel.author ?? ''}',
+                    'Author: ${widget.bookmarkPodcastDetailsItemModel.reference?.author ?? ''}',
                     style: GoogleFonts.poppins(fontSize: 12.sp),
                   ),
-                  Text(
-                    'Published Date: $readableDate',
-                    style: GoogleFonts.poppins(fontSize: 12.sp),
-                  ),
+                  // Text(
+                  //   'Published Date: $readableDate',
+                  //   style: GoogleFonts.poppins(fontSize: 12.sp),
+                  // ),
                 ],
               ),
               heightBox30,
@@ -123,24 +103,5 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
     );
   }
 
-  Future<void> bookmark(String user, String reference) async {
-    final bool isSuccess =
-        await bookMarkController.addBookmark(user, reference, 'Podcast');
-
-    if (isSuccess) {
-      if (mounted) {
-        showSnackBarMessage(context, 'Bookmark added');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context, bookMarkController.errorMessage!, true);
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    player.dispose();
-    super.dispose();
-  }
+ 
 }

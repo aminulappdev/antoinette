@@ -1,26 +1,23 @@
-import 'package:antoinette/app/modules/bookmark/model/bookmark_article_details_model.dart';
+import 'package:antoinette/app/modules/bookmark/model/bookmark_podcast_details_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class BookmarkArticleDetailsController extends GetxController {
+class BookmarkPodcastDetailsController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  String? _accessToken; 
-  String? get accessToken => _accessToken;
- 
-  BookmarkArticleDetalsModel? articlesDetailsModel;
-  BookmarkArticleDetailsItemModel? get bookmarkArticleModel => articlesDetailsModel?.data;
+  BookmarkPodcastDetailsModel? bookmarkPodcastDetailsModel;
+  BookmarkPodcastDetailsItemModel? get bookmarkPodcastModel => bookmarkPodcastDetailsModel?.data;
 
   int? lastPage;
 
-  Future<bool> getBookmarkArticleDetails(String id) async {
+  Future<bool> getBookmarkPodcastDetails(String id) async {
    
     bool isSuccess = false; 
 
@@ -33,8 +30,8 @@ class BookmarkArticleDetailsController extends GetxController {
    
     print('response data is : ${response.responseData}');
 
-    articlesDetailsModel = BookmarkArticleDetalsModel.fromJson(response.responseData);
-   
+    bookmarkPodcastDetailsModel = BookmarkPodcastDetailsModel.fromJson(response.responseData);
+    print('my id is : $id\nmy data is ${BookmarkPodcastDetailsModel.fromJson(response.responseData).data?.reference?.title}');
 
     if (response.isSuccess) {
       _errorMessage = null;

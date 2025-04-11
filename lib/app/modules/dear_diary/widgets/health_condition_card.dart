@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HealthConditionCard extends StatelessWidget {
+  final bool isBlur;
   final Color themeColor;
   final String iconPath;
   final String status;
@@ -22,6 +25,7 @@ class HealthConditionCard extends StatelessWidget {
     required this.lockOntap,
     required this.moreHorizOntap,
     required this.themeColor,
+    required this.isBlur,
   });
 
   @override
@@ -66,40 +70,38 @@ class HealthConditionCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  width: 130.w,
+                  width: 150.w,
                 ),
-                Icon(
-                  Icons.lock_outline_rounded,
-                  size: 26.h,
+                InkWell(
+                  onTap: lockOntap,
+                  child: Icon(
+                    isBlur == true
+                        ? Icons.lock_outline_rounded
+                        : Icons.lock_open_outlined,
+                    size: 26.h,
+                  ),
                 ),
                 SizedBox(
                   width: 12.w,
                 ),
-                Container(
-                    height: 26.h,
-                    width: 26.h,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(100)),
-                    child: Center(
-                        child: Icon(
-                      Icons.more_horiz,
-                      size: 24.sp,
-                    ))),
               ],
             ),
             heightBox8,
-             Text(
-              description,
-              style: TextStyle(
-                fontFamily: 'Caveat',
-                fontSize: 14.sp,
-                decoration: TextDecoration.underline,
+            ImageFiltered(
+              imageFilter: isBlur == true
+                  ? ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0)
+                  : ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
+              child: Text(
+                description,
+                style: TextStyle(
+                  fontFamily: 'Caveat',
+                  fontSize: 14.sp,
+                  decoration: TextDecoration.underline,
+                ),
+                textScaleFactor: 1.25,
+                textAlign: TextAlign.justify,
               ),
-              textScaleFactor: 1.25,
-              textAlign: TextAlign.justify,
             ),
-          
           ],
         ),
       ),

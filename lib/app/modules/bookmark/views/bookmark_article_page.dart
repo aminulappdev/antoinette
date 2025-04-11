@@ -18,8 +18,10 @@ class BookmarkArticleScreen extends StatefulWidget {
 class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
   BookmarkArticleDetailsController bookmarkArticleDetailsController =
       BookmarkArticleDetailsController();
+
   BookmarkArticlesController bookmarkArticlesController =
       Get.find<BookmarkArticlesController>();
+
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -61,7 +63,7 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
                       padding: EdgeInsets.symmetric(vertical: 2.h),
                       child: InkWell(
                         onTap: () {
-                          getArticleScreen(
+                          getBookmarkArticleScreen(
                               '${controller.bookmarkArticleList[index].sId}');
                         },
                         child: Container(
@@ -72,27 +74,34 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
                                   image: AssetImage(AssetsPath.womenBookRead)),
                               borderRadius: BorderRadius.circular(20)),
                           child: Padding(
-                            padding: EdgeInsets.all(12.0.h),
+                            padding: EdgeInsets.all(20.0.h),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  height: 27.h,
-                                  width: 82.w,
+                                  width: 200.w,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: const Color.fromARGB(
                                           222, 255, 255, 255)),
-                                  child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      width: 50,
                                       child: Text(
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        '${controller.bookmarkArticleList[index].reference?.title}',
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 10.sp),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                               
+                                Text(
                                     '${controller.bookmarkArticleList[index].reference?.title}',
-                                    style: GoogleFonts.poppins(fontSize: 10.sp),
-                                  )),
-                                ),
-                                SizedBox(
-                                  height: 120.h,
-                                ),
-                                Text('${controller.bookmarkArticleList[index].reference?.title}',
                                     style: GoogleFonts.poppins(
                                         fontSize: 16.sp, color: Colors.white))
                               ],
@@ -111,17 +120,20 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
     );
   }
 
-  Future<void> getArticleScreen(String id) async {
+  Future<void> getBookmarkArticleScreen(String id) async {
     final bool isSuccess =
         await bookmarkArticleDetailsController.getBookmarkArticleDetails(id);
 
     if (isSuccess) {
       if (mounted) {
         print('my data ..............................');
-        print('${bookmarkArticleDetailsController.articleModel?.reference?.title}');
-        print('${bookmarkArticleDetailsController.articleModel}');
+        print(
+            '${bookmarkArticleDetailsController.bookmarkArticleModel?.reference?.title}');
+        print(
+            '${bookmarkArticleDetailsController.bookmarkArticleModel?.reference?.description}');
+
         Navigator.pushNamed(context, BookmarkArticleDetailsScreen.routeName,
-            arguments: bookmarkArticleDetailsController.articleModel);
+            arguments: bookmarkArticleDetailsController.bookmarkArticleModel);
       } else {
         if (mounted) {
           showSnackBarMessage(

@@ -1,17 +1,17 @@
-class BookmarkArticleDetalsModel {
+class BookmarkPodcastDetailsModel {
   bool? success;
-  int? statusCode; 
+  int? statusCode;
   String? message;
-  BookmarkArticleDetailsItemModel? data;
+  BookmarkPodcastDetailsItemModel? data;
 
-  BookmarkArticleDetalsModel(
+  BookmarkPodcastDetailsModel(
       {this.success, this.statusCode, this.message, this.data});
 
-  BookmarkArticleDetalsModel.fromJson(Map<String, dynamic> json) {
+  BookmarkPodcastDetailsModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    data = json['data'] != null ? BookmarkArticleDetailsItemModel.fromJson(json['data']) : null;
+    data = json['data'] != null ? BookmarkPodcastDetailsItemModel.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -26,7 +26,7 @@ class BookmarkArticleDetalsModel {
   }
 }
 
-class BookmarkArticleDetailsItemModel {
+class BookmarkPodcastDetailsItemModel {
   String? sId;
   User? user;
   String? modeType;
@@ -35,7 +35,7 @@ class BookmarkArticleDetailsItemModel {
   String? updatedAt;
   int? iV;
 
-  BookmarkArticleDetailsItemModel(
+  BookmarkPodcastDetailsItemModel(
       {this.sId,
       this.user,
       this.modeType,
@@ -44,7 +44,7 @@ class BookmarkArticleDetailsItemModel {
       this.updatedAt,
       this.iV});
 
-  BookmarkArticleDetailsItemModel.fromJson(Map<String, dynamic> json) {
+  BookmarkPodcastDetailsItemModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     modeType = json['modeType'];
@@ -113,10 +113,13 @@ class User {
 class Reference {
   String? sId;
   String? title;
+  int? episodeNumber;
   String? category;
   String? thumbnail;
-  String? description;
   String? author;
+  String? duration;
+  String? fileLink;
+  String? embedLink;
   String? status;
   String? publishedAt;
   bool? isDeleted;
@@ -127,10 +130,13 @@ class Reference {
   Reference(
       {this.sId,
       this.title,
+      this.episodeNumber,
       this.category,
       this.thumbnail,
-      this.description,
       this.author,
+      this.duration,
+      this.fileLink,
+      this.embedLink,
       this.status,
       this.publishedAt,
       this.isDeleted,
@@ -141,10 +147,13 @@ class Reference {
   Reference.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
+    episodeNumber = json['episodeNumber'];
     category = json['category'];
     thumbnail = json['thumbnail'];
-    description = json['description'];
     author = json['author'];
+    duration = json['duration'];
+    fileLink = json['fileLink'];
+    embedLink = json['embedLink'];
     status = json['status'];
     publishedAt = json['publishedAt'];
     isDeleted = json['isDeleted'];
@@ -157,10 +166,13 @@ class Reference {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['title'] = title;
+    data['episodeNumber'] = episodeNumber;
     data['category'] = category;
     data['thumbnail'] = thumbnail;
-    data['description'] = description;
     data['author'] = author;
+    data['duration'] = duration;
+    data['fileLink'] = fileLink;
+    data['embedLink'] = embedLink;
     data['status'] = status;
     data['publishedAt'] = publishedAt;
     data['isDeleted'] = isDeleted;

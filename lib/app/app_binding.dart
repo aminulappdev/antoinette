@@ -9,11 +9,16 @@ import 'package:antoinette/app/modules/authentication/controllers/reset_password
 import 'package:antoinette/app/modules/authentication/controllers/sign_in_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/verify_otp_controller.dart';
+import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/add_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/add_diaries_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/change_password_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/set_password_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_articles_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_podcast_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/poscast_details.dart';
@@ -61,6 +66,11 @@ class ControllerBinder extends Bindings {
     Get.put(BookMarkController());
     Get.put(BookmarkArticlesController());
     Get.put(BookmarkArticleDetailsController());
+    Get.put(AddDiariesController());
+    Get.put(SetJournalPasswordController());
+    Get.put(ChangeJournalPasswordController());
+    Get.put(AccessJournalPasswordController());
+    Get.put(BookmarkPodcastController());
 
   
     

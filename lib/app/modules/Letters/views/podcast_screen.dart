@@ -63,7 +63,7 @@ class _PodcastScreenState extends State<PodcastScreen> {
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: 4.h),
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () { 
                            getPodcastScreen('${controller.podcastList[index].sId}');
                           },
                           child: Container(
