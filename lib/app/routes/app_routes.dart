@@ -34,6 +34,7 @@ import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
+import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_datails_screen.dart';
@@ -124,7 +125,14 @@ class AppRoutes {
       );
     },
 
-    SessionFormScreen.routeName: (context) => const SessionFormScreen(),
+    SessionFormScreen.routeName: (context) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+      return SessionFormScreen(
+        slotData: args,
+      );
+    },
+   
     SessionScreen.routeName: (context) => const SessionScreen(),
 
     // Dear Diary Section
@@ -173,6 +181,9 @@ class AppRoutes {
 
     BookmarkScreen.routeName: (context) => const BookmarkScreen(),
     CheckInScreen.routeName: (context) => const CheckInScreen(),
+
+
+    SubscriptionScreen.routeName: (context) => const SubscriptionScreen(),
     
     AddCheckInScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as String;

@@ -1,26 +1,23 @@
-import 'package:antoinette/app/modules/product/model/product_details_model.dart';
+import 'package:antoinette/app/modules/payment/model/package_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class ProcuctDetailsController extends GetxController {
+class AllPackageController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  String? _accessToken; 
-  String? get accessToken => _accessToken;
-
-  ProductDetailsModel? productDetailsModel;
-  ProductModel? get productModel => productDetailsModel?.data;
+  PackageModel? packageModel;
+  List<PackageItemModel>? get packageItemList => packageModel?.data;
 
   int? lastPage;
 
-  Future<bool> getProductDetails(String id) async {
+  Future<bool> getAllPackage() async {
    
     bool isSuccess = false; 
 
@@ -29,13 +26,10 @@ class ProcuctDetailsController extends GetxController {
     update();
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.productUrlsById(id), accesToken: box.read('user-login-access-token'));
+        .getRequest(Urls.allPackageUrl, accesToken: box.read('user-login-access-token'));
    
-    print('response data is : ${response.responseData}');
-
-    productDetailsModel = ProductDetailsModel.fromJson(response.responseData);
-    print('my id is : $id\nmy data is ${ProductDetailsModel.fromJson(response.responseData).data?.name}');
-
+    packageModel = PackageModel.fromJson(response.responseData);
+    
     if (response.isSuccess) {
       _errorMessage = null;
       isSuccess = true;

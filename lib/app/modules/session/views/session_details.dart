@@ -81,11 +81,7 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                sessionDataModel: widget.sessionDataModel,   
                 ),
                 heightBox12,
-                GradientElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SessionFormScreen.routeName);
-                    },
-                    text: 'Book now')
+               
               ],
             ),
           ),

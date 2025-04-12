@@ -1,4 +1,3 @@
-import 'package:antoinette/app/modules/Letters/views/podcast_details.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmar_podcast_details_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
 import 'package:antoinette/app/modules/bookmark/views/bookmark_podcast_details_screen.dart';
@@ -64,7 +63,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
                       child: GestureDetector(
                         onTap: () {
                           getBookmarkPodcastScreen(
-                              '${controller.bookmarkPodcastList[index].reference?.sId}');
+                              '${controller.bookmarkPodcastList[index].sId}');
                           // getBookmarkPodcastScreen(
                           //     '67f7576f01987bd380ea973f');
                         },

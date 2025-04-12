@@ -22,6 +22,8 @@ import 'package:antoinette/app/modules/dear_diary/controllers/set_password_contr
 import 'package:antoinette/app/modules/letters/controllers/all_articles_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_podcast_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/poscast_details.dart';
+import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/article_details_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/product_details_controllers.dart';
@@ -71,6 +73,8 @@ class ControllerBinder extends Bindings {
     Get.put(ChangeJournalPasswordController());
     Get.put(AccessJournalPasswordController());
     Get.put(BookmarkPodcastController());
+    Get.put(SubscriptionController());
+    Get.put(AllPackageController());
 
   
     

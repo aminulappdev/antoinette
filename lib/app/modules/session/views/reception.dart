@@ -1,9 +1,9 @@
-import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/get_session_slotById_controller.dart';
 import 'package:antoinette/app/modules/session/model/session_details_model.dart';
+import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/show_snackBar_message.dart';
+import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,48 +19,45 @@ class Reception extends StatefulWidget {
 }
 
 class _ReceptionState extends State<Reception> {
-  late String userId;
+
+   Map<String,dynamic> slotData = {
+    'sessionId' : '',
+    'slotId' : '',
+    'therapyType': ''
+  };
+
   final BookingController bookingController = BookingController();
-  ProfileController profileController = Get.find<ProfileController>();
-  
-  // Therapy options and selected therapy
+
+
   String selectedTherapy = "Video Therapy";
   final List<String> therapyOptions = [
     "Video Therapy",
-    "In-Person Therapy",
     "Text Therapy",
   ];
 
-  // List of enabled dates from model
   List<DateTime> enabledDates = [];
-
-  // To keep track of selected time slot
   String? selectedTimeSlot;
   String? selectedSlotId;
-
-  // Initialize TableCalendar's selected date
   DateTime selectedDate = DateTime.now();
+  String? slotId;
 
   @override
   void initState() {
-
     super.initState();
-    userId = profileController.profileData!.sId!;
-    // Fetch session slots
+    
     Get.find<AllSessionSlotByIdController>()
         .getSessionById(widget.sessionDataModel.sId!)
         .then((_) {
       var controller = Get.find<AllSessionSlotByIdController>();
 
-      // Controller theke sessionListById theke valid dates nite hobe
       List<DateTime> validDates = [];
       controller.sessionListById?.forEach((sessionSlot) {
-        DateTime date = DateTime.parse(sessionSlot!.date!);
+        DateTime date = DateTime.parse(sessionSlot.date!);
         validDates.add(date);
       });
 
       setState(() {
-        enabledDates = validDates; // Update enabled dates list
+        enabledDates = validDates;
       });
     });
   }
@@ -72,35 +69,37 @@ class _ReceptionState extends State<Reception> {
         return Center(child: CircularProgressIndicator());
       }
 
-      // Fetch time slots for the selected date
-      List<String> availableTimeSlots = [];
-      if (controller.selectedDate != null) {
-        availableTimeSlots = controller.getTimeSlotsForSelectedDate(controller.selectedDate!);
-      }
+      Map<String, String> availableSlotMap =
+          controller.getSlotMapForSelectedDate(selectedDate);
 
       return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Therapy type selection
             Row(
               children: [
-                Text("Choose Therapy Type:", style: GoogleFonts.poppins(fontSize: 15.sp)),
+                Text("Choose Therapy Type:",
+                    style: GoogleFonts.poppins(fontSize: 15.sp)),
                 SizedBox(width: 10.h),
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     decoration: BoxDecoration(
-                      color: Color(0xFFF6ECE4), // Soft beige background
+                      color: Color(0xFFF6ECE4),
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         value: selectedTherapy,
                         isExpanded: true,
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.black54),
+                        icon:
+                            Icon(Icons.arrow_drop_down, color: Colors.black54),
                         items: therapyOptions.map((String option) {
-                          return DropdownMenuItem<String>(value: option, child: Text(option, style: GoogleFonts.poppins(fontSize: 12.sp)));
+                          return DropdownMenuItem<String>(
+                            value: option,
+                            child: Text(option,
+                                style: GoogleFonts.poppins(fontSize: 12.sp)),
+                          );
                         }).toList(),
                         onChanged: (String? newValue) {
                           setState(() {
@@ -114,8 +113,6 @@ class _ReceptionState extends State<Reception> {
               ],
             ),
             heightBox8,
-
-            // TableCalendar for date selection
             Text("Select Date:", style: GoogleFonts.poppins(fontSize: 15.sp)),
             heightBox8,
             TableCalendar(
@@ -127,8 +124,8 @@ class _ReceptionState extends State<Reception> {
                 setState(() {
                   selectedDate = selectedDay;
                   controller.updateSelectedDate(selectedDay);
-                  selectedTimeSlot = null; // Reset the time slot selection
-                  selectedSlotId = null; // Reset the slot ID
+                  selectedTimeSlot = null;
+                  selectedSlotId = null;
                 });
               },
               calendarStyle: CalendarStyle(
@@ -146,7 +143,6 @@ class _ReceptionState extends State<Reception> {
                 ),
               ),
               enabledDayPredicate: (day) {
-                // Enable only valid dates from the model
                 return enabledDates.any((date) =>
                     date.year == day.year &&
                     date.month == day.month &&
@@ -154,67 +150,52 @@ class _ReceptionState extends State<Reception> {
               },
             ),
             heightBox8,
-
-            // Time slot selection
-            Text("Select Date & Time:", style: GoogleFonts.poppins(fontSize: 15.sp)),
+              Text("Select Date & Time:",
+                          style: GoogleFonts.poppins(fontSize: 15.sp)),
+                      heightBox8,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: availableTimeSlots.map((timeSlot) {
+              children: availableSlotMap.entries.map((entry) {
+                String timeSlot = entry.key;
+                String slotId = entry.value;
+
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                   child: Row(
                     children: [
                       Radio<String>(
-                        value: timeSlot,
-                        groupValue: selectedTimeSlot, // Group value is based on the selected time slot
+                        value: slotId,
+                        groupValue: selectedSlotId,
                         onChanged: (String? value) {
                           setState(() {
-                            selectedTimeSlot = value; // Update the selected time slot
-                            selectedSlotId = value; // Assuming the slot ID matches the time slot value
-                            print('My slot id .....................');
+                            selectedSlotId = value;
+                            selectedTimeSlot = timeSlot;
+                            slotId = selectedSlotId!;
+                            print('Selected slot ID: $selectedSlotId');
                           });
                         },
                         activeColor: Colors.black,
                       ),
-                      Text(timeSlot, style: GoogleFonts.poppins(fontSize: 12.sp)),
+                      Text(timeSlot,
+                          style: GoogleFonts.poppins(fontSize: 12.sp)),
                     ],
                   ),
                 );
               }).toList(),
             ),
             heightBox8,
-
-            // Book session button
-            ElevatedButton(
-              onPressed: onTapToNextButton,
-              child: Text("Book Session", style: GoogleFonts.poppins(fontSize: 15.sp)),
-            ),
+            GradientElevatedButton(
+                onPressed: (){
+                  slotData['sessionId'] = widget.sessionDataModel.sId!;
+                  slotData['slotId'] = selectedSlotId!;
+                  slotData['therapyType'] = selectedTherapy;
+                  Navigator.pushNamed(context, SessionFormScreen.routeName, arguments: slotData);
+                }, text: 'Book now')
           ],
         ),
       );
     });
   }
 
-  Future<void> onTapToNextButton() async {
-    if (selectedDate == null || selectedTimeSlot == null || selectedSlotId == null) {
-      showSnackBarMessage(context, "Please select a valid date and time slot", true);
-      return;
-    }
-
-    final bool isSuccess = await bookingController.bookingSession(
-       userId, // Replace with the actual user ID
-      widget.sessionDataModel.sId!, // Using the session ID from the model
-      selectedSlotId!, // Slot ID will be selected time slot ID
-    );
-
-    if (isSuccess) {
-      if (mounted) {
-        showSnackBarMessage(context, 'Booking successful');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context, bookingController.errorMessage!, true);
-      }
-    }
-  }
+  
 }

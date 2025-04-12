@@ -14,7 +14,7 @@ class BookingController extends GetxController {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
-  Future<bool> bookingSession(String user, String sessionId, String slotId) async {
+  Future<bool> bookingSession(String user, String sessionId, String slotId, String therapyType, String mood) async {
     bool isSuccess = false;
 
     _inProgress = true;
@@ -24,11 +24,13 @@ class BookingController extends GetxController {
     Map<String, dynamic> requestBody = {
     "user": user,
     "session": sessionId,
-    "slot": slotId
+    "slot": slotId,
+    "therapyType" : therapyType,
+    "emotionState" : mood
 };
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.bookingSessionUrl, requestBody, accesToken: box.read('ser-login-access-token'));
+        .postRequest(Urls.bookingSessionUrl, requestBody, accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
       _errorMessage = null;

@@ -1,6 +1,6 @@
 class Urls {
-  // static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
-  static const String _baseUrl = 'https://488b-115-127-156-9.ngrok-free.app/api/v1';
+  static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
+  // static const String _baseUrl = 'https://488b-115-127-156-9.ngrok-free.app/api/v1';
   static const String signUp = '$_baseUrl/users/register';
   static const String verifOtp = '$_baseUrl/otp/verify-otp';
   static const String signIn = '$_baseUrl/auth/login';
@@ -27,6 +27,8 @@ class Urls {
   static const String setJournalKeyUrl = '$_baseUrl/journal-key/add-key'; 
   static const String changeJournalKeyUrl = '$_baseUrl/journal-key/change-key'; 
   static const String accessJournalKeyUrl = '$_baseUrl/journal-key/access-journal'; 
+  static const String allPackageUrl = '$_baseUrl/packages'; 
+  static const String subscriptionUrl = '$_baseUrl/subscriptions'; 
    
 
 
