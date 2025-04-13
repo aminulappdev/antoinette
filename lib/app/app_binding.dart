@@ -17,6 +17,7 @@ import 'package:antoinette/app/modules/contact/controllers/all_contact_controlle
 import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/add_diaries_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/all_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/change_password_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/set_password_controller.dart';
@@ -77,6 +78,7 @@ class ControllerBinder extends Bindings {
     Get.put(SubscriptionController());
     Get.put(AllPackageController());
     Get.put(GetDashboardController());
+    Get.put(AllDiariesController());
 
   
     

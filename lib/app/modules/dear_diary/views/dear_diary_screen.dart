@@ -1,5 +1,5 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
-import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/all_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/custom_pichart.dart';
@@ -28,15 +28,14 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
       AccessJournalPasswordController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
-  final GetDashboardController getDashboardController = Get.find<GetDashboardController>();
+  final AllDiariesController allDiariesController =
+      Get.find<AllDiariesController>();
+
   bool isBlurText = true;
-  String date = '2025-01';
 
   @override
   void initState() {
-    getDashboardController.getDashboard(date);
-    print('my date ..................................');
-    print(getDashboardController.getDashboard(date));
+    allDiariesController.getDiaryList();
     super.initState();
   }
 
@@ -102,37 +101,49 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomPiChart(),                         
+                        CustomPiChart(),
                         MentalStatusWidget(
-                          
                           toogleOntap: () {},
-                          anglePercent: '30%',
-                          angryPercent: '30%',
-                          happyPercent: '30%',
-                          musclePercent: '30%',
-                          sadPercent: '30%',
-                          tiredPercent: '30%',
                         )
                       ],
                     ),
                   ),
                 ),
                 heightBox8,
-                HealthConditionCard(
-                  isBlur: isBlurText,
-                  iconPath: AssetsPath.angle,
-                  status: 'HAPPY',
-                  day: 'Monday',
-                  time: '9:00 AM',
-                  description:
-                      'Today was a good day! The sun felt warm on my face, and I laughed so much with my friends. I want to remember this feeling—light, joyful, and full of possibility.',
-                  lockOntap: () {
-                    setState(() {
-                      isBlurText == false ? isBlurText = true : lockButton();
-                    });
-                  },
-                  moreHorizOntap: () {},
-                  themeColor: const Color(0xffD9A48E).withAlpha(20),
+                SizedBox(
+                  height: 600,
+                  child:
+                      GetBuilder<AllDiariesController>(builder: (controller) {
+                    if (controller.inProgress) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return ListView.builder(
+                      itemCount: controller.allDiaryList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4.h),
+                          child: HealthConditionCard(
+                            isBlur: isBlurText,
+                            iconPath: AssetsPath.angle,
+                            status: '${controller.allDiaryList[index].feelings}',
+                            day: 'Monday',
+                            time: '${controller.allDiaryList[index].time}',
+                            description:
+                                'Today was a good day! The sun felt warm on my face, and I laughed so much with my friends. I want to remember this feeling—light, joyful, and full of possibility.',
+                            lockOntap: () {
+                              setState(() {
+                                isBlurText == false
+                                    ? isBlurText = true
+                                    : lockButton();
+                              });
+                            },
+                            moreHorizOntap: () {},
+                            themeColor: const Color(0xffD9A48E).withAlpha(20),
+                          ),
+                        );
+                      },
+                    );
+                  }),
                 ),
               ],
             ),
@@ -166,7 +177,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                       return 'Enter password';
                     }
                     return null;
-                  },               
+                  },
                   decoration: InputDecoration(
                     hintText: '******',
                     hintStyle: TextStyle(color: Colors.grey),
@@ -202,15 +213,13 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
           showSnackBarMessage(context, 'Access granted');
         }
       } else {
-
         if (mounted) {
-           clearTextField();
+          clearTextField();
           showSnackBarMessage(context, 'Invalid password', true);
         }
       }
     }
   }
-  
 
   void clearTextField() {
     passwordController.clear();

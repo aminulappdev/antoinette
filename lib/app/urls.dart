@@ -30,6 +30,8 @@ class Urls {
   static const String allPackageUrl = '$_baseUrl/packages'; 
   static const String subscriptionUrl = '$_baseUrl/subscriptions'; 
   static const String dashboardUrl = '$_baseUrl/dear-dairies/dashboard-data'; 
+  static const String allDiarydUrl = '$_baseUrl/dear-dairies'; 
+
    
 
 

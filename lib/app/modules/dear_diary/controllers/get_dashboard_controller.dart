@@ -28,6 +28,8 @@ class GetDashboardController extends GetxController {
             accesToken: box.read('user-login-access-token'), queryParams: queryparam);
 
     dashboardModel = DashboardModel.fromJson(response.responseData);
+    print('Controller data ....................');
+    print('${dashboardModel!.data!.feelingsStatusData!.happy}');
 
     if (response.isSuccess) {
       _errorMessage = null;

@@ -1,42 +1,51 @@
+import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/status_card.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class MentalStatusWidget extends StatefulWidget {
   const MentalStatusWidget({
     super.key,
     required this.toogleOntap,
-    required this.happyPercent,
-    required this.angryPercent,
-    required this.sadPercent,
-    required this.anglePercent,
-    required this.tiredPercent,
-    required this.musclePercent,
   });
-  
+
   final VoidCallback toogleOntap;
-  final String happyPercent;
-  final String angryPercent;
-  final String sadPercent;
-  final String anglePercent;
-  final String tiredPercent;
-  final String musclePercent;
- 
 
   @override
   State<MentalStatusWidget> createState() => _MentalStatusWidgetState();
 }
 
 class _MentalStatusWidgetState extends State<MentalStatusWidget> {
+  String happyPercent = '0';
+  String angryPercent = '0';
+  String sadPercent = '0';
+  String anglePercent = '0';
+  String tiredPercent = '0';
+  String musclePercent = '0';
+  final GetDashboardController getDashboardController =
+      Get.find<GetDashboardController>();
   bool _isDropdownOpen = false;
   String _selectedMonth = 'January';
+
+  String currentYear = DateTime.now().year.toString();
+  String currentMonth = DateTime.now().month.toString().padLeft(2, '0');
+  String date = '2025-04';
 
   void _toggleDropdown() {
     setState(() {
       _isDropdownOpen = !_isDropdownOpen;
     });
+  }
+
+  @override
+  void initState() {
+    getDashboardController.getDashboard(date);
+    print('my date ..................................');
+
+    super.initState();
   }
 
   @override
@@ -115,7 +124,45 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
                           onTap: () {
                             setState(() {
                               _selectedMonth = month;
+                              if (_selectedMonth == 'January') {
+                                date = '$currentYear-01';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'February') {
+                                date = '$currentYear-02';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'March') {
+                                date = '$currentYear-03';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'April') {
+                                date = '$currentYear-04';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'May') {
+                                date = '$currentYear-05';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'June') {
+                                date = '$currentYear-06';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'July') {
+                                date = '$currentYear-07';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'August') {
+                                date = '$currentYear-08';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'September') {
+                                date = '$currentYear-09';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'October') {
+                                date = '$currentYear-10';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'November') {
+                                date = '$currentYear-11';
+                                getDashboardController.getDashboard(date);
+                              } else if (_selectedMonth == 'December') {
+                                date = '$currentYear-12';
+                                getDashboardController.getDashboard(date);
+                              }
                               _isDropdownOpen = false;
+                              print('Selecte date : $date');
                             });
                           },
                           child: Padding(
@@ -137,47 +184,69 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
             ),
           ],
           SizedBox(height: 12.h),
-          Row(
-            children: [
-              Column(
-                children: [
-                  StatusCard(
-                    percent: widget.sadPercent,
-                    emojiPath: AssetsPath.sad,
-                  ),
-                  SizedBox(height: 10.h),
-                  StatusCard(
-                    percent: widget.angryPercent,
-                    emojiPath: AssetsPath.angry,
-                  ),
-                  SizedBox(height: 10.h),
-                  StatusCard(
-                    percent: widget.musclePercent,
-                    emojiPath: AssetsPath.muscle,
-                  ),
-                ],
-              ),
-              SizedBox(width: 14.w),
-              Column(
-                children: [
-                  StatusCard(
-                    percent: widget.tiredPercent,
-                    emojiPath: AssetsPath.tired,
-                  ),
-                  SizedBox(height: 10.h),
-                  StatusCard(
-                    percent: widget.happyPercent,
-                    emojiPath: AssetsPath.happy,
-                  ),
-                  SizedBox(height: 10.h),
-                  StatusCard(
-                    percent: widget.anglePercent,
-                    emojiPath: AssetsPath.angle,
-                  ),
-                ],
-              )
-            ],
-          )
+          GetBuilder<GetDashboardController>(builder: (controller) {
+            if (controller.inProgress) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return Row(
+              children: [
+                Column(
+                  children: [
+                    StatusCard(
+                      percent: controller.dashboardData!.feelingsStatusData?.sad
+                              .toString() ??
+                          '0',
+                      emojiPath: AssetsPath.sad,
+                    ),
+                    SizedBox(height: 10.h),
+                    StatusCard(
+                      percent: controller
+                              .dashboardData!.feelingsStatusData?.angry
+                              .toString() ??
+                          '0',
+                      emojiPath: AssetsPath.angry,
+                    ),
+                    SizedBox(height: 10.h),
+                    StatusCard(
+                      percent: controller
+                              .dashboardData!.feelingsStatusData?.motivated
+                              .toString() ??
+                          '0',
+                      emojiPath: AssetsPath.muscle,
+                    ),
+                  ],
+                ),
+                SizedBox(width: 14.w),
+                Column(
+                  children: [
+                    StatusCard(
+                      percent: controller
+                              .dashboardData!.feelingsStatusData?.calm
+                              .toString() ??
+                          '0',
+                      emojiPath: AssetsPath.tired,
+                    ),
+                    SizedBox(height: 10.h),
+                    StatusCard(
+                      percent: controller
+                              .dashboardData!.feelingsStatusData?.happy
+                              .toString() ??
+                          '0',
+                      emojiPath: AssetsPath.happy,
+                    ),
+                    SizedBox(height: 10.h),
+                    StatusCard(
+                      percent: controller
+                              .dashboardData!.feelingsStatusData?.anxious
+                              .toString() ??
+                          '0',
+                      emojiPath: AssetsPath.angle,
+                    ),
+                  ],
+                )
+              ],
+            );
+          })
         ],
       ),
     );
