@@ -14,7 +14,6 @@ import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class DearDiaryScreen extends StatefulWidget {
   static const String routeName = '/dear-diary-screen';
@@ -103,8 +102,9 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomPiChart(),
+                        CustomPiChart(),                         
                         MentalStatusWidget(
+                          
                           toogleOntap: () {},
                           anglePercent: '30%',
                           angryPercent: '30%',

@@ -15,7 +15,7 @@ class MentalStatusWidget extends StatefulWidget {
     required this.tiredPercent,
     required this.musclePercent,
   });
-
+  
   final VoidCallback toogleOntap;
   final String happyPercent;
   final String angryPercent;
@@ -23,6 +23,7 @@ class MentalStatusWidget extends StatefulWidget {
   final String anglePercent;
   final String tiredPercent;
   final String musclePercent;
+ 
 
   @override
   State<MentalStatusWidget> createState() => _MentalStatusWidgetState();

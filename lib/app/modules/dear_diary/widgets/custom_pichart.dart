@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 // ignore: must_be_immutable
-class CustomPiChart extends StatelessWidget {
+class CustomPiChart extends StatelessWidget { 
    CustomPiChart({
     super.key,
     
