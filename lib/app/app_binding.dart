@@ -18,6 +18,7 @@ import 'package:antoinette/app/modules/contact/controllers/delete_contact_contro
 import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/add_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/change_password_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/set_password_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_articles_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_podcast_controller.dart';
@@ -75,6 +76,7 @@ class ControllerBinder extends Bindings {
     Get.put(BookmarkPodcastController());
     Get.put(SubscriptionController());
     Get.put(AllPackageController());
+    Get.put(GetDashboardController());
 
   
     

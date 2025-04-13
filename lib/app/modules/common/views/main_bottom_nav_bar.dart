@@ -32,7 +32,7 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
       shouldBackButton: false,
     ),
     const HealingNoteScreen(),
-   const SubscriptionScreen(),
+    const ProfileScreen(),
     const DearDiaryScreen()
   ];
   

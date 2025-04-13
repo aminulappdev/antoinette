@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/custom_pichart.dart';
@@ -12,6 +13,8 @@ import 'package:antoinette/app/widgets/search_bar_widget.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class DearDiaryScreen extends StatefulWidget {
   static const String routeName = '/dear-diary-screen';
@@ -26,7 +29,17 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
       AccessJournalPasswordController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
+  final GetDashboardController getDashboardController = Get.find<GetDashboardController>();
   bool isBlurText = true;
+  String date = '2025-01';
+
+  @override
+  void initState() {
+    getDashboardController.getDashboard(date);
+    print('my date ..................................');
+    print(getDashboardController.getDashboard(date));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,6 +210,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
       }
     }
   }
+  
 
   void clearTextField() {
     passwordController.clear();

@@ -29,6 +29,7 @@ class Urls {
   static const String accessJournalKeyUrl = '$_baseUrl/journal-key/access-journal'; 
   static const String allPackageUrl = '$_baseUrl/packages'; 
   static const String subscriptionUrl = '$_baseUrl/subscriptions'; 
+  static const String dashboardUrl = '$_baseUrl/dear-dairies/dashboard-data'; 
    
 
 
@@ -37,6 +38,8 @@ class Urls {
   ) {
     return '$_baseUrl/products/$id';
   }
+
+
 
   static String sessionUrlsById(
     String id,
