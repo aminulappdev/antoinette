@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+import 'package:antoinette/app/modules/product/controllers/product_order_controller.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/widgets/checkout_user_info.dart';
 import 'package:antoinette/app/modules/product/widgets/price_row.dart';
@@ -8,6 +9,7 @@ import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -23,32 +25,35 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
-  // Track the selected button (0: Home, 1: Office, 2: Delivery)
-  int selectedButtonIndex = 0;
-  String? address;
+  final ProductOrderController productOrderController =
+      ProductOrderController();
+  ProfileController profileController = Get.find<ProfileController>();
 
-  // List of button names for dynamic text change
+  int selectedButtonIndex = 0;
+  String deliveryAddress = '';
   final List<String> buttonNames = ['Home', 'Office', 'Delivery'];
   int quantity = 1;
-  double price = 0;
+
+  double price = 0.0;
   double totalPrice = 0;
+  double mainTotalPrice = 0;
   int discount = 0;
   int item = 1;
 
   @override
   void initState() {
-    Get.find<ProfileController>().getProfileData();
+    profileController.getProfileData();
+    deliveryAddress = profileController.profileData!.homeAddress!;
     price = widget.productModel.amount!;
     discount = widget.productModel.discount!;
-    //  price = 20;   
+    //  price = 20;
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    totalPrice = ( price + 50) * ((100 - discount)/100);
+    totalPrice = (price + 50) * ((100 - discount) / 100);
+    mainTotalPrice = double.parse(totalPrice.toStringAsFixed(2));
     return SafeArea(
       child: Scaffold(
         body: GetBuilder<ProfileController>(builder: (controller) {
@@ -81,12 +86,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               selectedButtonIndex =
                                   index; // Update selected button
                               if (selectedButtonIndex == 0) {
-                                address = controller.profileData!.homeAddress!;
+                                deliveryAddress = controller.profileData!.homeAddress!;
                               } else if (selectedButtonIndex == 1) {
-                                address =
+                                deliveryAddress =
                                     controller.profileData!.officeAddress!;
                               } else if (selectedButtonIndex == 2) {
-                                address =
+                                deliveryAddress =
                                     controller.profileData!.deliveryAddress!;
                               }
                             });
@@ -122,7 +127,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   SizedBox(
                     width: 170,
                     child: Text(
-                      address ?? controller.profileData!.homeAddress!,
+                      deliveryAddress ?? controller.profileData!.homeAddress!,
                       style: GoogleFonts.poppins(fontSize: 10.sp),
                     ),
                   ),
@@ -171,13 +176,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   Row(
                                     children: [
                                       GestureDetector(
-                                         onTap: () {
-                                          setState(() {                                         
-                                            if(quantity > 1){
-                                              double? minus = widget.productModel.amount;
+                                        onTap: () {
+                                          setState(() {
+                                            if (quantity > 1) {
+                                              double? minus =
+                                                  widget.productModel.amount;
                                               quantity--;
-                                              price = price - minus!;
-                                              item --;
+                                              price = double.parse(price
+                                                      .toStringAsFixed(2)) -
+                                                  double.parse(minus!
+                                                      .toStringAsFixed(2));
+                                              item--;
                                             }
                                           });
                                         },
@@ -196,11 +205,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       widthBox8,
                                       GestureDetector(
                                         onTap: () {
-                                          setState(() {                                         
-                                            if(widget.productModel.quantity! > quantity){
-                                              double? plus = widget.productModel.amount;
+                                          setState(() {
+                                            if (widget.productModel.quantity! >
+                                                quantity) {
+                                              double? plus =
+                                                  widget.productModel.amount;
                                               quantity++;
-                                              price = price + plus!;
+                                              price = double.parse(price
+                                                      .toStringAsFixed(2)) +
+                                                  double.parse(
+                                                      plus!.toStringAsFixed(2));
+                                              ;
                                               item++;
                                             }
                                           });
@@ -224,10 +239,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: SizedBox(
-                              width: 90,
                               child: Text(
                                 overflow: TextOverflow.ellipsis,
-                                price.toString(),
+                                double.parse(price.toStringAsFixed(2))
+                                    .toString(),
                                 style: GoogleFonts.poppins(fontSize: 20.sp),
                               ),
                             ),
@@ -252,7 +267,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   heightBox12,
                   PriceRow(
                     name: 'Price ($item item)',
-                    price: price.toString(),
+                    price: double.parse(price.toStringAsFixed(2)).toString(),
                     nameSize: 14,
                     priceSize: 14,
                   ),
@@ -264,7 +279,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     priceSize: 14,
                   ),
                   heightBox8,
-                   PriceRow(
+                  PriceRow(
                     name: 'Discount',
                     price: '20%',
                     nameSize: 14,
@@ -279,7 +294,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   heightBox12,
                   PriceRow(
                     name: 'Total Payment:',
-                    price: totalPrice.toString(),
+                    price: mainTotalPrice.toString(),
                     nameSize: 16,
                     priceSize: 16,
                   ),
@@ -304,8 +319,24 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             height: 42.h,
                             child: GradientElevatedButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context,
-                                      MainButtonNavbarScreen.routeName);
+                                  controller.profileData?.sId!;
+
+                                  '10';
+                                  controller.profileData?.name!;
+                                  '10-10-2024';
+                                  controller.profileData?.homeAddress!;
+                                  controller.profileData?.contactNumber!;
+                                  controller.profileData?.email!;
+
+                                  onTapToNextButton(
+                                    controller.profileData!.sId!,
+                                    '10',
+                                    controller.profileData!.name!,
+                                    '10-10-2024',
+                                    deliveryAddress,
+                                    controller.profileData?.contactNumber!,
+                                    controller.profileData?.email!,
+                                  );
                                 },
                                 text: 'Place order'),
                           ),
@@ -322,4 +353,45 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     );
   }
 
+  Future<void> onTapToNextButton(String userId, String deliveryCharge,
+      String billingName, String pickupDate,String adress, phoneNumber, email) async {
+    final bool isSuccess = await productOrderController.orderProduct(
+        widget.productModel.sId!,
+        quantity.toString(),
+        price.toString(),
+        totalPrice.toString(),
+        discount.toString(),
+        userId,
+        totalPrice.toString(),
+        deliveryCharge,
+        billingName,
+        pickupDate,
+        adress,
+        phoneNumber,
+        email);
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Login successfully done');
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          MainButtonNavbarScreen.routeName,
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, productOrderController.errorMessage!, true);
+        }
+      }
+    } else {
+      if (mounted) {
+        print('Error show ----------------------------------');
+        showSnackBarMessage(
+            context, productOrderController.errorMessage!, true);
+      }
+    }
+
+    // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+  }
 }

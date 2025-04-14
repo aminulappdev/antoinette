@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
+import 'package:antoinette/app/modules/common/views/notification_screen.dart';
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/home/models/grid_view_model.dart';
 import 'package:antoinette/app/modules/home/widgets/grid_feature.dart';
@@ -18,7 +19,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key}); 
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -65,116 +66,116 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(12.0.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HomePageHeader(
-                  circleText: 's',
-                  onTapNotification: () {},
-                  onTapPublic: () {},
-                ),
-                heightBox16,
-                GetBuilder<ProfileController>(
-                  builder: (controller) {
-                    return WelcomeTextHomePage(
-                      time: 'Morning',
-                      name: '${controller.profileData?.name} 👋',
-                    );
-                  }
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                  child: SizedBox(
-                    height: 290.h,
-                    child: GridView.builder(
-                      itemCount: 4,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 1.15,
-                          crossAxisSpacing: 24,
-                          mainAxisSpacing: 24,
-                          crossAxisCount: 2),
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, gridList[index].navigationPath,
-                                arguments: true);
-                          },
-                          child: GridFeature(
-                            icon: gridList[index].icon,
-                            title: gridList[index].title,
-                            subtitle: gridList[index].subtitle,
-                          ),
-                        );
-                      },
+          child: GetBuilder<ProfileController>(builder: (controller) {
+            return Padding(
+              padding: EdgeInsets.all(12.0.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HomePageHeader(
+                    circleText: '${controller.profileData?.name?[0]}',
+                    onTapNotification: () {
+                      Navigator.pushNamed(context, NotificationScreen.routeName);
+                    },
+                    onTapPublic: () {},
+                  ),
+                  heightBox16,
+                  WelcomeTextHomePage(
+                    time: 'Morning',
+                    name: '${controller.profileData?.name} 👋',
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                    child: SizedBox(
+                      height: 290.h,
+                      child: GridView.builder(
+                        itemCount: 4,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 1.15,
+                            crossAxisSpacing: 24,
+                            mainAxisSpacing: 24,
+                            crossAxisCount: 2),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, gridList[index].navigationPath,
+                                  arguments: true);
+                            },
+                            child: GridFeature(
+                              icon: gridList[index].icon,
+                              title: gridList[index].title,
+                              subtitle: gridList[index].subtitle,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                SeeAllSection(
-                  title: 'Expert Psychological Support at Your Fingertips',
-                  ontap: () {
-                    Navigator.pushNamed(context, SessionScreen.routeName,
-                        arguments: true);
-                  },
-                ),
-                heightBox8,
-                GetBuilder<AllSessionController>(builder: (controller) {
-                  if (controller.inProgress && controller.page == 1) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                  return SizedBox(
-                    height: 175,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
-                          child: PsychoSupportCard(
-                            sessionItemModel: controller.sessionsList[index],
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                }),
-                heightBox12,
-                SeeAllSection(
-                  title: 'Shop Your Health Must-Haves',
-                  ontap: () {
-                    Navigator.pushNamed(context, ProductScreen.routeName,
-                        arguments: true);
-                  },
-                ),
-                heightBox8,
-                GetBuilder<AllProcuctController>(builder: (controller) {
-                  if (controller.inProgress && controller.page == 1) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                  return SizedBox(
-                    height: 134.h,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
-                          child: ProductCard(
-                            productsModel: controller.productsList[index],
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                }),
-              ],
-            ),
-          ),
+                  SeeAllSection(
+                    title: 'Expert Psychological Support at Your Fingertips',
+                    ontap: () {
+                      Navigator.pushNamed(context, SessionScreen.routeName,
+                          arguments: true);
+                    },
+                  ),
+                  heightBox8,
+                  GetBuilder<AllSessionController>(builder: (controller) {
+                    if (controller.inProgress && controller.page == 1) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return SizedBox(
+                      height: 175,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.w),
+                            child: PsychoSupportCard(
+                              sessionItemModel: controller.sessionsList[index],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
+                  heightBox12,
+                  SeeAllSection(
+                    title: 'Shop Your Health Must-Haves',
+                    ontap: () {
+                      Navigator.pushNamed(context, ProductScreen.routeName,
+                          arguments: true);
+                    },
+                  ),
+                  heightBox8,
+                  GetBuilder<AllProcuctController>(builder: (controller) {
+                    if (controller.inProgress && controller.page == 1) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return SizedBox(
+                      height: 134.h,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.w),
+                            child: ProductCard(
+                              productsModel: controller.productsList[index],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );

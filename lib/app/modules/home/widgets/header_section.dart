@@ -28,7 +28,28 @@ class HomePageHeader extends StatelessWidget {
         ),
         Row(
           children: [
-            Container(
+            InkWell(
+              onTap: onTapNotification,
+              child: Container(
+                  height: 42.h,
+                  width: 42.w,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Color(0xff828282),
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.chat,
+                    color: Color(0xff828282),
+                  )),
+            ),
+            widthBox4,
+            InkWell(
+              onTap: onTapPublic,
+              child: Container(
                 height: 42.h,
                 width: 42.w,
                 decoration: BoxDecoration(
@@ -40,24 +61,9 @@ class HomePageHeader extends StatelessWidget {
                   ),
                 ),
                 child: Icon(
-                  Icons.chat,
+                  Icons.public,
                   color: Color(0xff828282),
-                )),
-            widthBox4,
-            Container(
-              height: 42.h,
-              width: 42.w,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Color(0xff828282),
-                  width: 1,
                 ),
-              ),
-              child: Icon(
-                Icons.public,
-                color: Color(0xff828282),
               ),
             ),
           ],

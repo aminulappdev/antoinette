@@ -1,7 +1,6 @@
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
-import 'package:antoinette/app/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,9 +21,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(name: 'Notification'),
-              heightBox14,
-              CustomSearchBar(shouldBackButton: false),
+              CustomAppBar(name: 'Notification'),                      
               heightBox12,
               Expanded(
                 child: ListView.builder(

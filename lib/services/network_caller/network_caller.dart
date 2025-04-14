@@ -33,7 +33,7 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
-          responseData: debugMessage,
+          responseData: debugMessage,       
         );
       } else {
         return NetworkResponse(

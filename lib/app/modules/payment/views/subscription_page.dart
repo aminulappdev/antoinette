@@ -6,6 +6,7 @@ import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -27,6 +28,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   AllPackageController allPackageController = Get.find<AllPackageController>();
   String? packageId;
   String? userId;
+  int indexx = 0;
 
   @override
   void initState() {
@@ -81,18 +83,27 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     SizedBox(
                       height: height / 80,
                     ),
-                    costomRow('Unlock AI generate image', height, width),
                     SizedBox(
-                      height: height / 160,
+                      height: 150.h,
+                      child: ListView.builder(
+                        itemCount: controller.packageItemList?[indexx].description?.length,
+                        itemBuilder: (context, index) {
+
+                        return  costomRow('${controller.packageItemList?[indexx].description?[index]}', height, width);
+                      },),
                     ),
-                    costomRow('Pro support from our team', height, width),
-                    SizedBox(
-                      height: height / 160,
-                    ),
-                    costomRow('Early access to new features', height, width),
-                    SizedBox(
-                      height: height / 30,
-                    ),
+                    // costomRow('Unlock AI generate image', height, width),
+                    // SizedBox(
+                    //   height: height / 160,
+                    // ),
+                    // costomRow('Pro support from our team', height, width),
+                    // SizedBox(
+                    //   height: height / 160,
+                    // ),
+                    // costomRow('Early access to new features', height, width),
+                    // SizedBox(
+                    //   height: height / 30,
+                    // ),
                     packageSection(height, width,
                         monthlyAmount:
                             controller.packageItemList![1].price.toString(),
@@ -126,7 +137,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             isMonthly = true;
             isYearly = false;
 
-            setState(() {});
+              setState(() {
+              indexx = 0;
+            });
           },
           child: Stack(
             clipBehavior: Clip.none,
@@ -213,7 +226,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             packageId = allPackageController.packageItemList?[0].sId;
             isMonthly = false;
             isYearly = true;
-            setState(() {});
+            
+            setState(() {
+              indexx = 1;
+            });
           },
           child: Stack(
             clipBehavior: Clip.none,
@@ -316,10 +332,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         SizedBox(
           width: 4,
         ),
-        Text(
-          name,
-          style: TextStyle(
-            fontSize: height / 50,
+        SizedBox(
+          width: MediaQuery.of(context).size.width - 60.w,
+          child: Text(
+            name,
+            style: TextStyle(
+              fontSize: 14.sp,
+            ),
           ),
         ),
       ],

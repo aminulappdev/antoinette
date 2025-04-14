@@ -37,7 +37,8 @@ class BookingController extends GetxController {
       isSuccess = true;
 
     } else {
-      _errorMessage = response.errorMessage;
+      // final message = response.responseData?['message'] ?? 'Something went wrong';
+      _errorMessage = response.responseData;
     }
 
     _inProgress = false;

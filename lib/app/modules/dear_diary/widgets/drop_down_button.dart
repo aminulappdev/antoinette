@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -32,6 +31,7 @@ class _DropDownButtonState extends State<DropDownButton> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      
       clipBehavior: Clip.none,
       children: [
         Container(
@@ -55,6 +55,7 @@ class _DropDownButtonState extends State<DropDownButton> {
                     fontWeight: FontWeight.normal,
                   ),
                 ),
+                
                 GestureDetector(
                   onTap: _toggleDropdown,
                   child: CircleAvatar(

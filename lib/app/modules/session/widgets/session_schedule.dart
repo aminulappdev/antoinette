@@ -1,4 +1,3 @@
-
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,36 +20,35 @@ class SessionSchedule extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.date_range),
-                widthBox4,
-                Text(
-                  date,
-                  style:
-                      GoogleFonts.poppins(fontSize: 12.sp, color: Colors.black),
-                )
-              ],
-            ),
-            heightBox8,
-            Row(
-              children: [
-                Icon(Icons.timer_outlined),
-                widthBox4,
-                Text(
-                  time,
-                  style:
-                      GoogleFonts.poppins(fontSize: 12.sp, color: Colors.black),
-                )
-              ],
-            )
-          ],
-        ),
+        // Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     Row(
+        //       children: [
+
+        //         widthBox4,
+        //         Text(
+        //           date,
+        //           style:
+        //               GoogleFonts.poppins(fontSize: 12.sp, color: Colors.black),
+        //         )
+        //       ],
+        //     ),
+        //     heightBox8,
+        //     Row(
+        //       children: [
+
+        //         widthBox4,
+        //         Text(
+        //           time,
+        //           style:
+        //               GoogleFonts.poppins(fontSize: 12.sp, color: Colors.black),
+        //         )
+        //       ],
+        //     )
+        //   ],
+        // ),
         Row(
-          
           children: [
             Icon(Icons.location_on_outlined),
             widthBox4,

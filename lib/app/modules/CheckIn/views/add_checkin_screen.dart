@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controller.dart';
+import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/counter_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
@@ -276,8 +277,11 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'Checking Added');
-          // Start countdown only when check-in is successful
+          Get.find<AllCheckInController>().getCheckInList();
+          Navigator.pop(context);
           countdownController.startCountdown(_selectedDuration);
+
+       
         }
       } else {
         if (mounted) {

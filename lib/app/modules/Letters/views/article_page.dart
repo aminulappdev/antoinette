@@ -80,10 +80,11 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                           AssetsPath.womenBookRead)),
                                   borderRadius: BorderRadius.circular(20)),
                               child: Padding(
-                                padding: EdgeInsets.all(12.0.h),
+                                padding: EdgeInsets.all(18.0.h),
                                 child: Column(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       height: 27.h,
@@ -101,19 +102,17 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                           child: Text(
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
-                                            '${controller.articlesList[index].title}',
+                                            '${controller.articlesList[index].category?.title}',
                                             style: GoogleFonts.poppins(
                                                 fontSize: 10.sp),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 100.h,
-                                    ),
+                                   
                                     Text(
                                       maxLines: 2,
-                                        '${controller.articlesList[index].description}',
+                                        '${controller.articlesList[index].title}',
                                         style: GoogleFonts.poppins(
                                             fontSize: 12.sp,
                                             color: Colors.white))

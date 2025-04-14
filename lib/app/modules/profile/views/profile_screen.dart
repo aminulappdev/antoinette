@@ -1,5 +1,5 @@
+import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
-
 
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
@@ -11,6 +11,7 @@ import 'package:antoinette/app/modules/profile/views/info_screen.dart';
 import 'package:antoinette/app/modules/profile/widgets/profile_drawer_feature.dart';
 import 'package:antoinette/app/modules/profile/widgets/profile_info.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     feature: 'My Orders',
                     icon: Icons.shopping_bag,
                     ontap: () {
-                        Navigator.pushNamed(context, OrderBarScreen.routeName);
+                      Navigator.pushNamed(context, OrderBarScreen.routeName);
                     },
                   ),
                   ProfileDrawerFeature(
@@ -91,7 +92,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     feature: 'Subscription',
                     icon: Icons.payment,
                     ontap: () {
-                      Navigator.pushNamed(context, SubscriptionScreen.routeName);
+                      Navigator.pushNamed(
+                          context, SubscriptionScreen.routeName);
                     },
                   ),
                   ProfileDrawerFeature(
@@ -112,7 +114,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     feature: 'Notification',
                     icon: Icons.notifications,
                     ontap: () {
-                       Navigator.pushNamed(context, NotificationScreen.routeName);
+                      Navigator.pushNamed(
+                          context, NotificationScreen.routeName);
                     },
                   ),
                   heightBox8,
@@ -139,11 +142,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         ),
                         ProfileDrawerFeature(
-                          feature: 'Help Center',
-                          icon: Icons.help,
-                          ontap: () {},
-                        ),
-                        ProfileDrawerFeature(
                           feature: 'Terms & Condition',
                           icon: Icons.help,
                           ontap: () {
@@ -166,6 +164,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             });
                           },
                         ),
+                        heightBox8,
+                        Text(
+                          'Logout',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12, fontWeight: FontWeight.w500),
+                        ),
+                        heightBox4,
+                        ProfileDrawerFeature(
+                          feature: 'Logout',
+                          icon: Icons.help,
+                          ontap: onTapLogoutBTN,
+                        ),
                       ],
                     );
                   }),
@@ -183,6 +193,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           );
         }),
+      ),
+    );
+  }
+
+  void onTapLogoutBTN() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Center(
+            child: Text(
+                textAlign: TextAlign.center,
+                'Do you want to log out this profile?',
+                style: GoogleFonts.poppins(fontSize: 20))),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              box.remove('user-login-access-token');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                SignInScreen.routeName,
+                (Route<dynamic> route) => false,
+              );
+              print('My Access token');
+              print(box.read('user-login-access-token'));
+            },
+            child: Container(
+              height: 32.h,
+              width: 120.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xff305FA1).withOpacity(0.1),
+                border: Border.all(color: Color(0xff305FA1)),
+              ),
+              child: Center(
+                child: Text(
+                  'YES',
+                  style: TextStyle(color: Color(0xff305FA1), fontSize: 14),
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: 32.h,
+              width: 120.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xffA13430).withOpacity(0.1),
+                border: Border.all(color: Color(0xffA13430)),
+              ),
+              child: Center(
+                child: Text(
+                  'NO',
+                  style: TextStyle(color: Color(0xffA13430), fontSize: 14.sp),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

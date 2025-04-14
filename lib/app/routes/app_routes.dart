@@ -34,6 +34,7 @@ import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
+import 'package:antoinette/app/modules/payment/views/payment_webview_screen.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
@@ -197,6 +198,7 @@ class AppRoutes {
     AddContactScreen.routeName: (context) => const AddContactScreen(),
 
     HistoryScreen.routeName: (context) => const HistoryScreen(),
+    // PaymentWebviewScreen.routeName: (context) => const PaymentWebviewScreen(),
 
     // Profile Section
     ProfileScreen.routeName: (context) => const ProfileScreen(),

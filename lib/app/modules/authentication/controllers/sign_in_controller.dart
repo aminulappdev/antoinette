@@ -15,37 +15,35 @@ class SignInController extends GetxController {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
-  Future<bool> signIn(String email, String password) async {
+  Future<bool> signIn(String email, String password, bool isChecked) async {
     bool isSuccess = false;
 
     _inProgress = true;
 
     update();
 
-    Map<String, dynamic> requestBody = {
-      "email": email,
-      "password": password
-    };
+    Map<String, dynamic> requestBody = {"email": email, "password": password};
 
-    final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.signIn, requestBody);
+    final NetworkResponse response =
+        await Get.find<NetworkCaller>().postRequest(Urls.signIn, requestBody);
 
     if (response.isSuccess) {
       _errorMessage = null;
       isSuccess = true;
 
-     final  loginModel = LoginModel.fromJson(response.responseData);
-     box.write('user-login-access-token', loginModel.data!.accessToken);
-   
-
-     print(loginModel.data!.accessToken);
-
+      final loginModel = LoginModel.fromJson(response.responseData);
+      print('my response data .....................\n........................');
+      final message = response.responseData['message'];
+      print('Response Message: $message');
+      print(response.responseData);
+      box.write('user-login-access-token', loginModel.data!.accessToken);
+      print(loginModel.data!.accessToken);
     } else {
-      _errorMessage = response.errorMessage;
+      _errorMessage = response.responseData;
     }
 
     _inProgress = false;
     update();
     return isSuccess;
   }
-} 
+}

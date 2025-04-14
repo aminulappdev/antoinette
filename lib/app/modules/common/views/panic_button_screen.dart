@@ -13,9 +13,9 @@ class PanicButtonScreen extends StatefulWidget {
 }
 
 class _PanicButtonScreenState extends State<PanicButtonScreen> {
-  bool isPressed = false; // Track whether the button is activated
-  late Timer _timer; // Timer to check long press duration
-  bool isHolding = false; // To track if button is being held
+  bool isPressed = false;
+  late Timer _timer; 
+  bool isHolding = false; 
 
 
   void _onLongPressEnd(LongPressEndDetails details) {
@@ -23,7 +23,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
       _timer.cancel();
     }
     setState(() {
-      isHolding = false; // Stop the long press tracking
+      isHolding = false; 
     });
   }
 

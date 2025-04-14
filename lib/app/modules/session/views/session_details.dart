@@ -1,12 +1,10 @@
 
 import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/session_bar.dart';
-import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/modules/session/widgets/session_schedule.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
-import 'package:antoinette/app/widgets/gradiant_elevated_button.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -71,8 +69,8 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                   ],
                 ),
                 SessionSchedule(
-                  date: 'Monday to Friday',
-                  time: '9:00 AM – 3:30 PM ',
+                  date: '',
+                  time: '',
                   address:
                       '${widget.sessionDataModel.location}',
                 ),

@@ -38,6 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
       ForgotPasswordController();
 
   bool _obscureText = true;
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +123,27 @@ class _SignInScreenState extends State<SignInScreen> {
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
-                      ForgotPasswordRow(
-                        ontap: forgotPasswordBTN,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Checkbox(
+                                shape: CircleBorder(),
+                                value: isChecked,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked = value!;
+                                  });
+                                },
+                              ),
+                              Text('Remember me'),
+                            ],
+                          ),
+                          ForgotPasswordRow(
+                            ontap: forgotPasswordBTN,
+                          ),
+                        ],
                       ),
                       heightBox24,
                       GradientElevatedButton(
@@ -189,8 +209,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
-      final bool isSuccess =
-          await signInController.signIn(emailCtrl.text, passwordCtrl.text);
+      final bool isSuccess = await signInController.signIn(
+        emailCtrl.text,
+        passwordCtrl.text,
+        isChecked
+      );
 
       if (isSuccess) {
         if (mounted) {
