@@ -1,8 +1,7 @@
-import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,6 +16,7 @@ class CustomStatusScreen extends StatefulWidget {
 class _CustomStatusScreenState extends State<CustomStatusScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController statusCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,19 +29,38 @@ class _CustomStatusScreenState extends State<CustomStatusScreen> {
               children: [
                 CustomAppBar(name: 'Custom status'),
                 heightBox12,
-                Row(children: [
-                  Icon(Icons.add,size: 18.h,),
-                  widthBox8,
-                  Text('Add Custom Status',style: GoogleFonts.poppins(fontSize: 14.sp),)
-                ],),
+                Row(
+                  children: [
+                    Icon(Icons.add, size: 18.h),
+                    widthBox8,
+                    Text('Add Custom Status',
+                        style: GoogleFonts.poppins(fontSize: 14.sp)),
+                  ],
+                ),
                 heightBox12,
                 TextFormField(
+                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Enter status';
+                    }
+                    return null;
+                  },
                   controller: statusCtrl,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-                SizedBox(height: 50.h,),
-                GradientElevatedButton(onPressed: () {
-                  Navigator.pushNamed(context, AddCheckInScreen.routeName,arguments: statusCtrl.text);
-                }, text: '+ Add Check-In')
+                SizedBox(height: 50.h),
+                GradientElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.pop(
+                          context, statusCtrl.text); // Return the custom status
+                    }
+                  },
+                  text: '+ Add Check-In',
+                )
               ],
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
+import 'package:antoinette/app/modules/history/views/history_screen.dart';
 
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
@@ -72,8 +73,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ProfileDrawerFeature(
                     feature: 'History',
                     icon: Icons.history,
-                    ontap: () {},
-                  ),
+                    ontap: () {
+                       Navigator.pushNamed(context, HistoryScreen.routeName);
+                    },
+                           ),
                   ProfileDrawerFeature(
                     feature: 'Address',
                     icon: Icons.location_on,

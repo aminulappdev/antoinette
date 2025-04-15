@@ -1,7 +1,6 @@
-import 'package:antoinette/app/modules/contact/controllers/add_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
+import 'package:antoinette/app/modules/contact/controllers/edit_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
-import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -11,28 +10,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AddContactScreen extends StatefulWidget {
-  static const String routeName = '/add-contact-screen';
-  const AddContactScreen({super.key});
+class EditContactScreen extends StatefulWidget {
+  final Map<String,dynamic> contactData;
+  static const String routeName = '/edit-contact-screen';
+  const EditContactScreen({super.key, required this.contactData});
 
   @override
-  State<AddContactScreen> createState() => _AddContactScreenState();
+  State<EditContactScreen> createState() => _EditContactScreenState();
 }
 
-class _AddContactScreenState extends State<AddContactScreen> {
+class _EditContactScreenState extends State<EditContactScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController numberCtrl = TextEditingController();
-  AddContactController addContactController = AddContactController();
-  ProfileController profileController = Get.find<ProfileController>();
-
-  late String userId;
+  EditContactController editContactController = EditContactController();
   bool togggleActive = false;
   bool isToggled = false;
 
   @override
   void initState() {
-    userId = profileController.profileData!.sId!;
+    numberCtrl.text = widget.contactData['number'];
     super.initState();
   }
   @override
@@ -46,29 +42,8 @@ class _AddContactScreenState extends State<AddContactScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomAppBar(name: 'Add Trusted Contacts'),
+                  CustomAppBar(name: 'Edit Trusted Contacts'),
                   heightBox12,
-                  Text('Name',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
-                  heightBox8,
-                  TextFormField(
-                    controller: nameCtrl,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Enter name';
-                      }
-
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey)),
-                  ),
-                  heightBox8,
                   Text('Number',
                       style: GoogleFonts.poppins(
                           fontSize: 12.sp,
@@ -76,7 +51,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                           color: Color(0xff626262))),
                   heightBox8,
                   TextFormField(
-                    controller: numberCtrl,
+                    controller: numberCtrl,                 
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.number,
                     validator: (String? value) {
@@ -90,7 +65,9 @@ class _AddContactScreenState extends State<AddContactScreen> {
                         hintStyle: TextStyle(color: Colors.grey)),
                   ),
                   heightBox30,
-                  GradientElevatedButton(onPressed: onTapToNextButton, text: 'Save')
+                  GradientElevatedButton(onPressed:(){
+                    onTapToNextButton();
+                  }, text: 'Save')
                 ],
               ),
             )),
@@ -101,24 +78,24 @@ class _AddContactScreenState extends State<AddContactScreen> {
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess =
-          await addContactController.addContact(nameCtrl.text, numberCtrl.text, userId);
+          await editContactController.editContact(widget.contactData['contactId'], numberCtrl.text);
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Contact added');
+          showSnackBarMessage(context, 'Contact updated');
           Get.find<AllContactController>().getContactList();
           Navigator.pushNamed(context, ContactScreen.routeName);
         } else {
           if (mounted) {
             showSnackBarMessage(
-                context, addContactController.errorMessage!, true);
+                context, editContactController.errorMessage!, true);
           }
         }
       } else {
         if (mounted) {
           // print('Error show ----------------------------------');
           showSnackBarMessage(
-              context, addContactController.errorMessage!, true);
+              context, editContactController.errorMessage!, true);
         }
       }
     }

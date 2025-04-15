@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/notification_screen.dart';
+import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/home/models/grid_view_model.dart';
 import 'package:antoinette/app/modules/home/widgets/grid_feature.dart';
@@ -77,7 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTapNotification: () {
                       Navigator.pushNamed(context, NotificationScreen.routeName);
                     },
-                    onTapPublic: () {},
+                    onTapPublic: () {
+                      Navigator.pushNamed(context, HistoryScreen.routeName);
+                    },
                   ),
                   heightBox16,
                   WelcomeTextHomePage(

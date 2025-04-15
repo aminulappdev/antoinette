@@ -123,27 +123,33 @@ class _SignInScreenState extends State<SignInScreen> {
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Checkbox(
-                                shape: CircleBorder(),
-                                value: isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    isChecked = value!;
-                                  });
-                                },
-                              ),
-                              Text('Remember me'),
-                            ],
-                          ),
-                          ForgotPasswordRow(
-                            ontap: forgotPasswordBTN,
-                          ),
-                        ],
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Row(
+                      //       children: [
+                      //         Checkbox(
+                      //           shape: CircleBorder(),
+                      //           value: isChecked,
+                      //           onChanged: (bool? value) {
+                      //             setState(() {
+                      //               isChecked = value!;
+                      //             });
+                      //           },
+                      //         ),
+                      //         Text('Remember me'),
+                      //       ],
+                      //     ),
+                      //     ForgotPasswordRow(
+                      //       ontap: forgotPasswordBTN,
+                      //     ),
+                      //   ],
+                      // ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ForgotPasswordRow(
+                          ontap: forgotPasswordBTN,
+                        ),
                       ),
                       heightBox24,
                       GradientElevatedButton(
@@ -210,10 +216,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await signInController.signIn(
-        emailCtrl.text,
-        passwordCtrl.text,
-        isChecked
-      );
+          emailCtrl.text, passwordCtrl.text, isChecked);
 
       if (isSuccess) {
         if (mounted) {
@@ -230,8 +233,9 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       } else {
         if (mounted) {
-          print('Error show ----------------------------------');
-          showSnackBarMessage(context, signInController.errorMessage!, true);
+          // print('Error show ----------------------------------');
+          showSnackBarMessage(context,
+              signInController.errorMessage ?? 'Ekhanei problem', true);
         }
       }
     }

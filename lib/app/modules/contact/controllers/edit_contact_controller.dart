@@ -4,7 +4,7 @@ import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class AddContactController extends GetxController {
+class EditContactController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -12,7 +12,7 @@ class AddContactController extends GetxController {
   String? get errorMessage => _errorMessage;
 
 
-  Future<bool> addContact(String name, String number, String userId) async {
+  Future<bool> editContact(String id, String number) async {
     bool isSuccess = false;
 
     _inProgress = true;
@@ -20,13 +20,11 @@ class AddContactController extends GetxController {
     update();
 
     Map<String, dynamic> requestBody = {
-      "user": userId,
-      "name": name,
       "contractNumber": number
     };
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.addContactUrl, requestBody,
+        .putRequest(Urls.editContactUrlsById(id), requestBody,
             accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {

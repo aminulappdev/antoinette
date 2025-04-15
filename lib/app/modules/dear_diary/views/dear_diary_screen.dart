@@ -31,12 +31,17 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
   final AllDiariesController allDiariesController =
       Get.find<AllDiariesController>();
 
-  bool isBlurText = true;
+  List<bool> isBlurList = [];
 
   @override
   void initState() {
-    allDiariesController.getDiaryList();
     super.initState();
+    allDiariesController.getDiaryList().then((_) {
+      setState(() {
+        isBlurList = List.generate(
+            allDiariesController.allDiaryList.length, (_) => true);
+      });
+    });
   }
 
   @override
@@ -115,7 +120,8 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                   child:
                       GetBuilder<AllDiariesController>(builder: (controller) {
                     if (controller.inProgress) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: CircularProgressIndicator());
                     }
                     return ListView.builder(
                       itemCount: controller.allDiaryList.length,
@@ -123,22 +129,26 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 4.h),
                           child: HealthConditionCard(
-                            isBlur: isBlurText,
+                            isBlur: isBlurList[index],
                             iconPath: AssetsPath.angle,
-                            status: '${controller.allDiaryList[index].feelings}',
+                            status:
+                                '${controller.allDiaryList[index].feelings}',
                             day: 'Monday',
                             time: '${controller.allDiaryList[index].time}',
                             description:
                                 'Today was a good day! The sun felt warm on my face, and I laughed so much with my friends. I want to remember this feeling—light, joyful, and full of possibility.',
                             lockOntap: () {
-                              setState(() {
-                                isBlurText == false
-                                    ? isBlurText = true
-                                    : lockButton();
-                              });
+                              if (!isBlurList[index]) {
+                                setState(() {
+                                  isBlurList[index] = true;
+                                });
+                              } else {
+                                lockButton(index);
+                              }
                             },
                             moreHorizOntap: () {},
-                            themeColor: const Color(0xffD9A48E).withAlpha(20),
+                            themeColor:
+                                const Color(0xffD9A48E).withAlpha(20),
                           ),
                         );
                       },
@@ -153,17 +163,14 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
     );
   }
 
-  void lockButton() {
+  void lockButton(int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          title: Text(
-            "Enter Password",
-            style: TextStyle(fontSize: 12),
-          ),
+          title: const Text("Enter Password", style: TextStyle(fontSize: 12)),
           content: Form(
             key: _formKey,
             child: Column(
@@ -178,7 +185,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                     }
                     return null;
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: '******',
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
@@ -186,7 +193,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                 SizedBox(height: 20.h),
                 GradientElevatedButton(
                   onPressed: () {
-                    onTapToNextButton(passwordController.text);
+                    onTapToNextButton(passwordController.text, index);
                   },
                   text: 'Enter',
                 ),
@@ -198,7 +205,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
     );
   }
 
-  Future<void> onTapToNextButton(String password) async {
+  Future<void> onTapToNextButton(String password, int index) async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess =
           await accessJournalPasswordController.accessJournalPassword(password);
@@ -206,7 +213,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
       if (isSuccess) {
         if (mounted) {
           setState(() {
-            isBlurText = false;
+            isBlurList[index] = false;
           });
           clearTextField();
           Navigator.pop(context);

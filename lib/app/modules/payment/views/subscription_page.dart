@@ -136,7 +136,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             packageId = allPackageController.packageItemList?[1].sId;
             isMonthly = true;
             isYearly = false;
-
               setState(() {
               indexx = 0;
             });
@@ -256,6 +255,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          
                           GradientText(
                             'Yearly',
                             style: GoogleFonts.urbanist(

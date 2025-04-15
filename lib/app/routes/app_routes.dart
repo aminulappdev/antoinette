@@ -1,19 +1,19 @@
 
+
+import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/bookmark/model/bookmark_article_details_model.dart';
 import 'package:antoinette/app/modules/bookmark/model/bookmark_podcast_details_model.dart';
 import 'package:antoinette/app/modules/bookmark/views/bookmark_article_details_page.dart';
 import 'package:antoinette/app/modules/bookmark/views/bookmark_podcast_details_screen.dart';
+import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
 import 'package:antoinette/app/modules/common/views/notification_screen.dart';
+import 'package:antoinette/app/modules/contact/views/edit_contact_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/change_password_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
 import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
-
-
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/letters/views/podcast_details.dart';
-import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
-import 'package:antoinette/app/modules/checkIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/checkIn/views/custom_status_screen.dart';
 import 'package:antoinette/app/modules/common/views/panic_button_screen.dart';
 import 'package:antoinette/app/modules/contact/views/add_contact_screen.dart';
@@ -30,10 +30,10 @@ import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
-
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
+import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/modules/payment/views/payment_webview_screen.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
@@ -172,7 +172,7 @@ class AppRoutes {
         podcastModel: args,
       );
     },
-
+  
     BookMarkPodcastDetailsScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as BookmarkPodcastDetailsItemModel;
       return BookMarkPodcastDetailsScreen(
@@ -185,13 +185,14 @@ class AppRoutes {
 
 
     SubscriptionScreen.routeName: (context) => const SubscriptionScreen(),
+    PaymentWebviewScreen.routeName: (context) => const PaymentWebviewScreen(),
     
-    AddCheckInScreen.routeName: (context) {
-      final args = ModalRoute.of(context)!.settings.arguments as String;
-      return AddCheckInScreen(customStatus: args,
-        
-      );
-    },
+
+    AddCheckInScreen.routeName: (context) => const AddCheckInScreen(),
+    PaymentSuccessScreen.routeName: (context) => const PaymentSuccessScreen(),
+    
+
+   
 
     CustomStatusScreen.routeName: (context) => const CustomStatusScreen(),
     ContactScreen.routeName: (context) => const ContactScreen(),
@@ -204,6 +205,13 @@ class AppRoutes {
     ProfileScreen.routeName: (context) => const ProfileScreen(),
     AccountScreen.routeName: (context) => const AccountScreen(),
     AdderssScreen.routeName: (context) => const AdderssScreen(),
+
+     EditContactScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      return EditContactScreen(contactData: args,
+        
+      );
+    },
     
     AddAdderssScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as String;

@@ -1,7 +1,6 @@
 import 'package:antoinette/app/modules/product/controllers/product_details_controllers.dart';
 import 'package:antoinette/app/modules/product/model/all_product_pegination_model.dart';
 import 'package:antoinette/app/modules/product/views/product_datails_screen.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart'; 
 import 'package:flutter/material.dart';
@@ -39,9 +38,7 @@ class _ProductCardState extends State<ProductCard> {
               width: 156.h,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(
-                        AssetsPath.womenBookRead,
-                      ),
+                      image: NetworkImage(''),
                       fit: BoxFit.fill),
                   borderRadius: BorderRadius.circular(8)),
               child: Padding(

@@ -45,6 +45,7 @@ class UpdateProfileController extends GetxController {
       requestBody = {
         "name": name,
         "contractNo": number,
+        
       };
     }
 

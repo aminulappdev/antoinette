@@ -27,8 +27,8 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   @override
   void initState() {
     userId = profileController.profileData!.sId!;
-    print(
-        'UserId : $userId\nSession id : ${widget.slotData['sessionId']}\nSession slot : ${widget.slotData['slotId']}');
+    // print(
+    //     'UserId : $userId\nSession id : ${widget.slotData['sessionId']}\nSession slot : ${widget.slotData['slotId']}');
     super.initState();
   }
 
@@ -140,7 +140,8 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                     ),
                     GradientElevatedButton(
                         onPressed: () {
-                          print("Selected Mood: $selectedMood");
+                          // print('Clicked on submit button');
+                          // print("Selected Mood: $selectedMood");
                           onTapToNextButton();
                         },
                         text: 'Submit')
@@ -155,30 +156,36 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   }
 
   Future<void> onTapToNextButton() async {
-  if (widget.slotData['sessionId'] == null || widget.slotData['slotId'] == null) {
-    showSnackBarMessage(
-        context, "Please select a valid date and time slot", true);
-    return;
-  }
+    if (widget.slotData['sessionId'] == null ||
+        widget.slotData['slotId'] == null) {
+      // print('main funtion e jay nay');
+      showSnackBarMessage(
+          context, "Please select a valid date and time slot", true);
+      return;
+    }
 
-  final bool isSuccess = await bookingController.bookingSession(
-  
-          userId,
+    if (selectedMood == null) {
+      // print('Select your mood');
+      showSnackBarMessage(
+          context, "Please select your current emotional state", true);
+      return;
+    }
+
+    final bool isSuccess = await bookingController.bookingSession(
+        userId,
         widget.slotData['sessionId'],
         widget.slotData['slotId'],
         widget.slotData['therapyType'],
-        selectedMood!
-  );
+        selectedMood!);
 
-  if (isSuccess) {
-    if (mounted) {
-      showSnackBarMessage(context, 'Booking successful');
-    }
-  } else {
-    if (mounted) {
-      showSnackBarMessage(context, bookingController.errorMessage!, true);
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Booking successful');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, bookingController.errorMessage!, true);
+      }
     }
   }
-}
-
 }

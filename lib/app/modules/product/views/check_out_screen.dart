@@ -1,4 +1,6 @@
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+import 'package:antoinette/app/modules/payment/controllers/payment_controller.dart';
+import 'package:antoinette/app/modules/payment/views/payment_webview_screen.dart';
 import 'package:antoinette/app/modules/product/controllers/product_order_controller.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/widgets/checkout_user_info.dart';
@@ -25,6 +27,8 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
+
+  final PaymentController paymentController = PaymentController();
   final ProductOrderController productOrderController =
       ProductOrderController();
   ProfileController profileController = Get.find<ProfileController>();
@@ -86,7 +90,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               selectedButtonIndex =
                                   index; // Update selected button
                               if (selectedButtonIndex == 0) {
-                                deliveryAddress = controller.profileData!.homeAddress!;
+                                deliveryAddress =
+                                    controller.profileData!.homeAddress!;
                               } else if (selectedButtonIndex == 1) {
                                 deliveryAddress =
                                     controller.profileData!.officeAddress!;
@@ -127,7 +132,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   SizedBox(
                     width: 170,
                     child: Text(
-                      deliveryAddress ?? controller.profileData!.homeAddress!,
+                      deliveryAddress,
                       style: GoogleFonts.poppins(fontSize: 10.sp),
                     ),
                   ),
@@ -142,115 +147,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       )),
 
                   heightBox12,
-                  Container(
-                    height: 91.h,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                height: 77.h,
-                                width: 75.w,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(AssetsPath.medichine),
-                                        fit: BoxFit.fill),
-                                    borderRadius: BorderRadius.circular(12.r)),
-                              ),
-                              widthBox8,
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Stander delivery',
-                                    style: GoogleFonts.poppins(fontSize: 14.sp),
-                                  ),
-                                  heightBox14,
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            if (quantity > 1) {
-                                              double? minus =
-                                                  widget.productModel.amount;
-                                              quantity--;
-                                              price = double.parse(price
-                                                      .toStringAsFixed(2)) -
-                                                  double.parse(minus!
-                                                      .toStringAsFixed(2));
-                                              item--;
-                                            }
-                                          });
-                                        },
-                                        child: CircleAvatar(
-                                          radius: 13.r,
-                                          backgroundColor: Colors.grey,
-                                          child: Icon(Icons.remove),
-                                        ),
-                                      ),
-                                      widthBox8,
-                                      Text(
-                                        quantity.toString(),
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 21.sp),
-                                      ),
-                                      widthBox8,
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            if (widget.productModel.quantity! >
-                                                quantity) {
-                                              double? plus =
-                                                  widget.productModel.amount;
-                                              quantity++;
-                                              price = double.parse(price
-                                                      .toStringAsFixed(2)) +
-                                                  double.parse(
-                                                      plus!.toStringAsFixed(2));
-                                              ;
-                                              item++;
-                                            }
-                                          });
-                                        },
-                                        child: CircleAvatar(
-                                          radius: 13.r,
-                                          backgroundColor:
-                                              AppColors.iconButtonThemeColor,
-                                          child: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: SizedBox(
-                              child: Text(
-                                overflow: TextOverflow.ellipsis,
-                                double.parse(price.toStringAsFixed(2))
-                                    .toString(),
-                                style: GoogleFonts.poppins(fontSize: 20.sp),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  priceCalculator(context),
                   // DeliveryPriceCalulator(
                   //   deliveryType: 'Standard Delivery',
                   //   quantity: '1',
@@ -353,8 +250,115 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     );
   }
 
-  Future<void> onTapToNextButton(String userId, String deliveryCharge,
-      String billingName, String pickupDate,String adress, phoneNumber, email) async {
+  Container priceCalculator(BuildContext context) {
+    return Container(
+      height: 91.h,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 77.h,
+                  width: 75.w,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(AssetsPath.medichine),
+                          fit: BoxFit.fill),
+                      borderRadius: BorderRadius.circular(12.r)),
+                ),
+                widthBox8,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Stander delivery',
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
+                    heightBox14,
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (quantity > 1) {
+                                double? minus = widget.productModel.amount;
+                                quantity--;
+                                price = double.parse(price.toStringAsFixed(2)) -
+                                    double.parse(minus!.toStringAsFixed(2));
+                                item--;
+                              }
+                            });
+                          },
+                          child: CircleAvatar(
+                            radius: 13.r,
+                            backgroundColor: Colors.grey,
+                            child: Icon(Icons.remove),
+                          ),
+                        ),
+                        widthBox8,
+                        Text(
+                          quantity.toString(),
+                          style: GoogleFonts.poppins(fontSize: 21.sp),
+                        ),
+                        widthBox8,
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (widget.productModel.quantity! > quantity) {
+                                double? plus = widget.productModel.amount;
+                                quantity++;
+                                price = double.parse(price.toStringAsFixed(2)) +
+                                    double.parse(plus!.toStringAsFixed(2));
+                                ;
+                                item++;
+                              }
+                            });
+                          },
+                          child: CircleAvatar(
+                            radius: 13.r,
+                            backgroundColor: AppColors.iconButtonThemeColor,
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: SizedBox(
+                child: Text(
+                  overflow: TextOverflow.ellipsis,
+                  double.parse(price.toStringAsFixed(2)).toString(),
+                  style: GoogleFonts.poppins(fontSize: 20.sp),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> onTapToNextButton(
+      String userId,
+      String deliveryCharge,
+      String billingName,
+      String pickupDate,
+      String adress,
+      phoneNumber,
+      email) async {
     final bool isSuccess = await productOrderController.orderProduct(
         widget.productModel.sId!,
         quantity.toString(),
@@ -372,12 +376,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Login successfully done');
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          MainButtonNavbarScreen.routeName,
-          (Route<dynamic> route) => false,
-        );
+
+        
+
+        payment('Order', '', '');
+       
+        // Navigator.pushNamedAndRemoveUntil(
+        //   context,
+        //   MainButtonNavbarScreen.routeName,
+        //   (Route<dynamic> route) => false,
+        // );
       } else {
         if (mounted) {
           showSnackBarMessage(
@@ -389,6 +397,33 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         print('Error show ----------------------------------');
         showSnackBarMessage(
             context, productOrderController.errorMessage!, true);
+      }
+    }
+    // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+  }
+
+  Future<void> payment(
+      String modelType, String userId, String referenceId) async {
+    final bool isSuccess =
+        await paymentController.getPayment(modelType, userId, referenceId);
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'payment request done');
+        Navigator.pushNamed(
+          context,
+          PaymentWebviewScreen.routeName,
+        );
+      } else {
+        if (mounted) {
+          showSnackBarMessage(context, paymentController.errorMessage!, true);
+        }
+      }
+    } else {
+      if (mounted) {
+        // print('Error show ----------------------------------');
+        showSnackBarMessage(
+            context, paymentController.errorMessage ?? 'Ekhanei problem', true);
       }
     }
 

@@ -41,6 +41,13 @@ class Urls {
   ) {
     return '$_baseUrl/products/$id';
   }
+  
+
+   static String editContactUrlsById(
+    String id,
+  ) {
+    return '$_baseUrl/trusted-contracts/$id';
+  }
 
 
 

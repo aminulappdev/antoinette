@@ -15,6 +15,7 @@ import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_cont
 import 'package:antoinette/app/modules/contact/controllers/add_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
+import 'package:antoinette/app/modules/contact/controllers/edit_contact_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/add_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/all_diaries_controller.dart';
@@ -25,6 +26,7 @@ import 'package:antoinette/app/modules/letters/controllers/all_articles_controll
 import 'package:antoinette/app/modules/letters/controllers/all_podcast_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/poscast_details.dart';
 import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/payment_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/article_details_controller.dart';
@@ -81,6 +83,8 @@ class ControllerBinder extends Bindings {
     Get.put(GetDashboardController());
     Get.put(AllDiariesController());
     Get.put(ProductOrderController());
+    Get.put(EditContactController());
+    Get.put(PaymentController());
 
   
     

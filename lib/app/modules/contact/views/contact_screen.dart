@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/views/add_contact_screen.dart';
+import 'package:antoinette/app/modules/contact/views/edit_contact_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -12,7 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ContactScreen extends StatefulWidget {
   static const String routeName = '/contact-screen';
-  const ContactScreen({super.key}); 
+  const ContactScreen({super.key});
 
   @override
   State<ContactScreen> createState() => _ContactScreenState();
@@ -20,8 +21,8 @@ class ContactScreen extends StatefulWidget {
 
 class _ContactScreenState extends State<ContactScreen> {
   final AllContactController allContactController = AllContactController();
-  final DeleteContactController deleteContactController = DeleteContactController(); 
-
+  final DeleteContactController deleteContactController =
+      DeleteContactController();
 
   @override
   void initState() {
@@ -49,17 +50,24 @@ class _ContactScreenState extends State<ContactScreen> {
                       child: ListView.builder(
                         itemCount: controller.contactList?.length,
                         itemBuilder: (context, index) {
+                          Map<String,dynamic> value = {
+                            'number' : controller.contactList?[index].contractNumber,
+                            'contactId' : controller.contactList?[index].sId,
+                          };
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                '${controller.contactList?[index].name}',
-                                style: GoogleFonts.poppins(
-                                    fontSize: 17.sp,
-                                    fontWeight: FontWeight.w500),
+                              SizedBox(
+                                width: 180.w,
+                                child: Text(
+                                  '${controller.contactList?[index].name}',
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                               Text(
-                                '01976672506',
+                                '${controller.contactList?[index].contractNumber}',
                                 style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w500),
                               ),
@@ -67,24 +75,32 @@ class _ContactScreenState extends State<ContactScreen> {
                                 padding: EdgeInsets.symmetric(vertical: 8.h),
                                 child: Row(
                                   children: [
-                                    Container(
-                                      height: 28.h,
-                                      width: 28.h,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          border:
-                                              Border.all(color: Colors.blue)),
-                                      child: Icon(
-                                        Icons.edit,
-                                        size: 20.h,
-                                        color: Colors.blue,
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(context,
+                                            EditContactScreen.routeName,
+                                            arguments: value);
+                                      },
+                                      child: Container(
+                                        height: 28.h,
+                                        width: 28.h,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            border:
+                                                Border.all(color: Colors.blue)),
+                                        child: Icon(
+                                          Icons.edit,
+                                          size: 20.h,
+                                          color: Colors.blue,
+                                        ),
                                       ),
                                     ),
                                     widthBox8,
                                     InkWell(
-                                      onTap: (){
-                                        deleteContact('${controller.contactList?[index].sId}');
+                                      onTap: () {
+                                        deleteContact(
+                                            '${controller.contactList?[index].sId}');
                                       },
                                       child: Container(
                                         height: 28.h,
@@ -120,28 +136,25 @@ class _ContactScreenState extends State<ContactScreen> {
     );
   }
 
-   Future<void> deleteContact(String id) async {
-    
-      final bool isSuccess =
-          await deleteContactController.deleteContactById(id);
+  Future<void> deleteContact(String id) async {
+    final bool isSuccess = await deleteContactController.deleteContactById(id);
 
-      if (isSuccess) {
-        if (mounted) {
-          showSnackBarMessage(context, 'Contact added');
-          Get.find<AllContactController>().getContactList();     
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, deleteContactController.errorMessage!, true);
-          }
-        }
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Contact added');
+        Get.find<AllContactController>().getContactList();
       } else {
         if (mounted) {
-          // print('Error show ----------------------------------');
           showSnackBarMessage(
               context, deleteContactController.errorMessage!, true);
         }
-      
+      }
+    } else {
+      if (mounted) {
+        // print('Error show ----------------------------------');
+        showSnackBarMessage(
+            context, deleteContactController.errorMessage!, true);
+      }
     }
   }
 }

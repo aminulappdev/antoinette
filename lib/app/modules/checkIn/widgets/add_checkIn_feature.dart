@@ -35,7 +35,7 @@ class AddCheckInFeature extends StatelessWidget {
               ),
               widthBox5,
               SizedBox(
-                width: 130,
+                width: 120.w,
                 child: Text(
                   feature,
                   style: TextStyle(color: Color(0xffD9A48E), fontSize: 12.sp),

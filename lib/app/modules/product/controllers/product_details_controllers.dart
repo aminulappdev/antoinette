@@ -24,7 +24,7 @@ class ProcuctDetailsController extends GetxController {
    
     bool isSuccess = false; 
 
-    _inProgress = true;
+    _inProgress = true; 
 
     update();
 

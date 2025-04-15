@@ -1,11 +1,11 @@
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
-import 'package:antoinette/app/modules/product/widgets/see_more_button.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/product_caresoul_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart'; 
 
@@ -20,7 +20,7 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  bool _isExpandedProduct = false;
+  // bool _isExpandedProduct = false;
   
 
   @override
@@ -62,55 +62,56 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   style: GoogleFonts.poppins(
                       fontSize: 16.sp, fontWeight: FontWeight.w400),
                 ),
+                Html(data: widget.productModel.description),
                 heightBox4,
-                AnimatedCrossFade(
-                  firstChild: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Product Name: UltraShield SPF 50+ Sunscreen'),
-                      Text('Brand: ${widget.productModel.category!.title}'),
-                      Text('Type: Broad-Spectrum Protection'),
-                      Text('SPF: 50+'),
-                      Text('Formulation: Lotion'),
-                      Text('Volume: 150 ml'),
-                      Text('Price: \$18.99'),
-                      Text(
-                          'Key Ingredients: Avobenzone, Octinoxate, Titanium Dioxide'),
-                      Text('Water Resistance: Up to 80 minutes'),
-                      Text(
-                          'Application: Apply generously on all exposed skin areas 15 minutes before sun exposure. Reapply every 2 hours or after swimming or sweating.'),
-                      Text(
-                          'Benefits: Helps prevent sunburn, premature skin aging, and skin cancer. Suitable for all skin types, including sensitive skin.'),
-                    ],
-                  ),
-                  secondChild: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Product Name: UltraShield SPF 50+ Sunscreen'),
-                      Text('Brand: ${widget.productModel.category!.title}'),
-                      Text('Type: Broad-Spectrum Protection'),
-                      Text('SPF: 50+'),
-                      Text('Formulation: Lotion'),
-                      Text('Volume: 150 ml'),
+                // AnimatedCrossFade(
+                //   firstChild: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text('Product Name: UltraShield SPF 50+ Sunscreen'),
+                //       Text('Brand: ${widget.productModel.category!.title}'),
+                //       Text('Type: Broad-Spectrum Protection'),
+                //       Text('SPF: 50+'),
+                //       Text('Formulation: Lotion'),
+                //       Text('Volume: 150 ml'),
+                //       Text('Price: \$18.99'),
+                //       Text(
+                //           'Key Ingredients: Avobenzone, Octinoxate, Titanium Dioxide'),
+                //       Text('Water Resistance: Up to 80 minutes'),
+                //       Text(
+                //           'Application: Apply generously on all exposed skin areas 15 minutes before sun exposure. Reapply every 2 hours or after swimming or sweating.'),
+                //       Text(
+                //           'Benefits: Helps prevent sunburn, premature skin aging, and skin cancer. Suitable for all skin types, including sensitive skin.'),
+                //     ],
+                //   ),
+                //   secondChild: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text('Product Name: UltraShield SPF 50+ Sunscreen'),
+                //       Text('Brand: ${widget.productModel.category!.title}'),
+                //       Text('Type: Broad-Spectrum Protection'),
+                //       Text('SPF: 50+'),
+                //       Text('Formulation: Lotion'),
+                //       Text('Volume: 150 ml'),
                      
-                    ],
-                  ),
-                  crossFadeState: _isExpandedProduct
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: Duration(milliseconds: 300),
-                ),
-                SizedBox(height: 8.h),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _isExpandedProduct = !_isExpandedProduct;
-                    });
-                  },
-                  child: SeeMoreButton(
-                    isExpanded: _isExpandedProduct,
-                  ),
-                ),
+                //     ],
+                //   ),
+                //   crossFadeState: _isExpandedProduct
+                //       ? CrossFadeState.showFirst
+                //       : CrossFadeState.showSecond,
+                //   duration: Duration(milliseconds: 300),
+                // ),
+                // SizedBox(height: 8.h),
+                // GestureDetector(
+                //   onTap: () {
+                //     setState(() {
+                //       _isExpandedProduct = !_isExpandedProduct;
+                //     });
+                //   },
+                //   child: SeeMoreButton(
+                //     isExpanded: _isExpandedProduct,
+                //   ),
+                // ),
                 heightBox4,
                 // AnimatedCrossFade(
                 //   firstChild: Container(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:antoinette/app/modules/common/model/error_response_model.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
@@ -67,11 +68,15 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
-          responseData: debugMessage,
+          responseData: debugMessage, 
         );
       } else {
+        final debugMessage = jsonDecode(response.body);
+        ErrorMessageModel errorMessageModel = ErrorMessageModel.fromJson(debugMessage);
         return NetworkResponse(
-            isSuccess: false, statusCode: response.statusCode);
+            isSuccess: false, statusCode: response.statusCode,
+            errorMessage: errorMessageModel.message ?? 'Wrong'
+            );
       }
     } catch (e) {
       _logResponse(url, -1, null, '', e.toString());
