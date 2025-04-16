@@ -1,6 +1,6 @@
 class Urls {
-  static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
-  // static const String _baseUrl = 'https://488b-115-127-156-9.ngrok-free.app/api/v1';
+  // static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
+  static const String _baseUrl = 'http://204.197.173.195:5001/api/v1';
   static const String signUp = '$_baseUrl/users/register';
   static const String verifOtp = '$_baseUrl/otp/verify-otp';
   static const String signIn = '$_baseUrl/auth/login';
@@ -35,7 +35,18 @@ class Urls {
   static const String paymentCheckoutUrl = '$_baseUrl/payments/checkout'; 
 
    
+  static String editDiarytUrlsById(
+    String id,
+  ) {
+    return '$_baseUrl/dear-dairies/$id';
+  }
 
+  static String deleteDiarytUrlsById(
+    String id,
+  ) {
+    return '$_baseUrl/dear-dairies/$id';
+  }
+  
  
   static String productUrlsById(
     String id,

@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/all_diaries_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/delete_diary_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/edit_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
@@ -31,6 +32,8 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
   final TextEditingController passwordController = TextEditingController();
   final AllDiariesController allDiariesController =
       Get.find<AllDiariesController>();
+  final DeleteDiariesController deleteDiariesController =
+      DeleteDiariesController();
 
   List<bool> isBlurList = [];
 
@@ -133,10 +136,10 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                             iconPath: AssetsPath.angle,
                             status:
                                 '${controller.allDiaryList[index].feelings}',
-                            day: 'Monday',
+                            day: '${controller.allDiaryList[index].date}',
                             time: '${controller.allDiaryList[index].time}',
                             description:
-                                'Today was a good day! The sun felt warm on my face, and I laughed so much with my friends. I want to remember this feeling—light, joyful, and full of possibility.',
+                                '${controller.allDiaryList[index].description}',
                             lockOntap: () {
                               if (!isBlurList[index]) {
                                 setState(() {
@@ -146,11 +149,19 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                                 lockButton(index);
                               }
                             },
-                           
-                            themeColor: const Color(0xffD9A48E).withAlpha(20), onDeleteTap: () {
-                                 
-                            }, onEditTap: () {
-                                Navigator.pushNamed(context, EditDiaryScreen.routeName,arguments: 'sngggkvukvukvukvukvukvukvukvukvukvukvu');
+                            themeColor: const Color(0xffD9A48E).withAlpha(20),
+                            onDeleteTap: () {
+                              print('${controller.allDiaryList[index].sId}');
+                              setState(() {
+                                 deleteDiary('${controller.allDiaryList[index].sId}');
+                              });
+                             
+                            },
+                            onEditTap: () {
+                              Navigator.pushNamed(
+                                  context, EditDiaryScreen.routeName,
+                                  arguments:
+                                      '${controller.allDiaryList[index].sId}');
                             },
                           ),
                         );
@@ -206,6 +217,32 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
         );
       },
     );
+  }
+
+  Future<void> deleteDiary(String userId) async {
+    
+      final bool isSuccess =
+          await deleteDiariesController.deleteDiaries(userId);
+
+      if (isSuccess) {
+        if (mounted) {
+          allDiariesController.getDiaryList();
+          allDiariesController.update();
+          showSnackBarMessage(
+            context,
+            'Successfully deleted!',
+          );
+          
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context,
+              deleteDiariesController.errorMessage ?? 'Something went wrong',
+              true);
+        }
+      
+    }
   }
 
   Future<void> onTapToNextButton(String password, int index) async {

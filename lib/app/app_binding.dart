@@ -20,6 +20,8 @@ import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key
 import 'package:antoinette/app/modules/dear_diary/controllers/add_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/all_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/change_password_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/delete_diary_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/edit_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/set_password_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_articles_controller.dart';
@@ -85,6 +87,8 @@ class ControllerBinder extends Bindings {
     Get.put(ProductOrderController());
     Get.put(EditContactController());
     Get.put(PaymentController());
+    Get.put(EditDiariesController());
+    Get.put(DeleteDiariesController());
 
   
     

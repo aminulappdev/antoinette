@@ -4,7 +4,7 @@ import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class AddDiariesController extends GetxController {
+class DeleteDiariesController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -14,25 +14,16 @@ class AddDiariesController extends GetxController {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
-  Future<bool> addDiaries(String userId, String date, String time,
-      String description, String feeling) async {
+  Future<bool> deleteDiaries(String userId) async {
+    print('start delete function');
     bool isSuccess = false;
 
     _inProgress = true;
 
     update();
-
-    Map<String, dynamic> requestBody = {
-      "user": userId,
-      "date": date,
-      "time": time,
-      "description": description,
-      "feelings": feeling,
-      "themeMode" : "Light Mode"
-    };
-
+  
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.addDiariesUrl, requestBody,
+        .deleteRequest(Urls.deleteDiarytUrlsById(userId),
             accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
