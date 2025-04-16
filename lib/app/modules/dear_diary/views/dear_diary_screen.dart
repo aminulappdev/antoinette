@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/all_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
+import 'package:antoinette/app/modules/dear_diary/views/edit_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/custom_pichart.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/health_condition_card.dart';
@@ -120,8 +121,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                   child:
                       GetBuilder<AllDiariesController>(builder: (controller) {
                     if (controller.inProgress) {
-                      return const Center(
-                          child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     return ListView.builder(
                       itemCount: controller.allDiaryList.length,
@@ -146,9 +146,12 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                                 lockButton(index);
                               }
                             },
-                            moreHorizOntap: () {},
-                            themeColor:
-                                const Color(0xffD9A48E).withAlpha(20),
+                           
+                            themeColor: const Color(0xffD9A48E).withAlpha(20), onDeleteTap: () {
+                                 
+                            }, onEditTap: () {
+                                Navigator.pushNamed(context, EditDiaryScreen.routeName,arguments: 'sngggkvukvukvukvukvukvukvukvukvukvukvu');
+                            },
                           ),
                         );
                       },

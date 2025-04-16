@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/payment/model/payment_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
@@ -13,6 +14,10 @@ class PaymentController extends GetxController {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
+  PaymentModel? paymentModel;
+  PaymentModel? get paymentData => paymentModel; 
+
+
   Future<bool> getPayment(String modelType, String userId, String refereneId) async {
     bool isSuccess = false;
 
@@ -27,9 +32,11 @@ class PaymentController extends GetxController {
 };
 
     final NetworkResponse response =
-        await Get.find<NetworkCaller>().postRequest(Urls.signIn, requestBody);
+        await Get.find<NetworkCaller>().postRequest(Urls.paymentCheckoutUrl, requestBody);
 
     if (response.isSuccess) {
+
+      paymentModel = PaymentModel.fromJson(response.responseData);
       _errorMessage = null;
       isSuccess = true;
    

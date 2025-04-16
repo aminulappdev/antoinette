@@ -32,10 +32,11 @@ class Urls {
   static const String dashboardUrl = '$_baseUrl/dear-dairies/dashboard-data'; 
   static const String allDiarydUrl = '$_baseUrl/dear-dairies'; 
   static const String orderProductUrl = '$_baseUrl/orders'; 
+  static const String paymentCheckoutUrl = '$_baseUrl/payments/checkout'; 
 
    
 
-
+ 
   static String productUrlsById(
     String id,
   ) {

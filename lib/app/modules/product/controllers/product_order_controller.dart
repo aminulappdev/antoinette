@@ -13,15 +13,18 @@ class ProductOrderController extends GetxController {
 
   // OrderResponseModel? orderResponseModel;
   // OrderResponseItemModel? get orderResponseData => orderResponseModel?.data;
+ 
+  OrderResponseModel? orderResponseModel;
+  OrderResponseItemModel? get orderResponseData => orderResponseModel?.data;
 
   Future<bool> orderProduct(
       String productId,
-      String quantity,
-      String price,
-      String totalPrice,
+      int quantity,
+      double price,
+      double totalPrice,
       String discount,
       String userId,
-      String amount,
+      double amount,
       String deliveryCharge,
       String billingName,
       String pickupDate,
@@ -33,21 +36,21 @@ class ProductOrderController extends GetxController {
     _inProgress = true;
 
     update();
-
+   
     Map<String, dynamic> requestBody = {
       "items": [
         {
           "product": productId, // add productID
           "quantity": quantity,
-          "price": price, // calculate form frontent
+          "price": double.parse(price.toStringAsFixed(2)), // calculate form frontent
           "totalPrice":
-              totalPrice, // calculate form frontent total product price
+              double.parse(totalPrice.toStringAsFixed(2)), // calculate form frontent total product price
           "discount": discount
         }
       ],
       "orderData": {
         "user": userId, // add userId
-        "amount": amount, // calculate form frontend
+        "amount": double.parse(amount.toStringAsFixed(2)), // calculate form frontend
         "deliveryCharge": deliveryCharge,
         // billing details sent form frontend
         "billingDetails": {
@@ -62,6 +65,13 @@ class ProductOrderController extends GetxController {
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
         .postRequest(Urls.orderProductUrl, requestBody);
+
+    print('Order response data ...................');
+    print(response.responseData);
+
+    orderResponseModel = OrderResponseModel.fromJson(response.responseData);
+    print('Order model data ...................');
+    print(orderResponseModel);
 
     // orderResponseModel = OrderResponseModel.fromJson(response.responseData);
 

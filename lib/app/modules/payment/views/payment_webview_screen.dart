@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebviewScreen extends StatefulWidget {
+  final String link;
   static const String routeName = '/payment-webview-screen';
-  const PaymentWebviewScreen({super.key});
+  const PaymentWebviewScreen({super.key, required this.link});
 
   @override
   State<PaymentWebviewScreen> createState() => _PaymentWebviewScreenState();
@@ -18,7 +19,7 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
 
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse('https://javiercbk.github.io/json_to_dart/'));
+      ..loadRequest(Uri.parse(widget.link));
   }
 
   @override

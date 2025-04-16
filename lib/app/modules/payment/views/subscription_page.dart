@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
@@ -26,9 +27,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   ProfileController profileController = Get.find<ProfileController>();
   SubscriptionController subscriptionController = SubscriptionController();
   AllPackageController allPackageController = Get.find<AllPackageController>();
-  String? packageId;
-  String? userId;
+  String packageId = '';
+  late String userId;
   int indexx = 0;
+  final PaymentService paymentService = PaymentService();
 
   @override
   void initState() {
@@ -36,17 +38,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
     // Ensure profileData is not null
     if (profileController.profileData != null) {
-      userId = profileController.profileData!.sId;
+      userId = profileController.profileData!.sId!;
     } else {   
       userId = '';
     }
 
     allPackageController.getAllPackage();
-
-    // Check if the package list is available and has data
-    if (allPackageController.packageItemList != null && allPackageController.packageItemList!.isNotEmpty) {
-      packageId = allPackageController.packageItemList![1].sId;
-    }
   }
 
   @override
@@ -88,32 +85,20 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       child: ListView.builder(
                         itemCount: controller.packageItemList?[indexx].description?.length,
                         itemBuilder: (context, index) {
-
-                        return  costomRow('${controller.packageItemList?[indexx].description?[index]}', height, width);
-                      },),
+                          return costomRow('${controller.packageItemList?[indexx].description?[index]}', height, width);
+                        },
+                      ),
                     ),
-                    // costomRow('Unlock AI generate image', height, width),
-                    // SizedBox(
-                    //   height: height / 160,
-                    // ),
-                    // costomRow('Pro support from our team', height, width),
-                    // SizedBox(
-                    //   height: height / 160,
-                    // ),
-                    // costomRow('Early access to new features', height, width),
-                    // SizedBox(
-                    //   height: height / 30,
-                    // ),
                     packageSection(height, width,
-                        monthlyAmount:
-                            controller.packageItemList![1].price.toString(),
-                        yearlyAmount:
-                            controller.packageItemList![0].price.toString()),
+                        monthlyAmount: controller.packageItemList![1].price.toString(),
+                        yearlyAmount: controller.packageItemList![0].price.toString()),
                     SizedBox(
                       height: height / 20,
                     ),
                     GradientElevatedButton(
-                      onPressed: buyNowBTN,
+                      onPressed: (){
+                        buyNowBTN(allPackageController.packageItemList![1].sId!);
+                      },
                       text: 'Buy now',
                     ),
                   ],
@@ -126,17 +111,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     );
   }
 
-  Widget packageSection(double height, double width,
-      {String monthlyAmount = '0', String yearlyAmount = '0'}) {
+  Widget packageSection(double height, double width, {String monthlyAmount = '0', String yearlyAmount = '0'}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
           onTap: () {
-            packageId = allPackageController.packageItemList?[1].sId;
+            packageId = allPackageController.packageItemList![1].sId!;
             isMonthly = true;
             isYearly = false;
-              setState(() {
+            setState(() {
               indexx = 0;
             });
           },
@@ -222,10 +206,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         ),
         GestureDetector(
           onTap: () {
-            packageId = allPackageController.packageItemList?[0].sId;
+            packageId = allPackageController.packageItemList![0].sId!;
             isMonthly = false;
             isYearly = true;
-            
             setState(() {
               indexx = 1;
             });
@@ -255,7 +238,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          
                           GradientText(
                             'Yearly',
                             style: GoogleFonts.urbanist(
@@ -345,24 +327,24 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     );
   }
 
-  Future<void> buyNowBTN() async {
-    final bool isSuccess =
-        await subscriptionController.getSubcription(userId!, packageId!);
+  Future<void> buyNowBTN(String packageid) async {
+    // Check if packageId is null
+    final bool isSuccess = await subscriptionController.getSubcription(userId, packageid);
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Done');
-        // Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
-      } else {
-        if (mounted) {
-          showSnackBarMessage(
-              context, subscriptionController.errorMessage!, true);
-        }
+           paymentService.payment(
+          context,
+          'Subscription',
+          userId,
+          subscriptionController.subscriptionResponseData!.id!,
+        );
+        
+
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(
-            context, subscriptionController.errorMessage!, true);
+        showSnackBarMessage(context, subscriptionController.errorMessage!, true);
       }
     }
   }

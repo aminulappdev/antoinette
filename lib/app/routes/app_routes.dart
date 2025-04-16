@@ -9,6 +9,7 @@ import 'package:antoinette/app/modules/checkIn/views/add_checkin_screen.dart';
 import 'package:antoinette/app/modules/common/views/notification_screen.dart';
 import 'package:antoinette/app/modules/contact/views/edit_contact_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/change_password_screen.dart';
+import 'package:antoinette/app/modules/dear_diary/views/edit_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
 import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
@@ -141,6 +142,12 @@ class AppRoutes {
     AddDiaryScreen.routeName: (context) => const AddDiaryScreen(),
     SetJournalPasswordScreen.routeName: (context) => const SetJournalPasswordScreen(),
     ChangeJournalPasswordScreen.routeName: (context) => const ChangeJournalPasswordScreen(),
+    EditDiaryScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as String;
+      return EditDiaryScreen(
+        userId: args,
+      );
+    },
 
     // Therapy Section
     HealingNoteScreen.routeName: (context) => const HealingNoteScreen(),
@@ -185,7 +192,13 @@ class AppRoutes {
 
 
     SubscriptionScreen.routeName: (context) => const SubscriptionScreen(),
-    PaymentWebviewScreen.routeName: (context) => const PaymentWebviewScreen(),
+   
+    PaymentWebviewScreen.routeName: (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as String;
+      return PaymentWebviewScreen(
+        link: args,
+      );
+    },
     
 
     AddCheckInScreen.routeName: (context) => const AddCheckInScreen(),

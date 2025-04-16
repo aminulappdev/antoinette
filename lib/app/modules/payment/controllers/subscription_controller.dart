@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/payment/model/subscription_response_mode.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
@@ -8,11 +9,14 @@ class SubscriptionController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
-  String? _errorMessage;
+  String? _errorMessage; 
   String? get errorMessage => _errorMessage;
 
   String? _accessToken;
   String? get accessToken => _accessToken;
+
+  SubscriptionResponseModel? subscriptionResponseModel;
+  SubscriptionResponseItemModel? get subscriptionResponseData => subscriptionResponseModel!.data;
 
   Future<bool> getSubcription(String user, String package) async {
     bool isSuccess = false;
@@ -28,6 +32,9 @@ class SubscriptionController extends GetxController {
             accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
+  
+      subscriptionResponseModel = SubscriptionResponseModel.fromJson(response.responseData);
+      
       _errorMessage = null;
       isSuccess = true;
     } else {

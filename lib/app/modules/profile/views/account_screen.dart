@@ -65,23 +65,30 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: [
                           CircleAvatar(
                             radius: 25.r,
-                           child: image != null
-                              ? ClipOval(
-                                  child: Image.file(
-                                    image!,
-                                    width: 50.h,
-                                    height: 50.h,
-                                    fit: BoxFit.cover,
+                            child: image != null
+                                ? ClipOval(
+                                    child: Image.file(
+                                      image!,
+                                      width: 50.h,
+                                      height: 50.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: controller.profileData
+                                                        ?.photoUrl ==
+                                                    null
+                                                ? AssetImage(
+                                                    AssetsPath.womenBookRead)
+                                                : NetworkImage(
+                                                    '${controller.profileData?.photoUrl}'),
+                                            fit: BoxFit.fill)),
                                   ),
-                                )
-                              : Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(image: AssetImage(AssetsPath.womenBookRead,),fit: BoxFit.fill)
-                                ),
-                              ),
                           ),
                           Positioned(
                               bottom: 0,
@@ -92,6 +99,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       (File pickedImage) {
                                     setState(() {
                                       image = pickedImage;
+                                      
                                     });
                                   });
                                 },

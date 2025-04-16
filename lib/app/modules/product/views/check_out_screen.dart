@@ -1,6 +1,6 @@
-import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+
 import 'package:antoinette/app/modules/payment/controllers/payment_controller.dart';
-import 'package:antoinette/app/modules/payment/views/payment_webview_screen.dart';
+import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/product/controllers/product_order_controller.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/widgets/checkout_user_info.dart';
@@ -30,13 +30,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   final PaymentController paymentController = PaymentController();
   final ProductOrderController productOrderController =
-      ProductOrderController();
+      Get.find<ProductOrderController>();
   ProfileController profileController = Get.find<ProfileController>();
+  final PaymentService paymentService = PaymentService();
 
   int selectedButtonIndex = 0;
   String deliveryAddress = '';
   final List<String> buttonNames = ['Home', 'Office', 'Delivery'];
   int quantity = 1;
+
+  late String myUserId;
 
   double price = 0.0;
   double totalPrice = 0;
@@ -48,6 +51,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   void initState() {
     profileController.getProfileData();
     deliveryAddress = profileController.profileData!.homeAddress!;
+    myUserId = profileController.profileData!.id!;
     price = widget.productModel.amount!;
     discount = widget.productModel.discount!;
     //  price = 20;
@@ -147,14 +151,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       )),
 
                   heightBox12,
-                  priceCalculator(context),
-                  // DeliveryPriceCalulator(
-                  //   deliveryType: 'Standard Delivery',
-                  //   quantity: '1',
-                  //   price: '\$5.00',
-                  //   minusTap: () {},
-                  //   plusTap: () {},
-                  // ),
+                  priceCalculator(context),               
                   heightBox12,
                   Text(
                     'Price Details',
@@ -249,7 +246,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       ),
     );
   }
-
+ 
   Container priceCalculator(BuildContext context) {
     return Container(
       height: 91.h,
@@ -361,12 +358,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       email) async {
     final bool isSuccess = await productOrderController.orderProduct(
         widget.productModel.sId!,
-        quantity.toString(),
-        price.toString(),
-        totalPrice.toString(),
+        quantity,
+        price,
+        totalPrice,
         discount.toString(),
         userId,
-        totalPrice.toString(),
+        totalPrice,
         deliveryCharge,
         billingName,
         pickupDate,
@@ -375,17 +372,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         email);
 
     if (isSuccess) {
-      if (mounted) {
+      print('Reference id is...........');
+      print(productOrderController.orderResponseData!.id!);
 
-        
-
-        payment('Order', '', '');
-       
-        // Navigator.pushNamedAndRemoveUntil(
-        //   context,
-        //   MainButtonNavbarScreen.routeName,
-        //   (Route<dynamic> route) => false,
-        // );
+      if (mounted) {     
+           paymentService.payment(
+          context,
+          'Order',
+          userId,
+          productOrderController.orderResponseData!.id!,
+        );
+      
       } else {
         if (mounted) {
           showSnackBarMessage(
@@ -402,31 +399,5 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
   }
 
-  Future<void> payment(
-      String modelType, String userId, String referenceId) async {
-    final bool isSuccess =
-        await paymentController.getPayment(modelType, userId, referenceId);
-
-    if (isSuccess) {
-      if (mounted) {
-        showSnackBarMessage(context, 'payment request done');
-        Navigator.pushNamed(
-          context,
-          PaymentWebviewScreen.routeName,
-        );
-      } else {
-        if (mounted) {
-          showSnackBarMessage(context, paymentController.errorMessage!, true);
-        }
-      }
-    } else {
-      if (mounted) {
-        // print('Error show ----------------------------------');
-        showSnackBarMessage(
-            context, paymentController.errorMessage ?? 'Ekhanei problem', true);
-      }
-    }
-
-    // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
-  }
+ 
 }
