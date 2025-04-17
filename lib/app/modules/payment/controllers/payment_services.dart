@@ -13,13 +13,18 @@ class PaymentService {
     final bool isSuccess =
         await paymentController.getPayment(modelType, userId, referenceId);
 
+    Map<String, dynamic> paymentData = {
+      'link' : paymentController.paymentData?.data,
+      'reference' : referenceId
+    };
+
     if (isSuccess) {
       // Directly use context without mounted check
       showSnackBarMessage(context, 'Payment request done');
       Navigator.pushNamed(
         context,
-        PaymentWebviewScreen.routeName,
-        arguments: paymentController.paymentData?.data,
+        PaymentWebviewScreen.routeName,  
+        arguments: paymentData,
       );
     } else {
       // Error handling

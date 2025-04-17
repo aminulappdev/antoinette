@@ -330,7 +330,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Future<void> buyNowBTN(String packageid) async {
     // Check if packageId is null
     final bool isSuccess = await subscriptionController.getSubcription(userId, packageid);
-
+ 
     if (isSuccess) {
       if (mounted) {
            paymentService.payment(

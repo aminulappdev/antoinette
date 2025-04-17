@@ -34,6 +34,7 @@ import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
+import 'package:antoinette/app/modules/payment/views/payment_details_screen.dart';
 import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/modules/payment/views/payment_webview_screen.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
@@ -192,11 +193,12 @@ class AppRoutes {
 
 
     SubscriptionScreen.routeName: (context) => const SubscriptionScreen(),
+    PaymentDetailsScreen.routeName: (context) => const PaymentDetailsScreen(),
    
     PaymentWebviewScreen.routeName: (context) {
-      final args = ModalRoute.of(context)!.settings.arguments as String;
+      final args = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
       return PaymentWebviewScreen(
-        link: args,
+        paymentData: args,
       );
     },
     

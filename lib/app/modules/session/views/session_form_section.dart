@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
@@ -21,7 +22,8 @@ class SessionFormScreen extends StatefulWidget {
 class _SessionFormScreenState extends State<SessionFormScreen> {
   late String userId;
   ProfileController profileController = Get.find<ProfileController>();
-  final BookingController bookingController = BookingController();
+  final BookingController bookingController = Get.find<BookingController>();
+  final PaymentService paymentService = PaymentService();
   String? selectedMood; // For storing selected mood
 
   @override
@@ -180,7 +182,14 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Booking successful');
+         paymentService.payment(
+          context,
+          'Booking',
+          userId,
+          bookingController.sessionBookingResponseData![0].id!
+        );
+        // showSnackBarMessage(context, 'Booking successful');
+
       }
     } else {
       if (mounted) {
@@ -188,4 +197,6 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
       }
     }
   }
+
+
 }

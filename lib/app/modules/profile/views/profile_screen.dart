@@ -1,8 +1,7 @@
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
-import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
-
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
+import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
 import 'package:antoinette/app/modules/profile/controllers/content_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
@@ -88,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     feature: 'Trusted Contacts',
                     icon: Icons.people,
                     ontap: () {
-                      Navigator.pushNamed(context, ContactScreen.routeName);
+                      Navigator.pushNamed(context, PaymentSuccessScreen.routeName);
                     },
                   ),
                   ProfileDrawerFeature(

@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/session/model/session_booking_respomse_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
@@ -13,6 +14,9 @@ class BookingController extends GetxController {
 
   String? _accessToken;
   String? get accessToken => _accessToken;
+
+  SessionBookingResponseModel? sessionBookingResponseModel;
+  List<SessionBookingResponseItemModel>? get sessionBookingResponseData => sessionBookingResponseModel?.data;
 
   Future<bool> bookingSession(String user, String sessionId, String slotId, String therapyType, String mood) async {
     bool isSuccess = false;
@@ -31,6 +35,8 @@ class BookingController extends GetxController {
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
         .postRequest(Urls.bookingSessionUrl, requestBody, accesToken: box.read('user-login-access-token'));
+
+        sessionBookingResponseModel = SessionBookingResponseModel.fromJson(response.responseData);
 
     if (response.isSuccess) {
       _errorMessage = null;

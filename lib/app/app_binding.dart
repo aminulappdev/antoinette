@@ -24,10 +24,12 @@ import 'package:antoinette/app/modules/dear_diary/controllers/delete_diary_contr
 import 'package:antoinette/app/modules/dear_diary/controllers/edit_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/set_password_controller.dart';
+import 'package:antoinette/app/modules/history/controllers/all_booking_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_articles_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_podcast_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/poscast_details.dart';
 import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/confirmed_payment_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
@@ -38,6 +40,7 @@ import 'package:antoinette/app/modules/profile/controllers/content_controller.da
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/update_profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
+import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/get_session_slotById_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
@@ -89,6 +92,9 @@ class ControllerBinder extends Bindings {
     Get.put(PaymentController());
     Get.put(EditDiariesController());
     Get.put(DeleteDiariesController());
+    Get.put(BookingController());
+    Get.put(AllBookingController());
+    Get.put(ConfirmedPaymentController());
 
   
     

@@ -1,6 +1,6 @@
 class Urls {
-  // static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
-  static const String _baseUrl = 'http://204.197.173.195:5001/api/v1';
+  static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
+  // static const String _baseUrl = 'http://204.197.173.195:5001/api/v1';
   static const String signUp = '$_baseUrl/users/register';
   static const String verifOtp = '$_baseUrl/otp/verify-otp';
   static const String signIn = '$_baseUrl/auth/login';
@@ -33,6 +33,13 @@ class Urls {
   static const String allDiarydUrl = '$_baseUrl/dear-dairies'; 
   static const String orderProductUrl = '$_baseUrl/orders'; 
   static const String paymentCheckoutUrl = '$_baseUrl/payments/checkout'; 
+  static const String allBookingUrl = '$_baseUrl/bookings/my-bookings'; 
+
+    static String confirmedPaymentUrlsById(
+    String id,
+  ) {
+    return '$_baseUrl/payments/reference/$id';
+  }
 
    
   static String editDiarytUrlsById(
