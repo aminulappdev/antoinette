@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ProfileInfo(
                     name: '${controller.profileData?.name}',
                     email: '${controller.profileModel?.data?.email}',
-                    imagePath: AssetsPath.womenBookRead,
+                    imagePath: '${controller.profileModel?.data?.photoUrl}',
                   ),
                   heightBox12,
                   ProfileDrawerFeature(

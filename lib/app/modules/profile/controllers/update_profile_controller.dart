@@ -1,12 +1,13 @@
-import 'package:antoinette/app/urls.dart';
-import 'package:antoinette/app/utils/get_storage.dart';
-import 'package:antoinette/services/network_caller/network_caller.dart';
-import 'package:antoinette/services/network_caller/network_response.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
-import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
+
+import 'package:antoinette/app/urls.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 
 class UpdateProfileController extends GetxController {
   bool _inProgress = false;
@@ -20,52 +21,84 @@ class UpdateProfileController extends GetxController {
 
   String? addressFiled;
 
-  // Method to update profile with image and other details
+  /// 🔁 Update Profile Function
   Future<bool> updateProfile({
-    String name = '',
-    String number = '',
-    File? image,  String? address,  String? addressIndex, // Image file parameter
+    String? addressIndex,
+    String? name,
+    String? number,
+    String? address,
+    File? image,
   }) async {
+    print('Image ache ?? ................................');
+    print(image);
     bool isSuccess = false;
     _inProgress = true;
     update();
 
-    Map<String, dynamic> requestBody = {
-      'name': name,
-      'contractNo': number,
-    };
+    try {
+      String? token = box.read('user-login-access-token');
+      if (token == null || token.isEmpty) {
+        _errorMessage = "User not authenticated";
+        _inProgress = false;
+        update();
+        return false;
+      }
 
-    // Add image file to request body if available
-    if (image != null) {
-      print('Image can\'t null .............');
-      String? mimeType = lookupMimeType(image.path); // Use the mime package's lookupMimeType function
-      var imageFile = await http.MultipartFile.fromPath(
-        'image', // Field name in the backend
-        image.path,
-        contentType: mimeType != null ? MediaType.parse(mimeType) : null,
-      );
+      var uri = Uri.parse(Urls.updateProfileUrl);
+      var request = http.MultipartRequest('PUT', uri);
 
-      // Adding image to the request body
-      requestBody['image'] = imageFile;
+      // ✅ Only Authorization header
+      request.headers['Authorization'] = token;
+
+      // ✅ Set 'data' field with JSON-encoded string
+      Map<String, dynamic> jsonFields = {
+        "name": name,
+        "contractNo": number,
+      };
+
+      if (address != null && address.isNotEmpty) {
+        jsonFields['address'] = address;
+      }
+
+      request.fields['data'] = jsonEncode(jsonFields);
+
+      // ✅ Add image if available
+      if (image != null) {
+        print('Image ache ekhane ................................');
+        print(image);
+        String imagePath = image.path;
+        String? mimeType = lookupMimeType(imagePath) ?? 'image/jpeg';
+
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'image', // 🔑 Backend should expect this key
+            imagePath,
+            contentType: MediaType.parse(mimeType),
+          ),
+        );
+      }
+
+      // 📡 Send request
+      var streamedResponse = await request.send();
+      var responseBody = await streamedResponse.stream.bytesToString();
+
+      print('📥 Server Response:');
+      print(responseBody);
+
+      var decodedResponse = jsonDecode(responseBody);
+
+      if (streamedResponse.statusCode == 200) {
+        _errorMessage = null;
+        isSuccess = true;
+      } else {
+        _errorMessage = decodedResponse['message'] ?? "Failed to update profile";
+      }
+    } catch (e) {
+      _errorMessage = "Error updating profile: $e";
+    } finally {
+      _inProgress = false;
+      update();
     }
-
-    // Send the request using the NetworkCaller
-    final NetworkResponse response = await Get.find<NetworkCaller>().putRequest(
-      Urls.updateProfileUrl,
-      requestBody,
-      accesToken: box.read('user-login-access-token'), // Access token for authorization
-    );
-
-    if (response.isSuccess) {
-      _errorMessage = null;
-      isSuccess = true;
-    } else {
-      _errorMessage = response.errorMessage;
-    }
-
-    // End the progress indicator
-    _inProgress = false;
-    update();
 
     return isSuccess;
   }
