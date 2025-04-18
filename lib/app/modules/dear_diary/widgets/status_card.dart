@@ -16,7 +16,7 @@ class StatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 32.h,
-      width: 72.w,
+      width: 76.w,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(50),
@@ -26,12 +26,12 @@ class StatusCard extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              radius: 13.r,
+              radius: 10.r,
               backgroundColor: Colors.transparent,
               backgroundImage: AssetImage(emojiPath),
             ),
             widthBox4,
-            Text('$percent%')
+            Text('$percent%',style: TextStyle(fontSize: 12),)
           ],
         ),
       ),

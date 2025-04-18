@@ -276,7 +276,8 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'Diary added successfully');
-          Navigator.pushNamed(context, DearDiaryScreen.routeName);
+          Navigator.pop(context);
+          // Navigator.pushNamed(context, DearDiaryScreen.routeName);
         }
       } else {
         if (mounted) {

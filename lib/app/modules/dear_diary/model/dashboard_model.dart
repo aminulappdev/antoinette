@@ -5,8 +5,7 @@ class DashboardModel {
   Meta? meta;
   DashboardItemModel? data;
 
-  DashboardModel(
-      {this.success, this.statusCode, this.message, this.meta, this.data});
+  DashboardModel({this.success, this.statusCode, this.message, this.meta, this.data});
 
   DashboardModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
@@ -87,28 +86,29 @@ class DashboardItemModel {
 }
 
 class FeelingsStatusData {
-  int? happy;
-  int? calm;
-  int? sad;
-  int? anxious;
-  int? angry;
-  int? motivated;
+  double? happy; // Changed to double
+  double? calm;  // Changed to double
+  double? sad;   // Changed to double
+  double? anxious; // Changed to double
+  double? angry;  // Changed to double
+  double? motivated; // Changed to double
 
-  FeelingsStatusData(
-      {this.happy,
-      this.calm,
-      this.sad,
-      this.anxious,
-      this.angry,
-      this.motivated});
+  FeelingsStatusData({
+    this.happy,
+    this.calm,
+    this.sad,
+    this.anxious,
+    this.angry,
+    this.motivated,
+  });
 
   FeelingsStatusData.fromJson(Map<String, dynamic> json) {
-    happy = json['happy'];
-    calm = json['calm'];
-    sad = json['sad'];
-    anxious = json['anxious'];
-    angry = json['angry'];
-    motivated = json['motivated'];
+    happy = json['happy']?.toDouble(); // Convert to double
+    calm = json['calm']?.toDouble(); // Convert to double
+    sad = json['sad']?.toDouble(); // Convert to double
+    anxious = json['anxious']?.toDouble(); // Convert to double
+    angry = json['angry']?.toDouble(); // Convert to double
+    motivated = json['motivated']?.toDouble(); // Convert to double
   }
 
   Map<String, dynamic> toJson() {
@@ -136,18 +136,19 @@ class DairyData {
   String? createdAt;
   String? updatedAt;
 
-  DairyData(
-      {this.sId,
-      this.user,
-      this.date,
-      this.time,
-      this.description,
-      this.feelings,
-      this.themeMode,
-      this.isPined,
-      this.isDeleted,
-      this.createdAt,
-      this.updatedAt});
+  DairyData({
+    this.sId,
+    this.user,
+    this.date,
+    this.time,
+    this.description,
+    this.feelings,
+    this.themeMode,
+    this.isPined,
+    this.isDeleted,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   DairyData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];

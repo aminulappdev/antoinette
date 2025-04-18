@@ -9,10 +9,8 @@ import 'package:get/get.dart';
 class MentalStatusWidget extends StatefulWidget {
   const MentalStatusWidget({
     super.key,
-    required this.toogleOntap,
+    
   });
-
-  final VoidCallback toogleOntap;
 
   @override
   State<MentalStatusWidget> createState() => _MentalStatusWidgetState();

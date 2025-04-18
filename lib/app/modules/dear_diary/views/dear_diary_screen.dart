@@ -109,12 +109,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                         EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomPiChart(),
-                        MentalStatusWidget(
-                          toogleOntap: () {},
-                        )
-                      ],
+                      children: [CustomPiChart(), MentalStatusWidget()],
                     ),
                   ),
                 ),
@@ -125,6 +120,10 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                       GetBuilder<AllDiariesController>(builder: (controller) {
                     if (controller.inProgress) {
                       return const Center(child: CircularProgressIndicator());
+                    }
+                    // Check if the diary list is empty
+                    if (controller.allDiaryList.isEmpty) {
+                      return const Center(child: Text("No diaries available"));
                     }
                     return ListView.builder(
                       itemCount: controller.allDiaryList.length,
@@ -153,9 +152,9 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                             onDeleteTap: () {
                               print('${controller.allDiaryList[index].sId}');
                               setState(() {
-                                 deleteDiary('${controller.allDiaryList[index].sId}');
+                                deleteDiary(
+                                    '${controller.allDiaryList[index].sId}');
                               });
-                             
                             },
                             onEditTap: () {
                               Navigator.pushNamed(
@@ -220,28 +219,24 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
   }
 
   Future<void> deleteDiary(String userId) async {
-    
-      final bool isSuccess =
-          await deleteDiariesController.deleteDiaries(userId);
+    final bool isSuccess = await deleteDiariesController.deleteDiaries(userId);
 
-      if (isSuccess) {
-        if (mounted) {
-          allDiariesController.getDiaryList();
-          allDiariesController.update();
-          showSnackBarMessage(
+    if (isSuccess) {
+      if (mounted) {
+        allDiariesController.getDiaryList();
+        allDiariesController.update();
+        showSnackBarMessage(
+          context,
+          'Successfully deleted!',
+        );
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
             context,
-            'Successfully deleted!',
-          );
-          
-        }
-      } else {
-        if (mounted) {
-          showSnackBarMessage(
-              context,
-              deleteDiariesController.errorMessage ?? 'Something went wrong',
-              true);
-        }
-      
+            deleteDiariesController.errorMessage ?? 'Something went wrong',
+            true);
+      }
     }
   }
 
