@@ -1,16 +1,15 @@
 import 'dart:io';
-
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-
 import 'package:pdf/widgets.dart' as pw;
 
 
 class PdfController extends GetxController {
   // final PaymentController paymentController = Get.find();
+  
 
-  Future<void> generateAndSavePDF() async {
+  Future<void> generateAndSavePDF(String date, String transactionId, String price, String name) async {
     try {
       final pdf = pw.Document();
 
@@ -28,7 +27,7 @@ class PdfController extends GetxController {
               ),
               pw.SizedBox(height: 20),
               pw.Text(
-                'Payment Total: \$200',
+                'Payment Total: \$$price',
                 style: pw.TextStyle(
                   fontSize: 18,
                   fontWeight: pw.FontWeight.bold,
@@ -41,7 +40,7 @@ class PdfController extends GetxController {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text('Date:'),
-                  pw.Text('10/20/2025'),
+                  pw.Text(date),
                 ],
               ),
               pw.SizedBox(height: 10),
@@ -49,7 +48,7 @@ class PdfController extends GetxController {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text('Transaction ID:'),
-                  pw.Text('#sdvfghjn'),
+                  pw.Text(transactionId),
                 ],
               ),
               pw.SizedBox(height: 10),
@@ -57,7 +56,7 @@ class PdfController extends GetxController {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text('Account:'),
-                  pw.Text('Imran'),
+                  pw.Text(name),
                 ],
               ),
               pw.SizedBox(height: 10),
@@ -67,7 +66,7 @@ class PdfController extends GetxController {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text('Total Payment:'),
-                  pw.Text('1506'),
+                  pw.Text(price),
                 ],
               ),
             ],

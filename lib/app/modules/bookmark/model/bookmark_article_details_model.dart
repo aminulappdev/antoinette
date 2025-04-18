@@ -1,6 +1,6 @@
 class BookmarkArticleDetalsModel {
   bool? success;
-  int? statusCode; 
+  int? statusCode;
   String? message;
   BookmarkArticleDetailsItemModel? data;
 
@@ -110,11 +110,32 @@ class User {
   }
 }
 
+// Create Category class to handle category field as an object
+class Category {
+  String? sId;
+  String? title;
+
+  Category({this.sId, this.title});
+
+  Category.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['title'] = title;
+    return data;
+  }
+}
+
+// Modify Reference class to handle category as a Category object
 class Reference {
   String? sId;
   String? title;
-  String? category;
   String? thumbnail;
+  Category? category;  // Now category is a Category object
   String? description;
   String? author;
   String? status;
@@ -141,7 +162,9 @@ class Reference {
   Reference.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
-    category = json['category'];
+    category = json['category'] != null
+        ? Category.fromJson(json['category'])  // Handle category as Category object
+        : null;
     thumbnail = json['thumbnail'];
     description = json['description'];
     author = json['author'];
@@ -157,7 +180,9 @@ class Reference {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['title'] = title;
-    data['category'] = category;
+    if (category != null) {
+      data['category'] = category!.toJson();  // Serialize category as Category object
+    }
     data['thumbnail'] = thumbnail;
     data['description'] = description;
     data['author'] = author;

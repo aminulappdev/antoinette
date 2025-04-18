@@ -19,15 +19,13 @@ class Reception extends StatefulWidget {
 }
 
 class _ReceptionState extends State<Reception> {
-
-   Map<String,dynamic> slotData = {
-    'sessionId' : '',
-    'slotId' : '',
+  Map<String, dynamic> slotData = {
+    'sessionId': '',
+    'slotId': '',
     'therapyType': ''
   };
 
   final BookingController bookingController = BookingController();
-
 
   String selectedTherapy = "Video Therapy";
   final List<String> therapyOptions = [
@@ -36,6 +34,7 @@ class _ReceptionState extends State<Reception> {
   ];
 
   List<DateTime> enabledDates = [];
+  List<DateTime> disabledDates = []; // For holding booked dates
   String? selectedTimeSlot;
   String? selectedSlotId;
   DateTime selectedDate = DateTime.now();
@@ -44,20 +43,31 @@ class _ReceptionState extends State<Reception> {
   @override
   void initState() {
     super.initState();
-    
+
+    // Fetch session slots by ID
     Get.find<AllSessionSlotByIdController>()
         .getSessionById(widget.sessionDataModel.sId!)
         .then((_) {
       var controller = Get.find<AllSessionSlotByIdController>();
 
       List<DateTime> validDates = [];
+      List<DateTime> bookedDates = []; // To track booked dates
+
+      // Iterate over session slots and segregate booked and available dates
       controller.sessionListById?.forEach((sessionSlot) {
         DateTime date = DateTime.parse(sessionSlot.date!);
-        validDates.add(date);
+
+        if (sessionSlot.isBooked == true) {
+          // If the slot is booked, add to disabledDates
+          bookedDates.add(date);
+        } else {
+          validDates.add(date);
+        }
       });
 
       setState(() {
-        enabledDates = validDates;
+        enabledDates = validDates; // Valid dates
+        disabledDates = bookedDates; // Booked dates
       });
     });
   }
@@ -143,21 +153,26 @@ class _ReceptionState extends State<Reception> {
                 ),
               ),
               enabledDayPredicate: (day) {
+                // Check if the day is either available or not booked
                 return enabledDates.any((date) =>
                     date.year == day.year &&
                     date.month == day.month &&
-                    date.day == day.day);
+                    date.day == day.day) && !disabledDates.contains(day);
               },
             ),
             heightBox8,
-              Text("Select Date & Time:",
-                          style: GoogleFonts.poppins(fontSize: 15.sp)),
-                      heightBox8,
+            Text("Select Date & Time:", style: GoogleFonts.poppins(fontSize: 15.sp)),
+            heightBox8,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: availableSlotMap.entries.map((entry) {
                 String timeSlot = entry.key;
                 String slotId = entry.value;
+
+                // Check if slot is booked
+                if (controller.bookedSlots.contains(slotId)) {
+                  return SizedBox.shrink(); // Skip booked slots
+                }
 
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
@@ -185,17 +200,17 @@ class _ReceptionState extends State<Reception> {
             ),
             heightBox8,
             GradientElevatedButton(
-                onPressed: (){
+                onPressed: () {
                   slotData['sessionId'] = widget.sessionDataModel.sId!;
                   slotData['slotId'] = selectedSlotId!;
                   slotData['therapyType'] = selectedTherapy;
-                  Navigator.pushNamed(context, SessionFormScreen.routeName, arguments: slotData);
-                }, text: 'Book now')
+                  Navigator.pushNamed(context, SessionFormScreen.routeName,
+                      arguments: slotData);
+                },
+                text: 'Book now')
           ],
         ),
       );
     });
   }
-
-  
 }

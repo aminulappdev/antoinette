@@ -11,7 +11,9 @@ class BookmarkPodcastDetailsModel {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    data = json['data'] != null ? BookmarkPodcastDetailsItemModel.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? BookmarkPodcastDetailsItemModel.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -110,11 +112,30 @@ class User {
   }
 }
 
+class Category {
+  String? sId;
+  String? title;
+
+  Category({this.sId, this.title});
+
+  Category.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['title'] = title;
+    return data;
+  }
+}
+
 class Reference {
   String? sId;
   String? title;
   int? episodeNumber;
-  String? category;
+  Category? category;  // Change from String? to Category?
   String? thumbnail;
   String? author;
   String? duration;
@@ -127,28 +148,31 @@ class Reference {
   String? updatedAt;
   int? iV;
 
-  Reference(
-      {this.sId,
-      this.title,
-      this.episodeNumber,
-      this.category,
-      this.thumbnail,
-      this.author,
-      this.duration,
-      this.fileLink,
-      this.embedLink,
-      this.status,
-      this.publishedAt,
-      this.isDeleted,
-      this.createdAt,
-      this.updatedAt,
-      this.iV});
+  Reference({
+    this.sId,
+    this.title,
+    this.episodeNumber,
+    this.category,
+    this.thumbnail,
+    this.author,
+    this.duration,
+    this.fileLink,
+    this.embedLink,
+    this.status,
+    this.publishedAt,
+    this.isDeleted,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+  });
 
   Reference.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
     episodeNumber = json['episodeNumber'];
-    category = json['category'];
+    category = json['category'] != null
+        ? Category.fromJson(json['category'])  // Deserialize category as Category object
+        : null;
     thumbnail = json['thumbnail'];
     author = json['author'];
     duration = json['duration'];
@@ -167,7 +191,9 @@ class Reference {
     data['_id'] = sId;
     data['title'] = title;
     data['episodeNumber'] = episodeNumber;
-    data['category'] = category;
+    if (category != null) {
+      data['category'] = category!.toJson();  // Serialize Category object
+    }
     data['thumbnail'] = thumbnail;
     data['author'] = author;
     data['duration'] = duration;

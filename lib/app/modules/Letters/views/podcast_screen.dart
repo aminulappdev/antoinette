@@ -18,7 +18,8 @@ class PodcastScreen extends StatefulWidget {
 
 class _PodcastScreenState extends State<PodcastScreen> {
   AllPodcastController allPodcastController = Get.find<AllPodcastController>();
-  PodcastDetailsController podcastDetailsController = PodcastDetailsController();
+  PodcastDetailsController podcastDetailsController =
+      PodcastDetailsController();
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -63,8 +64,9 @@ class _PodcastScreenState extends State<PodcastScreen> {
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: 4.h),
                         child: GestureDetector(
-                          onTap: () { 
-                           getPodcastScreen('${controller.podcastList[index].sId}');
+                          onTap: () {
+                            getPodcastScreen(
+                                '${controller.podcastList[index].sId}');
                           },
                           child: Container(
                             height: 104.h,
@@ -80,10 +82,16 @@ class _PodcastScreenState extends State<PodcastScreen> {
                                     height: 84.h,
                                     width: 73.w,
                                     decoration: BoxDecoration(
+                                      color: Colors.grey,
                                       borderRadius: BorderRadius.circular(8),
                                       image: DecorationImage(
-                                          image: AssetImage(
-                                              AssetsPath.audioImage),
+                                          image: controller.podcastList[index]
+                                                      .thumbnail !=
+                                                  null
+                                              ? NetworkImage(
+                                                  '${controller.podcastList[index].thumbnail}')
+                                              : AssetImage(
+                                                  AssetsPath.womenBookRead),
                                           fit: BoxFit.fill),
                                     ),
                                   ),
@@ -171,10 +179,8 @@ class _PodcastScreenState extends State<PodcastScreen> {
     );
   }
 
-   Future<void> getPodcastScreen(String id) async {
-
-    final bool isSuccess =
-        await podcastDetailsController.getPodcastDetails(id);
+  Future<void> getPodcastScreen(String id) async {
+    final bool isSuccess = await podcastDetailsController.getPodcastDetails(id);
 
     if (isSuccess) {
       if (mounted) {

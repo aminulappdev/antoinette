@@ -1,4 +1,3 @@
-
 import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
@@ -21,7 +20,6 @@ class ArticleDetailsScreen extends StatefulWidget {
 }
 
 class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
-
   final BookMarkController bookMarkController = BookMarkController();
   late String userId;
   ProfileController profileController = Get.find<ProfileController>();
@@ -33,7 +31,6 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
     super.initState();
     userId = profileController.profileData!.sId!;
     // Check if the article is already bookmarked
-    
   }
 
   @override
@@ -61,7 +58,11 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(AssetsPath.womenBookRead), fit: BoxFit.fill),
+                            image: widget.articleModel.thumbnail != null
+                                ? NetworkImage(
+                                    '${widget.articleModel.thumbnail}')
+                                : AssetImage(AssetsPath.womenBookRead),
+                            fit: BoxFit.fill),
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(
                       padding: EdgeInsets.all(12.0.h),
@@ -163,11 +164,13 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
   }
 
   Future<void> bookmark(String user, String reference) async {
-    final bool isSuccess = await bookMarkController.addBookmark(user, reference, 'Article');
+    final bool isSuccess =
+        await bookMarkController.addBookmark(user, reference, 'Article');
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Bookmark ${isBookmarked ? 'added' : 'removed'}');
+        showSnackBarMessage(
+            context, 'Bookmark ${isBookmarked ? 'added' : 'removed'}');
       }
     } else {
       if (mounted) {

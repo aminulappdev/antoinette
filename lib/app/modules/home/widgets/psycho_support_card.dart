@@ -41,9 +41,7 @@ class _PsychoSupportCardState extends State<PsychoSupportCard> {
                 width: 238.w,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(
-                          AssetsPath.psycoSupport,
-                        ),
+                        image:NetworkImage('${widget.sessionItemModel.thumbnail}'),
                         fit: BoxFit.fill),
                     borderRadius: BorderRadius.circular(8)),
                 child: Padding(

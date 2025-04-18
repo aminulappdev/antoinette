@@ -76,7 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomePageHeader(
                     circleText: '${controller.profileData?.name?[0]}',
                     onTapNotification: () {
-                      Navigator.pushNamed(context, NotificationScreen.routeName);
+                      Navigator.pushNamed(
+                          context, NotificationScreen.routeName);
                     },
                     onTapPublic: () {
                       Navigator.pushNamed(context, HistoryScreen.routeName);
@@ -93,6 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: SizedBox(
                       height: 290.h,
                       child: GridView.builder(
+                        shrinkWrap: true,
+                        physics:
+                            NeverScrollableScrollPhysics(),
                         itemCount: 4,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio: 1.15,
@@ -163,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 5,
+                        itemCount: 4,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 4.w),

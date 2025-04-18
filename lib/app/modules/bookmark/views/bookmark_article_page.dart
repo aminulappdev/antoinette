@@ -70,8 +70,14 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
                           height: 200.h,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
+                            color: Colors.grey,
                               image: DecorationImage(
-                                  image: AssetImage(AssetsPath.womenBookRead)),
+                                  image: controller.bookmarkArticleList[index]
+                                              .reference!.thumbnail !=
+                                          null
+                                      ? NetworkImage(
+                                          '${controller.bookmarkArticleList[index].reference!.thumbnail}')
+                                      : AssetImage(AssetsPath.womenBookRead),fit: BoxFit.fill),
                               borderRadius: BorderRadius.circular(20)),
                           child: Padding(
                             padding: EdgeInsets.all(20.0.h),
@@ -99,7 +105,6 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
                                     ),
                                   ),
                                 ),
-                               
                                 Text(
                                     '${controller.bookmarkArticleList[index].reference?.title}',
                                     style: GoogleFonts.poppins(

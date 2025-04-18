@@ -35,7 +35,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               children: [
                 CustomAppBar(name: 'Product Details'),
                 heightBox12,
-                HomeCarouselSlider(),
+             HomeCarouselSlider(images: widget.productModel.images ?? []),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

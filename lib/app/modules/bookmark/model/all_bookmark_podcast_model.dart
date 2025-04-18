@@ -145,7 +145,7 @@ class Reference {
   String? sId;
   String? title;
   int? episodeNumber;
-  String? category;
+  Category? category; // Change from String? to Category
   String? thumbnail;
   String? author;
   String? duration;
@@ -179,7 +179,7 @@ class Reference {
     sId = json['_id'];
     title = json['title'];
     episodeNumber = json['episodeNumber'];
-    category = json['category'];
+    category = json['category'] != null ? Category.fromJson(json['category']) : null; // Change here
     thumbnail = json['thumbnail'];
     author = json['author'];
     duration = json['duration'];
@@ -198,7 +198,9 @@ class Reference {
     data['_id'] = sId;
     data['title'] = title;
     data['episodeNumber'] = episodeNumber;
-    data['category'] = category;
+    if (category != null) {
+      data['category'] = category!.toJson(); // Serialize Category object
+    }
     data['thumbnail'] = thumbnail;
     data['author'] = author;
     data['duration'] = duration;
@@ -210,6 +212,25 @@ class Reference {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
+    return data;
+  }
+}
+
+class Category {
+  String? sId;
+  String? title;
+
+  Category({this.sId, this.title});
+
+  Category.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['title'] = title;
     return data;
   }
 }

@@ -109,7 +109,7 @@ class User {
   String? name;
   String? email;
   String? contactNumber;
-  Null photoUrl;
+  String? photoUrl; // Change from Null to String?
 
   User({this.sId, this.name, this.email, this.contactNumber, this.photoUrl});
 
@@ -118,7 +118,7 @@ class User {
     name = json['name'];
     email = json['email'];
     contactNumber = json['contactNumber'];
-    photoUrl = json['photoUrl'];
+    photoUrl = json['photoUrl'];  // Now correctly accepts String?
   }
 
   Map<String, dynamic> toJson() {
@@ -127,7 +127,7 @@ class User {
     data['name'] = name;
     data['email'] = email;
     data['contactNumber'] = contactNumber;
-    data['photoUrl'] = photoUrl;
+    data['photoUrl'] = photoUrl;  // Serialize as String?
     return data;
   }
 }

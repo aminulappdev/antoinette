@@ -1,8 +1,9 @@
 import 'package:antoinette/app/modules/product/controllers/product_details_controllers.dart';
 import 'package:antoinette/app/modules/product/model/all_product_pegination_model.dart';
 import 'package:antoinette/app/modules/product/views/product_datails_screen.dart';
+import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/show_snackBar_message.dart'; 
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,7 +39,9 @@ class _ProductCardState extends State<ProductCard> {
               width: 156.h,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(''),
+                      image: widget.productsModel.images?[0].url != null
+                          ? NetworkImage(widget.productsModel.images![0].url!)
+                          : AssetImage(AssetsPath.womenBookRead),
                       fit: BoxFit.fill),
                   borderRadius: BorderRadius.circular(8)),
               child: Padding(
@@ -51,7 +54,7 @@ class _ProductCardState extends State<ProductCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: 90,
+                    width: 80,
                     child: Text(
                       overflow: TextOverflow.ellipsis,
                       widget.productsModel.name!,
@@ -75,7 +78,7 @@ class _ProductCardState extends State<ProductCard> {
           ],
         ),
       ),
-    ); 
+    );
   }
 
   Future<void> getProductScreen() async {
@@ -87,7 +90,6 @@ class _ProductCardState extends State<ProductCard> {
 
     if (isSuccess) {
       if (mounted) {
-        
         Navigator.pushNamed(context, ProductDetailScreen.routeName,
             arguments: procuctDetailsController.productModel);
 

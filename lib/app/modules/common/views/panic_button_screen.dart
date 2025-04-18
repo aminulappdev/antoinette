@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:antoinette/app/modules/common/views/panic_alert_dialoge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 
 class PanicButtonScreen extends StatefulWidget {
   static const String routeName = '/panic-button-screen';
@@ -16,7 +18,6 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
   bool isPressed = false;
   late Timer _timer; 
   bool isHolding = false; 
-
 
   void _onLongPressEnd(LongPressEndDetails details) {
     if (_timer.isActive) {
@@ -40,7 +41,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
     return SafeArea(
         child: Scaffold(
       body: Padding(
-        padding:  EdgeInsets.all(16.0.h),
+        padding: EdgeInsets.all(16.0.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -105,7 +106,6 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
     ));
   }
 
-  
   void _onLongPress() {
     setState(() {
       isHolding = true;
@@ -115,63 +115,22 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
       if (isHolding) {
         setState(() {
           isPressed = true;
-        });
+        }); 
 
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (context) => AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Center(
-                child: Text('Are you OK?',
-                    style: GoogleFonts.poppins(fontSize: 20))),
-            actions: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    isPressed = false; // Reset if user presses YES
-                  });
-                },
-                child: Container(
-                  height: 32.h,
-                  width: 120.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xff305FA1).withOpacity(0.1),
-                    border: Border.all(color: Color(0xff305FA1)),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'YES',
-                      style: TextStyle(color: Color(0xff305FA1), fontSize: 14),
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                  // Handle NO action (can add an emergency function here)
-                },
-                child: Container(
-                  height: 32.h,
-                  width: 120.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xffA13430).withOpacity(0.1),
-                    border: Border.all(color: Color(0xffA13430)),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'NO',
-                      style: TextStyle(color: Color(0xffA13430), fontSize: 14.sp),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          builder: (context) => PanicAlertDialog(
+            onYesPressed: () {
+              Navigator.pop(context);
+              setState(() {
+                isPressed = false; // Reset if user presses YES
+              });
+            },
+            onNoPressed: () {
+              Navigator.pop(context);
+              // Handle NO action (can add an emergency function here)
+            },
           ),
         );
       }

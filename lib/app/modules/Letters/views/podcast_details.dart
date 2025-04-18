@@ -88,11 +88,13 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                 height: 274.h,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
+                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                    image: AssetImage(AssetsPath.audioImage),
-                    fit: BoxFit.fill,
-                  ),
+                      image: widget.podcastModel.thumbnail != null
+                          ? NetworkImage('${widget.podcastModel.thumbnail}')
+                          : AssetImage(AssetsPath.womenBookRead),
+                      fit: BoxFit.fill),
                 ),
               ),
               heightBox8,

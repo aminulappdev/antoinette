@@ -46,6 +46,7 @@ dependencies:
   pdf: ^3.11.3
   path_provider: ^2.1.5
   open_file: ^3.5.10
+  flutter_background_service: ^5.1.0
  
  
   

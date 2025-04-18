@@ -62,7 +62,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                   child: ListView.builder(
                     itemCount: controller.articlesList.length,
                     itemBuilder: (context, index) {
-                      if (controller.articlesList[index].status == 
+                      if (controller.articlesList[index].status ==
                           'published') {
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 2.h),
@@ -75,16 +75,23 @@ class _ArticleScreenState extends State<ArticleScreen> {
                               height: 200.h,
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
+                                color: Colors.grey,
                                   image: DecorationImage(
-                                      image: AssetImage(
-                                          AssetsPath.womenBookRead)),
+                                      
+                                      image: controller.articlesList[index]
+                                                  .thumbnail !=
+                                              null
+                                          ? NetworkImage(
+                                              '${controller.articlesList[index].thumbnail}')
+                                          : AssetImage(
+                                              AssetsPath.womenBookRead),fit: BoxFit.fill),
                                   borderRadius: BorderRadius.circular(20)),
                               child: Padding(
                                 padding: EdgeInsets.all(18.0.h),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       height: 27.h,
@@ -109,9 +116,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                         ),
                                       ),
                                     ),
-                                   
                                     Text(
-                                      maxLines: 2,
+                                        maxLines: 2,
                                         '${controller.articlesList[index].title}',
                                         style: GoogleFonts.poppins(
                                             fontSize: 12.sp,
@@ -122,9 +128,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                             ),
                           ),
                         );
-                        
-                      }
-                      else{
+                      } else {
                         return Container();
                       }
                     },
@@ -139,7 +143,6 @@ class _ArticleScreenState extends State<ArticleScreen> {
   }
 
   Future<void> getArticleScreen(String id) async {
-
     final bool isSuccess =
         await articletDetailsController.getArticleDetails(id);
 

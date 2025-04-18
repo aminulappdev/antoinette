@@ -11,15 +11,18 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BookMarkPodcastDetailsScreen extends StatefulWidget {
-   final BookmarkPodcastDetailsItemModel bookmarkPodcastDetailsItemModel;
+  final BookmarkPodcastDetailsItemModel bookmarkPodcastDetailsItemModel;
   static const String routeName = '/bookmark-podcast-details-screen';
-  const BookMarkPodcastDetailsScreen({super.key, required this.bookmarkPodcastDetailsItemModel});
+  const BookMarkPodcastDetailsScreen(
+      {super.key, required this.bookmarkPodcastDetailsItemModel});
 
   @override
-  State<BookMarkPodcastDetailsScreen> createState() => _BookMarkPodcastDetailsScreenState();
+  State<BookMarkPodcastDetailsScreen> createState() =>
+      _BookMarkPodcastDetailsScreenState();
 }
 
-class _BookMarkPodcastDetailsScreenState extends State<BookMarkPodcastDetailsScreen> {
+class _BookMarkPodcastDetailsScreenState
+    extends State<BookMarkPodcastDetailsScreen> {
   final BookMarkController bookMarkController = BookMarkController();
   late String userId;
   ProfileController profileController = Get.find<ProfileController>();
@@ -32,7 +35,8 @@ class _BookMarkPodcastDetailsScreenState extends State<BookMarkPodcastDetailsScr
     userId = profileController.profileData!.sId!;
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
-    player.setSource(UrlSource(widget.bookmarkPodcastDetailsItemModel.reference?.fileLink ?? ''));
+    player.setSource(UrlSource(
+        widget.bookmarkPodcastDetailsItemModel.reference?.fileLink ?? ''));
   }
 
   @override
@@ -60,7 +64,7 @@ class _BookMarkPodcastDetailsScreenState extends State<BookMarkPodcastDetailsScr
                       backgroundColor: const Color(0xff000000).withOpacity(0.1),
                       child: const Icon(Icons.arrow_back, color: Colors.white),
                     ),
-                  ),             
+                  ),
                 ],
               ),
               heightBox16,
@@ -70,14 +74,18 @@ class _BookMarkPodcastDetailsScreenState extends State<BookMarkPodcastDetailsScr
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                    image: AssetImage(AssetsPath.audioImage),
-                    fit: BoxFit.fill,
-                  ),
+                      image: widget.bookmarkPodcastDetailsItemModel.reference
+                                  ?.thumbnail !=
+                              null
+                          ? NetworkImage(
+                              '${widget.bookmarkPodcastDetailsItemModel.reference?.thumbnail}')
+                          : AssetImage(AssetsPath.womenBookRead),
+                      fit: BoxFit.fill),
                 ),
               ),
               heightBox8,
               Text(
-                 widget.bookmarkPodcastDetailsItemModel.reference?.title ?? '',
+                widget.bookmarkPodcastDetailsItemModel.reference?.title ?? '',
                 style: GoogleFonts.poppins(fontSize: 15.sp),
               ),
               heightBox12,
@@ -102,6 +110,4 @@ class _BookMarkPodcastDetailsScreenState extends State<BookMarkPodcastDetailsScr
       ),
     );
   }
-
- 
 }

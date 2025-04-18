@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/payment/model/confirmed_payment_response_model.dart';
 import 'package:antoinette/app/urls.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
@@ -24,16 +25,15 @@ class ConfirmedPaymentController extends GetxController {
 
     update();
 
-
-    final NetworkResponse response =
-        await Get.find<NetworkCaller>().getRequest(Urls.confirmedPaymentUrlsById(id));
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(Urls.confirmedPaymentUrlsById(id));
 
     if (response.isSuccess) {
-
       confirmedPaymentResponseModel = ConfirmedPaymentResponseModel.fromJson(response.responseData);
+      box.write('payment-reference-id', id);
+      print('My data is .............................');
+      print(confirmedPaymentResponseModel?.data?.amount);
       _errorMessage = null;
       isSuccess = true;
-         
     } else {
       _errorMessage = response.errorMessage;
     }

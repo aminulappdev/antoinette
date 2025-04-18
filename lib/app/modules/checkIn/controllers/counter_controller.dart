@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CountdownController extends GetxController {
@@ -20,16 +22,55 @@ class CountdownController extends GetxController {
   }
 
   // Show the time-up dialog
-  void showTimeUpDialog() {
-    Get.defaultDialog(
-      title: "Time's up!",
-      middleText: "Your check-in time has expired.",
-      onConfirm: () => Get.back(),
-      textConfirm: "OK",
-    );
-  }
+ void showTimeUpDialog() {
+  Get.defaultDialog(
+    title: "Chek-In Time's up!",
+    middleText: "Are you Ok?",
+    barrierDismissible: false, 
+    actions: [
+     
+      GestureDetector(
+        onTap: () {
+          Get.back();
+          print("User pressed YES");     
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(10.r)
+          ),
+          padding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 16.0.h),
+          
+          child: Text(
+            "YES",
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      ),
+      SizedBox(width: 10.w),
+    
+      GestureDetector(
+        onTap: () {
+          Get.back(); 
+          print("User pressed NO");    
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.red,
+            borderRadius: BorderRadius.circular(10.r)
+          ),
+          padding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 16.0.w),
+         
+          child: Text(
+            "NO",
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      ),
+    ],
+  );
+}
 
-  // Stop the countdown manually
   void stopCountdown() {
     _timer.cancel();
   }
@@ -37,7 +78,6 @@ class CountdownController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    // Ensure timer is stopped when the controller is disposed
     _timer.cancel();
   }
 }

@@ -21,6 +21,9 @@ class AllSessionSlotByIdController extends GetxController {
   DateTime? _selectedDate;
   DateTime? get selectedDate => _selectedDate;
 
+  // To store booked slots
+  List<String> bookedSlots = [];
+
   // Date update
   void updateSelectedDate(DateTime selectedDate) {
     _selectedDate = selectedDate;
@@ -34,9 +37,12 @@ class AllSessionSlotByIdController extends GetxController {
     Map<String, String> slotMap = {};
     sessionListById?.forEach((sessionSlot) {
       DateTime date = DateTime.parse(sessionSlot.date!);
-      if (date.isSameDate(_selectedDate!)) {
+      if (date.isSameDate(_selectedDate!) && sessionSlot.isBooked == false) {
         String slot = "${sessionSlot.startTime} - ${sessionSlot.endTime}";
         slotMap[slot] = sessionSlot.sId!;
+      } else if (sessionSlot.isBooked == true) {
+        // Track booked slots
+        bookedSlots.add(sessionSlot.sId!);
       }
     });
     return slotMap;

@@ -216,7 +216,7 @@ class _AccountScreenState extends State<AccountScreen> {
         if (mounted) {
           Get.find<ProfileController>().getProfileData();
           showSnackBarMessage(context, 'Profile updated');
-          // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+          Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
         } else {
           if (mounted) {
             showSnackBarMessage(

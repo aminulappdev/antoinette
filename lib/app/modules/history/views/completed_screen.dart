@@ -40,7 +40,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
             String dateString = '2025-03-18';
             DateTime date = DateTime.parse(dateString);
             DateTime today = DateTime.now();
-            if (controller.bookingList[index].paymentStatus == 'paid') {
+            if (controller.bookingList[index].paymentStatus == 'unpaid') {
               // if (today.isBefore(date)) {
                 return Padding(
                   padding:

@@ -81,10 +81,19 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
                                   height: 84.h,
                                   width: 73.w,
                                   decoration: BoxDecoration(
+                                    color: Colors.grey,
                                     borderRadius: BorderRadius.circular(8),
                                     image: DecorationImage(
-                                        image: AssetImage(
-                                            AssetsPath.womenBookRead),
+
+                                        image: controller
+                                                    .bookmarkPodcastList[index]
+                                                    .reference!
+                                                    .thumbnail !=
+                                                null
+                                            ? NetworkImage(
+                                                '${controller.bookmarkPodcastList[index].reference!.thumbnail}')
+                                            : AssetImage(
+                                                AssetsPath.womenBookRead),
                                         fit: BoxFit.fill),
                                   ),
                                 ),

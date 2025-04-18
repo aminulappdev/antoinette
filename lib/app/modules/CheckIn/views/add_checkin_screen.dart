@@ -38,18 +38,18 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
   late String userId;
 
   AddCheckInController addCheckInController = AddCheckInController();
-  CountdownController countdownController = Get.put(CountdownController());
+  CountdownController countdownController = Get.put(CountdownController()); // Global instance
 
   @override
   void initState() {
-    super.initState();  
+    super.initState();
     Get.find<AllContactController>().getContactList();
   }
 
   @override
   void dispose() {
     super.dispose();
-    countdownController.stopCountdown();
+    // Countdown is now globally managed, so no need to stop it here
   }
 
   @override
@@ -197,46 +197,44 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 ),
                 heightBox12,
 
-                GetBuilder<AllContactController>(
-                  builder: (controller) {
-                    if (controller.inProgress) {
-                      return Center(child: CircularProgressIndicator());
-                    }
+                GetBuilder<AllContactController>(builder: (controller) {
+                  if (controller.inProgress) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-                    return SizedBox(
-                      height: 180,
-                      child: ListView.builder(
-                        itemCount: controller.contactList?.length,
-                        itemBuilder: (context, index) {
-                          var contactId = controller.contactList?[index].sId;
-                          var contact = controller.contactList?[index].name;
-                          userId = controller.contactList![index].user!.sId!;
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 4),
-                            child: Row(
-                              children: [
-                                ToggleButton(
-                                  isToggled: selectedContacts.contains(contactId),
-                                  onToggle: (bool value) {
-                                    setState(() {
-                                      if (value) {
-                                        selectedContacts.add(contactId!);
-                                      } else {
-                                        selectedContacts.remove(contactId);
-                                      }
-                                    });
-                                  },
-                                ),
-                                widthBox4,
-                                Text(contact!),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
+                  return SizedBox(
+                    height: 180,
+                    child: ListView.builder(
+                      itemCount: controller.contactList?.length,
+                      itemBuilder: (context, index) {
+                        var contactId = controller.contactList?[index].sId;
+                        var contact = controller.contactList?[index].name;
+                        userId = controller.contactList![index].user!.sId!;
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            children: [
+                              ToggleButton(
+                                isToggled: selectedContacts.contains(contactId),
+                                onToggle: (bool value) {
+                                  setState(() {
+                                    if (value) {
+                                      selectedContacts.add(contactId!);
+                                    } else {
+                                      selectedContacts.remove(contactId);
+                                    }
+                                  });
+                                },
+                              ),
+                              widthBox4,
+                              Text(contact!),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }),
 
                 SizedBox(height: 10.h),
                 GradientElevatedButton(
@@ -276,7 +274,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
           showSnackBarMessage(context, 'Checking Added');
           Get.find<AllCheckInController>().getCheckInList();
           Navigator.pop(context);
-          countdownController.startCountdown(_selectedDuration);
+          countdownController.startCountdown(_selectedDuration); // Start countdown globally
         }
       } else {
         if (mounted) {

@@ -1,8 +1,6 @@
 import 'package:antoinette/app/app_binding.dart';
-import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/routes/app_routes.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
-import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
