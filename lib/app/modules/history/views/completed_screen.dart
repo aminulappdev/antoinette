@@ -1,12 +1,10 @@
 import 'package:antoinette/app/modules/history/controllers/all_booking_controller.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
-import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/modules/history/widgets/rebook_card_widget.dart';
+import 'package:antoinette/app/modules/history/widgets/two_option_card_widget.dart';
+import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({super.key});
@@ -16,6 +14,7 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
+  SessionDetailsController sessionDetailsController = SessionDetailsController();
   final AllBookingController allBookingController =
       Get.find<AllBookingController>();
 
@@ -40,119 +39,39 @@ class _CompletedScreenState extends State<CompletedScreen> {
             String dateString = '2025-03-18';
             DateTime date = DateTime.parse(dateString);
             DateTime today = DateTime.now();
-            if (controller.bookingList[index].paymentStatus == 'unpaid') {
+            if (controller.bookingList[index].paymentStatus == 'paid') {
               // if (today.isBefore(date)) {
-                return Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 2.h, horizontal: 12.w),
-                  child: Card(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 169.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 61.h,
-                                  width: 97.w,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              AssetsPath.womenBookRead),
-                                          fit: BoxFit.fill)),
-                                  child: Center(
-                                    child: Text(
-                                      'Completed',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                                widthBox8,
-                                SizedBox(
-                                  width: 200.w,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Find Balance & Clarity',
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 15.sp),
-                                      ),
-                                      heightBox4,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Dr. Jane Smith',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 10.sp),
-                                          ),
-                                          Text(
-                                            'Video Therapy',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 10.sp),
-                                          ),
-                                        ],
-                                      ),
-                                      heightBox4,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '25 January 2025',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 10.sp),
-                                          ),
-                                          Text(
-                                            '02:00 pm',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 10.sp),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            heightBox8,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Amount Paid',
-                                  style: GoogleFonts.poppins(fontSize: 12.sp),
-                                ),
-                                Text(
-                                  '\$50.00',
-                                  style: GoogleFonts.poppins(fontSize: 12.sp),
-                                ),
-                              ],
-                            ),
-                            heightBox8,
-                            SizedBox(
-                              height: 40,
-                              child: GradientElevatedButton(
-                                  onPressed: () {}, text: 'Rebook'),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+              if (controller.bookingList[index].status == 'confirmed') {
+                return RebookCard(
+                  status: '${controller.bookingList[index].status}',
+                  title: '${controller.bookingList[index].session?.title}',
+                  name: 'Dr. Jane Smith',
+                  therapyType: '${controller.bookingList[index].therapyType}',
+                  date: '${controller.bookingList[index].slot?.date}',
+                  time: '${controller.bookingList[index].slot?.startTime}',
+                  imagePath:
+                      '${controller.bookingList[index].session?.thumbnail}',
+                  price: '${controller.bookingList[index].amount}',
+                  ontap: () {},
                 );
+              } else if (controller.bookingList[index].status == 'cancelled') {
+                return TwoOptionCard(
+                  op1Name: 'Rebook',
+                  op2Name: 'View Refund',
+                  status: '${controller.bookingList[index].status}',
+                  title: '${controller.bookingList[index].session?.title}',
+                  name: 'Dr. Jane Smith',
+                  therapyType: '${controller.bookingList[index].therapyType}',
+                  date: '${controller.bookingList[index].slot?.date}',
+                  time: '${controller.bookingList[index].slot?.startTime}',
+                  imagePath:
+                      '${controller.bookingList[index].session?.thumbnail}',
+                  price: '${controller.bookingList[index].amount}',
+                  op1Ontap: () {},
+                  op2Ontap: () {},
+                );
+              }
+
               // }
               // return Text('No data');
             }
@@ -161,49 +80,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
       );
     });
   }
+
+ 
 }
 
-
-// import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: DateComparisonScreen(),
-//     );
-//   }
-// }
-
-// class DateComparisonScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-    
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Date Comparison and Formatting Example"),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text(
-//               "ফরম্যাট করা তারিখ: $formattedDate",
-//               style: TextStyle(fontSize: 20),
-//             ),
-//             SizedBox(height: 20),
-//             Text(
-//               comparisonResult,
-//               style: TextStyle(fontSize: 18),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

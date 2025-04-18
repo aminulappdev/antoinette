@@ -34,7 +34,8 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
     userId = profileController.profileData!.sId!;
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
-    player.setSource(UrlSource(widget.podcastModel.fileLink ?? ''));
+    // player.setSource(UrlSource(widget.podcastModel.fileLink ?? ''));
+    player.setSource(UrlSource('https://file-examples.com/storage/fe32d8b189680228b9ad370/2017/11/file_example_MP3_700KB.mp3'));
   }
 
   @override

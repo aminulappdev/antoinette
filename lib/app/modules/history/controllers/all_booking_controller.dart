@@ -34,7 +34,7 @@ class AllBookingController extends GetxController {
 
     if (lastPage != null && page > lastPage!) return false; 
 
-    bool isSuccess = false;
+    bool isSuccess = false; 
  
     _inProgress = true;
 

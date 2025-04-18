@@ -282,6 +282,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            print('minus');
                             setState(() {
                               if (quantity > 1) {
                                 double? minus = widget.productModel.amount;
@@ -306,13 +307,14 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         widthBox8,
                         GestureDetector(
                           onTap: () {
+                            print('minus');
                             setState(() {
                               if (widget.productModel.quantity! > quantity) {
                                 double? plus = widget.productModel.amount;
                                 quantity++;
                                 price = double.parse(price.toStringAsFixed(2)) +
                                     double.parse(plus!.toStringAsFixed(2));
-                                ;
+                                
                                 item++;
                               }
                             });
@@ -399,5 +401,4 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
   }
 
- 
 }

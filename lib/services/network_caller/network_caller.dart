@@ -34,11 +34,62 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
-          responseData: debugMessage,       
+          responseData: debugMessage,
         );
       } else {
+        final debugMessage = jsonDecode(response.body);
+        ErrorMessageModel errorMessageModel =
+            ErrorMessageModel.fromJson(debugMessage);
         return NetworkResponse(
-            isSuccess: false, statusCode: response.statusCode);
+            isSuccess: false,
+            statusCode: response.statusCode,
+            errorMessage: errorMessageModel.message ?? 'Wrong');
+      }
+    } catch (e) {
+      _logResponse(url, -1, null, '', e.toString());
+      return NetworkResponse(
+          isSuccess: false, statusCode: -1, errorMessage: e.toString());
+    }
+  }
+
+  Future<NetworkResponse> patchRequest(String url,
+      {Map<String, dynamic>? queryParams, String? accesToken}) async {
+    try {
+      _logRequest(url);
+
+      if (queryParams != null) {
+        url += '?';
+        for (String param in queryParams.keys) {
+          url += '$param=${queryParams[param]}&';
+        }
+      }
+      Uri uri = Uri.parse(url);
+      Map<String, String> headers = {
+        'content-type': 'application-json',
+      };
+
+      if (accesToken != null) {
+        headers['Authorization'] = accesToken;
+      }
+
+      var response = await patch(uri, headers: headers);
+      _logResponse(url, response.statusCode, response.headers, response.body);
+      if (response.statusCode == 200) {
+        final debugMessage = jsonDecode(response.body);
+
+        return NetworkResponse(
+          isSuccess: true,
+          statusCode: response.statusCode,
+          responseData: debugMessage,
+        );
+      } else {
+        final debugMessage = jsonDecode(response.body);
+        ErrorMessageModel errorMessageModel =
+            ErrorMessageModel.fromJson(debugMessage);
+        return NetworkResponse(
+            isSuccess: false,
+            statusCode: response.statusCode,
+            errorMessage: errorMessageModel.message ?? 'Wrong');
       }
     } catch (e) {
       _logResponse(url, -1, null, '', e.toString());
@@ -68,15 +119,16 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
-          responseData: debugMessage, 
+          responseData: debugMessage,
         );
       } else {
         final debugMessage = jsonDecode(response.body);
-        ErrorMessageModel errorMessageModel = ErrorMessageModel.fromJson(debugMessage);
+        ErrorMessageModel errorMessageModel =
+            ErrorMessageModel.fromJson(debugMessage);
         return NetworkResponse(
-            isSuccess: false, statusCode: response.statusCode,
-            errorMessage: errorMessageModel.message ?? 'Wrong'
-            );
+            isSuccess: false,
+            statusCode: response.statusCode,
+            errorMessage: errorMessageModel.message ?? 'Wrong');
       }
     } catch (e) {
       _logResponse(url, -1, null, '', e.toString());
@@ -85,7 +137,7 @@ class NetworkCaller {
     }
   }
 
-   Future<NetworkResponse> putRequest(String url, Map<String, dynamic>? body,
+  Future<NetworkResponse> putRequest(String url, Map<String, dynamic>? body,
       {String? accesToken}) async {
     try {
       Uri uri = Uri.parse(url);
