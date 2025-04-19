@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
+import 'package:antoinette/app/modules/order/views/oder_screen.dart';
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
 import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
@@ -67,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     feature: 'My Orders',
                     icon: Icons.shopping_bag,
                     ontap: () {
-                      Navigator.pushNamed(context, OrderBarScreen.routeName);
+                      Navigator.pushNamed(context, MyOrderScreen.routeName);
                     },
                   ),
                   ProfileDrawerFeature(

@@ -1,4 +1,3 @@
-import 'package:antoinette/app/modules/authentication/widgets/liner_widget.dart';
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/payment/controllers/confirmed_payment_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/pdf_generator_controller.dart';

@@ -18,11 +18,23 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
       Get.find<AllBookingController>();
   final CancelBookingController cancelBookingController =
       Get.find<CancelBookingController>();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     allBookingController.getBookingList();
+    scrollController.addListener(_loadMoreData);
     super.initState();
+  }
+
+  void _loadMoreData() {
+    if (scrollController.position.extentAfter < 500 &&
+        !allBookingController.inProgress) {
+      allBookingController.getBookingList();
+    }
+    {
+      allBookingController.getBookingList();
+    }
   }
 
   @override
@@ -32,6 +44,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
         height: MediaQuery.of(context).size.height - 300.h,
         width: MediaQuery.of(context).size.width,
         child: ListView.builder(
+          controller: scrollController,
           itemCount: controller.bookingList.length,
           itemBuilder: (context, index) {
             String dateString = '2025-03-18';
@@ -56,6 +69,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 },
               );
             }
+            return Container();
           },
         ),
       );

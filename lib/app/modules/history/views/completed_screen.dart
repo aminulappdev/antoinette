@@ -5,7 +5,6 @@ import 'package:antoinette/app/modules/session/controllers/session_details_contr
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({super.key});
 
@@ -14,14 +13,29 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
-  SessionDetailsController sessionDetailsController = SessionDetailsController();
+  SessionDetailsController sessionDetailsController =
+      SessionDetailsController();
   final AllBookingController allBookingController =
       Get.find<AllBookingController>();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     allBookingController.getBookingList();
+    scrollController.addListener(_loadMoreData);
+    // allSessionController.getSessionList();
+
     super.initState();
+  }
+
+  void _loadMoreData() {
+    if (scrollController.position.extentAfter < 500 &&
+        !allBookingController.inProgress) {
+      allBookingController.getBookingList();
+    }
+    {
+      allBookingController.getBookingList();
+    }
   }
 
   @override
@@ -32,8 +46,9 @@ class _CompletedScreenState extends State<CompletedScreen> {
       }
       return SizedBox(
         height: MediaQuery.of(context).size.height - 200,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context).size.width, 
         child: ListView.builder(
+          controller: scrollController,
           itemCount: controller.bookingList.length,
           itemBuilder: (context, index) {
             String dateString = '2025-03-18';
@@ -75,12 +90,10 @@ class _CompletedScreenState extends State<CompletedScreen> {
               // }
               // return Text('No data');
             }
+            return Container();
           },
         ),
       );
     });
   }
-
- 
 }
-

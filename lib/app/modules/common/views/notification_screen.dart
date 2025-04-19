@@ -1,8 +1,11 @@
+import 'package:antoinette/app/modules/common/controllers/all_notification_controllers.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -12,21 +15,50 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  AllNotificationController allNotificationController =
+      Get.find<AllNotificationController>();
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    allNotificationController.getNotificationList();
+    scrollController.addListener(_loadMoreData);
+
+    super.initState();
+  }
+
+  void _loadMoreData() {
+    if (scrollController.position.extentAfter < 500 &&
+        !allNotificationController.inProgress) {
+      allNotificationController.getNotificationList();
+    }
+    {
+      allNotificationController.getNotificationList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      body: GetBuilder<AllNotificationController>(builder: (controller) {
+        if (controller.inProgress && controller.page == 1) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Padding(
           padding: EdgeInsets.all(12.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(name: 'Notification'),                      
-              heightBox12,
+              heightBox20,
+              CustomAppBar(name: 'Notification'),          
               Expanded(
                 child: ListView.builder(
-                  itemCount: 10,
+                  controller: scrollController,
+                  itemCount: controller.allNotification.length,
                   itemBuilder: (context, index) {
+                     DateTime? isoDate = controller.notificationList[index].date;
+                     String readableDate = DateFormat('MMMM dd, yyyy').format(isoDate!);
+                     String readableTime = DateFormat('h:mm a').format(isoDate);
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 4),
                       child: Container(
@@ -48,19 +80,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   SizedBox(
                                       width: 200.h,
                                       child: Text(
-                                        'Upcoming Appointment Reminder',
+                                        '${controller.notificationList[index].message}',
                                         style: TextStyle(
-                                            color:
-                                                AppColors.iconButtonThemeColor,
+                                            color: AppColors
+                                                .iconButtonThemeColor,
                                             fontSize: 15.sp,
                                             fontWeight: FontWeight.w600),
-                                      )),
-                                  Text('2 houres ago')
+                                      )),                                  
+                                  Text(readableTime)
                                 ],
                               ),
                               heightBox4,
                               Text(
-                                'Your appointment with Dr. Emily is tomorrow at 10 AM ',
+                                '${controller.notificationList[index].description}',
                                 style: TextStyle(fontSize: 12),
                               )
                             ],
@@ -73,8 +105,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
               )
             ],
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

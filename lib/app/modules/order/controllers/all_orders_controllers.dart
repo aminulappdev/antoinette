@@ -4,7 +4,7 @@ import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
-
+ 
 class AllOrderController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;

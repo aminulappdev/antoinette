@@ -33,7 +33,9 @@ import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
+import 'package:antoinette/app/modules/order/views/oder_screen.dart';
 import 'package:antoinette/app/modules/order/views/order_bar.dart';
+import 'package:antoinette/app/modules/order/views/order_details_screen.dart';
 import 'package:antoinette/app/modules/payment/views/payment_details_screen.dart';
 import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/modules/payment/views/payment_webview_screen.dart';
@@ -66,7 +68,7 @@ class AppRoutes {
     // Onboarding section
     OnboardingScreen.routeName: (context) => const OnboardingScreen(),
     NotificationScreen.routeName: (context) => const NotificationScreen(),
-    OrderBarScreen.routeName: (context) => const OrderBarScreen(),
+    // OrderBarScreen.routeName: (context) => const OrderBarScreen(),
 
     // Authentication section
     SignInScreen.routeName: (context) => const SignInScreen(),
@@ -137,6 +139,9 @@ class AppRoutes {
     },
    
     SessionScreen.routeName: (context) => const SessionScreen(),
+
+    MyOrderScreen.routeName: (context) => const MyOrderScreen(),
+    OrderDetailsScreen.routeName: (context) => const OrderDetailsScreen(),
 
     // Dear Diary Section
     DearDiaryScreen.routeName: (context) => const DearDiaryScreen(),

@@ -1,5 +1,5 @@
-import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final isLoggedIn = box.read('user-login-access-token') != null;
     Navigator.pushReplacementNamed(
       context,
-      isLoggedIn ? MainButtonNavbarScreen.routeName : SignInScreen.routeName,
+      isLoggedIn ? MainButtonNavbarScreen.routeName : OnboardingScreen.routeName,
     );
   }
 

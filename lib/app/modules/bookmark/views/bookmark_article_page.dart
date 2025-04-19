@@ -57,6 +57,7 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
               SizedBox(
                 height: 680.h,
                 child: ListView.builder(
+                  controller: scrollController,
                   itemCount: controller.bookmarkarticlesList.length,
                   itemBuilder: (context, index) {
                     return Padding(

@@ -1,4 +1,5 @@
 import 'package:antoinette/app/app_binding.dart';
+import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
 import 'package:antoinette/app/routes/app_routes.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,9 +9,11 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
+  SocketService socketService = Get.put(SocketService());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+  await socketService.initializeSocket();
   runApp(const AntoinetteApp());
 }
 

@@ -37,6 +37,7 @@ class AllOrderItemModel {
         required this.createdAt,
         required this.updatedAt,
         required this.v,
+        required this.items,
     });
 
     final String? id;
@@ -52,6 +53,7 @@ class AllOrderItemModel {
     final DateTime? createdAt;
     final DateTime? updatedAt;
     final int? v;
+    final List<Item> items;
 
     factory AllOrderItemModel.fromJson(Map<String, dynamic> json){ 
         return AllOrderItemModel(
@@ -68,6 +70,7 @@ class AllOrderItemModel {
             createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
             updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
             v: json["__v"],
+            items: json["items"] == null ? [] : List<Item>.from(json["items"]!.map((x) => Item.fromJson(x))),
         );
     }
 
@@ -97,6 +100,72 @@ class BillingDetails {
             address: json["address"],
             phoneNumber: json["phoneNumber"],
             email: json["email"],
+            id: json["_id"],
+        );
+    }
+
+}
+
+class Item {
+    Item({
+        required this.product,
+        required this.quantity,
+        required this.price,
+        required this.totalPrice,
+    });
+
+    final Product? product;
+    final int? quantity;
+    final double? price;
+    final double? totalPrice;
+
+    factory Item.fromJson(Map<String, dynamic> json){ 
+        return Item(
+            product: json["product"] == null ? null : Product.fromJson(json["product"]),
+            quantity: json["quantity"],
+            price: json["price"],
+            totalPrice: json["totalPrice"],
+        );
+    }
+
+}
+
+class Product {
+    Product({
+        required this.id,
+        required this.name,
+        required this.images,
+    });
+
+    final String? id;
+    final String? name;
+    final List<Image> images;
+
+    factory Product.fromJson(Map<String, dynamic> json){ 
+        return Product(
+            id: json["_id"],
+            name: json["name"],
+            images: json["images"] == null ? [] : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
+        );
+    }
+
+}
+
+class Image {
+    Image({
+        required this.key,
+        required this.url,
+        required this.id,
+    });
+
+    final String? key;
+    final String? url;
+    final String? id;
+
+    factory Image.fromJson(Map<String, dynamic> json){ 
+        return Image(
+            key: json["key"],
+            url: json["url"],
             id: json["_id"],
         );
     }

@@ -12,6 +12,7 @@ import 'package:antoinette/app/modules/authentication/controllers/verify_otp_con
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_controller.dart';
+import 'package:antoinette/app/modules/common/controllers/all_notification_controllers.dart';
 import 'package:antoinette/app/modules/contact/controllers/add_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
@@ -99,6 +100,7 @@ class ControllerBinder extends Bindings {
     Get.put(ConfirmedPaymentController());
     Get.put(CancelBookingController());
     Get.put(AllOrderController());
+    Get.put(AllNotificationController());
 
   
     

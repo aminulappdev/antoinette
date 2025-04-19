@@ -49,13 +49,16 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GetBuilder<BookmarkPodcastController>(builder: (controller) {
+            GetBuilder<BookmarkPodcastController>(
+              
+              builder: (controller) {
               if (controller.inProgress && controller.page == 1) {
                 return Center(child: CircularProgressIndicator());
               }
               return SizedBox(
                 height: 645.h,
                 child: ListView.builder(
+                  controller: scrollController,
                   itemCount: controller.bookmarkPodcastList.length,
                   itemBuilder: (context, index) {
                     return Padding(

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyOrderCard extends StatelessWidget {
+
   final String productName;
   final String status;
   final String price;
@@ -24,7 +25,7 @@ class MyOrderCard extends StatelessWidget {
     required this.imagePath,
     required this.mainBTNOntap,
     required this.secondBTNOntap,
-    required this.isShowSeconBTN, required this.secondBTNName,
+    required this.isShowSeconBTN, required this.secondBTNName, 
   });
 
   @override

@@ -38,6 +38,19 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour >= 5 && hour < 12) {
+      return 'Morning';
+    } else if (hour >= 12 && hour < 17) {
+      return 'Afternoon';
+    } else if (hour >= 17 && hour < 21) {
+      return 'Evening';
+    } else {
+      return 'Night';
+    }
+  }
+
   List<HomepageGridModel> gridList = [
     HomepageGridModel(
         icon: Icons.hearing,
@@ -74,7 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HomePageHeader(
-                    circleText: '${controller.profileData?.name?[0]}',
+                    circleText: controller.inProgress
+                        ? ''
+                        : '${controller.profileData?.name?[0]}',
                     onTapNotification: () {
                       Navigator.pushNamed(
                           context, NotificationScreen.routeName);
@@ -85,8 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   heightBox16,
                   WelcomeTextHomePage(
-                    time: 'Morning',
-                    name: '${controller.profileData?.name} 👋',
+                    time: getGreeting(),
+                    name: controller.inProgress
+                        ? ''
+                        : '${controller.profileData?.name} 👋',
                   ),
                   Padding(
                     padding:
@@ -95,8 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 290.h,
                       child: GridView.builder(
                         shrinkWrap: true,
-                        physics:
-                            NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
                         itemCount: 4,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio: 1.15,
