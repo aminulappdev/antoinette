@@ -1,5 +1,5 @@
 class ProductDetailsModel {
-  bool? success; 
+  bool? success;
   int? statusCode;
   String? message;
   ProductModel? data;
@@ -15,7 +15,7 @@ class ProductDetailsModel {
 }
 
 class ProductModel {
-  String? sId; 
+  String? sId;
   String? name;
   List<Images>? images;
   String? description;
@@ -37,28 +37,29 @@ class ProductModel {
   int? iV;
   double? amount;
 
-  ProductModel(
-      {this.sId,
-      this.name,
-      this.images,
-      this.description,
-      this.category,
-      this.quantity,
-      this.sold,
-      this.discount,
-      this.faq,
-      this.restockAlert,
-      this.isStock,
-      this.size,
-      this.warrantyPolicy,
-      this.returnAndRefundPolicy,
-      this.replacementPolicy,
-      this.isDeleted,
-      this.id,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.amount});
+  ProductModel({
+    this.sId,
+    this.name,
+    this.images,
+    this.description,
+    this.category,
+    this.quantity,
+    this.sold,
+    this.discount,
+    this.faq,
+    this.restockAlert,
+    this.isStock,
+    this.size,
+    this.warrantyPolicy,
+    this.returnAndRefundPolicy,
+    this.replacementPolicy,
+    this.isDeleted,
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.amount,
+  });
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -70,8 +71,7 @@ class ProductModel {
       });
     }
     description = json['description'];
-    category =
-        json['category'] != null ? Category.fromJson(json['category']) : null;
+    category = json['category'] != null ? Category.fromJson(json['category']) : null;
     quantity = json['quantity'];
     sold = json['sold'];
     discount = json['discount'];
@@ -87,7 +87,13 @@ class ProductModel {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
-    amount = json['amount'];
+    
+    // Handle int or double for amount
+    amount = json['amount'] != null
+        ? (json['amount'] is int
+            ? (json['amount'] as int).toDouble()
+            : json['amount'])
+        : null;
   }
 }
 
@@ -114,14 +120,15 @@ class Category {
   String? updatedAt;
   int? iV;
 
-  Category(
-      {this.sId,
-      this.title,
-      this.thumbnail,
-      this.isDeleted,
-      this.createdAt,
-      this.updatedAt,
-      this.iV});
+  Category({
+    this.sId,
+    this.title,
+    this.thumbnail,
+    this.isDeleted,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+  });
 
   Category.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];

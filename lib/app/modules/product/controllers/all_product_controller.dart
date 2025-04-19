@@ -6,6 +6,7 @@ import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
 class AllProcuctController extends GetxController {
+  
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -27,6 +28,7 @@ class AllProcuctController extends GetxController {
   int? lastPage;
 
   Future<bool> getProductList() async {
+    print('Function ready ..........');
     if (_inProgress) {
       return false;
     }
@@ -53,7 +55,7 @@ class AllProcuctController extends GetxController {
 
       AllProductPeginationModel allProductPeginationModel =
           AllProductPeginationModel.fromJson(response.responseData);
-      productsList.addAll(allProductPeginationModel.data ?? []);
+      productsList.addAll(allProductPeginationModel.data);
 
       if (allProductPeginationModel.meta?.totalPage != null) {
         lastPage = allProductPeginationModel.meta!.totalPage;

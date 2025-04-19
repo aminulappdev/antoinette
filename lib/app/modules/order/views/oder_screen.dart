@@ -37,12 +37,12 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding:  EdgeInsets.all(12.0.h),
+        padding: EdgeInsets.all(12.0.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heightBox20,
-            CustomAppBar(name: "My Orders"),          
+            CustomAppBar(name: "My Orders"),
             Row(
               children: [
                 Text("Choose Your Type:",
@@ -59,7 +59,8 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                       child: DropdownButton<String>(
                         value: selectedType,
                         isExpanded: true,
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.black54),
+                        icon:
+                            Icon(Icons.arrow_drop_down, color: Colors.black54),
                         items: options.map((String option) {
                           return DropdownMenuItem<String>(
                             value: option,
@@ -91,9 +92,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                     itemBuilder: (context, index) {
                       if (selectedType == 'All') {
                         return MyOrderCard(
-                         
-                          imagePath:
-                              '${controller.ordersData![index].items[0].product?.images[0].url}',
+                          imagePath: '',
                           price: '${controller.ordersData?[index].amount}',
                           productName:
                               '${controller.ordersData![index].items[0].product?.name}',
@@ -105,7 +104,8 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                                   : true,
                           status: '${controller.ordersData?[index].status}',
                           mainBTNOntap: () {
-                            Navigator.popAndPushNamed(context, OrderDetailsScreen.routeName);
+                            Navigator.popAndPushNamed(
+                                context, OrderDetailsScreen.routeName,arguments:  controller.ordersData?[index].id);
                           },
                           secondBTNOntap: () {},
                           secondBTNName: 'Buy Again',
@@ -113,7 +113,6 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                       } else if (controller.ordersData?[index].status ==
                           selectedType) {
                         return MyOrderCard(
-                          
                           imagePath:
                               '${controller.ordersData![index].items[0].product?.images[0].url}',
                           price: '${controller.ordersData?[index].amount}',
@@ -127,12 +126,15 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                                   : true,
                           status: '${controller.ordersData?[index].status}',
                           mainBTNOntap: () {
-                            Navigator.popAndPushNamed(context, OrderDetailsScreen.routeName);
+                            Navigator.popAndPushNamed(
+                                context, OrderDetailsScreen.routeName,
+                                arguments: controller.ordersData?[index].id);
                           },
                           secondBTNOntap: () {},
                           secondBTNName: 'Buy Again',
                         );
                       }
+                      return null;
                     },
                   ),
                 );

@@ -38,11 +38,11 @@ class _ProductCardState extends State<ProductCard> {
               height: 100.h,
               width: 156.h,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: widget.productsModel.images?[0].url != null
-                          ? NetworkImage(widget.productsModel.images![0].url!)
-                          : AssetImage(AssetsPath.womenBookRead),
-                      fit: BoxFit.fill),
+                  // image: DecorationImage(
+                  //     image: widget.productsModel.images[0].url != null
+                  //         ? NetworkImage(widget.productsModel.images[0].url!)
+                  //         : AssetImage(AssetsPath.womenBookRead),
+                  //     fit: BoxFit.fill),
                   borderRadius: BorderRadius.circular(8)),
               child: Padding(
                 padding: EdgeInsets.all(8.0.h),
@@ -84,9 +84,9 @@ class _ProductCardState extends State<ProductCard> {
   Future<void> getProductScreen() async {
     print('Hello');
     print(widget.productsModel.name);
-    print(widget.productsModel.sId);
+    print(widget.productsModel.id);
     final bool isSuccess = await procuctDetailsController
-        .getProductDetails(widget.productsModel.sId!);
+        .getProductDetails(widget.productsModel.id!);
 
     if (isSuccess) {
       if (mounted) {

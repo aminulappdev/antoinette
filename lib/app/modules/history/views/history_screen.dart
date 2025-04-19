@@ -18,12 +18,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
       child: Scaffold(
         body: Padding(
           padding:  EdgeInsets.all(12.0.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomAppBar(name: 'History'),
-              HistoryBar(),           
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomAppBar(name: 'History'),
+                HistoryBar(),           
+              ],
+            ),
           ),
         ),
       ),

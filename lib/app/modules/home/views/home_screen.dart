@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     Get.find<ProfileController>().getProfileData();
     allSessionController.getSessionList();
+    print('function er age');
     allProcuctController.getProductList();
     super.initState();
   }

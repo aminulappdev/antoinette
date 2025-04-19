@@ -34,7 +34,6 @@ import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
 import 'package:antoinette/app/modules/order/views/oder_screen.dart';
-import 'package:antoinette/app/modules/order/views/order_bar.dart';
 import 'package:antoinette/app/modules/order/views/order_details_screen.dart';
 import 'package:antoinette/app/modules/payment/views/payment_details_screen.dart';
 import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
@@ -49,7 +48,6 @@ import 'package:antoinette/app/modules/profile/views/add_address.dart';
 import 'package:antoinette/app/modules/profile/views/address_screen.dart';
 import 'package:antoinette/app/modules/profile/views/info_screen.dart';
 import 'package:antoinette/app/modules/profile/views/profile_screen.dart';
-import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/modules/letters/views/article_details_screen.dart';
@@ -124,9 +122,9 @@ class AppRoutes {
     // Session Section
     SessionDetailsScreen.routeName: (context) {
       final args =
-          ModalRoute.of(context)!.settings.arguments as SessionDataModel;
+          ModalRoute.of(context)!.settings.arguments as String;
       return SessionDetailsScreen(
-        sessionDataModel: args,
+        sessionId: args,
       );
     },
 
@@ -141,7 +139,15 @@ class AppRoutes {
     SessionScreen.routeName: (context) => const SessionScreen(),
 
     MyOrderScreen.routeName: (context) => const MyOrderScreen(),
-    OrderDetailsScreen.routeName: (context) => const OrderDetailsScreen(),
+
+    OrderDetailsScreen.routeName: (context) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as String;
+      return OrderDetailsScreen(
+        orderId: args,
+      );
+    },
+    
 
     // Dear Diary Section
     DearDiaryScreen.routeName: (context) => const DearDiaryScreen(),

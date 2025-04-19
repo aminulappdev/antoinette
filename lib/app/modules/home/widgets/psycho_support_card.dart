@@ -101,9 +101,10 @@ class _PsychoSupportCardState extends State<PsychoSupportCard> {
 
     if (isSuccess) {
       if (mounted) {
-        
+        print('..........................................................');
+        print('Session id is : ${sessionDetailsController.sessionModel?.id}');
         Navigator.pushNamed(context, SessionDetailsScreen.routeName,
-            arguments: sessionDetailsController.sessionModel);
+            arguments: widget.sessionItemModel.sId!);
 
       } else {
         if (mounted) {

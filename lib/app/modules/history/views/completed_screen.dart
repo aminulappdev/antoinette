@@ -2,6 +2,7 @@ import 'package:antoinette/app/modules/history/controllers/all_booking_controlle
 import 'package:antoinette/app/modules/history/widgets/rebook_card_widget.dart';
 import 'package:antoinette/app/modules/history/widgets/two_option_card_widget.dart';
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
+import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,7 +47,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
       }
       return SizedBox(
         height: MediaQuery.of(context).size.height - 200,
-        width: MediaQuery.of(context).size.width, 
+        width: MediaQuery.of(context).size.width,
         child: ListView.builder(
           controller: scrollController,
           itemCount: controller.bookingList.length,
@@ -67,7 +68,10 @@ class _CompletedScreenState extends State<CompletedScreen> {
                   imagePath:
                       '${controller.bookingList[index].session?.thumbnail}',
                   price: '${controller.bookingList[index].amount}',
-                  ontap: () {},
+                  ontap: () {
+                    Navigator.pushNamed(context, SessionDetailsScreen.routeName,
+                        arguments: controller.bookingList[index].session?.id);
+                  },
                 );
               } else if (controller.bookingList[index].status == 'cancelled') {
                 return TwoOptionCard(
@@ -82,7 +86,10 @@ class _CompletedScreenState extends State<CompletedScreen> {
                   imagePath:
                       '${controller.bookingList[index].session?.thumbnail}',
                   price: '${controller.bookingList[index].amount}',
-                  op1Ontap: () {},
+                  op1Ontap: () {
+                       Navigator.pushNamed(context, SessionDetailsScreen.routeName,
+                        arguments: controller.bookingList[index].session?.id);
+                  },
                   op2Ontap: () {},
                 );
               }

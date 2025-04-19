@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/history/controllers/all_booking_controller.dart';
 import 'package:antoinette/app/modules/history/controllers/cancel_booking_controller.dart';
 import 'package:antoinette/app/modules/history/widgets/two_option_card_widget.dart';
+import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,7 +64,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 imagePath:
                     '${controller.bookingList[index].session?.thumbnail}',
                 price: '${controller.bookingList[index].amount}',
-                op1Ontap: () {},
+                op1Ontap: () {
+                    Navigator.pushNamed(context, SessionDetailsScreen.routeName,
+                        arguments: controller.bookingList[index].session?.id);
+                },
                 op2Ontap: () {
                   cancelBookingOntap('${controller.bookingList[index].id}');
                 },

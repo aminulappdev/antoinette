@@ -99,7 +99,7 @@ class RebookCard extends StatelessWidget {
                                 time,
                                 style: GoogleFonts.poppins(fontSize: 10.sp),
                               ),
-                            ],
+                            ], 
                           )
                         ],
                       ),

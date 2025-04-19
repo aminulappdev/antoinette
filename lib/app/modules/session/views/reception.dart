@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/get_session_slotById_controller.dart';
+import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
@@ -11,14 +12,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Reception extends StatefulWidget {
-  final SessionDataModel sessionDataModel;
-  const Reception({super.key, required this.sessionDataModel});
+  // final SessionDataModel sessionDataModel;
+  final String sessionId;
+  const Reception({super.key, required this.sessionId}); 
 
   @override
   State<Reception> createState() => _ReceptionState();
 }
 
 class _ReceptionState extends State<Reception> {
+
+  final SessionDetailsController sessionDetailsController =
+      Get.find<SessionDetailsController>();
+
+  
   Map<String, dynamic> slotData = {
     'sessionId': '',
     'slotId': '',
@@ -42,11 +49,13 @@ class _ReceptionState extends State<Reception> {
 
   @override
   void initState() {
+     print('reception er sessionId ${widget.sessionId}');
+    sessionDetailsController.getSessionDetails(widget.sessionId);
     super.initState();
 
     // Fetch session slots by ID
     Get.find<AllSessionSlotByIdController>()
-        .getSessionById(widget.sessionDataModel.sId!)
+        .getSessionById(widget.sessionId)
         .then((_) {
       var controller = Get.find<AllSessionSlotByIdController>();
 
@@ -199,15 +208,20 @@ class _ReceptionState extends State<Reception> {
               }).toList(),
             ),
             heightBox8,
-            GradientElevatedButton(
-                onPressed: () {
-                  slotData['sessionId'] = widget.sessionDataModel.sId!;
-                  slotData['slotId'] = selectedSlotId!;
-                  slotData['therapyType'] = selectedTherapy;
-                  Navigator.pushNamed(context, SessionFormScreen.routeName,
-                      arguments: slotData);
-                },
-                text: 'Book now')
+            GetBuilder<SessionDetailsController>(
+              builder: (controller) {
+                return GradientElevatedButton(
+                    onPressed: () {
+                      print('Datails page er slot id : ${widget.sessionId}');
+                      slotData['sessionId'] = widget.sessionId ;
+                      slotData['slotId'] = selectedSlotId!;
+                      slotData['therapyType'] = selectedTherapy;
+                      Navigator.pushNamed(context, SessionFormScreen.routeName,
+                          arguments: slotData);
+                    },
+                    text: 'Book now');
+              }
+            )
           ],
         ),
       );

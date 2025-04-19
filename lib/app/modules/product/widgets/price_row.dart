@@ -27,12 +27,9 @@ class PriceRow extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: SizedBox(
-            width: 150,
-            child: Text(
-              price,
-              style: GoogleFonts.poppins(fontSize: priceSize.sp),
-            ),
+          child: Text(
+            price,
+            style: GoogleFonts.poppins(fontSize: priceSize.sp),
           ),
         ),
       ],
