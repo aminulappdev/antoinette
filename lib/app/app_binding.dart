@@ -10,6 +10,8 @@ import 'package:antoinette/app/modules/authentication/controllers/sign_in_contro
 import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/verify_otp_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
+import 'package:antoinette/app/modules/chatting/controllers/add_chat_controller.dart';
+import 'package:antoinette/app/modules/chatting/controllers/all_friend_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_controller.dart';
 import 'package:antoinette/app/modules/common/controllers/all_notification_controllers.dart';
@@ -103,6 +105,8 @@ class ControllerBinder extends Bindings {
     Get.put(AllOrderController());
     Get.put(AllNotificationController());
     Get.put(OrderDetailsController());
+    Get.put(FriendController());
+    Get.put(AddChatController());
 
   
     

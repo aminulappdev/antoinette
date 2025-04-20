@@ -22,17 +22,7 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
-  }
-
-  // Method to initialize cameras
-  Future<void> _initializeCamera() async {
-    try {
-      cameras = await availableCameras();
-      setState(() {});
-    } catch (e) {
-      print('Error: $e');
-    }
+    
   }
 
   @override

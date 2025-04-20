@@ -1,5 +1,3 @@
-
-
 import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/bookmark/model/bookmark_article_details_model.dart';
 import 'package:antoinette/app/modules/bookmark/model/bookmark_podcast_details_model.dart';
@@ -53,9 +51,11 @@ import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/modules/letters/views/article_details_screen.dart';
 import 'package:antoinette/app/modules/session/views/session_screen.dart';
 import 'package:antoinette/app/modules/therapy/views/camera_screen.dart';
-import 'package:antoinette/app/modules/therapy/views/healing_note_screen.dart';
-import 'package:antoinette/app/modules/therapy/views/text_therapy_screen.dart';
+import 'package:antoinette/app/modules/chatting/views/healing_note_screen.dart';
+import 'package:antoinette/app/modules/chatting/views/text_therapy_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../modules/bookmark/views/bookmark_letter_screen.dart';
 
@@ -121,8 +121,7 @@ class AppRoutes {
 
     // Session Section
     SessionDetailsScreen.routeName: (context) {
-      final args =
-          ModalRoute.of(context)!.settings.arguments as String;
+      final args = ModalRoute.of(context)!.settings.arguments as String;
       return SessionDetailsScreen(
         sessionId: args,
       );
@@ -130,30 +129,30 @@ class AppRoutes {
 
     SessionFormScreen.routeName: (context) {
       final args =
-          ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       return SessionFormScreen(
         slotData: args,
       );
     },
-   
+
     SessionScreen.routeName: (context) => const SessionScreen(),
 
     MyOrderScreen.routeName: (context) => const MyOrderScreen(),
 
     OrderDetailsScreen.routeName: (context) {
-      final args =
-          ModalRoute.of(context)!.settings.arguments as String;
+      final args = ModalRoute.of(context)!.settings.arguments as String;
       return OrderDetailsScreen(
         orderId: args,
       );
     },
-    
 
     // Dear Diary Section
     DearDiaryScreen.routeName: (context) => const DearDiaryScreen(),
     AddDiaryScreen.routeName: (context) => const AddDiaryScreen(),
-    SetJournalPasswordScreen.routeName: (context) => const SetJournalPasswordScreen(),
-    ChangeJournalPasswordScreen.routeName: (context) => const ChangeJournalPasswordScreen(),
+    SetJournalPasswordScreen.routeName: (context) =>
+        const SetJournalPasswordScreen(),
+    ChangeJournalPasswordScreen.routeName: (context) =>
+        const ChangeJournalPasswordScreen(),
     EditDiaryScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as String;
       return EditDiaryScreen(
@@ -163,7 +162,12 @@ class AppRoutes {
 
     // Therapy Section
     HealingNoteScreen.routeName: (context) => const HealingNoteScreen(),
-    TextTherapyScreen.routeName: (context) => const TextTherapyScreen(),
+    TextTherapyScreen.routeName: (context) => TextTherapyScreen(
+          chatId: Get.arguments['chatId'],
+          receiverId: Get.arguments['receiverId'],
+          receiverName: Get.arguments['receiverName'],
+          receiverImage: Get.arguments['receiverImage'],
+        ),
     CameraScreen.routeName: (context) => const CameraScreen(
           cameras: [],
         ),
@@ -179,21 +183,23 @@ class AppRoutes {
 
     // ignore: equal_keys_in_map
     BookmarkArticleDetailsScreen.routeName: (context) {
-      final args = ModalRoute.of(context)!.settings.arguments as BookmarkArticleDetailsItemModel;
+      final args = ModalRoute.of(context)!.settings.arguments
+          as BookmarkArticleDetailsItemModel;
       return BookmarkArticleDetailsScreen(
         bookmarkArticleItemModel: args,
       );
     },
-    
+
     PodcastDetailsScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as PodcastModel;
       return PodcastDetailsScreen(
         podcastModel: args,
       );
     },
-  
+
     BookMarkPodcastDetailsScreen.routeName: (context) {
-      final args = ModalRoute.of(context)!.settings.arguments as BookmarkPodcastDetailsItemModel;
+      final args = ModalRoute.of(context)!.settings.arguments
+          as BookmarkPodcastDetailsItemModel;
       return BookMarkPodcastDetailsScreen(
         bookmarkPodcastDetailsItemModel: args,
       );
@@ -202,23 +208,19 @@ class AppRoutes {
     BookmarkScreen.routeName: (context) => const BookmarkScreen(),
     CheckInScreen.routeName: (context) => const CheckInScreen(),
 
-
     SubscriptionScreen.routeName: (context) => const SubscriptionScreen(),
     PaymentDetailsScreen.routeName: (context) => const PaymentDetailsScreen(),
-   
+
     PaymentWebviewScreen.routeName: (context) {
-      final args = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+      final args =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       return PaymentWebviewScreen(
         paymentData: args,
       );
     },
-    
 
     AddCheckInScreen.routeName: (context) => const AddCheckInScreen(),
     PaymentSuccessScreen.routeName: (context) => const PaymentSuccessScreen(),
-    
-
-   
 
     CustomStatusScreen.routeName: (context) => const CustomStatusScreen(),
     ContactScreen.routeName: (context) => const ContactScreen(),
@@ -232,20 +234,20 @@ class AppRoutes {
     AccountScreen.routeName: (context) => const AccountScreen(),
     AdderssScreen.routeName: (context) => const AdderssScreen(),
 
-     EditContactScreen.routeName: (context) {
-      final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      return EditContactScreen(contactData: args,
-        
+    EditContactScreen.routeName: (context) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      return EditContactScreen(
+        contactData: args,
       );
     },
-    
+
     AddAdderssScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as String;
       return AddAdderssScreen(
         type: args,
       );
     },
-   
 
     InfoScreen.routeName: (context) {
       final args =

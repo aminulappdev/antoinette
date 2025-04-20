@@ -16,7 +16,7 @@ void main() async {
   await socketService.initializeSocket();
   runApp(const AntoinetteApp());
 }
-
+ 
 class AntoinetteApp extends StatelessWidget {
   const AntoinetteApp({super.key});
 

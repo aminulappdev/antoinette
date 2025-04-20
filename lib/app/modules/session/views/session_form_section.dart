@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/chatting/controllers/add_chat_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
@@ -23,12 +24,15 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   late String userId;
   ProfileController profileController = Get.find<ProfileController>();
   final BookingController bookingController = Get.find<BookingController>();
+  final AddChatController addChatController = Get.find<AddChatController>();
   final PaymentService paymentService = PaymentService();
   String? selectedMood; // For storing selected mood
 
   @override
   void initState() {
     userId = profileController.profileData!.sId!;
+    print('Therapy Id ............');
+    print(widget.slotData['therapyId']);
     // print(
     //     'UserId : $userId\nSession id : ${widget.slotData['sessionId']}\nSession slot : ${widget.slotData['slotId']}');
     super.initState();
@@ -144,7 +148,9 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                         onPressed: () {
                           // print('Clicked on submit button');
                           // print("Selected Mood: $selectedMood");
-                          onTapToNextButton();
+                          addChatTherapist(userId,widget.slotData['therapyId']);
+                          // onTapToNextButton();
+
                         },
                         text: 'Submit')
                   ],
@@ -196,6 +202,28 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
         showSnackBarMessage(context, bookingController.errorMessage!, true);
       }
     }
+  }
+
+  Future<void> addChatTherapist(String userId, String therapistId) async {
+    final bool isSuccess = await addChatController.addChat(userId, therapistId);
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Added new chat');
+      } else {
+        if (mounted) {
+          showSnackBarMessage(context, addChatController.errorMessage!, true);
+        }
+      }
+    } else {
+      if (mounted) {
+        // print('Error show ----------------------------------');
+        showSnackBarMessage(
+            context, addChatController.errorMessage ?? 'Ekhanei problem', true);
+      }
+    }
+
+    // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
   }
 
 

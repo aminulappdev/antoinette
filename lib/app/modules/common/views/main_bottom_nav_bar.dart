@@ -5,7 +5,7 @@ import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/views/profile_screen.dart';
-import 'package:antoinette/app/modules/therapy/views/healing_note_screen.dart';
+import 'package:antoinette/app/modules/chatting/views/healing_note_screen.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

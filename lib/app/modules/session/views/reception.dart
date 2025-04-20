@@ -1,3 +1,5 @@
+import 'package:antoinette/app/modules/chatting/controllers/add_chat_controller.dart';
+import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/get_session_slotById_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
@@ -5,6 +7,7 @@ import 'package:antoinette/app/modules/session/model/session_details_model.dart'
 import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -14,22 +17,25 @@ import 'package:table_calendar/table_calendar.dart';
 class Reception extends StatefulWidget {
   // final SessionDataModel sessionDataModel;
   final String sessionId;
-  const Reception({super.key, required this.sessionId}); 
+  const Reception({super.key, required this.sessionId});
 
   @override
   State<Reception> createState() => _ReceptionState();
 }
 
 class _ReceptionState extends State<Reception> {
-
   final SessionDetailsController sessionDetailsController =
       Get.find<SessionDetailsController>();
 
   
+  late String userId;
+
   Map<String, dynamic> slotData = {
     'sessionId': '',
     'slotId': '',
-    'therapyType': ''
+    'therapyType': '',
+    'therapyId' : ''
+
   };
 
   final BookingController bookingController = BookingController();
@@ -49,7 +55,8 @@ class _ReceptionState extends State<Reception> {
 
   @override
   void initState() {
-     print('reception er sessionId ${widget.sessionId}');
+
+    print('reception er sessionId ${widget.sessionId}');
     sessionDetailsController.getSessionDetails(widget.sessionId);
     super.initState();
 
@@ -164,13 +171,15 @@ class _ReceptionState extends State<Reception> {
               enabledDayPredicate: (day) {
                 // Check if the day is either available or not booked
                 return enabledDates.any((date) =>
-                    date.year == day.year &&
-                    date.month == day.month &&
-                    date.day == day.day) && !disabledDates.contains(day);
+                        date.year == day.year &&
+                        date.month == day.month &&
+                        date.day == day.day) &&
+                    !disabledDates.contains(day);
               },
             ),
             heightBox8,
-            Text("Select Date & Time:", style: GoogleFonts.poppins(fontSize: 15.sp)),
+            Text("Select Date & Time:",
+                style: GoogleFonts.poppins(fontSize: 15.sp)),
             heightBox8,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,23 +217,30 @@ class _ReceptionState extends State<Reception> {
               }).toList(),
             ),
             heightBox8,
-            GetBuilder<SessionDetailsController>(
-              builder: (controller) {
-                return GradientElevatedButton(
-                    onPressed: () {
-                      print('Datails page er slot id : ${widget.sessionId}');
-                      slotData['sessionId'] = widget.sessionId ;
-                      slotData['slotId'] = selectedSlotId!;
-                      slotData['therapyType'] = selectedTherapy;
-                      Navigator.pushNamed(context, SessionFormScreen.routeName,
-                          arguments: slotData);
-                    },
-                    text: 'Book now');
-              }
-            )
+            GetBuilder<SessionDetailsController>(builder: (controller) {
+              return GradientElevatedButton(
+                  onPressed: () {
+                    print('Add chat er data ..............');             
+                    print(controller.sessionDetailsModel?.data!.therapist?.sId);
+
+                   
+                    print('Datails page er slot id : ${widget.sessionId}');
+                    slotData['sessionId'] = widget.sessionId;
+                    slotData['slotId'] = selectedSlotId!;
+                    slotData['therapyType'] = selectedTherapy;
+                    slotData['therapyId'] = controller.sessionDetailsModel?.data!.therapist?.sId;
+
+                    
+                    Navigator.pushNamed(context, SessionFormScreen.routeName,
+                        arguments: slotData);
+                  },
+                  text: 'Book now');
+            })
           ],
         ),
       );
     });
   }
+
+  
 }
