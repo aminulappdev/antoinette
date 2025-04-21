@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/chatting/views/text_therapy_screen.dart';
+import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:antoinette/app/modules/chatting/controllers/all_friend_controller.dart';
 import 'package:antoinette/app/widgets/search_bar_widget.dart';
-
+ 
 class HealingNoteScreen extends StatefulWidget {
   static const String routeName = '/healing-note-screen';
   const HealingNoteScreen({super.key});
@@ -16,11 +17,14 @@ class HealingNoteScreen extends StatefulWidget {
 }
 
 class _HealingNoteScreenState extends State<HealingNoteScreen> {
+  
+  final SocketService socketService = Get.put(SocketService());
   final FriendController friendController = Get.put(FriendController()); // Get the controller
 
   @override
   void initState() {
     super.initState();
+    socketService.init();
     friendController.getAllFriends(); // Ensure data is loaded when screen is initialized
   }
 
@@ -59,10 +63,10 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                               onTap: () {
                                 // Navigating to the message screen when a friend is clicked
                                 Get.to(TextTherapyScreen(
-                                  chatId: friend.id!,
-                                  receiverId: friend.participants[0].id!,
-                                  receiverName: friend.participants[0].name!,
-                                  receiverImage: friend.participants[0].photoUrl!,
+                                  chatId: friend.chat!.id!,
+                                  receiverId: friend.chat!.participants[0].id!,
+                                  receiverName: friend.chat!.participants[0].name!,
+                                  receiverImage: friend.chat!.participants[0].photoUrl!,
                                 ));
                               },
                               child: Container(
@@ -82,7 +86,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(8),
                                           image: DecorationImage(
-                                            image: NetworkImage(friend.participants[0].photoUrl ?? ''),
+                                            image: NetworkImage(friend.chat?.participants[0].photoUrl ?? ''),
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -94,7 +98,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              friend.participants[0].name ?? "Unknown",
+                                              friend.chat?.participants[0].name ?? "Unknown",
                                               style: GoogleFonts.poppins(fontSize: 16.sp, fontWeight: FontWeight.w500),
                                             ),
                                             heightBox12,

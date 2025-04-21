@@ -4,49 +4,36 @@ import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 
-class SocketService extends GetxService {
+class SocketService   {
   late IO.Socket _socket;
-  bool isSocketInitialized = false;
+
   RxBool isLoading = false.obs;
-  Map<String, dynamic>? lastMessageResponse;
-
-  // Use RxList to update the message and friend lists
-  final RxList<Map<String, dynamic>> _messageList =
-      <Map<String, dynamic>>[].obs;
-  final RxList<Map<String, dynamic>> _friendList = <Map<String, dynamic>>[].obs;
-
   final ProfileController profileController = Get.put(ProfileController());
 
+  // Use RxList to update the message and friend lists
+  final _messageList = <Map<String, dynamic>>[].obs;
+  final _socketTherapistList = <Map<String, dynamic>>[].obs;
+
   List<Map<String, dynamic>> get messageList => _messageList;
-  List<Map<String, dynamic>> get friendList => _friendList;
+  List<Map<String, dynamic>> get socketTherapistList => _socketTherapistList;
 
   IO.Socket get sokect => _socket;
 
-  Future<void> initializeSocket() async {
-    if (isSocketInitialized) return;
+  Future<SocketService> init() async {
+    final token = await box.read('user-login-access-token');
+    // final userId =  profileController.profileData?.id;
+    final userId =  "67dfad3574eb1ff506ea4f82";
 
-    final token = box.read('user-login-access-token');
-    final userId = profileController.profileData?.id;
-
-    // _socket = IO.io(
-    //   Urls.socketUrl,
-    //   IO.OptionBuilder()
-    //       .setTransports(['websocket'])
-    //       .disableAutoConnect()
-    //       .setAuth({'token': token})
-    //       .build(),
-    // );
-
+   
     _socket = IO.io(Urls.socketUrl, <String, dynamic>{
       'transports': ['websocket'],
-      'autoConnect': true, // Auto connect to the server
+      'autoConnect': true,
       'extraHeaders': {'token': token},
     });
 
-  
-     _socket.on('connect', (data) {
+    _socket.on('connect', (data) {
       print('Connected to the server');
-      _socket.emit("connection",userId);
+      _socket.emit("connection", userId);
     });
 
 
@@ -63,14 +50,21 @@ class SocketService extends GetxService {
     });
 
     _socket.on('latest_friend', (data) {
+
       _handleIncomingFriends(data);
     });
 
     _socket.onDisconnect((_) {
       print('Socket disconnected');
     });
+   
 
-    isSocketInitialized = true;
+    return this;
+    
+  }
+
+  void disconnect () {
+    _socket.disconnect();
   }
 
   // Handle incoming messages from the server and update the message list
@@ -84,14 +78,10 @@ class SocketService extends GetxService {
   // Handle incoming friend data from the server and update the friend list
   void _handleIncomingFriends(dynamic data) {
     if (data is Map<String, dynamic> && data.containsKey('receiver')) {
-      _friendList.add(data);
-      print('Friend received and added to list: ${_friendList.length}');
+      _socketTherapistList.add(data);
+      print('Friend received and added to list: ${_socketTherapistList.length}');
     }
   }
 
-  @override
-  Future<void> onClose() async {
-    super.onClose();
-    _socket.disconnect();
-  }
+ 
 }

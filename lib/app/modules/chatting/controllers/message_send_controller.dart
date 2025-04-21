@@ -11,23 +11,22 @@ class MessageSendController extends GetxController {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  Future<bool> sendMessage(String chatId, String receiverId, String text) async {
+  Future<bool> sendMessage(String chatId, String text, String receiverId) async { 
     _inProgress = true;
     update();
 
     Map<String, dynamic> requestBody = {
-      "data": {
-        "chat": chatId,
-        "text": text,
-        "receiver": receiverId,
-      },
-    };
+    "chat": chatId,
+    "text": text,
+    "receiver": receiverId
+};
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
         .postRequest(Urls.sendMessageUrl, requestBody,
             accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
+        
       _errorMessage = null;
     } else {
       _errorMessage = response.errorMessage;

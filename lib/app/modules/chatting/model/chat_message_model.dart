@@ -4,7 +4,7 @@ class ChatMessageModel {
      this.statusCode,
      this.message,
      this.data,
-  });
+  }); 
 
   final bool? success;
   final int? statusCode;

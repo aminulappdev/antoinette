@@ -1,11 +1,9 @@
-import 'package:antoinette/app/widgets/show_snackBar_message.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:antoinette/app/modules/chatting/controllers/message_controller.dart';
-import 'package:antoinette/app/modules/chatting/controllers/message_send_controller.dart';
 import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
-
 
 class TextTherapyScreen extends StatefulWidget {
   static const String routeName = '/chat-screen';
@@ -28,13 +26,12 @@ class TextTherapyScreen extends StatefulWidget {
 }
 
 class _TextTherapyScreenState extends State<TextTherapyScreen> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SocketService socketService = Get.put(SocketService());
   final TextEditingController messageController = TextEditingController();
   final MessageController messageFetchController = Get.put(MessageController());
-  final MessageSendController messageSendController =
-      Get.put(MessageSendController());
+  // final MessageSendController messageSendController =
+  //     Get.put(MessageSendController());
   final ScrollController _scrollController = ScrollController();
   bool isLoading = false;
 
@@ -60,21 +57,23 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
-    socketService.sokect.off('new-message::${widget.chatId}'); // Remove socket listener when the screen is disposed
+    socketService.sokect.off(
+        'new-message::${widget.chatId}'); // Remove socket listener when the screen is disposed
     super.dispose();
   }
 
   void _scrollToEnd() {
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
-  }
+  Future.delayed(const Duration(milliseconds: 100), () {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  });
+}
+
 
   // Handle incoming messages from the socket
   void _handleIncomingMessage(dynamic data) {
@@ -84,39 +83,11 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
     _scrollToEnd(); // Scroll to the latest message
   }
 
-  // Function to send message
-  Future<void> sendMessage() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    String messageText = messageController.text;
-
-    if (messageText.isNotEmpty) {
-      // Send message using the controller
-      await messageSendController.sendMessage(
-          widget.receiverId, messageText, "");
-
-      // Clear message input field after sending
-      messageController.clear();
-      setState(() {
-        isLoading = false;
-      });
-
-      Get.snackbar('Message Sent', 'Your message was successfully sent');
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-      Get.snackbar('Error', 'Message cannot be empty');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        
         body: Padding(
           padding: EdgeInsets.all(12.0.h),
           child: Column(
@@ -138,7 +109,9 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                     itemBuilder: (context, index) {
                       var message = socketService.messageList[index];
                       return Align(
-                        alignment: socketService.messageList[index]['senderId'] == widget.receiverId
+                        alignment: socketService.messageList[index]
+                                    ['senderId'] ==
+                                "67dfad3574eb1ff506ea4f82"
                             ? Alignment.centerRight
                             : Alignment.centerLeft,
                         child: Padding(
@@ -146,12 +119,15 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                           child: Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: socketService.messageList[index]['senderId'] == widget.receiverId
+                              color: socketService.messageList[index]
+                                          ['senderId'] ==
+                                      widget.receiverId
                                   ? Colors.blue
                                   : Colors.grey[200],
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text(socketService.messageList[index]['text'] ?? ''),
+                            child: Text(
+                                socketService.messageList[index]['text'] ?? ''),
                           ),
                         ),
                       );
@@ -165,20 +141,23 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                   key: _formKey,
                   child: Row(
                     children: [
-                      Expanded(
-                        child: TextFormField(
-
-                          controller: messageController,
-                          decoration:
-                              InputDecoration(hintText: 'Type your message'),
-                        ),
+                      TextFormField(
+                        // validator: (String? value) {
+                        //   if (value!.isEmpty) {
+                        //     return 'Type something';
+                        //   }
+                        //   return null;
+                        // },
+                        controller: messageController,
+                        decoration:
+                            InputDecoration(hintText: 'Type your message'),
                       ),
                       IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: (){
-                          sendMessageBTN(widget.chatId,messageController.text, widget.receiverId);
-                        }, // Use the sendMessage method here
-                      ),
+                          icon: Icon(Icons.send),
+                          onPressed: () {
+                            // sendMessageBTN(widget.chatId, widget.receiverId,
+                            //     messageController.text);
+                          }),
                     ],
                   ),
                 ),
@@ -190,29 +169,27 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
     );
   }
 
-   Future<void> sendMessageBTN(String chatId,  String text, String recieverId) async {
-    if (_formKey.currentState!.validate()) {
-      final bool isSuccess =
-          await messageSendController.sendMessage(chatId, text, recieverId);
+  // Future<void> sendMessageBTN(String chatId, String recieverId, text) async {
+  //   if (_formKey.currentState!.validate()) {
+  //     final bool isSuccess =
+  //         await messageSendController.sendMessage(chatId, recieverId, text);
 
-      if (isSuccess) {
-        if (mounted) {
-          messageController.clear();
-          // showSnackBarMessage(context, 'Message sent');
-
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, messageSendController.errorMessage!, true);
-          }
-        }
-      } else {
-        if (mounted) {
-          // print('Error show ----------------------------------');
-          showSnackBarMessage(context,
-              messageSendController.errorMessage ?? 'Ekhanei problem', true);
-        }
-      }
-    }
-  }
+  //     if (isSuccess) {
+  //       if (mounted) {
+  //         showSnackBarMessage(context, 'Message sent');
+  //       } else {
+  //         if (mounted) {
+  //           showSnackBarMessage(
+  //               context, messageSendController.errorMessage!, true);
+  //         }
+  //       }
+  //     } else {
+  //       if (mounted) {
+  //         // print('Error show ----------------------------------');
+  //         showSnackBarMessage(context,
+  //             messageSendController.errorMessage ?? 'Ekhanei problem', true);
+  //       }
+  //     }
+  //   }
+  // }
 }

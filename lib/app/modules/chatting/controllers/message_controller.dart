@@ -8,13 +8,23 @@ import 'package:antoinette/app/utils/get_storage.dart';
 
 class MessageController extends GetxController {
 
+  bool _inProgress = false;
+  bool get inProgress => _inProgress;
+
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
   final SocketService socketService = Get.put(SocketService());
   var isLoading = false.obs;
-  var messageList = <Map<String, dynamic>>[].obs;
+
   var message = ChatMessageModel().obs;
+  var messageList = <MessageData>[].obs;
+  
   
   // Fetch messages from server and update socket with the latest data
-  Future<void> getMessages(String chatId) async {
+  Future<void> getMessages({required String chatId}) async {
+
+    _inProgress = true;
     isLoading(true);
     update();
 
@@ -24,20 +34,37 @@ class MessageController extends GetxController {
         .getRequest(Urls.getMessagesUrl(chatId), accesToken: token);
 
     if (response.isSuccess) {
-      var responseBody = response.responseData;
-      if (responseBody is Map && responseBody.containsKey('data')) {
-        var dataList = responseBody['data'];
-        messageList.value = List<Map<String, dynamic>>.from(
-          dataList.map((item) => item as Map<String, dynamic>)
-        );
-      } else {
-        print('Invalid data format');
-      }
+      messageList.clear();
+      message.value = ChatMessageModel.fromJson(response.responseData);
+      messageList.addAll(message.value.data!);
+
+      
+      print('message list ......................................');
+      print(messageList);
+      socketService.messageList.clear();
+      
+       for (var i = 0; i < messageList.length; i++) {
+          socketService.messageList.add(
+              {
+                "id": messageList[i].id.toString(),
+                "text": messageList[i].text.toString(),
+                "imageUrl": messageList[i].imageUrl.toString(),
+                "seen":  messageList[i].seen,
+                "senderId": messageList[i].sender?.id.toString(),               
+                "receiverId": messageList[i].receiver?.id.toString(),       
+                "chat": messageList[i].chat.toString(),
+              }
+          );
+          
+        }
+     
     } else {
-      print('Error fetching messages');
+      _errorMessage = response.errorMessage;
     }
 
     isLoading(false);
     update();
+
+    
   }
 }

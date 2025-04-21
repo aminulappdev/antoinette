@@ -24,6 +24,27 @@ class AllFriendsModel {
 
 class AllFriendsItemModel {
     AllFriendsItemModel({
+        required this.chat,
+        required this.message,
+        required this.unreadMessageCount,
+    });
+
+    final Chat? chat;
+    final Message? message;
+    final int? unreadMessageCount;
+
+    factory AllFriendsItemModel.fromJson(Map<String, dynamic> json){ 
+        return AllFriendsItemModel(
+            chat: json["chat"] == null ? null : Chat.fromJson(json["chat"]),
+            message: json["message"] == null ? null : Message.fromJson(json["message"]),
+            unreadMessageCount: json["unreadMessageCount"],
+        );
+    }
+
+}
+
+class Chat {
+    Chat({
         required this.id,
         required this.participants,
         required this.status,
@@ -39,8 +60,8 @@ class AllFriendsItemModel {
     final DateTime? updatedAt;
     final int? v;
 
-    factory AllFriendsItemModel.fromJson(Map<String, dynamic> json){ 
-        return AllFriendsItemModel(
+    factory Chat.fromJson(Map<String, dynamic> json){ 
+        return Chat(
             id: json["_id"],
             participants: json["participants"] == null ? [] : List<Participant>.from(json["participants"]!.map((x) => Participant.fromJson(x))),
             status: json["status"],
@@ -74,6 +95,48 @@ class Participant {
             email: json["email"],
             contactNumber: json["contactNumber"],
             photoUrl: json["photoUrl"],
+        );
+    }
+
+}
+
+class Message {
+    Message({
+        required this.id,
+        required this.text,
+        required this.seen,
+        required this.sender,
+        required this.receiver,
+        required this.chat,
+        required this.imageUrl,
+        required this.createdAt,
+        required this.updatedAt,
+        required this.v,
+    });
+
+    final String? id;
+    final String? text;
+    final bool? seen;
+    final String? sender;
+    final String? receiver;
+    final String? chat;
+    final List<dynamic> imageUrl;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
+    final int? v;
+
+    factory Message.fromJson(Map<String, dynamic> json){ 
+        return Message(
+            id: json["_id"],
+            text: json["text"],
+            seen: json["seen"],
+            sender: json["sender"],
+            receiver: json["receiver"],
+            chat: json["chat"],
+            imageUrl: json["imageUrl"] == null ? [] : List<dynamic>.from(json["imageUrl"]!.map((x) => x)),
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+            v: json["__v"],
         );
     }
 
