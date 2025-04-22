@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
-  await socketService.init();
+  // await socketService.init();
   runApp(const AntoinetteApp());
 }
  

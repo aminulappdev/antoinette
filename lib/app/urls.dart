@@ -1,6 +1,6 @@
 class Urls {
-  // static const String _baseUrl = 'http://204.197.173.195:5013/api/v1';
-  static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
+  static const String _baseUrl = 'http://204.197.173.195:5013/api/v1';
+  // static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
   static const String socketUrl = 'http://192.168.10.144:4001/';
   static const String signUp = '$_baseUrl/users/register';
   static const String verifOtp = '$_baseUrl/otp/verify-otp';
