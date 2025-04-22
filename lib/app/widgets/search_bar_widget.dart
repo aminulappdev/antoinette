@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final bool shouldBackButton;
+
   
 
   const CustomSearchBar({
@@ -45,16 +46,20 @@ class CustomSearchBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Icon(
-                    Icons.search_rounded,
-                    size: 30.h,
-                    color: AppColors.iconButtonThemeColor,
+                GestureDetector(
+                  
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Icon(
+                      Icons.search_rounded,
+                      size: 30.h,
+                      color: AppColors.iconButtonThemeColor,
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: TextField(
+                  child: TextFormField(
+                    
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,

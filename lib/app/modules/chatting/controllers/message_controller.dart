@@ -3,11 +3,10 @@ import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
 import 'package:get/get.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
-import 'package:antoinette/app/urls.dart';
+import 'package:antoinette/app/urls.dart'; 
 import 'package:antoinette/app/utils/get_storage.dart';
 
 class MessageController extends GetxController {
-
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -19,11 +18,9 @@ class MessageController extends GetxController {
 
   var message = ChatMessageModel().obs;
   var messageList = <MessageData>[].obs;
-  
-  
-  // Fetch messages from server and update socket with the latest data
-  Future<void> getMessages({required String chatId}) async {
 
+  // 🔁 Server থেকে মেসেজ এনে socketService.messageList এ সেভ করে
+  Future<void> getMessages({required String chatId}) async {
     _inProgress = true;
     isLoading(true);
     update();
@@ -38,33 +35,27 @@ class MessageController extends GetxController {
       message.value = ChatMessageModel.fromJson(response.responseData);
       messageList.addAll(message.value.data!);
 
-      
-      print('message list ......................................');
-      print(messageList);
+      print('📦 Messages loaded from API: ${messageList.length}');
+
+      // 🔁 আগের মেসেজ clear করে নতুন মেসেজ socket messageList এ add করা হচ্ছে
       socketService.messageList.clear();
-      
-       for (var i = 0; i < messageList.length; i++) {
-          socketService.messageList.add(
-              {
-                "id": messageList[i].id.toString(),
-                "text": messageList[i].text.toString(),
-                "imageUrl": messageList[i].imageUrl.toString(),
-                "seen":  messageList[i].seen,
-                "senderId": messageList[i].sender?.id.toString(),               
-                "receiverId": messageList[i].receiver?.id.toString(),       
-                "chat": messageList[i].chat.toString(),
-              }
-          );
-          
-        }
-     
+
+      for (final msg in messageList) {
+        socketService.messageList.add({
+          "id": msg.id.toString(),
+          "text": msg.text ?? '',
+          "imageUrl": msg.imageUrl ?? '',
+          "seen": msg.seen,
+          "senderId": msg.sender?.id?.toString(),
+          "receiverId": msg.receiver?.id?.toString(),
+          "chat": msg.chat.toString(),
+        });
+      }
     } else {
       _errorMessage = response.errorMessage;
     }
 
     isLoading(false);
     update();
-
-    
   }
 }

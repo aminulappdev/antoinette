@@ -18,7 +18,7 @@ class AllProductPeginationModel {
       success: json["success"],
       statusCode: json["statusCode"],
       message: json["message"],
-      meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+      meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]), 
       data: json["data"] == null
           ? []
           : List<AllProductItemModel>.from(

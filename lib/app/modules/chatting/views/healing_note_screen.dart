@@ -63,6 +63,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                               onTap: () {
                                 // Navigating to the message screen when a friend is clicked
                                 Get.to(TextTherapyScreen(
+                                  
                                   chatId: friend.chat!.id!,
                                   receiverId: friend.chat!.participants[0].id!,
                                   receiverName: friend.chat!.participants[0].name!,

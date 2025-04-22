@@ -6,7 +6,6 @@ import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
 class AllProcuctController extends GetxController {
-  
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -21,23 +20,25 @@ class AllProcuctController extends GetxController {
   List<AllProductItemModel> productsList = [];
   List<AllProductItemModel> get allProductList => productsList;
 
-  final int _limit = 10;
+  var allProductsList = <AllProductItemModel>[].obs;
+
+  final int _limit = 20;
   int page = 0;
 
-  
   int? lastPage;
 
+  
+
   Future<bool> getProductList() async {
-    print('Function ready ..........');
     if (_inProgress) {
       return false;
     }
     page++;
 
-    if (lastPage != null && page > lastPage!) return false; 
+    if (lastPage != null && page > lastPage!) return false;
 
     bool isSuccess = false;
- 
+
     _inProgress = true;
 
     update();
@@ -56,7 +57,7 @@ class AllProcuctController extends GetxController {
       AllProductPeginationModel allProductPeginationModel =
           AllProductPeginationModel.fromJson(response.responseData);
       productsList.addAll(allProductPeginationModel.data);
-
+      
       if (allProductPeginationModel.meta?.totalPage != null) {
         lastPage = allProductPeginationModel.meta!.totalPage;
       }
@@ -68,4 +69,35 @@ class AllProcuctController extends GetxController {
     update();
     return isSuccess;
   }
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchAllProducts(null);
+  }
+
+  Future<void> fetchAllProducts(String? sessionQuery) async {   
+    Map<String, dynamic> queryparam = {'limit': _limit, 'page': page, 'searchTerm' : sessionQuery ?? ''};
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
+       queryParams: queryparam,
+        Urls.allProductUrl,
+        accesToken: box.read('user-login-access-token'));
+
+    if (response.isSuccess) {
+      _errorMessage = null;
+
+      AllProductPeginationModel allProductPeginationModel =
+          AllProductPeginationModel.fromJson(response.responseData);
+
+      allProductsList.value = allProductPeginationModel.data;
+    } else {
+      _errorMessage = response.errorMessage;
+    }
+  }
+
+  void onSearchQueryChangedSession(String sessionQuery) {
+    fetchAllProducts(sessionQuery);
+  }
 }
+
+

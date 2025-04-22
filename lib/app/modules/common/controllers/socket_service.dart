@@ -4,84 +4,86 @@ import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 
-class SocketService   {
+class SocketService extends GetxController {
   late IO.Socket _socket;
 
   RxBool isLoading = false.obs;
   final ProfileController profileController = Get.put(ProfileController());
 
-  // Use RxList to update the message and friend lists
+  // 🟢 RxList রাখা হয়েছে যাতে UI Obx দিয়ে observe করতে পারে
   final _messageList = <Map<String, dynamic>>[].obs;
   final _socketTherapistList = <Map<String, dynamic>>[].obs;
 
-  List<Map<String, dynamic>> get messageList => _messageList;
-  List<Map<String, dynamic>> get socketTherapistList => _socketTherapistList;
+  // 🔁 Updated: এখন RxList return করবে, Obx রিঅ্যাক্ট করবে
+  RxList<Map<String, dynamic>> get messageList => _messageList;
+  RxList<Map<String, dynamic>> get socketTherapistList => _socketTherapistList;
 
   IO.Socket get sokect => _socket;
 
   Future<SocketService> init() async {
     final token = await box.read('user-login-access-token');
-    // final userId =  profileController.profileData?.id;
-    final userId =  "67dfad3574eb1ff506ea4f82";
+    final userId = "67dfad3574eb1ff506ea4f82"; // এখানে আপনি চাইলে profile থেকে নিতে পারেন
 
-   
     _socket = IO.io(Urls.socketUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': true,
       'extraHeaders': {'token': token},
     });
 
-    _socket.on('connect', (data) {
-      print('Connected to the server');
+    _socket.on('connect', (_) {
+      print('✅ Connected to the server');
       _socket.emit("connection", userId);
     });
 
-
     _socket.onConnect((_) async {
-      print('Socket connected');
-      if (userId != null) {
-        _socket.emit("connection", userId);
-        print('User ID sent to server: $userId');
-      }
+      print('🟢 Socket connected');
+      _socket.emit("connection", userId);
     });
 
+    // 🎯 নতুন মেসেজ এলে add করে messageList-এ
     _socket.on('new-message', (data) {
       _handleIncomingMessage(data);
     });
 
+    // 🎯 নতুন friend এলে add করে socketTherapistList-এ
     _socket.on('latest_friend', (data) {
-
       _handleIncomingFriends(data);
     });
 
     _socket.onDisconnect((_) {
-      print('Socket disconnected');
+      print('🔴 Socket disconnected');
     });
-   
 
     return this;
-    
   }
 
-  void disconnect () {
+  void disconnect() {
     _socket.disconnect();
   }
 
-  // Handle incoming messages from the server and update the message list
+  // 🛠 Incoming Message Handle
   void _handleIncomingMessage(dynamic data) {
     if (data is Map<String, dynamic>) {
-      _messageList.add(data); // Add the new message to the message list
-      print('New message received and added to list: ${_messageList.length}');
+      final parsedMessage = {
+        "id": data["id"]?.toString(),
+        "text": data["text"] ?? "",
+        "imageUrl": data["imageUrl"] ?? "",
+        "seen": data["seen"] ?? false,
+        "senderId": data["sender"]?.toString(),
+        "receiverId": data["receiver"]?.toString(),
+        "chat": data["chat"]?.toString(),
+      };
+
+      _messageList.add(parsedMessage);
+      print('📩 Message added to list: ${_messageList.length}');
     }
   }
 
-  // Handle incoming friend data from the server and update the friend list
+  // 🛠 Incoming Friend Handle
   void _handleIncomingFriends(dynamic data) {
     if (data is Map<String, dynamic> && data.containsKey('receiver')) {
       _socketTherapistList.add(data);
-      print('Friend received and added to list: ${_socketTherapistList.length}');
+      print('👥 Friend added to list: ${_socketTherapistList.length}');
     }
   }
-
- 
 }

@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:antoinette/app/modules/chatting/controllers/message_controller.dart';
 import 'package:antoinette/app/modules/chatting/controllers/message_send_controller.dart';
 import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
-
 
 class TextTherapyScreen extends StatefulWidget {
   static const String routeName = '/chat-screen';
@@ -28,7 +28,7 @@ class TextTherapyScreen extends StatefulWidget {
 }
 
 class _TextTherapyScreenState extends State<TextTherapyScreen> {
-
+  final ProfileController profileController = Get.find<ProfileController>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SocketService socketService = Get.put(SocketService());
   final TextEditingController messageController = TextEditingController();
@@ -37,18 +37,31 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
       Get.put(MessageSendController());
   final ScrollController _scrollController = ScrollController();
   bool isLoading = false;
+   String updatesenderId = '';
+   String updatereceiverId = '';
+  late String senderId;
 
   @override
   void initState() {
     super.initState();
+    senderId = profileController.profileModel!.data!.id!;
+    print(senderId);
 
     socketService.init(); // Initialize the socket connection
+    updatesenderId = '67dfad3574eb1ff506ea4f82';
+    updatereceiverId = widget.receiverId;
+
 
     // Listen for incoming messages from the socket
     socketService.sokect.on('new-message::${widget.chatId}', (data) {
+      print('Soket data first time ...............');
+      updatesenderId = data['sender'];
+      updatereceiverId = data['receiver'];
+      print('senderId :  ${data['sender']}');
+      print('receiverId :  ${data['receiver']}');
       _handleIncomingMessage(data);
     });
-
+   
     // Fetch the initial messages from the server (if any)
     messageFetchController.getMessages(chatId: widget.chatId).then((_) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -60,7 +73,8 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
-    socketService.sokect.off('new-message::${widget.chatId}'); // Remove socket listener when the screen is disposed
+    socketService.sokect.off(
+        'new-message::${widget.chatId}'); // Remove socket listener when the screen is disposed
     super.dispose();
   }
 
@@ -116,7 +130,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        
+        appBar: AppBar(),
         body: Padding(
           padding: EdgeInsets.all(12.0.h),
           child: Column(
@@ -136,22 +150,31 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                     controller: _scrollController,
                     itemCount: socketService.messageList.length,
                     itemBuilder: (context, index) {
+                      print(
+                          'sender id $updatesenderId');
+                      print('reciver id $updatereceiverId');
                       var message = socketService.messageList[index];
+                      print("this is: ${socketService.messageList[index]['sender'] } ::::: ${socketService.messageList[index]['sender'] ==
+                                '67cd4f2f18d18dfa1fa1c60c'}");
                       return Align(
-                        alignment: socketService.messageList[index]['senderId'] == widget.receiverId
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
+                       alignment: socketService.messageList[index]['sender'] ==
+                                '67cd4f2f18d18dfa1fa1c60c'
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: socketService.messageList[index]['senderId'] == widget.receiverId
-                                  ? Colors.blue
-                                  : Colors.grey[200],
+                              color: socketService.messageList[index]
+                                          ['sender'] ==
+                                      widget.receiverId
+                                  ? Colors.grey[200]
+                                  : Colors.blue,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text(socketService.messageList[index]['text'] ?? ''),
+                            child: Text(
+                                socketService.messageList[index]['text'] ?? ''),
                           ),
                         ),
                       );
@@ -167,7 +190,6 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-
                           controller: messageController,
                           decoration:
                               InputDecoration(hintText: 'Type your message'),
@@ -175,8 +197,9 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                       ),
                       IconButton(
                         icon: Icon(Icons.send),
-                        onPressed: (){
-                          sendMessageBTN(widget.chatId,messageController.text, widget.receiverId);
+                        onPressed: () {
+                          sendMessageBTN(widget.chatId, messageController.text,
+                              widget.receiverId);
                         }, // Use the sendMessage method here
                       ),
                     ],
@@ -190,7 +213,8 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
     );
   }
 
-   Future<void> sendMessageBTN(String chatId,  String text, String recieverId) async {
+  Future<void> sendMessageBTN(
+      String chatId, String text, String recieverId) async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess =
           await messageSendController.sendMessage(chatId, text, recieverId);
@@ -199,7 +223,6 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
         if (mounted) {
           messageController.clear();
           // showSnackBarMessage(context, 'Message sent');
-
         } else {
           if (mounted) {
             showSnackBarMessage(
