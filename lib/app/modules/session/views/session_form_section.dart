@@ -2,6 +2,7 @@ import 'package:antoinette/app/modules/chatting/controllers/add_chat_controller.
 import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
+import 'package:antoinette/app/modules/session/controllers/reschedule_booking_controller.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -25,6 +26,8 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   ProfileController profileController = Get.find<ProfileController>();
   final BookingController bookingController = Get.find<BookingController>();
   final AddChatController addChatController = Get.find<AddChatController>();
+  final RescheduleBookingController rescheduleBookingController =
+      Get.find<RescheduleBookingController>();
   final PaymentService paymentService = PaymentService();
   String? selectedMood; // For storing selected mood
 
@@ -32,7 +35,10 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   void initState() {
     userId = profileController.profileData!.sId!;
     print('Therapy Id ............');
-    print(widget.slotData['therapyId']);
+
+    print(widget.slotData['slotId']);
+    print(widget.slotData['bookingId']);
+    
     // print(
     //     'UserId : $userId\nSession id : ${widget.slotData['sessionId']}\nSession slot : ${widget.slotData['slotId']}');
     super.initState();
@@ -128,29 +134,16 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                       }).toList(),
                     ),
                     heightBox12,
-                    Text(
-                      "Consent:",
-                      style: GoogleFonts.poppins(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff626262),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Checkbox(value: false, onChanged: (bool? value) {}),
-                        const Expanded(
-                            child:
-                                Text("I agree to the terms & privacy policy.")),
-                      ],
-                    ),
+                    
                     GradientElevatedButton(
                         onPressed: () {
                           // print('Clicked on submit button');
                           // print("Selected Mood: $selectedMood");
-                          addChatTherapist(userId,widget.slotData['therapyId']);
-                          // onTapToNextButton();
-
+                          // addChatTherapist(
+                          //     userId, widget.slotData['therapyId']);
+                          widget.slotData['bookingId'] == null
+                              ? bookingButton()
+                              : rescheduleBookingButton();
                         },
                         text: 'Submit')
                   ],
@@ -163,14 +156,15 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     );
   }
 
-  Future<void> onTapToNextButton() async {
-    if (widget.slotData['sessionId'] == null ||
-        widget.slotData['slotId'] == null) {
-      // print('main funtion e jay nay');
-      showSnackBarMessage(
-          context, "Please select a valid date and time slot", true);
-      return;
-    }
+  Future<void> bookingButton() async {
+    
+    // if (widget.slotData['bookingId'] == null ||
+    //     widget.slotData['slotId'] == null) {
+    //   // print('main funtion e jay nay');
+    //   showSnackBarMessage(
+    //       context, "Please select a valid date and time slot", true);
+    //   return;
+    // }
 
     if (selectedMood == null) {
       // print('Select your mood');
@@ -188,14 +182,41 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
     if (isSuccess) {
       if (mounted) {
-         paymentService.payment(
-          context,
-          'Booking',
-          userId,
-          bookingController.sessionBookingResponseData![0].id!
-        );
+        paymentService.payment(context, 'Booking', userId,
+            bookingController.sessionBookingResponseData![0].id!);
         // showSnackBarMessage(context, 'Booking successful');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, bookingController.errorMessage!, true);
+      }
+    }
+  }
 
+  Future<void> rescheduleBookingButton() async {
+    if (widget.slotData['sessionId'] == null ||
+        widget.slotData['slotId'] == null) {
+      // print('main funtion e jay nay');
+      showSnackBarMessage(
+          context, "Please select a valid date and time slot", true);
+      return;
+    }
+
+    if (selectedMood == null) {
+      // print('Select your mood');
+      showSnackBarMessage(
+          context, "Please select your current emotional state", true);
+      return;
+    }
+
+    final bool isSuccess = await rescheduleBookingController.bookingSession(
+      widget.slotData['bookingId'],
+      widget.slotData['slotId'],
+    );
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Booking successful');
       }
     } else {
       if (mounted) {
@@ -225,6 +246,4 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
     // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
   }
-
-
 }

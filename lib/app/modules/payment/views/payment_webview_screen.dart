@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebviewScreen extends StatefulWidget {
+  
   final Map<String, dynamic> paymentData;
   static const String routeName = '/payment-webview-screen';
 
-  const PaymentWebviewScreen({super.key, required this.paymentData});
+  const PaymentWebviewScreen({super.key, required this.paymentData,});
 
   @override
   State<PaymentWebviewScreen> createState() => _PaymentWebviewScreenState();

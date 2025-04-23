@@ -49,6 +49,7 @@ import 'package:antoinette/app/modules/profile/controllers/update_profile_contro
 import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/get_session_slotById_controller.dart';
+import 'package:antoinette/app/modules/session/controllers/reschedule_booking_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
@@ -109,6 +110,7 @@ class ControllerBinder extends Bindings {
     Get.put(FriendController());
     Get.put(AddChatController());
     Get.put(MessageSendController());
+    Get.put(RescheduleBookingController());
 
   
     

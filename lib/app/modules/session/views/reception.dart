@@ -18,7 +18,7 @@ class Reception extends StatefulWidget {
   @override
   State<Reception> createState() => _ReceptionState();
 }
-
+ 
 class _ReceptionState extends State<Reception> {
   final SessionDetailsController sessionDetailsController =
       Get.find<SessionDetailsController>();
@@ -219,8 +219,9 @@ class _ReceptionState extends State<Reception> {
                     print('Add chat er data ..............');             
                     print(controller.sessionDetailsModel?.data!.therapist?.sId);
 
-                   
-                    print('Datails page er slot id : ${widget.sessionId}');
+                    
+                    print('Datails page er session id : ${widget.sessionId}');
+                    print('Datails page er slot id : ${selectedSlotId!}');
                     slotData['sessionId'] = widget.sessionId;
                     slotData['slotId'] = selectedSlotId!;
                     slotData['therapyType'] = selectedTherapy;

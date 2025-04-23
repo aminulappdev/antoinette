@@ -1,4 +1,5 @@
 import 'package:antoinette/app/utils/app_colors.dart';
+import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,8 @@ class TwoOptionCard extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
-                              image: NetworkImage(imagePath),
+                              // image: NetworkImage(imagePath),
+                              image: AssetImage(AssetsPath.womenBookRead),
                               fit: BoxFit.fill)),
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
@@ -135,7 +137,7 @@ class TwoOptionCard extends StatelessWidget {
                         height: 40.h,
                         width: 150.w,
                         child: GradientElevatedButton(
-                            onPressed: () {}, text: op1Name),
+                            onPressed: op1Ontap, text: op1Name),
                       ),
                     ),
                     SizedBox(

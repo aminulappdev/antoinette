@@ -1,7 +1,7 @@
 import 'package:antoinette/app/modules/history/controllers/all_booking_controller.dart';
 import 'package:antoinette/app/modules/history/controllers/cancel_booking_controller.dart';
+import 'package:antoinette/app/modules/history/views/reschedule_session.dart';
 import 'package:antoinette/app/modules/history/widgets/two_option_card_widget.dart';
-import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +42,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<AllBookingController>(builder: (controller) {
       return SizedBox(
-        height: MediaQuery.of(context).size.height - 300.h,
+        height: MediaQuery.of(context).size.height - 200.h,
         width: MediaQuery.of(context).size.width,
         child: ListView.builder(
           controller: scrollController,
@@ -65,8 +65,13 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     '${controller.bookingList[index].session?.thumbnail}',
                 price: '${controller.bookingList[index].amount}',
                 op1Ontap: () {
-                    Navigator.pushNamed(context, SessionDetailsScreen.routeName,
-                        arguments: controller.bookingList[index].session?.id);
+                  print('Go to reschedule');
+                  Navigator.pushNamed(
+                      context, RescheduleSessionScreen.routeName,
+                      arguments: {
+                        'bookingId': controller.bookingList[index].id,
+                        'sessionId': controller.bookingList[index].session?.id
+                      });
                 },
                 op2Ontap: () {
                   cancelBookingOntap('${controller.bookingList[index].id}');

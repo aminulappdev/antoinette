@@ -9,11 +9,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
+  // ignore: unused_local_variable
   SocketService socketService = Get.put(SocketService());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
-  // await socketService.init();
+  await socketService.init();
   runApp(const AntoinetteApp());
 }
  

@@ -36,7 +36,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   void _onSearch() {
     String query = searchController.text;
-    allProcuctController.onSearchQueryChangedSession(query); // Trigger search
+    allProcuctController.onSearchQueryChangedProducts(query); // Trigger search
   }
 
   @override
@@ -172,6 +172,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void dispose() {
     scrollController.dispose();
+     allProcuctController.fetchAllProducts(null);
     super.dispose();
   }
 }

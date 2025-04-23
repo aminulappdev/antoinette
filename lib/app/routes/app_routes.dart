@@ -9,6 +9,7 @@ import 'package:antoinette/app/modules/contact/views/edit_contact_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/change_password_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/edit_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
+import 'package:antoinette/app/modules/history/views/reschedule_session.dart';
 import 'package:antoinette/app/modules/letters/model/article_details_model.dart';
 import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
@@ -241,6 +242,16 @@ class AppRoutes {
         contactData: args,
       );
     },
+
+    
+    RescheduleSessionScreen.routeName: (context) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+      return RescheduleSessionScreen(
+        data: args,
+      );
+    },
+
 
     AddAdderssScreen.routeName: (context) {
       final args = ModalRoute.of(context)!.settings.arguments as String;

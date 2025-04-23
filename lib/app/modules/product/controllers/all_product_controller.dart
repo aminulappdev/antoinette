@@ -95,7 +95,7 @@ class AllProcuctController extends GetxController {
     }
   }
 
-  void onSearchQueryChangedSession(String sessionQuery) {
+  void onSearchQueryChangedProducts(String sessionQuery) {
     fetchAllProducts(sessionQuery);
   }
 }

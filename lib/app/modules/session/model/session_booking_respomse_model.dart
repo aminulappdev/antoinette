@@ -18,8 +18,9 @@ class SessionBookingResponseModel {
       message: json["message"],
       data: json["data"] == null
           ? []
-          : List<SessionBookingResponseItemModel>.from(json["data"]!
-              .map((x) => SessionBookingResponseItemModel.fromJson(x))),
+          : (json["data"] as List<dynamic>)
+              .map((x) => SessionBookingResponseItemModel.fromJson(x))
+              .toList(), // ✅ এখানে .toList() যোগ করেছি
     );
   }
 }

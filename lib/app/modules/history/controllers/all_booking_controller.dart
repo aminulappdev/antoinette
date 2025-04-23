@@ -20,7 +20,7 @@ class AllBookingController extends GetxController {
   List<AllBookingItemModel> bookingList = [];
   List<AllBookingItemModel> get allBooking => bookingList;
 
-  final int _limit = 10;
+  final int _limit = 30;
   int page = 0;
 
   
@@ -33,7 +33,7 @@ class AllBookingController extends GetxController {
     page++;
 
     if (lastPage != null && page > lastPage!) return false; 
-
+ 
     bool isSuccess = false; 
  
     _inProgress = true;
