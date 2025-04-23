@@ -1,5 +1,4 @@
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
-import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/about.dart';
 import 'package:antoinette/app/modules/session/views/reception.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';

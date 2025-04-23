@@ -53,7 +53,9 @@ class _CompletedScreenState extends State<CompletedScreen> {
           itemCount: controller.bookingList.length,
           itemBuilder: (context, index) {
             String dateString = '2025-03-18';
+            // ignore: unused_local_variable
             DateTime date = DateTime.parse(dateString);
+            // ignore: unused_local_variable
             DateTime today = DateTime.now();
             if (controller.bookingList[index].paymentStatus == 'paid') {
               // if (today.isBefore(date)) {

@@ -1,13 +1,9 @@
-import 'package:antoinette/app/modules/chatting/controllers/add_chat_controller.dart';
-import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/get_session_slotById_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
-import 'package:antoinette/app/modules/session/model/session_details_model.dart';
 import 'package:antoinette/app/modules/session/views/session_form_section.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
-import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

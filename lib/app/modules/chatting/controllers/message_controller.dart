@@ -44,7 +44,7 @@ class MessageController extends GetxController {
         socketService.messageList.add({
           "id": msg.id.toString(),
           "text": msg.text ?? '',
-          "imageUrl": msg.imageUrl ?? '',
+          "imageUrl": msg.imageUrl,
           "seen": msg.seen,
           "senderId": msg.sender?.id?.toString(),
           "receiverId": msg.receiver?.id?.toString(),

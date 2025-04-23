@@ -52,7 +52,7 @@ class AllNotificationController extends GetxController {
 
       AllNotificationModel allNotificationModel =
           AllNotificationModel.fromJson(response.responseData);
-      notificationList.addAll(allNotificationModel.data ?? []);
+      notificationList.addAll(allNotificationModel.data);
 
       if (allNotificationModel.meta?.totalPage != null) {
         lastPage = allNotificationModel.meta!.totalPage;

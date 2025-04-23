@@ -37,9 +37,10 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
       Get.put(MessageSendController());
   final ScrollController _scrollController = ScrollController();
   bool isLoading = false;
-   String updatesenderId = '';
-   String updatereceiverId = '';
+  String updatesenderId = '';
+  String updatereceiverId = '';
   late String senderId;
+  int cnt = 1;
 
   @override
   void initState() {
@@ -51,9 +52,9 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
     updatesenderId = '67dfad3574eb1ff506ea4f82';
     updatereceiverId = widget.receiverId;
 
-
     // Listen for incoming messages from the socket
     socketService.sokect.on('new-message::${widget.chatId}', (data) {
+      cnt++;
       print('Soket data first time ...............');
       updatesenderId = data['sender'];
       updatereceiverId = data['receiver'];
@@ -61,7 +62,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
       print('receiverId :  ${data['receiver']}');
       _handleIncomingMessage(data);
     });
-   
+
     // Fetch the initial messages from the server (if any)
     messageFetchController.getMessages(chatId: widget.chatId).then((_) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -93,8 +94,8 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
   // Handle incoming messages from the socket
   void _handleIncomingMessage(dynamic data) {
     socketService.messageList.add(data); // Add the new message to the list
-    print(socketService.messageList.length.toString() +
-        " this is message list demo length");
+    // print(socketService.messageList.length.toString() +
+    //     " this is message list demo length");
     _scrollToEnd(); // Scroll to the latest message
   }
 
@@ -150,15 +151,17 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                     controller: _scrollController,
                     itemCount: socketService.messageList.length,
                     itemBuilder: (context, index) {
-                      print(
-                          'sender id $updatesenderId');
-                      print('reciver id $updatereceiverId');
                       var message = socketService.messageList[index];
-                      print("this is: ${socketService.messageList[index]['sender'] } ::::: ${socketService.messageList[index]['sender'] ==
-                                '67cd4f2f18d18dfa1fa1c60c'}");
+
+                      // Check if senderId is null, if yes, use sender as fallback
+                      var senderId = message['senderId'] ?? message['sender'];
+
+                      print('Sender confusion ............................');
+                      print(message['senderId']);
+                      print(message['sender']);
+
                       return Align(
-                       alignment: socketService.messageList[index]['sender'] ==
-                                '67cd4f2f18d18dfa1fa1c60c'
+                        alignment: senderId == widget.receiverId
                             ? Alignment.centerLeft
                             : Alignment.centerRight,
                         child: Padding(
@@ -166,15 +169,12 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                           child: Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: socketService.messageList[index]
-                                          ['sender'] ==
-                                      widget.receiverId
+                              color: senderId == widget.receiverId
                                   ? Colors.grey[200]
                                   : Colors.blue,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text(
-                                socketService.messageList[index]['text'] ?? ''),
+                            child: Text(message['text'] ?? ''),
                           ),
                         ),
                       );

@@ -57,6 +57,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   itemCount: controller.allNotification.length,
                   itemBuilder: (context, index) {
                      DateTime? isoDate = controller.notificationList[index].date;
+                     // ignore: unused_local_variable
                      String readableDate = DateFormat('MMMM dd, yyyy').format(isoDate!);
                      String readableTime = DateFormat('h:mm a').format(isoDate);
                     return Padding(

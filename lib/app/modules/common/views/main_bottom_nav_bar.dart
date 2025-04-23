@@ -1,7 +1,6 @@
 import 'package:antoinette/app/modules/common/views/panic_button_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/home/views/home_screen.dart';
-import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/views/profile_screen.dart';

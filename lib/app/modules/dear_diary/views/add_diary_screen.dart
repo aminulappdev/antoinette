@@ -1,6 +1,5 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/add_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/model/feeling_model.dart';
-import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/drop_down_button.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/assets_path.dart';

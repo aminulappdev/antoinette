@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+
 import 'package:antoinette/app/modules/payment/controllers/confirmed_payment_controller.dart';
 import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
@@ -16,6 +16,7 @@ class PaymentWebviewScreen extends StatefulWidget {
 }
 
 class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
+  // ignore: unused_field
   late WebViewController _controller;
   final ConfirmedPaymentController confirmedPaymentController =
       ConfirmedPaymentController();

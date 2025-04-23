@@ -2,8 +2,6 @@ import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart'
 import 'package:antoinette/app/modules/contact/views/contact_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/order/views/oder_screen.dart';
-import 'package:antoinette/app/modules/order/views/order_bar.dart';
-import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
 import 'package:antoinette/app/modules/profile/controllers/content_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
@@ -12,7 +10,6 @@ import 'package:antoinette/app/modules/profile/views/address_screen.dart';
 import 'package:antoinette/app/modules/profile/views/info_screen.dart';
 import 'package:antoinette/app/modules/profile/widgets/profile_drawer_feature.dart';
 import 'package:antoinette/app/modules/profile/widgets/profile_info.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
