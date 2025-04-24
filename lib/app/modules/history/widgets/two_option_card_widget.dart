@@ -42,7 +42,7 @@ class TwoOptionCard extends StatelessWidget {
       child: Card(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: 169.h,
+          height: 180.h,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12), color: Colors.white),
           child: Padding(
@@ -77,6 +77,8 @@ class TwoOptionCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             title,
                             style: GoogleFonts.poppins(fontSize: 15.sp),
                           ),

@@ -35,6 +35,7 @@ class _SessionBarState extends State<SessionBar> {
     return SingleChildScrollView(
       child: GetBuilder<SessionDetailsController>(
         builder: (controller) {
+          
           return Column(
             children: [
               Row(

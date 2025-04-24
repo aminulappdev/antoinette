@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/chatting/controllers/add_chat_controller.dart';
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/booking_controller.dart';
@@ -183,7 +184,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     if (isSuccess) {
       if (mounted) {
         paymentService.payment(context, 'Booking', userId,
-            bookingController.sessionBookingResponseData![0].id!);
+            bookingController.sessionBookingResponseData!.id!);
         // showSnackBarMessage(context, 'Booking successful');
       }
     } else {
@@ -216,7 +217,10 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Booking successful');
+
+      showSnackBarMessage(context, 'Booking successful');
+      Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+
       }
     } else {
       if (mounted) {

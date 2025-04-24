@@ -13,7 +13,7 @@ class RescheduleBookingController extends GetxController {
   String? get errorMessage => _errorMessage;
 
   SessionBookingResponseModel? sessionBookingResponseModel;
-  List<SessionBookingResponseItemModel>? get sessionBookingResponseData =>
+  SessionBookingResponseItemModel? get sessionBookingResponseData =>
       sessionBookingResponseModel?.data;
 
   Future<bool> bookingSession(String bookingId, String slotId) async {
@@ -22,7 +22,7 @@ class RescheduleBookingController extends GetxController {
     _inProgress = true;
 
     update();
-
+ 
     Map<String, dynamic> requestBody = {
       "slot": slotId,
     };

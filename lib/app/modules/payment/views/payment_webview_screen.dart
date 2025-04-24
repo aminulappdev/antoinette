@@ -1,16 +1,18 @@
-
 import 'package:antoinette/app/modules/payment/controllers/confirmed_payment_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/payment_url_controller.dart';
 import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebviewScreen extends StatefulWidget {
-  
   final Map<String, dynamic> paymentData;
   static const String routeName = '/payment-webview-screen';
 
-  const PaymentWebviewScreen({super.key, required this.paymentData,});
+  const PaymentWebviewScreen({
+    super.key,
+    required this.paymentData,
+  });
 
   @override
   State<PaymentWebviewScreen> createState() => _PaymentWebviewScreenState();
@@ -21,6 +23,7 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
   late WebViewController _controller;
   final ConfirmedPaymentController confirmedPaymentController =
       ConfirmedPaymentController();
+  final PaymentURLController paymentURLController = PaymentURLController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +54,13 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
             debugPrint('Page finished loading: $url');
             if (url.contains("confirm-payment")) {
               print('Confirmed payment hoye geche............................');
-              await confirmPayment('${widget.paymentData['reference']}');
-              Navigator.pushNamed(context, PaymentSuccessScreen.routeName);
+              // paymentURLController.paymentUrl(url);
+              final bool isSuccess = await paymentURLController.paymentUrl(url);
+              if (isSuccess) {
+                await confirmPayment('${widget.paymentData['reference']}');
+                Navigator.pushNamed(context, PaymentSuccessScreen.routeName);
+              }
+
               // Call your payment result handler or anything you want here
               debugPrint('::::::::::::: if condition ::::::::::::::::');
             }
@@ -67,8 +75,6 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
         await confirmedPaymentController.confirmPaymentfunction(reference);
     if (isSuccess) {
       if (mounted) {
-       
-
       } else {
         if (mounted) {
           showSnackBarMessage(

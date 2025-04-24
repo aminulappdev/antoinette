@@ -36,11 +36,11 @@ class RebookCard extends StatelessWidget {
       child: Card(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: 169.h,
+          height: 180.h,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12), color: Colors.white),
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding:  EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -70,6 +70,8 @@ class RebookCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             title,
                             style: GoogleFonts.poppins(fontSize: 15.sp),
                           ),

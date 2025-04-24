@@ -65,8 +65,7 @@ class _HistoryBarState extends State<HistoryBar> {
             ],
           ),
           heightBox8,
-          CustomSearchBar(shouldBackButton: false,),
-          heightBox8,
+       
           if (selectedPage == 0) ...{
             CompletedScreen(),
           } else if (selectedPage == 1) ...{

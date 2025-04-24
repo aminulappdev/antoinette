@@ -11,32 +11,29 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Reception extends StatefulWidget {
-  // final SessionDataModel sessionDataModel;
   final String sessionId;
   const Reception({super.key, required this.sessionId});
 
   @override
   State<Reception> createState() => _ReceptionState();
 }
- 
+
 class _ReceptionState extends State<Reception> {
   final SessionDetailsController sessionDetailsController =
       Get.find<SessionDetailsController>();
 
-  
   late String userId;
 
   Map<String, dynamic> slotData = {
     'sessionId': '',
     'slotId': '',
     'therapyType': '',
-    'therapyId' : ''
-
+    'therapyId': ''
   };
 
   final BookingController bookingController = BookingController();
 
-  String selectedTherapy = "Video Therapy";
+  String selectedTherapy = "Video Therapy"; // Default selected therapy
   final List<String> therapyOptions = [
     "Video Therapy",
     "Text Therapy",
@@ -51,10 +48,10 @@ class _ReceptionState extends State<Reception> {
 
   @override
   void initState() {
-
-    print('reception er sessionId ${widget.sessionId}');
-    sessionDetailsController.getSessionDetails(widget.sessionId);
     super.initState();
+
+    print('Reception - sessionId: ${widget.sessionId}');
+    sessionDetailsController.getSessionDetails(widget.sessionId);
 
     // Fetch session slots by ID
     Get.find<AllSessionSlotByIdController>()
@@ -70,8 +67,7 @@ class _ReceptionState extends State<Reception> {
         DateTime date = DateTime.parse(sessionSlot.date!);
 
         if (sessionSlot.isBooked == true) {
-          // If the slot is booked, add to disabledDates
-          bookedDates.add(date);
+          bookedDates.add(date); // If the slot is booked, add to disabledDates
         } else {
           validDates.add(date);
         }
@@ -112,7 +108,7 @@ class _ReceptionState extends State<Reception> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        value: selectedTherapy,
+                        value: selectedTherapy, // The value of the selected item
                         isExpanded: true,
                         icon:
                             Icon(Icons.arrow_drop_down, color: Colors.black54),
@@ -125,7 +121,7 @@ class _ReceptionState extends State<Reception> {
                         }).toList(),
                         onChanged: (String? newValue) {
                           setState(() {
-                            selectedTherapy = newValue!;
+                            selectedTherapy = newValue!; // Update selected value
                           });
                         },
                       ),
@@ -199,7 +195,7 @@ class _ReceptionState extends State<Reception> {
                           setState(() {
                             selectedSlotId = value;
                             selectedTimeSlot = timeSlot;
-                            slotId = selectedSlotId!;
+                            this.slotId = selectedSlotId!; // Update slotId
                             print('Selected slot ID: $selectedSlotId');
                           });
                         },
@@ -216,18 +212,16 @@ class _ReceptionState extends State<Reception> {
             GetBuilder<SessionDetailsController>(builder: (controller) {
               return GradientElevatedButton(
                   onPressed: () {
-                    print('Add chat er data ..............');             
+                    print('Add chat er data ..............');
                     print(controller.sessionDetailsModel?.data!.therapist?.sId);
 
-                    
-                    print('Datails page er session id : ${widget.sessionId}');
-                    print('Datails page er slot id : ${selectedSlotId!}');
+                    print('Details page er session id : ${widget.sessionId}');
+                    print('Details page er slot id : ${selectedSlotId!}');
                     slotData['sessionId'] = widget.sessionId;
                     slotData['slotId'] = selectedSlotId!;
                     slotData['therapyType'] = selectedTherapy;
                     slotData['therapyId'] = controller.sessionDetailsModel?.data!.therapist?.sId;
 
-                    
                     Navigator.pushNamed(context, SessionFormScreen.routeName,
                         arguments: slotData);
                   },
@@ -238,6 +232,4 @@ class _ReceptionState extends State<Reception> {
       );
     });
   }
-
-  
 }

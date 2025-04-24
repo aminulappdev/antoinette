@@ -38,6 +38,7 @@ import 'package:antoinette/app/modules/order/controllers/order_details_controlle
 import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/confirmed_payment_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/payment_url_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/article_details_controller.dart';
@@ -111,6 +112,7 @@ class ControllerBinder extends Bindings {
     Get.put(AddChatController());
     Get.put(MessageSendController());
     Get.put(RescheduleBookingController());
+    Get.put(PaymentURLController());
 
   
     

@@ -16,7 +16,7 @@ class BookingController extends GetxController {
   String? get accessToken => _accessToken;
 
   SessionBookingResponseModel? sessionBookingResponseModel;
-  List<SessionBookingResponseItemModel>? get sessionBookingResponseData => sessionBookingResponseModel?.data;
+  SessionBookingResponseItemModel? get sessionBookingResponseData => sessionBookingResponseModel?.data;
 
   Future<bool> bookingSession(String user, String sessionId, String slotId, String therapyType, String mood) async {
     bool isSuccess = false;

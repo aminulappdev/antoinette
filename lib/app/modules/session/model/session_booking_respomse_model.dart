@@ -9,7 +9,7 @@ class SessionBookingResponseModel {
   final bool? success;
   final int? statusCode;
   final String? message;
-  final List<SessionBookingResponseItemModel> data;
+  final SessionBookingResponseItemModel data; // Change from List to a single object
 
   factory SessionBookingResponseModel.fromJson(Map<String, dynamic> json) {
     return SessionBookingResponseModel(
@@ -17,10 +17,8 @@ class SessionBookingResponseModel {
       statusCode: json["statusCode"],
       message: json["message"],
       data: json["data"] == null
-          ? []
-          : (json["data"] as List<dynamic>)
-              .map((x) => SessionBookingResponseItemModel.fromJson(x))
-              .toList(), // ✅ এখানে .toList() যোগ করেছি
+          ? SessionBookingResponseItemModel.empty() // Handle null case
+          : SessionBookingResponseItemModel.fromJson(json["data"]),
     );
   }
 }
@@ -46,7 +44,7 @@ class SessionBookingResponseItemModel {
   final String? user;
   final String? session;
   final String? slot;
-  final int? amount;
+  final num? amount; // Change to `num` to handle both int and double
   final dynamic transactionId;
   final String? therapyType;
   final String? emotionState;
@@ -63,7 +61,7 @@ class SessionBookingResponseItemModel {
       user: json["user"],
       session: json["session"],
       slot: json["slot"],
-      amount: json["amount"],
+      amount: json["amount"], // This will now accept both int and double
       transactionId: json["transactionId"],
       therapyType: json["therapyType"],
       emotionState: json["emotionState"],
@@ -74,6 +72,26 @@ class SessionBookingResponseItemModel {
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
+    );
+  }
+
+  // Empty constructor to handle null cases
+  factory SessionBookingResponseItemModel.empty() {
+    return SessionBookingResponseItemModel(
+      user: null,
+      session: null,
+      slot: null,
+      amount: 0,
+      transactionId: null,
+      therapyType: null,
+      emotionState: null,
+      paymentStatus: null,
+      status: null,
+      isDeleted: false,
+      id: null,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      v: 0,
     );
   }
 }

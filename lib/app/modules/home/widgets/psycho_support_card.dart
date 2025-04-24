@@ -75,12 +75,19 @@ class _PsychoSupportCardState extends State<PsychoSupportCard> {
                       radius: 16.r,
                     ),
                     widthBox4,
-                    Text(
-                      '${widget.sessionItemModel.title}',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600),
+                    FittedBox(
+                      child: SizedBox(
+                        width: 180.h,
+                        child: Text(
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          '${widget.sessionItemModel.title}',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -90,7 +97,7 @@ class _PsychoSupportCardState extends State<PsychoSupportCard> {
         ),
       ),
     );
-  }
+  } 
 
   Future<void> getSessionScreen() async {
     // print('Hello');

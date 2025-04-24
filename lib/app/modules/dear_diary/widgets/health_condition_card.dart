@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 class HealthConditionCard extends StatelessWidget {
   final bool isBlur;
   final Color themeColor;
-  final String iconPath;
+  final String iconPath; 
   final String status;
   final String day;
   final String time;

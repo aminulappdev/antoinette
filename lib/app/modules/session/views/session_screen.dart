@@ -108,7 +108,7 @@ class _SessionScreenState extends State<SessionScreen> {
                         ),
                       ),
                     ),
-                  ],
+                  ],  
                 ),
                 heightBox12,
                 Align(

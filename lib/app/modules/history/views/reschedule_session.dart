@@ -79,7 +79,7 @@ class _RescheduleSessionScreenState extends State<RescheduleSessionScreen> {
         enabledDates = validDates; // Valid dates
         disabledDates = bookedDates; // Booked dates
       });
-    });
+    }); 
   }
 
   @override

@@ -2,10 +2,12 @@ import 'package:antoinette/app/modules/history/controllers/all_booking_controlle
 import 'package:antoinette/app/modules/history/controllers/cancel_booking_controller.dart';
 import 'package:antoinette/app/modules/history/views/reschedule_session.dart';
 import 'package:antoinette/app/modules/history/widgets/two_option_card_widget.dart';
+import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class UpcomingScreen extends StatefulWidget {
   const UpcomingScreen({super.key});
@@ -20,6 +22,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   final CancelBookingController cancelBookingController =
       Get.find<CancelBookingController>();
   final ScrollController scrollController = ScrollController();
+  final TextEditingController searcCtrl = TextEditingController();
+  String search = '';
 
   @override
   void initState() {
@@ -41,46 +45,155 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AllBookingController>(builder: (controller) {
-      return SizedBox(
-        height: MediaQuery.of(context).size.height - 200.h,
-        width: MediaQuery.of(context).size.width,
-        child: ListView.builder(
-          controller: scrollController,
-          itemCount: controller.bookingList.length,
-          itemBuilder: (context, index) {
-            String dateString = '2025-03-18';
-            DateTime date = DateTime.parse(dateString);
-            DateTime today = DateTime.now();
-            if (today.isAfter(date)) {
-              return TwoOptionCard(
-                op1Name: 'Reschedule',
-                op2Name: 'Cancel booking',
-                status: '${controller.bookingList[index].status}',
-                title: '${controller.bookingList[index].session?.title}',
-                name: 'Dr. Jane Smith',
-                therapyType: '${controller.bookingList[index].therapyType}',
-                date: '${controller.bookingList[index].slot?.date}',
-                time: '${controller.bookingList[index].slot?.startTime}',
-                imagePath:
-                    '${controller.bookingList[index].session?.thumbnail}',
-                price: '${controller.bookingList[index].amount}',
-                op1Ontap: () {
-                  print('Go to reschedule');
-                  Navigator.pushNamed(
-                      context, RescheduleSessionScreen.routeName,
-                      arguments: {
-                        'bookingId': controller.bookingList[index].id,
-                        'sessionId': controller.bookingList[index].session?.id
-                      });
-                },
-                op2Ontap: () {
-                  cancelBookingOntap('${controller.bookingList[index].id}');
-                },
-              );
-            }
-            return Container();
-          },
-        ),
+      return Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 48.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: Colors.grey[300]!,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Icon(
+                            Icons.search_rounded,
+                            size: 30.h,
+                            color: AppColors.iconButtonThemeColor,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          controller: searcCtrl,
+                          onChanged: (value) {
+                            setState(() {
+                              search = value.toString();
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              controller: scrollController,
+              itemCount: controller.bookingList.length, 
+              itemBuilder: (context, index) {
+                DateTime dateString = controller.bookingList[index].createdAt!;
+                print(dateString);
+               //  String dateFormate = DateFormat('MMMM dd, yyyy').format(dateString);
+                DateTime today = DateTime.now();
+
+                DateTime bookingDate =
+                    controller.bookingList[index].slot!.date!;
+                String formateBookingDate =
+                    DateFormat('MMMM dd, yyyy').format(bookingDate);
+
+                var title = controller.bookingList[index].session?.title;
+                if (today.isAfter(dateString)) {
+                  if (controller.bookingList[index].paymentStatus == 'paid') {
+                    if (searcCtrl.text.isEmpty) {
+                      return TwoOptionCard(
+                        op1Name: 'Reschedule',
+                        op2Name: 'Cancel booking',
+                        status: '${controller.bookingList[index].status}',
+                        title: controller.bookingList[index].session?.title ??
+                            'No title', // Null check for title
+                        name: 'Dr. Jane Smith',
+                        therapyType:
+                            '${controller.bookingList[index].therapyType}',
+                        date: formateBookingDate,
+                        time:
+                            '${controller.bookingList[index].slot?.startTime}',
+                        imagePath:
+                            '${controller.bookingList[index].session?.thumbnail}',
+                        price: '${controller.bookingList[index].amount}',
+                        op1Ontap: () {
+                          print('Go to reschedule');
+                          Navigator.pushNamed(
+                            context,
+                            RescheduleSessionScreen.routeName,
+                            arguments: {
+                              'bookingId': controller.bookingList[index].id,
+                              'sessionId':
+                                  controller.bookingList[index].session?.id,
+                            },
+                          );
+                        },
+                        op2Ontap: () {
+                          cancelBookingOntap(controller.bookingList[index].id!);
+                        },
+                      );
+                    } else if (controller.bookingList[index].session?.title
+                            ?.toLowerCase()
+                            .contains(searcCtrl.text.toLowerCase()) ??
+                        false) {
+                      // Safe null check for title
+                      return TwoOptionCard(
+                        op1Name: 'Reschedule',
+                        op2Name: 'Cancel booking',
+                        status: '${controller.bookingList[index].status}',
+                        title: controller.bookingList[index].session?.title ??
+                            'No title', // Null check for title
+                        name: 'Dr. Jane Smith',
+                        therapyType:
+                            '${controller.bookingList[index].therapyType}',
+                        date: formateBookingDate,
+                        time:
+                            '${controller.bookingList[index].slot?.startTime}',
+                        imagePath:
+                            '${controller.bookingList[index].session?.thumbnail}',
+                        price: '${controller.bookingList[index].amount}',
+                        op1Ontap: () {
+                          print('Go to reschedule');
+                          Navigator.pushNamed(
+                            context,
+                            RescheduleSessionScreen.routeName,
+                            arguments: {
+                              'bookingId': controller.bookingList[index].id,
+                              'sessionId':
+                                  controller.bookingList[index].session?.id,
+                            },
+                          );
+                        },
+                        op2Ontap: () {
+                          cancelBookingOntap(controller.bookingList[index].id!);
+                        },
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }
+                }
+
+                return Container();
+              },
+            ),
+          ),
+        ],
       );
     });
   }

@@ -150,7 +150,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                             },
                             themeColor: const Color(0xffD9A48E).withAlpha(20),
                             onDeleteTap: () {
-                              print('${controller.allDiaryList[index].sId}');
+                              // print('${controller.allDiaryList[index].sId}');
                               setState(() {
                                 deleteDiary(
                                     '${controller.allDiaryList[index].sId}');
