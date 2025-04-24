@@ -60,7 +60,7 @@ class HealthConditionCard extends StatelessWidget {
                         Text(
                           status,
                           style: GoogleFonts.poppins(
-                              fontSize: 16.sp, color: Color(0xffE9BD0F)),
+                              fontSize: 16.sp, color: Color.fromARGB(255, 0, 0, 0)),
                         ),
                         Row(
                           children: [

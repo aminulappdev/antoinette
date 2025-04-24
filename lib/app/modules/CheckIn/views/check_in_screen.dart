@@ -15,7 +15,7 @@ class CheckInScreen extends StatefulWidget {
 
   @override
   State<CheckInScreen> createState() => _CheckInScreenState();
-} 
+}
 
 class _CheckInScreenState extends State<CheckInScreen> {
   @override
@@ -38,6 +38,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
               if (controller.inProgress) {
                 return Center(child: CircularProgressIndicator());
               }
+
+              // Check if the checkInList is null or empty
+              if (controller.checkInList == null || controller.checkInList!.isEmpty) {
+                return Center(child: Text('No data available'));
+              }
+
               return SizedBox(
                 height: 600.h,
                 child: ListView.builder(
@@ -49,8 +55,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     // Convert to local time if needed
                     DateTime localDate = utcDate.toLocal();
                     // Format it
-                    String formatted =
-                        DateFormat('d MMMM yyyy, h:mm a').format(localDate);
+                    String formatted = DateFormat('d MMMM yyyy, h:mm a').format(localDate);
 
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -75,11 +80,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   ),
                                   Row(
                                     children: [
-                                     
                                       Text(
-                                        'Chech-In time : ${controller.checkInList?[index].timer}',
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 12.sp),
+                                        'Check-In time : ${controller.checkInList?[index].timer}',
+                                        style: GoogleFonts.poppins(fontSize: 12.sp),
                                       ),
                                     ],
                                   )

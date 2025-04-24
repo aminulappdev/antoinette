@@ -132,7 +132,16 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                           padding: EdgeInsets.symmetric(vertical: 4.h),
                           child: HealthConditionCard(
                             isBlur: isBlurList[index],
-                            iconPath: AssetsPath.angle,
+                            iconPath: controller.allDiaryList[index].feelings ==
+                                    'happy'
+                                ? AssetsPath.happy
+                                : controller.allDiaryList[index].feelings ==
+                                        'calm'
+                                    ? AssetsPath.sad : controller.allDiaryList[index].feelings ==
+                                        'sad' ?
+                                     AssetsPath.sad : controller.allDiaryList[index].feelings ==
+                                        'anxious' ? AssetsPath.tired : controller.allDiaryList[index].feelings ==
+                                        'motivated' ? AssetsPath.muscle : AssetsPath.angle,
                             status:
                                 '${controller.allDiaryList[index].feelings}',
                             day: '${controller.allDiaryList[index].date}',
