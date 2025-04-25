@@ -57,121 +57,108 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                heightBox4,
-                CustomAppBar(
-                  name: 'OTP Verification',
-                ),
-                heightBox16,
-                AuthHeaderText(
-                  title: 'Enter OTP',
-                  subtitle:
-                      'We have just sentb you 6 digitcode via uour email.',
-                  titleFontSize: 20,
-                  subtitleFontSize: 12,
-                  sizeBoxHeight: 200,
-                ),
-                heightBox20,
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      PinCodeTextField(
-                        length: 6,
-                        obscureText: false,
-                        controller: otpCtrl,
-                        keyboardType: TextInputType.number,
-                        animationType: AnimationType.fade,
-                        animationDuration: Duration(milliseconds: 300),
-                        onChanged: (value) {},
-                        pinTheme: PinTheme(
-                            selectedColor: Colors.black,
-                            activeColor: Colors.orange,
-                            borderWidth: 0.5,
-                            shape: PinCodeFieldShape.circle,
-                            borderRadius: BorderRadius.circular(100.r),
-                            inactiveColor: const Color(0xffD9A48E),
-                            fieldHeight: 50.h,
-                            fieldWidth: 50.h,
-                            activeFillColor: Colors.white,
-                            inactiveFillColor:
-                                Color(0xffD9A48E).withOpacity(0.1),
-                            selectedFillColor: Colors.white),
-                        backgroundColor: Colors.transparent,
-                        enableActiveFill: true,
-                        appContext: context,
-                      ),
-                      heightBox8,
-                      GradientElevatedButton(
-                        onPressed: onTapToNextButton,
-                        text: 'Confirm',
-                      ),
-                      heightBox8,
-                      BorderRectangleButton(
-                          name: 'Skip',
-                          ontap: () {
-                            Navigator.pushNamed(
-                                context, SignInScreen.routeName);
-                          }),
-                      heightBox12,
-                      Obx(
-                        () => Visibility(
-                          visible: !enableResendCodeButtom.value,
-                          replacement: GestureDetector(
-                            onTap: () {
-                              resendOTP();
-                            },
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                      text: 'Didn’t receive code? ',
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: 16.sp)),
-                                  TextSpan(
-                                      text: 'Resend code',
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.orange,
-                                          fontSize: 16.sp)),
-                                ],
-                              ),
-                            ),
-                          ),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              heightBox20,
+              CustomAppBar(
+                name: 'OTP Verification',
+              ),
+              heightBox16,
+              AuthHeaderText(
+                title: 'Enter OTP',
+                subtitle: 'We have just sentb you 6 digitcode via uour email.',
+                titleFontSize: 20,
+                subtitleFontSize: 12,
+                sizeBoxHeight: 200,
+              ),
+              heightBox20,
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    PinCodeTextField(
+                      length: 6,
+                      obscureText: false,
+                      controller: otpCtrl,
+                      keyboardType: TextInputType.number,
+                      animationType: AnimationType.fade,
+                      animationDuration: Duration(milliseconds: 300),
+                      onChanged: (value) {},
+                      pinTheme: PinTheme(
+                          selectedColor: Colors.black,
+                          activeColor: Colors.orange,
+                          borderWidth: 0.5,
+                          shape: PinCodeFieldShape.circle,
+                          borderRadius: BorderRadius.circular(100.r),
+                          inactiveColor: const Color(0xffD9A48E),
+                          fieldHeight: 50.h,
+                          fieldWidth: 50.h,
+                          activeFillColor: Colors.white,
+                          inactiveFillColor: Color(0xffD9A48E).withOpacity(0.1),
+                          selectedFillColor: Colors.white),
+                      backgroundColor: Colors.transparent,
+                      enableActiveFill: true,
+                      appContext: context,
+                    ),
+                    heightBox8,
+                    GradientElevatedButton(
+                      onPressed: onTapToNextButton,
+                      text: 'Confirm',
+                    ),
+                    heightBox12,
+                    Obx(
+                      () => Visibility(
+                        visible: !enableResendCodeButtom.value,
+                        replacement: GestureDetector(
+                          onTap: () {
+                            resendOTP();
+                          },
                           child: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
+                                    text: 'Didn’t receive code? ',
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.black, fontSize: 16.sp)),
+                                TextSpan(
                                     text: 'Resend code',
                                     style: GoogleFonts.poppins(
-                                        color: Colors.black, fontSize: 16.sp)),
-                                TextSpan(
-                                    text: '$remainingTime',
-                                    style: GoogleFonts.poppins(
                                         color: Colors.orange, fontSize: 16.sp)),
-                                TextSpan(
-                                    text: 's',
-                                    style: GoogleFonts.poppins(
-                                        color: Colors.black, fontSize: 16.sp)),
                               ],
                             ),
                           ),
                         ),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: 'Resend code',
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black, fontSize: 16.sp)),
+                              TextSpan(
+                                  text: '$remainingTime',
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.orange, fontSize: 16.sp)),
+                              TextSpan(
+                                  text: 's',
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black, fontSize: 16.sp)),
+                            ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                heightBox100,
-              ],
-            ),
+              ),
+              heightBox100,
+            ],
           ),
         ),
       ),
@@ -179,7 +166,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   }
 
   Future<void> onTapToNextButton() async {
-    if (_formKey.currentState!.validate()) { 
+    if (_formKey.currentState!.validate()) {
       final bool isSuccess =
           await verifyOtpController.verifyOtp(otpCtrl.text, widget.token);
       print(
@@ -190,8 +177,6 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
         if (mounted) {
           showSnackBarMessage(context, 'Otp verification successfully done');
           Navigator.pushNamed(context, SignInScreen.routeName);
-
-  
         } else {
           if (mounted) {
             showSnackBarMessage(

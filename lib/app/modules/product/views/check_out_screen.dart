@@ -62,188 +62,187 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   Widget build(BuildContext context) {
     totalPrice = (price + 50) * ((100 - discount) / 100);
     mainTotalPrice = double.parse(totalPrice.toStringAsFixed(2));
-    return SafeArea(
-      child: Scaffold(
-        body: GetBuilder<ProfileController>(builder: (controller) {
-          // address = controller.profileData!.homeAddress!;
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(12.0.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Custom AppBar
-                  CustomAppBar(name: 'Checkout'),
-                  heightBox8,
-
-                  // Checkout User Info
-                  CheckoutUserInfo(
-                    name: 'Sunan Rahman',
-                    number: '+49 176 12345678',
-                  ),
-                  heightBox8,
-
-                  // Row with Home, Office, Delivery buttons
-                  Row(
-                    children: List.generate(3, (index) {
-                      return Padding(
-                        padding: EdgeInsets.only(right: 8.w),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedButtonIndex =
-                                  index; // Update selected button
-                              if (selectedButtonIndex == 0) {
-                                deliveryAddress =
-                                    controller.profileData!.homeAddress!;
-                              } else if (selectedButtonIndex == 1) {
-                                deliveryAddress =
-                                    controller.profileData!.officeAddress!;
-                              } else if (selectedButtonIndex == 2) {
-                                deliveryAddress =
-                                    controller.profileData!.deliveryAddress!;
-                              }
-                            });
-                          },
-                          child: Container(
-                            height: 19.h,
-                            width: 54.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: selectedButtonIndex == index
-                                  ? Colors.blue // Change color on selection
-                                  : const Color.fromARGB(
-                                      255, 218, 211, 211), // Default color
-                            ),
-                            child: Center(
-                              child: Text(
-                                buttonNames[index],
-                                style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: selectedButtonIndex == index
-                                        ? Colors.white
-                                        : Colors.black),
-                              ),
+    return Scaffold(
+      body: GetBuilder<ProfileController>(builder: (controller) {
+        // address = controller.profileData!.homeAddress!;
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(12.0.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                heightBox20,
+                // Custom AppBar
+                CustomAppBar(name: 'Checkout'),
+                heightBox8,
+    
+                // Checkout User Info
+                CheckoutUserInfo(
+                  name: 'Sunan Rahman',
+                  number: '+49 176 12345678',
+                ),
+                heightBox8,
+    
+                // Row with Home, Office, Delivery buttons
+                Row(
+                  children: List.generate(3, (index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 8.w),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedButtonIndex =
+                                index; // Update selected button
+                            if (selectedButtonIndex == 0) {
+                              deliveryAddress =
+                                  controller.profileData!.homeAddress!;
+                            } else if (selectedButtonIndex == 1) {
+                              deliveryAddress =
+                                  controller.profileData!.officeAddress!;
+                            } else if (selectedButtonIndex == 2) {
+                              deliveryAddress =
+                                  controller.profileData!.deliveryAddress!;
+                            }
+                          });
+                        },
+                        child: Container(
+                          height: 19.h,
+                          width: 54.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: selectedButtonIndex == index
+                                ? Colors.blue // Change color on selection
+                                : const Color.fromARGB(
+                                    255, 218, 211, 211), // Default color
+                          ),
+                          child: Center(
+                            child: Text(
+                              buttonNames[index],
+                              style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: selectedButtonIndex == index
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                           ),
                         ),
-                      );
-                    }),
+                      ),
+                    );
+                  }),
+                ),
+                heightBox8,
+    
+                // Display the selected text below
+                SizedBox(
+                  width: 170,
+                  child: Text(
+                    deliveryAddress,
+                    style: GoogleFonts.poppins(fontSize: 10.sp),
                   ),
-                  heightBox8,
-
-                  // Display the selected text below
-                  SizedBox(
+                ),
+                heightBox8,
+    
+                // Delivery section
+                SizedBox(
                     width: 170,
                     child: Text(
-                      deliveryAddress,
+                      'Delivery',
                       style: GoogleFonts.poppins(fontSize: 10.sp),
-                    ),
-                  ),
-                  heightBox8,
-
-                  // Delivery section
-                  SizedBox(
-                      width: 170,
-                      child: Text(
-                        'Delivery',
-                        style: GoogleFonts.poppins(fontSize: 10.sp),
-                      )),
-
-                  heightBox12,
-                  priceCalculator(context),               
-                  heightBox12,
-                  Text(
-                    'Price Details',
-                    style: GoogleFonts.poppins(
-                        fontSize: 15.sp, fontWeight: FontWeight.w500),
-                  ),
-                  heightBox12,
-                  PriceRow(
-                    name: 'Price ($item item)',
-                    price: double.parse(price.toStringAsFixed(2)).toString(),
-                    nameSize: 14,
-                    priceSize: 14,
-                  ),
-                  heightBox8,
-                  PriceRow(
-                    name: 'Shipping Fee',
-                    price: '\$5.00',
-                    nameSize: 14,
-                    priceSize: 14,
-                  ),
-                  heightBox8,
-                  PriceRow(
-                    name: 'Discount',
-                    price: '20%',
-                    nameSize: 14,
-                    priceSize: 14,
-                  ),
-                  heightBox4,
-                  Container(
-                    height: 1.5.h,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.grey,
-                  ),
-                  heightBox12,
-                  PriceRow(
-                    name: 'Total Payment:',
-                    price: mainTotalPrice.toString(),
-                    nameSize: 16,
-                    priceSize: 16,
-                  ),
-                  SizedBox(
-                    height: 230,
-                  ),
-
-                  // Place Order Button
-                  Container(
-                    height: 70.h,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.w),
-                          child: SizedBox(
-                            width: 159.w,
-                            height: 42.h,
-                            child: GradientElevatedButton(
-                                onPressed: () {
-                                  controller.profileData?.sId!;
-
-                                  '10';
-                                  controller.profileData?.name!;
-                                  '10-10-2024';
-                                  controller.profileData?.homeAddress!;
-                                  controller.profileData?.contactNumber!;
-                                  controller.profileData?.email!;
-
-                                  onTapToNextButton(
-                                    controller.profileData!.sId!,
-                                    '10',
-                                    controller.profileData!.name!,
-                                    '10-10-2024',
-                                    deliveryAddress,
-                                    controller.profileData?.contactNumber!,
-                                    controller.profileData?.email!,
-                                  );
-                                },
-                                text: 'Place order'),
-                          ),
+                    )),
+    
+                heightBox12,
+                priceCalculator(context),               
+                heightBox12,
+                Text(
+                  'Price Details',
+                  style: GoogleFonts.poppins(
+                      fontSize: 15.sp, fontWeight: FontWeight.w500),
+                ),
+                heightBox12,
+                PriceRow(
+                  name: 'Price ($item item)',
+                  price: double.parse(price.toStringAsFixed(2)).toString(),
+                  nameSize: 14,
+                  priceSize: 14,
+                ),
+                heightBox8,
+                PriceRow(
+                  name: 'Shipping Fee',
+                  price: '\$5.00',
+                  nameSize: 14,
+                  priceSize: 14,
+                ),
+                heightBox8,
+                PriceRow(
+                  name: 'Discount',
+                  price: '20%',
+                  nameSize: 14,
+                  priceSize: 14,
+                ),
+                heightBox4,
+                Container(
+                  height: 1.5.h,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey,
+                ),
+                heightBox12,
+                PriceRow(
+                  name: 'Total Payment:',
+                  price: mainTotalPrice.toString(),
+                  nameSize: 16,
+                  priceSize: 16,
+                ),
+                SizedBox(
+                  height: 230,
+                ),
+    
+                // Place Order Button
+                Container(
+                  height: 70.h,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        child: SizedBox(
+                          width: 159.w,
+                          height: 42.h,
+                          child: GradientElevatedButton(
+                              onPressed: () {
+                                controller.profileData?.sId!;
+    
+                                '10';
+                                controller.profileData?.name!;
+                                '10-10-2024';
+                                controller.profileData?.homeAddress!;
+                                controller.profileData?.contactNumber!;
+                                controller.profileData?.email!;
+    
+                                onTapToNextButton(
+                                  controller.profileData!.sId!,
+                                  '10',
+                                  controller.profileData!.name!,
+                                  '10-10-2024',
+                                  deliveryAddress,
+                                  controller.profileData?.contactNumber!,
+                                  controller.profileData?.email!,
+                                );
+                              },
+                              text: 'Place order'),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
  

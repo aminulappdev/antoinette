@@ -63,8 +63,7 @@ class _LetterBarState extends State<LetterBar> {
           ],
         ),
         heightBox8,
-        CustomSearchBar(shouldBackButton: false,),
-        heightBox8,
+       
         if (selectedPage == 0) ...{
           ArticleScreen(),
         } else if (selectedPage == 1) ...{

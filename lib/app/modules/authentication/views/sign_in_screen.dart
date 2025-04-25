@@ -42,147 +42,145 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                heightBox4,
-                CustomAppBar(
-                  name: 'Sign In',
-                ),
-                heightBox16,
-                WelcomeText(
-                  title: 'Hi, Welcome back!',
-                  subtitle: 'Sign in to continue exploring the best deals',
-                ),
-                heightBox50,
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Email',
-                          style: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff626262))),
-                      heightBox8,
-                      TextFormField(
-                        controller: emailCtrl,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Enter email';
-                          }
-                          if (EmailValidator.validate(value) == false) {
-                            return 'Enter a valid email address';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                            hintText: 'example@gmail.com',
-                            hintStyle: TextStyle(color: Colors.grey)),
-                      ),
-                      heightBox8,
-                      Text('Password',
-                          style: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff626262))),
-                      heightBox8,
-                      TextFormField(
-                        controller: passwordCtrl,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Enter password';
-                          }
-                          return null;
-                        },
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              heightBox20,
+              CustomAppBar(
+                name: 'Sign In',
+              ),
+              heightBox16,
+              WelcomeText(
+                title: 'Hi, Welcome back!',
+                subtitle: 'Sign in to continue exploring the best deals',
+              ),
+              heightBox50,
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Email',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: emailCtrl,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Enter email';
+                        }
+                        if (EmailValidator.validate(value) == false) {
+                          return 'Enter a valid email address';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: 'example@gmail.com',
+                          hintStyle: TextStyle(color: Colors.grey)),
+                    ),
+                    heightBox8,
+                    Text('Password',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: passwordCtrl,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Enter password';
+                        }
+                        return null;
+                      },
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
                           ),
-                          hintText: '***********',
-                          hintStyle: TextStyle(color: Colors.grey),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
                         ),
+                        hintText: '***********',
+                        hintStyle: TextStyle(color: Colors.grey),
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Row(
-                      //       children: [
-                      //         Checkbox(
-                      //           shape: CircleBorder(),
-                      //           value: isChecked,
-                      //           onChanged: (bool? value) {
-                      //             setState(() {
-                      //               isChecked = value!;
-                      //             });
-                      //           },
-                      //         ),
-                      //         Text('Remember me'),
-                      //       ],
-                      //     ),
-                      //     ForgotPasswordRow(
-                      //       ontap: forgotPasswordBTN,
-                      //     ),
-                      //   ],
-                      // ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ForgotPasswordRow(
-                          ontap: forgotPasswordBTN,
-                        ),
+                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Row(
+                    //       children: [
+                    //         Checkbox(
+                    //           shape: CircleBorder(),
+                    //           value: isChecked,
+                    //           onChanged: (bool? value) {
+                    //             setState(() {
+                    //               isChecked = value!;
+                    //             });
+                    //           },
+                    //         ),
+                    //         Text('Remember me'),
+                    //       ],
+                    //     ),
+                    //     ForgotPasswordRow(
+                    //       ontap: forgotPasswordBTN,
+                    //     ),
+                    //   ],
+                    // ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ForgotPasswordRow(
+                        ontap: forgotPasswordBTN,
                       ),
-                      heightBox24,
-                      GradientElevatedButton(
-                        onPressed: onTapToNextButton,
-                        text: 'Sign in',
-                      ),
-                      Liner(),
-                      ContinueElevatedButton(
-                        name: 'Continue with google',
-                        logoPath: AssetsPath.googleLogoUp,
-                        ontap: onTapGoogleSignIn,
-                      ),
-                      heightBox12,
-                      ContinueElevatedButton(
-                        name: 'Continue with apple',
-                        logoPath: AssetsPath.appleLogo,
-                        ontap: () {},
-                      ),
-                      heightBox12,
-                      AuthenticationFooterSection(
-                        fTextName: 'Don’t have an account? ',
-                        fTextColor: Color(0xff33363F),
-                        sTextName: 'Sign up',
-                        sTextColor: Color(0xff33363F),
-                        ontap: () {
-                          Navigator.pushNamed(context, SignUpScreen.routeName);
-                        },
-                      )
-                    ],
-                  ),
+                    ),
+                    heightBox24,
+                    GradientElevatedButton(
+                      onPressed: onTapToNextButton,
+                      text: 'Sign in',
+                    ),
+                    Liner(),
+                    ContinueElevatedButton(
+                      name: 'Continue with google',
+                      logoPath: AssetsPath.googleLogoUp,
+                      ontap: onTapGoogleSignIn,
+                    ),
+                    heightBox12,
+                    ContinueElevatedButton(
+                      name: 'Continue with apple',
+                      logoPath: AssetsPath.appleLogo,
+                      ontap: () {},
+                    ),
+                    heightBox12,
+                    AuthenticationFooterSection(
+                      fTextName: 'Don’t have an account? ',
+                      fTextColor: Color(0xff33363F),
+                      sTextName: 'Sign up',
+                      sTextColor: Color(0xff33363F),
+                      ontap: () {
+                        Navigator.pushNamed(context, SignUpScreen.routeName);
+                      },
+                    )
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -201,7 +199,7 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       }
     } else {
-      if (context.mounted) {
+      if (context.mounted) { 
         if (mounted) {
           showSnackBarMessage(
             context,

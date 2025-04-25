@@ -37,64 +37,63 @@ class _AddContactScreenState extends State<AddContactScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomAppBar(name: 'Add Trusted Contacts'),
-                  heightBox12,
-                  Text('Name',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
-                  heightBox8,
-                  TextFormField(
-                    controller: nameCtrl,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Enter name';
-                      }
-
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey)),
-                  ),
-                  heightBox8,
-                  Text('Number',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
-                  heightBox8,
-                  TextFormField(
-                    controller: numberCtrl,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.number,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Enter number';
-                      }
-
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey)),
-                  ),
-                  heightBox30,
-                  GradientElevatedButton(onPressed: onTapToNextButton, text: 'Save')
-                ],
-              ),
-            )),
-      ),
+    return Scaffold(
+      body: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                heightBox20,
+                CustomAppBar(name: 'Add Trusted Contacts'),
+                heightBox12,
+                Text('Name',
+                    style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff626262))),
+                heightBox8,
+                TextFormField(
+                  controller: nameCtrl,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Enter name';
+                    }
+    
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintStyle: TextStyle(color: Colors.grey)),
+                ),
+                heightBox8,
+                Text('Number',
+                    style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff626262))),
+                heightBox8,
+                TextFormField(
+                  controller: numberCtrl,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  keyboardType: TextInputType.number,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Enter number';
+                    }
+    
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintStyle: TextStyle(color: Colors.grey)),
+                ),
+                heightBox30,
+                GradientElevatedButton(onPressed: onTapToNextButton, text: 'Save')
+              ],
+            ),
+          )),
     );
   }
 

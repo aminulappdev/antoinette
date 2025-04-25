@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/bookmark/controller/bookmar_podcast_details_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
 import 'package:antoinette/app/modules/bookmark/views/bookmark_podcast_details_screen.dart';
+import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
@@ -23,6 +24,8 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
       Get.find<BookmarkPodcastController>();
 
   final ScrollController scrollController = ScrollController();
+  final TextEditingController searcCtrl = TextEditingController();
+  String search = '';
 
   @override
   void initState() {
@@ -49,127 +52,296 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GetBuilder<BookmarkPodcastController>(
-              
-              builder: (controller) {
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 48.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: Colors.grey[300]!,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {});
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Icon(
+                              Icons.search_rounded,
+                              size: 30.h,
+                              color: AppColors.iconButtonThemeColor,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            controller: searcCtrl,
+                            onChanged: (value) {
+                              setState(() {
+                                search = value.toString();
+                              });
+                            },
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            heightBox10,
+            GetBuilder<BookmarkPodcastController>(builder: (controller) {
               if (controller.inProgress && controller.page == 1) {
                 return Center(child: CircularProgressIndicator());
               }
               return SizedBox(
                 height: 645.h,
                 child: ListView.builder(
+                  padding: EdgeInsets.zero,
                   controller: scrollController,
                   itemCount: controller.bookmarkPodcastList.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.h),
-                      child: GestureDetector(
-                        onTap: () {
-                          getBookmarkPodcastScreen(
-                              '${controller.bookmarkPodcastList[index].sId}');
-                          // getBookmarkPodcastScreen(
-                          //     '67f7576f01987bd380ea973f');
-                        },
-                        child: Container(
-                          height: 104.h,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 84.h,
-                                  width: 73.w,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(8),
-                                    image: DecorationImage(
+                    var title =
+                        controller.bookmarkPodcastList[index].reference?.title;
 
-                                        image: controller
-                                                    .bookmarkPodcastList[index]
-                                                    .reference!
-                                                    .thumbnail !=
-                                                null
-                                            ? NetworkImage(
-                                                '${controller.bookmarkPodcastList[index].reference!.thumbnail}')
-                                            : AssetImage(
-                                                AssetsPath.womenBookRead),
-                                        fit: BoxFit.fill),
-                                  ),
-                                ),
-                                widthBox4,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 180.h,
-                                      child: Text(
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        '${controller.bookmarkPodcastList[index].reference?.title}',
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 14.sp),
-                                      ),
+                    if (searcCtrl.text.isEmpty) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4.h),
+                        child: GestureDetector(
+                          onTap: () {
+                            getBookmarkPodcastScreen(
+                                '${controller.bookmarkPodcastList[index].sId}');
+                            // getBookmarkPodcastScreen(
+                            //     '67f7576f01987bd380ea973f');
+                          },
+                          child: Container(
+                            height: 104.h,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 84.h,
+                                    width: 73.w,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                          image: controller
+                                                      .bookmarkPodcastList[
+                                                          index]
+                                                      .reference!
+                                                      .thumbnail !=
+                                                  null
+                                              ? NetworkImage(
+                                                  '${controller.bookmarkPodcastList[index].reference!.thumbnail}')
+                                              : AssetImage(
+                                                  AssetsPath.womenBookRead),
+                                          fit: BoxFit.fill),
                                     ),
-                                    heightBox4,
-                                    SizedBox(
-                                      width: 180.w,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            height: 30.h,
-                                            width: 64.w,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                border: Border.all(
-                                                    color: Colors.grey)),
-                                            child: Center(
-                                              child: Text(
-                                                'Episod 12',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 10.sp),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 30.h,
-                                            width: 64.w,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                border: Border.all(
-                                                    color: Colors.grey)),
-                                            child: Center(
-                                              child: Text(
-                                                '12 min',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 10.sp),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                  ),
+                                  widthBox4,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 180.h,
+                                        child: Text(
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          '${controller.bookmarkPodcastList[index].reference?.title}',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14.sp),
+                                        ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                widthBox40,
-                                CircleAvatar(
-                                  radius: 21.r,
-                                  backgroundColor: Color(0xffA57EA5),
-                                  child: Icon(Icons.play_arrow),
-                                )
-                              ],
+                                      heightBox4,
+                                      SizedBox(
+                                        width: 180.w,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              height: 30.h,
+                                              width: 64.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                      color: Colors.grey)),
+                                              child: Center(
+                                                child: Text(
+                                                  'Episod 12',
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 10.sp),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              height: 30.h,
+                                              width: 64.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                      color: Colors.grey)),
+                                              child: Center(
+                                                child: Text(
+                                                  '12 min',
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 10.sp),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  widthBox40,
+                                  CircleAvatar(
+                                    radius: 21.r,
+                                    backgroundColor: Color(0xffA57EA5),
+                                    child: Icon(Icons.play_arrow),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
+                      );
+                    } else if (title!
+                        .toLowerCase()
+                        .contains(searcCtrl.text.toLowerCase())) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4.h),
+                        child: GestureDetector(
+                          onTap: () {
+                            getBookmarkPodcastScreen(
+                                '${controller.bookmarkPodcastList[index].sId}');
+                            // getBookmarkPodcastScreen(
+                            //     '67f7576f01987bd380ea973f');
+                          },
+                          child: Container(
+                            height: 104.h,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 84.h,
+                                    width: 73.w,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                          image: controller
+                                                      .bookmarkPodcastList[
+                                                          index]
+                                                      .reference!
+                                                      .thumbnail !=
+                                                  null
+                                              ? NetworkImage(
+                                                  '${controller.bookmarkPodcastList[index].reference!.thumbnail}')
+                                              : AssetImage(
+                                                  AssetsPath.womenBookRead),
+                                          fit: BoxFit.fill),
+                                    ),
+                                  ),
+                                  widthBox4,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 180.h,
+                                        child: Text(
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          '${controller.bookmarkPodcastList[index].reference?.title}',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14.sp),
+                                        ),
+                                      ),
+                                      heightBox4,
+                                      SizedBox(
+                                        width: 180.w,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              height: 30.h,
+                                              width: 64.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                      color: Colors.grey)),
+                                              child: Center(
+                                                child: Text(
+                                                  'Episod 12',
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 10.sp),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              height: 30.h,
+                                              width: 64.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                      color: Colors.grey)),
+                                              child: Center(
+                                                child: Text(
+                                                  '12 min',
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 10.sp),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  widthBox40,
+                                  CircleAvatar(
+                                    radius: 21.r,
+                                    backgroundColor: Color(0xffA57EA5),
+                                    child: Icon(Icons.play_arrow),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
                   },
                 ),
               );

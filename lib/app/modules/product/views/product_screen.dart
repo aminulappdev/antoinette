@@ -41,129 +41,124 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(12.r),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.r),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            heightBox20,
+            Row(
               children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        radius: 24.r,
-                        child: Icon(
-                          Icons.arrow_back,
-                        ),
-                      ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    radius: 24.r,
+                    child: Icon(
+                      Icons.arrow_back,
                     ),
-                    widthBox4,
-                    Expanded(
-                      child: Container(
-                        height: 48.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(
-                            color: Colors.grey[300]!,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                              onTap: _onSearch,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                child: Icon(
-                                  Icons.search_rounded,
-                                  size: 30.h,
-                                  color: AppColors.iconButtonThemeColor,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                controller: searchController,
-                                onChanged: (_) {
-                                  _onSearch(); // Trigger search on text change
-                                },
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  contentPadding: EdgeInsets.zero,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                heightBox12,
-                SizedBox(
-                  width: 200.w,
-                  child: Text(
-                    'Shop Your Health Must-Haves',
-                    style: GoogleFonts.poppins(fontSize: 20),
                   ),
                 ),
-                heightBox12,
-                SizedBox(
-                  height: 700.h,
-                  child: Obx(
-                    () {
-                      if (allProcuctController.inProgress &&
-                          allProcuctController.page == 1) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: GridView.builder(
-                              controller: scrollController,
-                              itemCount:
-                                  allProcuctController.allProductsList.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisSpacing: 12,
-                                      mainAxisSpacing: 16,
-                                      childAspectRatio: 1.35,
-                                      crossAxisCount: 2),
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.w),
-                                  child: ProductCard(
-                                    productsModel: allProcuctController
-                                        .allProductsList[index],
-                                  ),
-                                );
-                              },
+                widthBox4,
+                Expanded(
+                  child: Container(
+                    height: 48.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: Colors.grey[300]!,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: _onSearch,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Icon(
+                              Icons.search_rounded,
+                              size: 30.h,
+                              color: AppColors.iconButtonThemeColor,
                             ),
                           ),
-                          Visibility(
-                            replacement: Container(),
-                            visible: allProcuctController.inProgress,
-                            child: CircularProgressIndicator(),
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            controller: searchController,
+                            onChanged: (_) {
+                              _onSearch(); // Trigger search on text change
+                            },
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                            ),
                           ),
-                          heightBox100,
-                          heightBox16
-                        ],
-                      );
-                    },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
+            heightBox12,
+            SizedBox(
+              width: 200.w,
+              child: Text(
+                'Shop Your Health Must-Haves',
+                style: GoogleFonts.poppins(fontSize: 20),
+              ),
+            ),
+            heightBox12,
+            Expanded(
+              child: SizedBox(
+                child: Obx(
+                  () {
+                    if (allProcuctController.inProgress &&
+                        allProcuctController.page == 1) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: GridView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount:
+                                allProcuctController.allProductsList.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 16,
+                                    childAspectRatio: 1.35,
+                                    crossAxisCount: 2),
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                child: ProductCard(
+                                  productsModel: allProcuctController
+                                      .allProductsList[index],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          replacement: Container(),
+                          visible: allProcuctController.inProgress,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -172,7 +167,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void dispose() {
     scrollController.dispose();
-     allProcuctController.fetchAllProducts(null);
+    allProcuctController.fetchAllProducts(null);
     super.dispose();
   }
 }

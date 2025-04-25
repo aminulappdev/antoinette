@@ -65,9 +65,7 @@ class _BookmarkBarState extends State<BookmarkBar> {
              
             ],
           ),
-          heightBox8,
-          CustomSearchBar(shouldBackButton: false,),
-          heightBox8,
+          heightBox8,   
           if (selectedPage == 0) ...{
             BookmarkArticleScreen(),
           } else if (selectedPage == 1) ...{

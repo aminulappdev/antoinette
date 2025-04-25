@@ -23,47 +23,46 @@ class _AdderssScreenState extends State<AdderssScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: GetBuilder<ProfileController>(builder: (controller) {
-          return Padding(
-            padding: EdgeInsets.all(16.0.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomAppBar(name: 'Address'),
-                heightBox14,
-                AddressCardWidget(
-                  name: 'Home',
-                  address: controller.profileData?.homeAddress == null
-                      ? 'Add Address'
-                      : '${controller.profileData?.homeAddress}',
-                  editOntap: () {},
-                  isShowBatch: false,
-                ),
-                heightBox12,
-                AddressCardWidget(
-                  name: 'Office',
-                  address: controller.profileData?.officeAddress == null
-                      ? 'Add Address'
-                      : '${controller.profileData?.officeAddress}',
-                  editOntap: () {},
-                  isShowBatch: false,
-                ),
-                heightBox12,
-                AddressCardWidget(
-                  name: 'Delivery',
-                  address: controller.profileData?.deliveryAddress == null
-                      ? 'Add Address'
-                      : '${controller.profileData?.deliveryAddress}',
-                  editOntap: () {},
-                  isShowBatch: false,
-                ),
-              ],
-            ),
-          );
-        }),
-      ),
+    return Scaffold(
+      body: GetBuilder<ProfileController>(builder: (controller) {
+        return Padding(
+          padding: EdgeInsets.all(16.0.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+               heightBox20,
+              CustomAppBar(name: 'Address'),
+              heightBox14,
+              AddressCardWidget(
+                name: 'Home',
+                address: controller.profileData?.homeAddress == null
+                    ? 'Add Address'
+                    : '${controller.profileData?.homeAddress}',
+                editOntap: () {},
+                isShowBatch: false,
+              ),
+              heightBox12,
+              AddressCardWidget(
+                name: 'Office',
+                address: controller.profileData?.officeAddress == null
+                    ? 'Add Address'
+                    : '${controller.profileData?.officeAddress}',
+                editOntap: () {},
+                isShowBatch: false,
+              ),
+              heightBox12,
+              AddressCardWidget(
+                name: 'Delivery',
+                address: controller.profileData?.deliveryAddress == null
+                    ? 'Add Address'
+                    : '${controller.profileData?.deliveryAddress}',
+                editOntap: () {},
+                isShowBatch: false,
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

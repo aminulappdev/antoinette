@@ -50,43 +50,44 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: GestureDetector(
-                onTap: () {
-                  if (cameras != null && cameras!.isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CameraScreen(cameras: cameras!),
-                      ),
-                    );
-                  } else {
-                    print('No cameras available');
-                  }
-                },
-                child: Icon(
-                  Icons.videocam_sharp,
-                  size: 30.h,
-                ),
-              ),
-            ),
-            widthBox8,
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.error_outline,
-                size: 30.h,
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     GestureDetector(
+        //       onTap: () {
+        //         Navigator.pop(context);
+        //       },
+        //       child: GestureDetector(
+        //         onTap: () {
+        //           if (cameras != null && cameras!.isNotEmpty) {
+        //             Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                 builder: (context) => CameraScreen(cameras: cameras!),
+        //               ),
+        //             );
+        //           } else {
+        //             print('No cameras available');
+        //           }
+        //         },
+        //         child: Icon(
+        //           Icons.videocam_sharp,
+        //           size: 30.h,
+        //         ),
+        //       ),
+        //     ),
+        //     widthBox8,
+        //     GestureDetector(
+        //       onTap: () {
+        //         Navigator.pop(context);
+        //       },
+        //       child: Icon(
+        //         Icons.error_outline,
+        //         size: 30.h,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        Container()
       ],
     );
   }

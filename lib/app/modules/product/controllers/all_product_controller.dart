@@ -22,7 +22,7 @@ class AllProcuctController extends GetxController {
 
   var allProductsList = <AllProductItemModel>[].obs;
 
-  final int _limit = 20;
+  final int _limit = 100;
   int page = 0;
 
   int? lastPage;
@@ -33,9 +33,9 @@ class AllProcuctController extends GetxController {
     if (_inProgress) {
       return false;
     }
-    page++;
+    // page++;
 
-    if (lastPage != null && page > lastPage!) return false;
+    // if (lastPage != null && page > lastPage!) return false;
 
     bool isSuccess = false;
 

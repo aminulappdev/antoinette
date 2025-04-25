@@ -1,7 +1,9 @@
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_details_controller.dart';
 import 'package:antoinette/app/modules/bookmark/views/bookmark_article_details_page.dart';
+import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
+import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,6 +25,8 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
       Get.find<BookmarkArticlesController>();
 
   final ScrollController scrollController = ScrollController();
+  final TextEditingController searcCtrl = TextEditingController();
+  String search = '';
 
   @override
   void initState() {
@@ -54,68 +58,187 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 48.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {});
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12.0),
+                              child: Icon(
+                                Icons.search_rounded,
+                                size: 30.h,
+                                color: AppColors.iconButtonThemeColor,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: searcCtrl,
+                              onChanged: (value) {
+                                setState(() {
+                                  search = value.toString();
+                                });
+                              },
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.zero,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              heightBox10,
               SizedBox(
                 height: 680.h,
                 child: ListView.builder(
+                  padding: EdgeInsets.zero,
                   controller: scrollController,
                   itemCount: controller.bookmarkarticlesList.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 2.h),
-                      child: InkWell(
-                        onTap: () {
-                          getBookmarkArticleScreen(
-                              '${controller.bookmarkArticleList[index].sId}');
-                        },
-                        child: Container(
-                          height: 200.h,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                              image: DecorationImage(
-                                  image: controller.bookmarkArticleList[index]
-                                              .reference!.thumbnail !=
-                                          null
-                                      ? NetworkImage(
-                                          '${controller.bookmarkArticleList[index].reference!.thumbnail}')
-                                      : AssetImage(AssetsPath.womenBookRead),fit: BoxFit.fill),
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Padding(
-                            padding: EdgeInsets.all(20.0.h),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width: 200.w,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: const Color.fromARGB(
-                                          222, 255, 255, 255)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: 50,
-                                      child: Text(
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        '${controller.bookmarkArticleList[index].reference?.title}',
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 10.sp),
+                    var title = controller.bookmarkArticleList[index].reference?.title;
+
+                    if (searcCtrl.text.isEmpty) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.h),
+                        child: InkWell(
+                          onTap: () {
+                            getBookmarkArticleScreen(
+                                '${controller.bookmarkArticleList[index].sId}');
+                          },
+                          child: Container(
+                            height: 200.h,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                image: DecorationImage(
+                                    image: controller.bookmarkArticleList[index]
+                                                .reference!.thumbnail !=
+                                            null
+                                        ? NetworkImage(
+                                            '${controller.bookmarkArticleList[index].reference!.thumbnail}')
+                                        : AssetImage(AssetsPath.womenBookRead),
+                                    fit: BoxFit.fill),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Padding(
+                              padding: EdgeInsets.all(20.0.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    width: 200.w,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: const Color.fromARGB(
+                                            222, 255, 255, 255)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        width: 50,
+                                        child: Text(
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          '${controller.bookmarkArticleList[index].reference?.title}',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 10.sp),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                    '${controller.bookmarkArticleList[index].reference?.title}',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16.sp, color: Colors.white))
-                              ],
+                                  Text(
+                                      '${controller.bookmarkArticleList[index].reference?.title}',
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16.sp, color: Colors.white))
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
+                      );
+                    } else if (title!
+                        .toLowerCase()
+                        .contains(searcCtrl.text.toLowerCase())) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.h),
+                        child: InkWell(
+                          onTap: () {
+                            getBookmarkArticleScreen(
+                                '${controller.bookmarkArticleList[index].sId}');
+                          },
+                          child: Container(
+                            height: 200.h,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                image: DecorationImage(
+                                    image: controller.bookmarkArticleList[index]
+                                                .reference!.thumbnail !=
+                                            null
+                                        ? NetworkImage(
+                                            '${controller.bookmarkArticleList[index].reference!.thumbnail}')
+                                        : AssetImage(AssetsPath.womenBookRead),
+                                    fit: BoxFit.fill),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Padding(
+                              padding: EdgeInsets.all(20.0.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    width: 200.w,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: const Color.fromARGB(
+                                            222, 255, 255, 255)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        width: 50,
+                                        child: Text(
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          '${controller.bookmarkArticleList[index].reference?.title}',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 10.sp),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                      '${controller.bookmarkArticleList[index].reference?.title}',
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16.sp, color: Colors.white))
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
                   },
                 ),
               )

@@ -28,105 +28,104 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            PageView(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(
-                  () {
-                    _currentPage = index;
-                  },
-                );
-              },
+    return Scaffold(
+      body: Stack(
+        children: [
+          heightBox20,
+          PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(
+                () {
+                  _currentPage = index;
+                },
+              );
+            },
+            children: [
+              OnboardingPage(
+                showBackButton: false,
+                imageHeight: 300,
+                onBoardingRow: false,
+                title:
+                    "Dear You,You hold so much.Your strength is quiet, your care is endless.",
+                subtitle: "But who holds you?",
+                pageController: _pageController,
+              ),
+              OnboardingPage(
+                showBackButton: true,
+                imageHeight: 280,
+                onBoardingRow: true,
+                title:
+                    "This is your space to care, to be heard, to feel safe.",
+                subtitle: "",
+                pageController: _pageController, 
+              ),
+              OnboardingPage(
+                showBackButton: true,
+                imageHeight: 280,
+                onBoardingRow: false,
+                title: " You are safe here. You are seen. You are heard.",
+                subtitle: "Welcome",
+                pageController: _pageController, 
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 300.h,
+            left: 0,
+            right: 0,
+            child: Column(
               children: [
-                OnboardingPage(
-                  showBackButton: false,
-                  imageHeight: 300,
-                  onBoardingRow: false,
-                  title:
-                      "Dear You,You hold so much.Your strength is quiet, your care is endless.",
-                  subtitle: "But who holds you?",
-                  pageController: _pageController,
-                ),
-                OnboardingPage(
-                  showBackButton: true,
-                  imageHeight: 280,
-                  onBoardingRow: true,
-                  title:
-                      "This is your space to care, to be heard, to feel safe.",
-                  subtitle: "",
-                  pageController: _pageController, 
-                ),
-                OnboardingPage(
-                  showBackButton: true,
-                  imageHeight: 280,
-                  onBoardingRow: false,
-                  title: " You are safe here. You are seen. You are heard.",
-                  subtitle: "Welcome",
-                  pageController: _pageController, 
+                SmoothPageIndicator(
+                  controller: _pageController,
+                  count: 3,
+                  effect: WormEffect(
+                    dotHeight: 12.0.h,
+                    dotWidth: 12.0.w,
+                    spacing: 10.0,
+                    dotColor: Colors.grey,
+                    activeDotColor: Color(0xffD9A48E),
+                  ),
                 ),
               ],
             ),
-            Positioned(
-              bottom: 300.h,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  SmoothPageIndicator(
-                    controller: _pageController,
-                    count: 3,
-                    effect: WormEffect(
-                      dotHeight: 12.0.h,
-                      dotWidth: 12.0.w,
-                      spacing: 10.0,
-                      dotColor: Colors.grey,
-                      activeDotColor: Color(0xffD9A48E),
+          ),
+          Positioned(
+            right: 0,
+            left: 0,
+            bottom: 50.h,
+            child: Padding(
+              padding:  EdgeInsets.all(15.0.h),
+              child: GestureDetector(
+                onTap: () {
+                  if (_currentPage < 2) {
+                    _pageController.nextPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  } else {
+                    Navigator.pushNamed(context, SignInScreen.routeName);
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      buttonTexts[_currentPage],
+                      style: GoogleFonts.poppins(
+                          fontSize: 20.sp, color: Color(0xffA074A0)),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              right: 0,
-              left: 0,
-              bottom: 50.h,
-              child: Padding(
-                padding:  EdgeInsets.all(15.0.h),
-                child: GestureDetector(
-                  onTap: () {
-                    if (_currentPage < 2) {
-                      _pageController.nextPage(
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    } else {
-                      Navigator.pushNamed(context, SignInScreen.routeName);
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        buttonTexts[_currentPage],
-                        style: GoogleFonts.poppins(
-                            fontSize: 20.sp, color: Color(0xffA074A0)),
-                      ),
-                      widthBox4,
-                      Icon(
-                        Icons.arrow_forward,
-                        color: AppColors.iconButtonThemeColor,
-                      )
-                    ],
-                  ),
+                    widthBox4,
+                    Icon(
+                      Icons.arrow_forward,
+                      color: AppColors.iconButtonThemeColor,
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
+import 'package:antoinette/app/modules/therapy/widgets/chatting_appbar.dart';
+import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -129,85 +131,85 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: Column(
-            children: [
-              Expanded(
-                child: Obx(() {
-                  // The list of messages will be automatically updated when the message list is updated
-                  if (messageFetchController.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
 
-                  if (messageFetchController.messageList.isEmpty) {
-                    return const Center(child: Text('No Messages Found'));
-                  }
-
-                  return ListView.builder(
-                    controller: _scrollController,
-                    itemCount: socketService.messageList.length,
-                    itemBuilder: (context, index) {
-                      var message = socketService.messageList[index];
-
-                      // Check if senderId is null, if yes, use sender as fallback
-                      var senderId = message['senderId'] ?? message['sender'];
-
-                      print('Sender confusion ............................');
-                      print(message['senderId']);
-                      print(message['sender']);
-
-                      return Align(
-                        alignment: senderId == widget.receiverId
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: senderId == widget.receiverId
-                                  ? Colors.grey[200]
-                                  : Colors.blue,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(message['text'] ?? ''),
+        child: Column(
+          children: [
+            heightBox24,
+            CustomChatAppBar(name: widget.receiverName,),
+            Expanded(
+              child: Obx(() {
+                // The list of messages will be automatically updated when the message list is updated
+                if (messageFetchController.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+    
+                if (messageFetchController.messageList.isEmpty) {
+                  return const Center(child: Text('No Messages Found'));
+                }
+    
+                return ListView.builder(
+                  controller: _scrollController,
+                  itemCount: socketService.messageList.length,
+                  itemBuilder: (context, index) {
+                    var message = socketService.messageList[index];
+    
+                    // Check if senderId is null, if yes, use sender as fallback
+                    var senderId = message['senderId'] ?? message['sender'];
+    
+                    print('Sender confusion ............................');
+                    print(message['senderId']);
+                    print(message['sender']);
+    
+                    return Align(
+                      alignment: senderId == widget.receiverId
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: senderId == widget.receiverId
+                                ? Colors.grey[200]
+                                : Colors.blue,
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }),
-              ),
-              Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Form(
-                  key: _formKey,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: messageController,
-                          decoration:
-                              InputDecoration(hintText: 'Type your message'),
+                          child: Text(message['text'] ?? ''),
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: () {
-                          sendMessageBTN(widget.chatId, messageController.text,
-                              widget.receiverId);
-                        }, // Use the sendMessage method here
+                    );
+                  },
+                );
+              }),
+            ),
+            Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Form(
+                key: _formKey,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: messageController,
+                        decoration:
+                            InputDecoration(hintText: 'Type your message'),
                       ),
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed: () {
+                        sendMessageBTN(widget.chatId, messageController.text,
+                            widget.receiverId);
+                      }, // Use the sendMessage method here
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

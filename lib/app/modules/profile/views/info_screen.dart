@@ -13,26 +13,25 @@ class InfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   
-    return SafeArea(
-      child: Scaffold(
-        
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(12.r), 
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomAppBar(name: appBarTitle),
-                heightBox8,
-                Text(
-                  appBarTitle,
-                  style: GoogleFonts.poppins(fontSize: 16.sp,fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.justify,
-                ),
-                heightBox4,          
-                Html(data: data)
-              ],
-            ),
+    return Scaffold(
+      
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(12.r), 
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+               heightBox20,
+              CustomAppBar(name: appBarTitle),
+              heightBox8,
+              Text(
+                appBarTitle,
+                style: GoogleFonts.poppins(fontSize: 16.sp,fontWeight: FontWeight.w500),
+                textAlign: TextAlign.justify,
+              ),
+              heightBox4,          
+              Html(data: data)
+            ],
           ),
         ),
       ),

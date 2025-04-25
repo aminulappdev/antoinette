@@ -191,7 +191,10 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
           SizedBox(height: 12.h),
           GetBuilder<GetDashboardController>(builder: (controller) {
             if (controller.inProgress) {
-              return Center(child: CircularProgressIndicator());
+              return SizedBox(
+                height: 150.h,
+                width: 150.w,
+                child: Center(child: CircularProgressIndicator()));
             }
             return Row(
               children: [

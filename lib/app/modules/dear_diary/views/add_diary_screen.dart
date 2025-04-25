@@ -27,7 +27,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
   final TextEditingController timeController = TextEditingController();
   final AddDiariesController addDiariesController = AddDiariesController();
   final ProfileController profileController = Get.find<ProfileController>();
-
+ 
   late String userAccessId;
   late String useName;
   String selectedFeeling = '';
@@ -83,184 +83,183 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomAppBar(name: 'Dear Diary, Just Between Us.'),
-                  heightBox24,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 170.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.calendar_month),
-                                widthBox8,
-                                Text('Date'),
-                              ],
-                            ),
-                            heightBox8,
-                            SizedBox(
-                              height: 48.h,
-                              child: TextFormField(
-                                controller: dateController,
-                                readOnly: true,
-                                onTap: () => _selectDate(context),
-                                decoration: InputDecoration(hintText: 'Select date'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 170.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.schedule),
-                                widthBox8,
-                                Text('Time'),
-                              ],
-                            ),
-                            heightBox8,
-                            SizedBox(
-                              height: 48.h,
-                              child: TextFormField(
-                                controller: timeController,
-                                readOnly: true,
-                                onTap: () => _selectTime(context),
-                                decoration: InputDecoration(hintText: 'Select time'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  heightBox12,
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Description', style: GoogleFonts.poppins(fontSize: 14.sp)),
-                      Row(
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                heightBox20,
+                CustomAppBar(name: 'Dear Diary, Just Between Us.'),
+                heightBox24,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 170.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          DropDownButton(option: ['Light Mode', 'Dark Mode', 'Eye Mode']),
-                          widthBox8,
-                          DropDownButton(option: ['cevat', 'poppins', 'outfit']),
-                        ],
-                      )
-                    ],
-                  ),
-                  heightBox12,
-                  TextFormField(
-                    controller: desCtrl,
-                    style: GoogleFonts.caveat(),
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: 'Write note ...',
-                      hintStyle: GoogleFonts.caveat(),
-                    ),
-                  ),
-                  heightBox4,
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(useName, style: GoogleFonts.caveat(fontSize: 12.sp, color: Color(0xffD9A48E))),
-                        Container(height: 1.h, width: 50.w, color: Color(0xffD9A48E)),
-                      ],
-                    ),
-                  ),
-                  heightBox12,
-                  Text('How Are You Feeling Today?', style: GoogleFonts.poppins(fontSize: 14.sp)),
-                  heightBox12,
-                  SizedBox(
-                    height: 250.h,
-                    child: GridView.builder(
-                      itemCount: feelingsList.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 3.5,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        crossAxisCount: 2,
-                      ),
-                      itemBuilder: (context, index) {
-                        final item = feelingsList[index];
-                        final isSelected = selectedFeelingIndex == index;
-
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedFeelingIndex = index;
-                              selectedFeeling = item.name;
-                              // print('Feeling is $selectedFeeling');
-                            });
-                          },
-                          child: Container(
-                            height: 44.h,
-                            width: 172.w,
-                            decoration: BoxDecoration(
-                              color: isSelected ? item.borderColor.withOpacity(0.2) : item.bgColor,
-                              border: Border.all(
-                                color: isSelected ? item.borderColor : const Color.fromARGB(255, 145, 144, 144),
-                                width: isSelected ? 2 : 1,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w),
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 10.r,
-                                    backgroundColor: Colors.transparent,
-                                    backgroundImage: AssetImage(item.emojiPath),
-                                  ),
-                                  widthBox8,
-                                  Text(
-                                    item.name,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14.sp,
-                                      color: item.fontColor,
-                                    ),
-                                  )
-                                ],
-                              ),
+                          Row(
+                            children: [
+                              Icon(Icons.calendar_month),
+                              widthBox8,
+                              Text('Date'),
+                            ],
+                          ),
+                          heightBox8,
+                          SizedBox(
+                            height: 48.h,
+                            child: TextFormField(
+                              controller: dateController,
+                              readOnly: true,
+                              onTap: () => _selectDate(context),
+                              decoration: InputDecoration(hintText: 'Select date'),
                             ),
                           ),
-                        );
-                      },
+                        ],
+                      ),
                     ),
+                    SizedBox(
+                      width: 170.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.schedule),
+                              widthBox8,
+                              Text('Time'),
+                            ],
+                          ),
+                          heightBox8,
+                          SizedBox(
+                            height: 48.h,
+                            child: TextFormField(
+                              controller: timeController,
+                              readOnly: true,
+                              onTap: () => _selectTime(context),
+                              decoration: InputDecoration(hintText: 'Select time'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                heightBox12,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Description', style: GoogleFonts.poppins(fontSize: 14.sp)),
+                    Row(
+                      children: [
+                        DropDownButton(option: ['Light Mode', 'Dark Mode', 'Eye Mode']),
+                        widthBox8,
+                        DropDownButton(option: ['cevat', 'poppins', 'outfit']),
+                      ],
+                    )
+                  ],
+                ),
+                heightBox12,
+                TextFormField(
+                  controller: desCtrl,
+                  style: GoogleFonts.caveat(),
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    hintText: 'Write note ...',
+                    hintStyle: GoogleFonts.caveat(),
                   ),
-                  GradientElevatedButton(
-                    onPressed: () {
-                      onTapToNextButton(
-                        userAccessId,
-                        dateController.text,
-                        timeController.text,
-                        desCtrl.text,
-                        selectedFeeling,
+                ),
+                heightBox4,
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(useName, style: GoogleFonts.caveat(fontSize: 12.sp, color: Color(0xffD9A48E))),
+                      Container(height: 1.h, width: 50.w, color: Color(0xffD9A48E)),
+                    ],
+                  ),
+                ),
+                heightBox12,
+                Text('How Are You Feeling Today?', style: GoogleFonts.poppins(fontSize: 14.sp)),
+                heightBox12,
+                SizedBox(
+                  height: 250.h,
+                  child: GridView.builder(
+                    itemCount: feelingsList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 3.5,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: 2,
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = feelingsList[index];
+                      final isSelected = selectedFeelingIndex == index;
+    
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedFeelingIndex = index;
+                            selectedFeeling = item.name;
+                            // print('Feeling is $selectedFeeling');
+                          });
+                        },
+                        child: Container(
+                          height: 44.h,
+                          width: 172.w,
+                          decoration: BoxDecoration(
+                            color: isSelected ? item.borderColor.withOpacity(0.2) : item.bgColor,
+                            border: Border.all(
+                              color: isSelected ? item.borderColor : const Color.fromARGB(255, 145, 144, 144),
+                              width: isSelected ? 2 : 1,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 10.r,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage: AssetImage(item.emojiPath),
+                                ),
+                                widthBox8,
+                                Text(
+                                  item.name,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14.sp,
+                                    color: item.fontColor,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       );
                     },
-                    text: 'Save',
-                  )
-                ],
-              ),
+                  ),
+                ),
+                GradientElevatedButton(
+                  onPressed: () {
+                    onTapToNextButton(
+                      userAccessId,
+                      dateController.text,
+                      timeController.text,
+                      desCtrl.text,
+                      selectedFeeling,
+                    );
+                  },
+                  text: 'Save',
+                )
+              ],
             ),
           ),
         ),

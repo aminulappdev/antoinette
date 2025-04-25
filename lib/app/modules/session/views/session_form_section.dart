@@ -47,112 +47,111 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: GetBuilder<ProfileController>(
-          builder: (controller) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(12.0.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomAppBar(name: 'Let’s Get to Know You'),
-                    Text(
-                      'This form helps your therapist understand your needs better. Answer as openly as you feel comfortable.',
-                      style: GoogleFonts.cormorantGaramond(fontSize: 15.sp),
-                      textAlign: TextAlign.center,
-                    ),
-                    heightBox8,
-                    Text(
-                      'Personal details',
-                      style: GoogleFonts.poppins(fontSize: 15.sp),
-                    ),
-                    heightBox8,
-                    Text('Full Name',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      enabled: false,
-                      initialValue: controller.profileData!.name,
-                    ),
-                    heightBox12,
-                    Text('Age',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      enabled: false,
-                      initialValue: controller.profileData!.age ?? 'empty',
-                    ),
-                    heightBox12,
-                    Text('Contact',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      enabled: false,
-                      initialValue: controller.profileData!.contactNumber,
-                    ),
-                    heightBox12,
-                    Text(
-                      'Current Emotional State:',
+    return Scaffold(
+      body: GetBuilder<ProfileController>(
+        builder: (controller) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(12.0.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  heightBox20,
+                  CustomAppBar(name: 'Let’s Get to Know You'),
+                  Text(
+                    'This form helps your therapist understand your needs better. Answer as openly as you feel comfortable.',
+                    style: GoogleFonts.cormorantGaramond(fontSize: 15.sp),
+                    textAlign: TextAlign.center,
+                  ),
+                  heightBox8,
+                  Text(
+                    'Personal details',
+                    style: GoogleFonts.poppins(fontSize: 15.sp),
+                  ),
+                  heightBox8,
+                  Text('Full Name',
                       style: GoogleFonts.poppins(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff626262),
-                      ),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff626262))),
+                  heightBox8,
+                  TextFormField(
+                    enabled: false,
+                    initialValue: controller.profileData!.name,
+                  ),
+                  heightBox12,
+                  Text('Age',
+                      style: GoogleFonts.poppins(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff626262))),
+                  heightBox8,
+                  TextFormField(
+                    enabled: false,
+                    initialValue: controller.profileData!.age ?? 'empty',
+                  ),
+                  heightBox12,
+                  Text('Contact',
+                      style: GoogleFonts.poppins(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff626262))),
+                  heightBox8,
+                  TextFormField(
+                    enabled: false,
+                    initialValue: controller.profileData!.contactNumber,
+                  ),
+                  heightBox12,
+                  Text(
+                    'Current Emotional State:',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff626262),
                     ),
-                    heightBox8,
-
-                    /// ✅ Single-select checkbox section
-                    Wrap(
-                      spacing: 10.w,
-                      children:
-                          ['Happy', 'Anxious', 'Stressed', 'Other'].map((mood) {
-                        return Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Checkbox(
-                              value: selectedMood == mood,
-                              onChanged: (_) {
-                                setState(() {
-                                  selectedMood = mood;
-                                });
-                              },
-                            ),
-                            Text(mood),
-                            SizedBox(width: 10),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                    heightBox12,
-                    
-                    GradientElevatedButton(
-                        onPressed: () {
-                          // print('Clicked on submit button');
-                          // print("Selected Mood: $selectedMood");
-                          // addChatTherapist(
-                          //     userId, widget.slotData['therapyId']);
-                          widget.slotData['bookingId'] == null
-                              ? bookingButton()
-                              : rescheduleBookingButton();
-                        },
-                        text: 'Submit')
-                  ],
-                ),
+                  ),
+                  heightBox8,
+    
+                  /// ✅ Single-select checkbox section
+                  Wrap(
+                    spacing: 10.w,
+                    children:
+                        ['Happy', 'Anxious', 'Stressed', 'Other'].map((mood) {
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Checkbox(
+                            value: selectedMood == mood,
+                            onChanged: (_) {
+                              setState(() {
+                                selectedMood = mood;
+                              });
+                            },
+                          ),
+                          Text(mood),
+                          SizedBox(width: 10),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                  heightBox12,
+                  
+                  GradientElevatedButton(
+                      onPressed: () {
+                        // print('Clicked on submit button');
+                        // print("Selected Mood: $selectedMood");
+                        // addChatTherapist(
+                        //     userId, widget.slotData['therapyId']);
+                        widget.slotData['bookingId'] == null
+                            ? bookingButton()
+                            : rescheduleBookingButton();
+                      },
+                      text: 'Submit')
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

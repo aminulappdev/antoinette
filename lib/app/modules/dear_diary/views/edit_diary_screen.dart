@@ -29,36 +29,35 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomAppBar(name: 'Edit Dear Diary'),
-                  heightBox24,
-                  TextFormField(
-                    controller: desCtrl,
-                    style: GoogleFonts.caveat(),
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: 'Write note ...',
-                      hintStyle: GoogleFonts.caveat(),
-                    ),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                heightBox20,
+                CustomAppBar(name: 'Edit Dear Diary'),
+                heightBox24,
+                TextFormField(
+                  controller: desCtrl,
+                  style: GoogleFonts.caveat(),
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    hintText: 'Write note ...',
+                    hintStyle: GoogleFonts.caveat(),
                   ),
-                  heightBox12,
-                  GradientElevatedButton(
-                    onPressed: () {
-                      onTapToNextButton(widget.userId, desCtrl.text);
-                    },
-                    text: 'Update',
-                  )
-                ],
-              ),
+                ),
+                heightBox12,
+                GradientElevatedButton(
+                  onPressed: () {
+                    onTapToNextButton(widget.userId, desCtrl.text);
+                  },
+                  text: 'Update',
+                )
+              ],
             ),
           ),
         ),

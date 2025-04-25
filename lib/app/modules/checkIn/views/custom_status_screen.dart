@@ -19,50 +19,49 @@ class _CustomStatusScreenState extends State<CustomStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.r),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                CustomAppBar(name: 'Custom status'),
-                heightBox12,
-                Row(
-                  children: [
-                    Icon(Icons.add, size: 18.h),
-                    widthBox8,
-                    Text('Add Custom Status',
-                        style: GoogleFonts.poppins(fontSize: 14.sp)),
-                  ],
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.r),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              heightBox20,
+              CustomAppBar(name: 'Custom status'),
+              heightBox12,
+              Row(
+                children: [
+                  Icon(Icons.add, size: 18.h),
+                  widthBox8,
+                  Text('Add Custom Status',
+                      style: GoogleFonts.poppins(fontSize: 14.sp)),
+                ],
+              ),
+              heightBox12,
+              TextFormField(
+                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Enter status';
+                  }
+                  return null;
+                },
+                controller: statusCtrl,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
                 ),
-                heightBox12,
-                TextFormField(
-                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'Enter status';
-                    }
-                    return null;
-                  },
-                  controller: statusCtrl,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 50.h),
-                GradientElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.pop(
-                          context, statusCtrl.text); // Return the custom status
-                    }
-                  },
-                  text: '+ Add Check-In',
-                )
-              ],
-            ),
+              ),
+              SizedBox(height: 50.h),
+              GradientElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.pop(
+                        context, statusCtrl.text); // Return the custom status
+                  }
+                },
+                text: '+ Add Check-In',
+              )
+            ],
           ),
         ),
       ),

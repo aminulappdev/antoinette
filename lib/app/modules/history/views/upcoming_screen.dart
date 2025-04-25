@@ -99,6 +99,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
+              padding: EdgeInsets.zero,
               controller: scrollController,
               itemCount: controller.bookingList.length, 
               itemBuilder: (context, index) {

@@ -84,62 +84,52 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                 if (controller.inProgress) {
                   return Center(child: CircularProgressIndicator());
                 }
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height - 200,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                    itemCount: controller.ordersData?.length,
-                    itemBuilder: (context, index) {
-                      if (selectedType == 'All') {
-                        return MyOrderCard(
-                          imagePath: '',
-                          price: '${controller.ordersData?[index].amount}',
-                          productName:
-                              '${controller.ordersData![index].items[0].product?.name}',
-                          quantity:
-                              '${controller.ordersData?[index].items[0].quantity}',
-                          isShowSeconBTN:
-                              controller.ordersData?[index].status == 'pending'
-                                  ? false
-                                  : true,
-                          status: '${controller.ordersData?[index].status}',
-                          mainBTNOntap: () {
-                            Navigator.popAndPushNamed(
-                                context, OrderDetailsScreen.routeName,arguments:  controller.ordersData?[index].id);
-                          },
-                          secondBTNOntap: () {},
-                          secondBTNName: 'Buy Again',
+
+                final filteredOrders = selectedType == 'All'
+                    ? controller.ordersData ?? []
+                    : (controller.ordersData ?? [])
+                        .where((order) => order.status == selectedType)
+                        .toList();
+
+                if (filteredOrders.isEmpty) {
+                  return Center(
+                    child: Text('No orders found.',
+                        style: GoogleFonts.poppins(fontSize: 14.sp)),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: filteredOrders.length,
+                  itemBuilder: (context, index) {
+                    final order = filteredOrders[index];
+                    final item = order.items[0];
+                    final product = item.product;
+                    final imageUrl = (product?.images.isNotEmpty ?? false)
+                        ? product!.images[0].url
+                        : '';
+
+                    return MyOrderCard(
+                      imagePath: imageUrl!,
+                      price: '${order.amount}',
+                      productName: product?.name ?? "Unknown",
+                      quantity: '${item.quantity}',
+                      isShowSeconBTN: order.status != 'pending',
+                      status: '${order.status}',
+                      mainBTNOntap: () {
+                        Navigator.popAndPushNamed(
+                          context,
+                          OrderDetailsScreen.routeName,
+                          arguments: order.id,
                         );
-                      } else if (controller.ordersData?[index].status ==
-                          selectedType) {
-                        return MyOrderCard(
-                          imagePath:
-                              '${controller.ordersData![index].items[0].product?.images[0].url}',
-                          price: '${controller.ordersData?[index].amount}',
-                          productName:
-                              '${controller.ordersData![index].items[0].product?.name}',
-                          quantity:
-                              '${controller.ordersData?[index].items[0].quantity}',
-                          isShowSeconBTN:
-                              controller.ordersData?[index].status == 'pending'
-                                  ? false
-                                  : true,
-                          status: '${controller.ordersData?[index].status}',
-                          mainBTNOntap: () {
-                            Navigator.popAndPushNamed(
-                                context, OrderDetailsScreen.routeName,
-                                arguments: controller.ordersData?[index].id);
-                          },
-                          secondBTNOntap: () {},
-                          secondBTNName: 'Buy Again',
-                        );
-                      }
-                      return null;
-                    },
-                  ),
+                      },
+                      secondBTNOntap: () {},
+                      secondBTNName: 'Buy Again',
+                    );
+                  },
                 );
               }),
-            )
+            ),
           ],
         ),
       ),

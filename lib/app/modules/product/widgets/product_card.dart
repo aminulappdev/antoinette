@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/product/controllers/product_details_controllers.dart';
 import 'package:antoinette/app/modules/product/model/all_product_pegination_model.dart';
 import 'package:antoinette/app/modules/product/views/product_datails_screen.dart';
+import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +38,12 @@ class _ProductCardState extends State<ProductCard> {
               height: 100.h,
               width: 156.h,
               decoration: BoxDecoration(
-                  // image: DecorationImage(
-                  //     image: widget.productsModel.images[0].url != null
-                  //         ? NetworkImage(widget.productsModel.images[0].url!)
-                  //         : AssetImage(AssetsPath.womenBookRead),
-                  //     fit: BoxFit.fill),
+                  image: DecorationImage(
+                      image: widget.productsModel.images.isEmpty
+                      ?  AssetImage(AssetsPath.womenBookRead)
+                          : NetworkImage(widget.productsModel.images[0].url ?? ''),
+                          
+                      fit: BoxFit.fill),
                   borderRadius: BorderRadius.circular(8)),
               child: Padding(
                 padding: EdgeInsets.all(8.0.h),

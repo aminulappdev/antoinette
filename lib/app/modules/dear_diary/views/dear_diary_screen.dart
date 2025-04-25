@@ -50,135 +50,158 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                heightBox12,
-                CustomSearchBar(shouldBackButton: false),
-                heightBox12,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, AddDiaryScreen.routeName);
-                      },
-                      child: Container(
-                        height: 42.h,
-                        width: 310.w,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 202, 200, 200)),
-                          color: const Color(0xffEDE6E4),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Center(
-                          child: Icon(Icons.add,
-                              color: AppColors.iconButtonThemeColor),
-                        ),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              heightBox30,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, AddDiaryScreen.routeName);
+                    },
+                    child: Container(
+                      height: 42.h,
+                      width: 310.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 202, 200, 200)),
+                        color: const Color(0xffEDE6E4),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Center(
+                        child: Icon(Icons.add,
+                            color: AppColors.iconButtonThemeColor),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, SetJournalPasswordScreen.routeName);
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        radius: 24.r,
-                        child: const Icon(Icons.lock),
-                      ),
-                    )
-                  ],
-                ),
-                heightBox12,
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 185.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [CustomPiChart(), MentalStatusWidget()],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, SetJournalPasswordScreen.routeName);
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      radius: 24.r,
+                      child: const Icon(Icons.lock),
                     ),
+                  )
+                ],
+              ),
+              heightBox12,
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 185.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [CustomPiChart(), MentalStatusWidget()],
                   ),
                 ),
-                heightBox8,
-                SizedBox(
-                  height: 600,
-                  child:
-                      GetBuilder<AllDiariesController>(builder: (controller) {
-                    if (controller.inProgress) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    // Check if the diary list is empty
-                    if (controller.allDiaryList.isEmpty) {
-                      return const Center(child: Text("No diaries available"));
-                    }
-                    return ListView.builder(
-                      itemCount: controller.allDiaryList.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 4.h),
-                          child: HealthConditionCard(
-                            isBlur: isBlurList[index],
-                            iconPath: controller.allDiaryList[index].feelings ==
-                                    'happy'
-                                ? AssetsPath.happy
-                                : controller.allDiaryList[index].feelings ==
-                                        'calm'
-                                    ? AssetsPath.sad : controller.allDiaryList[index].feelings ==
-                                        'sad' ?
-                                     AssetsPath.sad : controller.allDiaryList[index].feelings ==
-                                        'anxious' ? AssetsPath.tired : controller.allDiaryList[index].feelings ==
-                                        'motivated' ? AssetsPath.muscle : AssetsPath.angle,
-                            status:
-                                '${controller.allDiaryList[index].feelings}',
-                            day: '${controller.allDiaryList[index].date}',
-                            time: '${controller.allDiaryList[index].time}',
-                            description:
-                                '${controller.allDiaryList[index].description}',
-                            lockOntap: () {
-                              if (!isBlurList[index]) {
-                                setState(() {
-                                  isBlurList[index] = true;
-                                });
-                              } else {
-                                lockButton(index);
-                              }
-                            },
-                            themeColor: const Color(0xffD9A48E).withAlpha(20),
-                            onDeleteTap: () {
-                              // print('${controller.allDiaryList[index].sId}');
+              ),
+              heightBox8,
+              SizedBox(
+                height: 440,
+                child: GetBuilder<AllDiariesController>(builder: (controller) {
+                  if (controller.inProgress) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  // Check if the diary list is empty
+                  if (controller.allDiaryList.isEmpty) {
+                    return const Center(child: Text("No diaries available"));
+                  }
+                  return ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: controller.allDiaryList.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 8),
+                        child: HealthConditionCard(
+                          // titleColor: controller
+                          //             .allDiaryList[index].feelings ==
+                          //         'happy'
+                          //     ? Color(0xff82FF34)
+                          //     : controller.allDiaryList[index].feelings ==
+                          //             'calm'
+                          //         ? Colors.greenAccent
+                          //         : controller.allDiaryList[index].feelings ==
+                          //                 'sad'
+                          //             ? Colors.blueAccent
+                          //             : controller.allDiaryList[index]
+                          //                         .feelings ==
+                          //                     'anxious'
+                          //                 ? Colors.pinkAccent
+                          //                 : controller.allDiaryList[index]
+                          //                             .feelings ==
+                          //                         'motivated'
+                          //                     ? Colors.orangeAccent
+                          //                     : Colors.redAccent,
+                          titleColor: Colors.black,
+                          isBlur: isBlurList[index],
+                          iconPath: controller.allDiaryList[index].feelings ==
+                                  'happy'
+                              ? AssetsPath.happy
+                              : controller.allDiaryList[index].feelings ==
+                                      'calm'
+                                  ? AssetsPath.sad
+                                  : controller.allDiaryList[index].feelings ==
+                                          'sad'
+                                      ? AssetsPath.sad
+                                      : controller.allDiaryList[index]
+                                                  .feelings ==
+                                              'anxious'
+                                          ? AssetsPath.tired
+                                          : controller.allDiaryList[index]
+                                                      .feelings ==
+                                                  'motivated'
+                                              ? AssetsPath.muscle
+                                              : AssetsPath.angle,
+                          status: '${controller.allDiaryList[index].feelings}',
+                          day: '${controller.allDiaryList[index].date}',
+                          time: '${controller.allDiaryList[index].time}',
+                          description:
+                              '${controller.allDiaryList[index].description}',
+                          lockOntap: () {
+                            if (!isBlurList[index]) {
                               setState(() {
-                                deleteDiary(
-                                    '${controller.allDiaryList[index].sId}');
+                                isBlurList[index] = true;
                               });
-                            },
-                            onEditTap: () {
-                              Navigator.pushNamed(
-                                  context, EditDiaryScreen.routeName,
-                                  arguments:
-                                      '${controller.allDiaryList[index].sId}');
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  }),
-                ),
-              ],
-            ),
+                            } else {
+                              lockButton(index);
+                            }
+                          },
+                          themeColor: const Color(0xffD9A48E).withAlpha(20),
+                          onDeleteTap: () {
+                            // print('${controller.allDiaryList[index].sId}');
+                            setState(() {
+                              deleteDiary(
+                                  '${controller.allDiaryList[index].sId}');
+                            });
+                          },
+                          onEditTap: () {
+                            Navigator.pushNamed(
+                                context, EditDiaryScreen.routeName,
+                                arguments:
+                                    '${controller.allDiaryList[index].sId}');
+                          },
+                        ),
+                      );
+                    },
+                  );
+                }),
+              ),
+            ],
           ),
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:antoinette/app/modules/payment/controllers/payment_services.dart
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
+import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
@@ -50,64 +51,63 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
-        body: GetBuilder<AllPackageController>(builder: (controller) {
-          if (controller.inProgress) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(),
-            child: Padding(
-              padding: EdgeInsets.all(height / 72),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomAppBar(name: 'Subscriptions'),
-                    SizedBox(
-                      height: height / 24,
-                    ),
-                    Text(
-                      'Premium Membership',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.iconButtonThemeColor),
-                    ),
-                    SizedBox(
-                      height: height / 80,
-                    ),
-                    SizedBox(
-                      height: 150.h,
-                      child: ListView.builder(
-                        itemCount: controller.packageItemList?[indexx].description?.length,
-                        itemBuilder: (context, index) {
-                          return costomRow('${controller.packageItemList?[indexx].description?[index]}', height, width);
-                        },
-                      ),
-                    ),
-                    packageSection(height, width,
-                        monthlyAmount: controller.packageItemList![1].price.toString(),
-                        yearlyAmount: controller.packageItemList![0].price.toString()),
-                    SizedBox(
-                      height: height / 20,
-                    ),
-                    GradientElevatedButton(
-                      onPressed: (){
-                        buyNowBTN(allPackageController.packageItemList![1].sId!);
+    return Scaffold(
+      body: GetBuilder<AllPackageController>(builder: (controller) {
+        if (controller.inProgress) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(),
+          child: Padding(
+            padding: EdgeInsets.all(height / 72),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  heightBox20,
+                  CustomAppBar(name: 'Subscriptions'),
+                  SizedBox(
+                    height: height / 24,
+                  ),
+                  Text(
+                    'Premium Membership',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.iconButtonThemeColor),
+                  ),
+                  SizedBox(
+                    height: height / 80,
+                  ),
+                  SizedBox(
+                    height: 150.h,
+                    child: ListView.builder(
+                      itemCount: controller.packageItemList?[indexx].description?.length,
+                      itemBuilder: (context, index) {
+                        return costomRow('${controller.packageItemList?[indexx].description?[index]}', height, width);
                       },
-                      text: 'Buy now',
                     ),
-                  ],
-                ),
+                  ),
+                  packageSection(height, width,
+                      monthlyAmount: controller.packageItemList![1].price.toString(),
+                      yearlyAmount: controller.packageItemList![0].price.toString()),
+                  SizedBox(
+                    height: height / 20,
+                  ),
+                  GradientElevatedButton(
+                    onPressed: (){
+                      buyNowBTN(allPackageController.packageItemList![1].sId!);
+                    },
+                    text: 'Buy now',
+                  ),
+                ],
               ),
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 

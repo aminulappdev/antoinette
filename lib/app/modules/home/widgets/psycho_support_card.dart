@@ -20,7 +20,7 @@ class PsychoSupportCard extends StatefulWidget {
   State<PsychoSupportCard> createState() => _PsychoSupportCardState();
 }
 
-class _PsychoSupportCardState extends State<PsychoSupportCard> {
+class _PsychoSupportCardState extends State<PsychoSupportCard> { 
 
   SessionDetailsController sessionDetailsController = SessionDetailsController();
   @override

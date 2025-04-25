@@ -28,38 +28,36 @@ class _VerifyEmailScreenWithForgotState extends State<VerifyEmailScreenWithForgo
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                heightBox4,
-                CustomAppBar(
-                  name: 'Check Email',
-                ),
-                heightBox100,
-
-                CircleAvatar(
-                  backgroundColor: Color(0xFFD9A48E).withValues(alpha: 0.1),
-                  backgroundImage: AssetImage(AssetsPath.emailLogo),
-                  radius: 36.r,
-                ),
-                heightBox16,
-                AuthHeaderText(title: 'A letter has been sent.',subtitle:  'Your next step is inside your inbox. Check your email to unlock it.',titleFontSize: 20,subtitleFontSize: 12,sizeBoxHeight: 215,),
-                heightBox30,
-                GradientElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, OTPVerifyForgotScreen.routeName);
-                  },
-                  text: 'Read My Letter',
-                ),
-                heightBox8,
-              
-              ],
-            ),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              heightBox20,
+              CustomAppBar(
+                name: 'Check Email',
+              ),
+              heightBox100,
+    
+              CircleAvatar(
+                backgroundColor: Color(0xFFD9A48E).withValues(alpha: 0.1),
+                backgroundImage: AssetImage(AssetsPath.emailLogo),
+                radius: 36.r,
+              ),
+              heightBox16,
+              AuthHeaderText(title: 'A letter has been sent.',subtitle:  'Your next step is inside your inbox. Check your email to unlock it.',titleFontSize: 20,subtitleFontSize: 12,sizeBoxHeight: 215,),
+              heightBox30,
+              GradientElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, OTPVerifyForgotScreen.routeName);
+                },
+                text: 'Read My Letter',
+              ),
+              heightBox8,
+            
+            ],
           ),
         ),
       ),

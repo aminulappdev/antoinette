@@ -36,106 +36,104 @@ class _ChangeJournalPasswordScreenState
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                heightBox4,
-                CustomAppBar(
-                  name: 'Change Password',
-                ),
-                heightBox16,
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Enter Old Password',
-                          style: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff626262))),
-                      heightBox8,
-                      TextFormField(
-                        controller: oldPasswordCtrl,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Enter password';
-                          }
-                          return null;
-                        },
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              heightBox20,
+              CustomAppBar(
+                name: 'Change Password',
+              ),
+              heightBox16,
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Enter Old Password',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: oldPasswordCtrl,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Enter password';
+                        }
+                        return null;
+                      },
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
                           ),
-                          hintText: '***********',
-                          hintStyle: TextStyle(color: Colors.grey),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
                         ),
+                        hintText: '***********',
+                        hintStyle: TextStyle(color: Colors.grey),
                       ),
-                      heightBox12,
-                      Text('Enter New Password',
-                          style: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff626262))),
-                      heightBox8,
-                      TextFormField(
-                        controller: newPasswordCtrl,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Enter password';
-                          }
-                          return null;
-                        },
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
+                    ),
+                    heightBox12,
+                    Text('Enter New Password',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: newPasswordCtrl,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Enter password';
+                        }
+                        return null;
+                      },
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
                           ),
-                          hintText: '***********',
-                          hintStyle: TextStyle(color: Colors.grey),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
                         ),
+                        hintText: '***********',
+                        hintStyle: TextStyle(color: Colors.grey),
                       ),
-                      heightBox24,
-                      GradientElevatedButton(
-                        onPressed: () {
-                          onTapToNextButton(
-                              oldPasswordCtrl.text, newPasswordCtrl.text);
-                        },
-                        text: 'Change Password',
-                      ),
-                    ],
-                  ),
+                    ),
+                    heightBox24,
+                    GradientElevatedButton(
+                      onPressed: () {
+                        onTapToNextButton(
+                            oldPasswordCtrl.text, newPasswordCtrl.text);
+                      },
+                      text: 'Change Password',
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

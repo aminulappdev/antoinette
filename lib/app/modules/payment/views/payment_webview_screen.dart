@@ -27,45 +27,43 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: Text("Payment"),
-          centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: WebView(
-          initialUrl: widget.paymentData['link'],
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller = webViewController;
-          },
-          onPageStarted: (String url) {
-            debugPrint('Page start loading: $url');
-          },
-          onPageFinished: (String url) async {
-            debugPrint('Page finished loading: $url');
-            if (url.contains("confirm-payment")) {
-              print('Confirmed payment hoye geche............................');
-              // paymentURLController.paymentUrl(url);
-              final bool isSuccess = await paymentURLController.paymentUrl(url);
-              if (isSuccess) {
-                await confirmPayment('${widget.paymentData['reference']}');
-                Navigator.pushNamed(context, PaymentSuccessScreen.routeName);
-              }
-
-              // Call your payment result handler or anything you want here
-              debugPrint('::::::::::::: if condition ::::::::::::::::');
+        title: Text("Payment"),
+        centerTitle: true,
+      ),
+      body: WebView(
+        initialUrl: widget.paymentData['link'],
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (WebViewController webViewController) {
+          _controller = webViewController;
+        },
+        onPageStarted: (String url) {
+          debugPrint('Page start loading: $url');
+        },
+        onPageFinished: (String url) async {
+          debugPrint('Page finished loading: $url');
+          if (url.contains("confirm-payment")) {
+            print('Confirmed payment hoye geche............................');
+            // paymentURLController.paymentUrl(url);
+            final bool isSuccess = await paymentURLController.paymentUrl(url);
+            if (isSuccess) {
+              await confirmPayment('${widget.paymentData['reference']}');
+              Navigator.pushNamed(context, PaymentSuccessScreen.routeName);
             }
-          },
-        ),
+    
+            // Call your payment result handler or anything you want here
+            debugPrint('::::::::::::: if condition ::::::::::::::::');
+          }
+        },
       ),
     );
   }

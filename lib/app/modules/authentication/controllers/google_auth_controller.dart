@@ -43,7 +43,7 @@ class GoogleAuthController extends GetxController {
           .postRequest(Urls.googleAuth, requestBody);
 
       if (response.isSuccess) {
-        _errorMessage = null;
+        _errorMessage = null; 
         _inProgress = false;
 
         final loginModel = LoginModel.fromJson(response.responseData);

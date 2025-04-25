@@ -34,6 +34,7 @@ class OnboardingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            heightBox20,
             Visibility(
               visible: !showBackButton,
               replacement: Row(

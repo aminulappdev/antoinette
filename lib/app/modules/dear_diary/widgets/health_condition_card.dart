@@ -15,6 +15,7 @@ class HealthConditionCard extends StatelessWidget {
   final VoidCallback lockOntap;
   final VoidCallback onDeleteTap;
   final VoidCallback onEditTap;
+  final Color titleColor;
 
   const HealthConditionCard({
     super.key,
@@ -26,7 +27,7 @@ class HealthConditionCard extends StatelessWidget {
     required this.lockOntap,
     
     required this.themeColor,
-    required this.isBlur, required this.onDeleteTap, required this.onEditTap,
+    required this.isBlur, required this.onDeleteTap, required this.onEditTap, required this.titleColor,
   });
 
   @override
@@ -60,7 +61,7 @@ class HealthConditionCard extends StatelessWidget {
                         Text(
                           status,
                           style: GoogleFonts.poppins(
-                              fontSize: 16.sp, color: Color.fromARGB(255, 0, 0, 0)),
+                              fontSize: 16.sp, color: titleColor),
                         ),
                         Row(
                           children: [
