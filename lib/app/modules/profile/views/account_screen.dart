@@ -12,7 +12,7 @@ import 'package:antoinette/app/widgets/image_picker.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart'; 
 import 'package:google_fonts/google_fonts.dart';
 
 class AccountScreen extends StatefulWidget {

@@ -16,13 +16,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../bookmark/views/bookmark_letter_screen.dart';
 import '../../common/views/notification_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile-screen';
-
   const ProfileScreen({super.key});
 
   @override
@@ -46,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 heightBox20,
+                heightBox20,
                 ProfileInfo(
                   name: '${controller.profileData?.name}',
                   email: '${controller.profileModel?.data?.email}',
@@ -71,9 +71,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   feature: 'History',
                   icon: Icons.history,
                   ontap: () {
-                     Navigator.pushNamed(context, HistoryScreen.routeName);
+                    Navigator.pushNamed(context, HistoryScreen.routeName);
                   },
-                         ),
+                ),
                 ProfileDrawerFeature(
                   feature: 'Address',
                   icon: Icons.location_on,
@@ -92,8 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   feature: 'Subscription',
                   icon: Icons.payment,
                   ontap: () {
-                    Navigator.pushNamed(
-                        context, SubscriptionScreen.routeName);
+                    Navigator.pushNamed(context, SubscriptionScreen.routeName);
                   },
                 ),
                 ProfileDrawerFeature(
@@ -114,8 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   feature: 'Notification',
                   icon: Icons.notifications,
                   ontap: () {
-                    Navigator.pushNamed(
-                        context, NotificationScreen.routeName);
+                    Navigator.pushNamed(context, NotificationScreen.routeName);
                   },
                 ),
                 heightBox8,
@@ -157,11 +155,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         feature: 'About Us',
                         icon: Icons.info,
                         ontap: () {
-                          Navigator.pushNamed(
-                              context, InfoScreen.routeName, arguments: {
-                            'appBarTitle': 'About Us',
-                            'data': '${controller.contentlist?[0].aboutUs}'
-                          });
+                          Navigator.pushNamed(context, InfoScreen.routeName,
+                              arguments: {
+                                'appBarTitle': 'About Us',
+                                'data': '${controller.contentlist?[0].aboutUs}'
+                              });
                         },
                       ),
                       heightBox8,
@@ -173,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       heightBox4,
                       ProfileDrawerFeature(
                         feature: 'Logout',
-                        icon: Icons.help,
+                        icon: Icons.logout,
                         ontap: onTapLogoutBTN,
                       ),
                     ],
@@ -203,21 +201,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Center(
-            child: Text(
-                textAlign: TextAlign.center,
-                'Do you want to log out this profile?',
-                style: GoogleFonts.poppins(fontSize: 20))),
+          child: Text(
+            textAlign: TextAlign.center,
+            'Do you want to log out this profile?',
+            style: GoogleFonts.poppins(fontSize: 20),
+          ),
+        ),
         actions: [
           GestureDetector(
-            onTap: () {
+            onTap: () async {
+              // Google Sign-Out
+              try {
+                await GoogleSignIn().signOut();
+                print('Google signed out');
+              } catch (e) {
+                print('Error signing out from Google: $e');
+              }
+
+              // Clear local token
               box.remove('user-login-access-token');
+              print('Token after logout: ${box.read('user-login-access-token')}');
+
+              // Redirect to Sign In
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 SignInScreen.routeName,
                 (Route<dynamic> route) => false,
               );
-              print('My Access token');
-              print(box.read('user-login-access-token'));
             },
             child: Container(
               height: 32.h,
@@ -236,9 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => Navigator.pop(context),
             child: Container(
               height: 32.h,
               width: 120.w,

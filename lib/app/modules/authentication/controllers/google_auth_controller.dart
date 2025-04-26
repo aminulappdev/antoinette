@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/authentication/model/login_model.dart';
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
@@ -34,8 +35,8 @@ class GoogleAuthController extends GetxController {
       final Map<String, dynamic> requestBody = {
         "name": googleUser.displayName ?? "User",
         "email": googleUser.email,
-        "password": "user123", // fallback for backend
-        "contactNumber": "+1987654321", // hardcoded for now\
+        "password": "user123",
+        "contactNumber": "+1987654321",
         "token": googleUser.id
       };
 
@@ -43,16 +44,25 @@ class GoogleAuthController extends GetxController {
           .postRequest(Urls.googleAuth, requestBody);
 
       if (response.isSuccess) {
-        _errorMessage = null; 
-        _inProgress = false;
+        _errorMessage = null;
 
         final loginModel = LoginModel.fromJson(response.responseData);
-        box.write('user-login-access-token', loginModel.data!.accessToken);
-        print(loginModel.data!.accessToken);
+        _token = loginModel.data!.accessToken;
+        box.write('user-login-access-token', _token);
 
+        // Redirect to main page
+        Future.delayed(Duration.zero, () {
+          Get.offAllNamed(MainButtonNavbarScreen.routeName);
+        });
+
+        _inProgress = false;
         update();
         return true;
       } else {
+        if (response.errorMessage?.contains('credentials') == true) {
+          await _googleSignIn.signOut(); // allow switching account
+        }
+
         _errorMessage = response.errorMessage;
         _inProgress = false;
         update();

@@ -90,7 +90,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                   ),
                 ],
               ),
-             
+              heightBox10,
               SizedBox(
                 height: 650.h,
                 child: GetBuilder<FriendController>(
@@ -105,6 +105,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                     }
     
                     return ListView.builder(
+                      padding: EdgeInsets.zero,
                       itemCount: controller.friendList.length,
                       itemBuilder: (context, index) {
                         var friend = controller.friendList[index];

@@ -68,6 +68,7 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
       bottomNavigationBar: Padding(
         padding:  EdgeInsets.all(12.0.h),
         child: Stack(
+          
           clipBehavior: Clip.none,
           children: [
             Card(
