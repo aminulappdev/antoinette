@@ -56,7 +56,7 @@ import 'package:antoinette/app/modules/chatting/views/healing_note_screen.dart';
 import 'package:antoinette/app/modules/chatting/views/text_therapy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 
 import '../modules/bookmark/views/bookmark_letter_screen.dart';
 

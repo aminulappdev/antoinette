@@ -130,7 +130,7 @@ class _SessionScreenState extends State<SessionScreen> {
               GetBuilder<AllSessionController>(builder: (controller) {
                 if (controller.inProgress && controller.page == 1) {
                   return Center(child: CircularProgressIndicator());
-                }
+                } 
                 return SizedBox(
                   height: 700.h,                   
                   child: ListView.builder(

@@ -42,7 +42,7 @@ class OrderDetailsData {
 
   final String? id;
   final User? user;
-  final int? amount;
+  final dynamic amount;
   final int? deliveryCharge;
   final String? status;
   final String? paymentStatus;
@@ -127,9 +127,9 @@ class Item {
   final String? id;
   final Product? product;
   final String? order;
-  final int? quantity;
-  final int? price;
-  final int? totalPrice;
+  final dynamic quantity;
+  final dynamic price;
+  final dynamic totalPrice;
   final String? discount;
   final dynamic size;
   final dynamic color;
@@ -187,7 +187,7 @@ class Product {
   final String? category;
   final int? quantity;
   final int? sold;
-  final int? amount;
+  final dynamic amount;
   final int? discount;
   final String? faq;
   final bool? restockAlert;

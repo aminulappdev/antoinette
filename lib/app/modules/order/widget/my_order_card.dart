@@ -157,7 +157,7 @@ class MyOrderCard extends StatelessWidget {
                           InkWell(
                             onTap: secondBTNOntap,
                             child: SizedBox(
-                              width: 145,
+                              width: 150,
                               height: 40,
                               child: Container(
                                 height: 40,

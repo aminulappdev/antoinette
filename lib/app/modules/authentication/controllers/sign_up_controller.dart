@@ -8,7 +8,7 @@ class SignUpController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
-  String? _errorMessage;
+  String? _errorMessage; 
   String? get errorMessage => _errorMessage;
 
   String? _token;
@@ -24,7 +24,7 @@ class SignUpController extends GetxController {
 
     Map<String, dynamic> requestBody = {
       "name": name,
-      "email": email,
+      "email": email, 
       "password": password,
       "contactNumber": number
     };

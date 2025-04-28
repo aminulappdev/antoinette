@@ -1,6 +1,8 @@
 import 'package:antoinette/app/modules/order/controllers/all_orders_controllers.dart';
+import 'package:antoinette/app/modules/order/controllers/payment_booking_id.dart';
 import 'package:antoinette/app/modules/order/views/order_details_screen.dart';
 import 'package:antoinette/app/modules/order/widget/my_order_card.dart';
+import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -18,13 +20,15 @@ class MyOrderScreen extends StatefulWidget {
 
 class _MyOrderScreenState extends State<MyOrderScreen> {
   final AllOrderController allOrderController = Get.find<AllOrderController>();
+  final PaymentByBookingIDController paymentByBookingIDController =
+      Get.find<PaymentByBookingIDController>();
 
   String selectedType = "All";
   final List<String> options = [
     "All",
     "pending",
     "processing",
-    "Delivered",
+    "delivered",
   ];
 
   @override
@@ -108,13 +112,14 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                     final imageUrl = (product?.images.isNotEmpty ?? false)
                         ? product!.images[0].url
                         : '';
-
+                    
+                                   
                     return MyOrderCard(
                       imagePath: imageUrl!,
                       price: '${order.amount}',
                       productName: product?.name ?? "Unknown",
                       quantity: '${item.quantity}',
-                      isShowSeconBTN: order.status != 'pending',
+                      isShowSeconBTN: order.status != 'processing',
                       status: '${order.status}',
                       mainBTNOntap: () {
                         Navigator.popAndPushNamed(
@@ -123,8 +128,17 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                           arguments: order.id,
                         );
                       },
-                      secondBTNOntap: () {},
-                      secondBTNName: 'Buy Again',
+                      secondBTNOntap: () {
+                        print(
+                            ' first order id ${controller.allOrderModel?.data[index].id}');
+                        order.status == 'delivered'
+                            ? goToProductPage()
+                            : makePayment(
+                                '${controller.allOrderModel?.data[index].id}');
+                      },
+                      secondBTNName: order.status == 'pending' 
+                          ? 'Make Payment'
+                          : 'Continue shoping',
                     );
                   },
                 );
@@ -134,5 +148,30 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
         ),
       ),
     );
+  }
+
+  void goToProductPage() {
+    Navigator.pushNamed(context, ProductScreen.routeName, arguments: true);
+  }
+
+  void makePayment(String id) async {
+    bool isSuccess =
+        await paymentByBookingIDController.getPaymentByBookingId(id);
+
+    if (isSuccess) {
+      if (paymentByBookingIDController.paymentByBookingIdModel != null &&
+          paymentByBookingIDController.paymentByBookingIdModel!.data != null &&
+          paymentByBookingIDController
+                  .paymentByBookingIdModel!.data!.paymentIntentId !=
+              null) {
+        var paymentIndentId = paymentByBookingIDController
+            .paymentByBookingIdModel!.data!.paymentIntentId!;
+        print('paymentindent id : $paymentIndentId');
+      } else {
+        print('Error: Payment Intent ID is missing inside success response.');
+      }
+    } else {
+      print('Error: Failed to fetch payment info.');
+    }
   }
 }

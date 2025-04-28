@@ -222,13 +222,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       child: Text('\$${widget.productModel.amount}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      padding: EdgeInsets.symmetric(horizontal: 12),
                       child: SizedBox(
                         width: 159.w,
                         height: 42.h,
                         child: GradientElevatedButton(
                             onPressed: () {
+                              //  Navigator.pushNamed(context, CheckOutScreen.routeName,arguments: widget.productModel);
                               Navigator.pushNamed(context, CheckOutScreen.routeName,arguments: widget.productModel);
+                              print('Product id : ${widget.productModel.sId}');
                             }, text: 'Buy now'),
                       ),
                     ),

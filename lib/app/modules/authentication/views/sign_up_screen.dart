@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/verify_email_screen.dart';
@@ -7,6 +9,7 @@ import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart'
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/image_picker.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +31,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController numberCtrl = TextEditingController();
   SignUpController signUpController = SignUpController();
+  File? image;
+  final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
 
   bool _obscureText = true;
-
+  bool isStudentChecked = false;
   bool showButton = false;
 
   void toggleShowButton() {
@@ -98,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (value!.isEmpty) {
                           return 'Enter mobile number';
                         }
-    
+
                         return null;
                       },
                       decoration: InputDecoration(
@@ -164,6 +169,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
+                    heightBox12,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Checkbox(
+                          value: isStudentChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isStudentChecked = value!;
+                            });
+                          },
+                        ),
+                        Text('Are you student?'),
+                      ],
+                    ),
+                    // image show kora theke baki ...
+                    heightBox12,
+                    Align(
+                      alignment: Alignment.center,
+                      child: InkWell(
+                        onTap: () {
+                          _imagePickerHelper.showAlertDialog(context,
+                              (File pickedImage) {
+                            setState(() {
+                              image = pickedImage;
+                            });
+                          });
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 220,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Add your identification'),
+                              widthBox4,
+                              Icon(Icons.upload)
+                            ],
+                          )),
+                        ),
+                      ),
+                    ),
+                    heightBox14,
                     AgreeConditionCheck(
                       onChanged: (value) {
                         setState(() {

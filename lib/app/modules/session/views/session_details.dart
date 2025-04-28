@@ -14,7 +14,7 @@ class SessionDetailsScreen extends StatefulWidget {
   static const String routeName = '/session-details-screen';
   const SessionDetailsScreen({super.key, required this.sessionId});
 
-  final String sessionId;
+  final String sessionId; 
 
   @override
   State<SessionDetailsScreen> createState() => _SessionDetailsScreenState();

@@ -111,6 +111,17 @@ class _ArticleScreenState extends State<ArticleScreen> {
                 if (controller.inProgress && controller.page == 1) {
                   return Center(child: CircularProgressIndicator());
                 }
+
+                if (controller.errorMessage!.contains("access") == true) {
+                  Center(
+                    child: Container(
+                      height: 200,
+                      width: 200,
+                      color: Colors.orange,
+                    ),
+                  );
+                }
+
                 return Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,

@@ -96,7 +96,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             ],
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height, 
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
               padding: EdgeInsets.zero,
