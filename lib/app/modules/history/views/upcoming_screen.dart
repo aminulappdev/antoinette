@@ -114,7 +114,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     DateFormat('MMMM dd, yyyy').format(bookingDate);
 
                 var title = controller.bookingList[index].session?.title;
-                if (today.isAfter(dateString)) {
+                if (today.isAfter(bookingDate)) {
                   if (controller.bookingList[index].paymentStatus == 'paid') {
                     if (searcCtrl.text.isEmpty) {
                       return TwoOptionCard(
@@ -126,7 +126,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         name: 'Dr. Jane Smith',
                         therapyType:
                             '${controller.bookingList[index].therapyType}',
-                        date: formateBookingDate,
+                        date: formateBookingDate, 
                         time:
                             '${controller.bookingList[index].slot?.startTime}',
                         imagePath:
