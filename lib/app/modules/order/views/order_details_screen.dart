@@ -1,7 +1,12 @@
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+import 'package:antoinette/app/modules/order/controllers/cancel_order_controller.dart';
 import 'package:antoinette/app/modules/order/controllers/order_details_controller.dart';
+
 import 'package:antoinette/app/modules/product/widgets/price_row.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
+import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,6 +24,8 @@ class OrderDetailsScreen extends StatefulWidget {
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   final OrderDetailsController orderDetailsController =
       Get.find<OrderDetailsController>();
+  final CancelOrderController cancelOrderController =
+      Get.find<CancelOrderController>();
 
   @override
   void initState() {
@@ -163,7 +170,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         price: '${controller.orderDetailsData!.deliveryCharge}',
                         nameSize: 14,
                         priceSize: 14),
-                        heightBox5,
+                    heightBox5,
                     Container(
                       height: 1,
                       width: MediaQuery.of(context).size.width,
@@ -171,7 +178,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
                     heightBox10,
                     PriceRow(
-                        name: 'Total', price: '${controller.orderDetailsData!.amount}', nameSize: 14, priceSize: 14),
+                        name: 'Total',
+                        price: '${controller.orderDetailsData!.amount}',
+                        nameSize: 14,
+                        priceSize: 14),
+                    heightBox30,
+                   controller.orderDetailsData!.status == 'pending' ? GradientElevatedButton(onPressed: () {
+                      cancelOrder(widget.orderId);
+                    }, text: 'Cancel order') : Container(),
                   ],
                 ),
               ),
@@ -180,5 +194,21 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         );
       }),
     );
+  }
+
+  Future<void> cancelOrder(String orderId) async {
+    final bool isSuccess = await cancelOrderController.cancelOrder(orderId);
+
+    if (isSuccess) {
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, MainButtonNavbarScreen.routeName, (route) => false);
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context,
+            cancelOrderController.errorMessage ?? 'Login failed', true);
+      }
+    }
   }
 }

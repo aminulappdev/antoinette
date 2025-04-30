@@ -2,6 +2,7 @@ import 'package:antoinette/app/modules/order/controllers/all_orders_controllers.
 import 'package:antoinette/app/modules/order/controllers/payment_booking_id.dart';
 import 'package:antoinette/app/modules/order/views/order_details_screen.dart';
 import 'package:antoinette/app/modules/order/widget/my_order_card.dart';
+import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/product/views/product_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
@@ -22,6 +23,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
   final AllOrderController allOrderController = Get.find<AllOrderController>();
   final PaymentByBookingIDController paymentByBookingIDController =
       Get.find<PaymentByBookingIDController>();
+  final PaymentService paymentService = PaymentService();
 
   String selectedType = "All";
   final List<String> options = [
@@ -112,8 +114,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                     final imageUrl = (product?.images.isNotEmpty ?? false)
                         ? product!.images[0].url
                         : '';
-                    
-                                   
+
                     return MyOrderCard(
                       imagePath: imageUrl!,
                       price: '${order.amount}',
@@ -134,9 +135,10 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                         order.status == 'delivered'
                             ? goToProductPage()
                             : makePayment(
-                                '${controller.allOrderModel?.data[index].id}');
+                                '${controller.allOrderModel?.data[index].id}',
+                                '${controller.allOrderModel!.data[index].user!.id}');
                       },
-                      secondBTNName: order.status == 'pending' 
+                      secondBTNName: order.status == 'pending'
                           ? 'Make Payment'
                           : 'Continue shoping',
                     );
@@ -150,28 +152,49 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
     );
   }
 
+  // void goToProductPage() {
+  //   Navigator.pushNamed(context, ProductScreen.routeName, arguments: true);
+  // }
+
+  // void makePayment(String id) async {
+  //   bool isSuccess =
+  //       await paymentByBookingIDController.getPaymentByBookingId(id);
+
+  //   if (isSuccess) {
+  //     if (paymentByBookingIDController.paymentByBookingIdModel != null &&
+  //         paymentByBookingIDController.paymentByBookingIdModel!.data != null &&
+  //         paymentByBookingIDController
+  //                 .paymentByBookingIdModel!.data!.paymentIntentId !=
+  //             null) {
+  //       var paymentIndentId = paymentByBookingIDController
+  //           .paymentByBookingIdModel!.data!.paymentIntentId!;
+  //       print('paymentindent id : $paymentIndentId');
+  //     } else {
+  //       print('Error: Payment Intent ID is missing inside success response.');
+  //     }
+  //   } else {
+  //     print('Error: Failed to fetch payment info.');
+  //   }
+  // }
+
   void goToProductPage() {
     Navigator.pushNamed(context, ProductScreen.routeName, arguments: true);
   }
 
-  void makePayment(String id) async {
-    bool isSuccess =
-        await paymentByBookingIDController.getPaymentByBookingId(id);
+  void makePayment(String orderId, String userId) async {
+    await paymentService.payment(
+      context,
+      'Order',
+      userId,
+      orderId,
+    );
+  }
 
-    if (isSuccess) {
-      if (paymentByBookingIDController.paymentByBookingIdModel != null &&
-          paymentByBookingIDController.paymentByBookingIdModel!.data != null &&
-          paymentByBookingIDController
-                  .paymentByBookingIdModel!.data!.paymentIntentId !=
-              null) {
-        var paymentIndentId = paymentByBookingIDController
-            .paymentByBookingIdModel!.data!.paymentIntentId!;
-        print('paymentindent id : $paymentIndentId');
-      } else {
-        print('Error: Payment Intent ID is missing inside success response.');
-      }
-    } else {
-      print('Error: Failed to fetch payment info.');
-    }
+  @override
+  void dispose() {
+    allOrderController.getOrderList();
+    goToProductPage();
+    makePayment('', '');
+    super.dispose();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/page_view.dart';
+import 'package:antoinette/app/modules/onboarding/views/pannic_button/pannic_onboarding_screen.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +105,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       curve: Curves.easeInOut,
                     );
                   } else {
-                    Navigator.pushNamed(context, SignInScreen.routeName);
+                    Navigator.pushNamed(context, PannicOnboardingScreen.routeName);
                   }
                 },
                 child: Row(

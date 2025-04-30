@@ -1,29 +1,26 @@
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
-import 'package:antoinette/app/modules/onboarding/views/pannic_button/pannic_onboarding_screen.dart';
-import 'package:antoinette/app/modules/onboarding/widgets/bullet_point_widget.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OnboardingPage extends StatelessWidget {
-  final String title;
-  final String subtitle;
+class PannicOnboardingPage extends StatelessWidget {
+
   final bool onBoardingRow;
   final bool showBackButton;
-  final double imageHeight;
+  
   final PageController pageController; 
+  final Widget content;
 
-  const OnboardingPage({
+  const PannicOnboardingPage({
     super.key,
-    required this.title,
-    required this.subtitle,
+ 
     required this.onBoardingRow,
-    required this.imageHeight,
+   
     required this.showBackButton,
-    required this.pageController, 
+    required this.pageController, required this.content, 
   });
 
   @override
@@ -58,7 +55,7 @@ class OnboardingPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, PannicOnboardingScreen.routeName);
+                      Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
                     },
                     child: Text(
                       'Skip',
@@ -75,7 +72,7 @@ class OnboardingPage extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
                   onTap: () {
-                      Navigator.pushNamed(context, PannicOnboardingScreen.routeName);
+                      Navigator.pushNamed(context, SignInScreen.routeName);
                   },
                   child: Text(
                     'Skip',
@@ -89,25 +86,8 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
             heightBox100,
-            heightBox24,
-            Text(
-                title,
-                style: TextStyle(
-                    fontFamily: 'Cormorant Garamond', fontSize: 40.sp),
-                textAlign: TextAlign.center,
-              ),
-        
-            heightBox12,
-            Visibility(
-              visible: !onBoardingRow,
-              replacement: BulletPointsWidget(),
-              child: Text(
-                subtitle,
-                style: TextStyle(
-                    fontFamily: 'Flatlion Personal', fontSize: 60.sp),
-                textAlign: TextAlign.center,
-              ),
-            ),
+          
+            content
           ],
         ),
       ),

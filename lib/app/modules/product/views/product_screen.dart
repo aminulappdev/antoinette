@@ -146,12 +146,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               );
                             },
                           ),
-                        ),
-                        Visibility(
-                          replacement: Container(),
-                          visible: allProcuctController.inProgress,
-                          child: CircularProgressIndicator(),
-                        ),
+                        ),                      
                       ],
                     );
                   },

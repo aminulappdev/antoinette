@@ -31,6 +31,7 @@ import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/dear_diary_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
+import 'package:antoinette/app/modules/onboarding/views/pannic_button/pannic_onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/splash_screen.dart';
 import 'package:antoinette/app/modules/order/views/oder_screen.dart';
 import 'package:antoinette/app/modules/order/views/order_details_screen.dart';
@@ -67,6 +68,7 @@ class AppRoutes {
     // Onboarding section
     OnboardingScreen.routeName: (context) => const OnboardingScreen(),
     NotificationScreen.routeName: (context) => const NotificationScreen(),
+    PannicOnboardingScreen.routeName: (context) => const PannicOnboardingScreen(),
     // OrderBarScreen.routeName: (context) => const OrderBarScreen(),
 
     // Authentication section

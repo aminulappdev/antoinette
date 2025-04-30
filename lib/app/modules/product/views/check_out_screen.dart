@@ -222,7 +222,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 controller.profileData?.contactNumber!;
                                 controller.profileData?.email!;
     
-                                onTapToNextButton(
+                                productOrderFunction(
                                   controller.profileData!.sId!,
                                   '10',
                                   controller.profileData!.name!,
@@ -349,7 +349,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     );
   }
 
-  Future<void> onTapToNextButton(
+  Future<void> productOrderFunction(
       String userId,
       String deliveryCharge,
       String billingName,
