@@ -45,6 +45,7 @@ class Urls {
   static const String allProductUrl = '$_baseUrl/products';
   static const String reschduleBookingtUrl = '$_baseUrl/products';
   static const String refundPaymentUrl = '$_baseUrl/payments/refound-payment';
+  static const String pannicUrl = '$_baseUrl/trusted-contracts/send-message';
 
 
   // static String allProductUrl(

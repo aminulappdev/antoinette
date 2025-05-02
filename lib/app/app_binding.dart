@@ -17,6 +17,7 @@ import 'package:antoinette/app/modules/chatting/controllers/message_send_control
 import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_controller.dart';
 import 'package:antoinette/app/modules/common/controllers/all_notification_controllers.dart';
+import 'package:antoinette/app/modules/common/controllers/pannic_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/add_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
@@ -121,6 +122,7 @@ class ControllerBinder extends Bindings {
     Get.put(CancelOrderController());
     Get.put(StudentSignUpController());
     Get.put(RefundPaymentController());
+    Get.put(PannicController());
 
   
     

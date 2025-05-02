@@ -242,7 +242,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
               }),
               SizedBox(height: 10.h),
               Center(
-                child: InkWell(
+                child: InkWell( 
                   onTap: () async {
                     await requestLocationPermission();
                     await getCurrentLocation();
