@@ -43,7 +43,7 @@ class AllCheckInController extends GetxController {
       
     //  print('my data ${response.responseData}'); 
     //  print('my data ${_allContactModel!.data?[0].name}');
-     print(checkInList?[0].sId);
+    
       
     } else {
       _errorMessage = response.errorMessage;

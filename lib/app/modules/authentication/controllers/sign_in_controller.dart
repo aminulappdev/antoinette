@@ -33,7 +33,7 @@ class SignInController extends GetxController {
 
       final loginModel = LoginModel.fromJson(response.responseData);
       // print('my response data .....................\n........................');
-      box.write('user-login-access-token', loginModel.data!.accessToken);
+      box.write('user-login-access-token', loginModel.data!.accessToken);    
       // print(loginModel.data!.accessToken);
     } else {
       _errorMessage = response.errorMessage;

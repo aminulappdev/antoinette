@@ -112,10 +112,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     controller.bookingList[index].slot!.date!;
                 String formateBookingDate =
                     DateFormat('MMMM dd, yyyy').format(bookingDate);
-
-                var title = controller.bookingList[index].session?.title;
-                if (today.isAfter(bookingDate)) {
-                  if (controller.bookingList[index].paymentStatus == 'paid') {
+                if (today.isBefore(bookingDate)) {
+                  if (controller.bookingList[index].paymentStatus == 'paid' && controller.bookingList[index].status == 'confirmed') {
                     if (searcCtrl.text.isEmpty) {
                       return TwoOptionCard(
                         op1Name: 'Reschedule',
@@ -138,9 +136,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             context,
                             RescheduleSessionScreen.routeName,
                             arguments: {
-                              'bookingId': controller.bookingList[index].id,
+                               'bookingId': controller.bookingList[index].id,
                               'sessionId':
-                                  controller.bookingList[index].session?.id,
+                                  controller.bookingList[ index].session?.id,
                             },
                           );
                         },

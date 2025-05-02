@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/authentication/controllers/student_sign_up_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_details_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_controller.dart';
@@ -30,13 +31,14 @@ import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_cont
 import 'package:antoinette/app/modules/dear_diary/controllers/set_password_controller.dart';
 import 'package:antoinette/app/modules/history/controllers/all_booking_controller.dart';
 import 'package:antoinette/app/modules/history/controllers/cancel_booking_controller.dart';
+import 'package:antoinette/app/modules/history/controllers/refumd_payment_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_articles_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/all_podcast_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/poscast_details.dart';
 import 'package:antoinette/app/modules/order/controllers/all_orders_controllers.dart';
 import 'package:antoinette/app/modules/order/controllers/cancel_order_controller.dart';
 import 'package:antoinette/app/modules/order/controllers/order_details_controller.dart';
-import 'package:antoinette/app/modules/order/controllers/payment_booking_id.dart';
+import 'package:antoinette/app/modules/history/controllers/payment_booking_id.dart';
 import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/confirmed_payment_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_controller.dart';
@@ -117,6 +119,8 @@ class ControllerBinder extends Bindings {
     Get.put(PaymentURLController());
     Get.put(PaymentByBookingIDController());
     Get.put(CancelOrderController());
+    Get.put(StudentSignUpController());
+    Get.put(RefundPaymentController());
 
   
     

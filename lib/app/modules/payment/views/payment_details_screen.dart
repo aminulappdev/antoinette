@@ -85,7 +85,7 @@ class _PaymentDetailsScreen extends State<PaymentDetailsScreen> {
                             PriceRow(
                               name: 'Transaction ID',
                               price:
-                                  '${controller.confirmedPaymentResponseModel?.data?.transactionId}',
+                                  '${controller.confirmedPaymentResponseModel?.data?.dataId}',
                               nameSize: 14,
                               priceSize: 14,
                             ),

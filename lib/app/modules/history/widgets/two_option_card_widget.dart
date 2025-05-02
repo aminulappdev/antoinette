@@ -59,14 +59,17 @@ class TwoOptionCard extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
-                              // image: NetworkImage(imagePath),
-                              image: AssetImage(AssetsPath.womenBookRead),
+                              image: NetworkImage(imagePath),
                               fit: BoxFit.fill)),
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
                           status,
-                          style: TextStyle(color:  Colors.red, fontSize: 12),
+                          style: TextStyle(
+                              color: status == 'confirmed'
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontSize: 12),
                         ),
                       ),
                     ),

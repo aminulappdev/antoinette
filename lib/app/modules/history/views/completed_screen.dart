@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/history/controllers/all_booking_controller.dart';
 import 'package:antoinette/app/modules/history/widgets/rebook_card_widget.dart';
+import 'package:antoinette/app/modules/history/widgets/two_option_card_widget.dart';
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
@@ -118,150 +119,60 @@ class _CompletedScreenState extends State<CompletedScreen> {
                 String formateBookingDate =
                     DateFormat('MMMM dd, yyyy').format(bookingDate);
                 var title = controller.bookingList[index].session?.title;
-                // if (controller.bookingList[index].paymentStatus == 'paid') {
-                //   if (today.isBefore(bookingDate)) {
-                //     if (searcCtrl.text.isEmpty) {
-                //       // if (controller.bookingList[index].status == 'confirmed') {
-                //       //   return RebookCard(
-                //       //     status: '${controller.bookingList[index].status}',
-                //       //     title:
-                //       //         '${controller.bookingList[index].session?.title}',
-                //       //     name: 'Dr. Jane Smith',
-                //       //     therapyType:
-                //       //         '${controller.bookingList[index].therapyType}',
-                //       //     date: formateBookingDate,
-                //       //     time:
-                //       //         '${controller.bookingList[index].slot?.startTime}',
-                //       //     imagePath:
-                //       //         '${controller.bookingList[index].session?.thumbnail}',
-                //       //     price: '${controller.bookingList[index].amount}',
-                //       //     ontap: () {
-                //       //       Navigator.pushNamed(
-                //       //           context, SessionDetailsScreen.routeName,
-                //       //           arguments:
-                //       //               controller.bookingList[index].session?.id);
-                //       //     },
-                //       //   );
-                //       // } else if (controller.bookingList[index].status ==
-                //       //     'cancelled') {
-                //       //   return TwoOptionCard(
-                //       //     op1Name: 'Rebook',
-                //       //     op2Name: 'View Refund',
-                //       //     status: '${controller.bookingList[index].status}',
-                //       //     title:
-                //       //         '${controller.bookingList[index].session?.title}',
-                //       //     name: 'Dr. Jane Smith',
-                //       //     therapyType:
-                //       //         '${controller.bookingList[index].therapyType}',
-                //       //     date: formateBookingDate,
-                //       //     time:
-                //       //         '${controller.bookingList[index].slot?.startTime}',
-                //       //     imagePath:
-                //       //         '${controller.bookingList[index].session?.thumbnail}',
-                //       //     price: '${controller.bookingList[index].amount}',
-                //       //     op1Ontap: () {
-                //       //       Navigator.pushNamed(
-                //       //           context, SessionDetailsScreen.routeName,
-                //       //           arguments:
-                //       //               controller.bookingList[index].session?.id);
-                //       //     },
-                //       //     op2Ontap: () {},
-                //       //   );
-                //       // }
-                //       print('Title is : ${controller.bookingList[index].session?.title}');
-                //       return RebookCard(
-                //           status: '${controller.bookingList[index].status}',
-                //           title:
-                //               '${controller.bookingList[index].session?.title}',
-                //           name: 'Dr. Jane Smith',
-                //           therapyType:
-                //               '${controller.bookingList[index].therapyType}',
-                //           date: formateBookingDate,
-                //           time:
-                //               '${controller.bookingList[index].slot?.startTime}',
-                //           imagePath:
-                //               '${controller.bookingList[index].session?.thumbnail}',
-                //           price: '${controller.bookingList[index].amount}',
-                //           ontap: () {
-                //             Navigator.pushNamed(
-                //                 context, SessionDetailsScreen.routeName,
-                //                 arguments:
-                //                     controller.bookingList[index].session?.id);
-                //           },
-                //         );
-                //     } else if (title!
-                //         .toLowerCase()
-                //         .contains(searcCtrl.text.toLowerCase())) {
-                //       if (controller.bookingList[index].status == 'confirmed') {
-                //         return RebookCard(
-                //           status: '${controller.bookingList[index].status}',
-                //           title:
-                //               '${controller.bookingList[index].session?.title}',
-                //           name: 'Dr. Jane Smith',
-                //           therapyType:
-                //               '${controller.bookingList[index].therapyType}',
-                //           date: formateBookingDate,
-                //           time:
-                //               '${controller.bookingList[index].slot?.startTime}',
-                //           imagePath:
-                //               '${controller.bookingList[index].session?.thumbnail}',
-                //           price: '${controller.bookingList[index].amount}',
-                //           ontap: () {
-                //             Navigator.pushNamed(
-                //                 context, SessionDetailsScreen.routeName,
-                //                 arguments:
-                //                     controller.bookingList[index].session?.id);
-                //           },
-                //         );
-                //       } else if (controller.bookingList[index].status ==
-                //           'cancelled') {
-                //         return TwoOptionCard(
-                //           op1Name: 'Rebook',
-                //           op2Name: 'View Refund',
-                //           status: '${controller.bookingList[index].status}',
-                //           title:
-                //               '${controller.bookingList[index].session?.title}',
-                //           name: 'Dr. Jane Smith',
-                //           therapyType:
-                //               '${controller.bookingList[index].therapyType}',
-                //           date: formateBookingDate,
-                //           time:
-                //               '${controller.bookingList[index].slot?.startTime}',
-                //           imagePath:
-                //               '${controller.bookingList[index].session?.thumbnail}',
-                //           price: '${controller.bookingList[index].amount}',
-                //           op1Ontap: () {
-                //             Navigator.pushNamed(
-                //                 context, SessionDetailsScreen.routeName,
-                //                 arguments:
-                //                     controller.bookingList[index].session?.id);
-                //           },
-                //           op2Ontap: () {},
-                //         );
-                //       } else {
-                //         return Container();
-                //       }
-                //     }
-                //   }
 
-                // }
-
-                return RebookCard(
-                  status: '${controller.bookingList[index].status}',
-                  title: '${controller.bookingList[index].session?.title}',
-                  name: 'Dr. Jane Smith',
-                  therapyType: '${controller.bookingList[index].therapyType}',
-                  date: formateBookingDate,
-                  time: '${controller.bookingList[index].slot?.startTime}',
-                  imagePath:
-                      '${controller.bookingList[index].session?.thumbnail}',
-                  price: '${controller.bookingList[index].amount}',
-                  ontap: () {
-                    Navigator.pushNamed(context, SessionDetailsScreen.routeName,
-                        arguments: controller.bookingList[index].session?.id);
-                  },
-                );
-                // return Container();
+                if (today.isAfter(bookingDate)) {
+                  if (searcCtrl.text.isEmpty) {
+                    if (controller.bookingList[index].status == 'confirmed') {
+                      return RebookCard(
+                        status: '${controller.bookingList[index].status}',
+                        title:
+                            '${controller.bookingList[index].session?.title}',
+                        name: 'Dr. Jane Smith',
+                        therapyType:
+                            '${controller.bookingList[index].therapyType}',
+                        date: formateBookingDate,
+                        time:
+                            '${controller.bookingList[index].slot?.startTime}',
+                        imagePath:
+                            '${controller.bookingList[index].session?.thumbnail}',
+                        price: '${controller.bookingList[index].amount}',
+                        ontap: () {
+                          Navigator.pushNamed(
+                              context, SessionDetailsScreen.routeName,
+                              arguments:
+                                  controller.bookingList[index].session?.id);
+                        },
+                      );
+                    }
+                  } else if (title!
+                      .toLowerCase()
+                      .contains(searcCtrl.text.toLowerCase())) {
+                    if (controller.bookingList[index].status == 'confirmed') {
+                      return RebookCard(
+                        status: '${controller.bookingList[index].status}',
+                        title:
+                            '${controller.bookingList[index].session?.title}',
+                        name: 'Dr. Jane Smith',
+                        therapyType:
+                            '${controller.bookingList[index].therapyType}',
+                        date: formateBookingDate,
+                        time:
+                            '${controller.bookingList[index].slot?.startTime}',
+                        imagePath:
+                            '${controller.bookingList[index].session?.thumbnail}',
+                        price: '${controller.bookingList[index].amount}',
+                        ontap: () {
+                          Navigator.pushNamed(
+                              context, SessionDetailsScreen.routeName,
+                              arguments:
+                                  controller.bookingList[index].session?.id);
+                        },
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }
+                }
               },
             ),
           ),

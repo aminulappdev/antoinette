@@ -50,7 +50,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   @override
   void initState() {
     profileController.getProfileData();
-    deliveryAddress = profileController.profileData!.homeAddress!;
+    deliveryAddress = profileController.profileData!.homeAddress ?? 'Please update your address';
     myUserId = profileController.profileData!.id!;
     price = widget.productModel.amount!;
     discount = widget.productModel.discount!;

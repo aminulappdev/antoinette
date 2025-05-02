@@ -35,102 +35,104 @@ class _ContactScreenState extends State<ContactScreen> {
     return Scaffold(
       body: Padding(
           padding: EdgeInsets.all(16.0.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              heightBox20,
-              CustomAppBar(name: 'Trusted Contacts'),
-              heightBox12,
-              GetBuilder<AllContactController>(builder: (controller) {
-                if (controller.inProgress) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return SizedBox(
-                    height: 550,
-                    child: ListView.builder(
-                      itemCount: controller.contactList?.length,
-                      itemBuilder: (context, index) {
-                        Map<String,dynamic> value = {
-                          'number' : controller.contactList?[index].contractNumber,
-                          'contactId' : controller.contactList?[index].sId,
-                        };
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 180.w,
-                              child: Text(
-                                '${controller.contactList?[index].name}',
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                heightBox20,
+                CustomAppBar(name: 'Trusted Contacts'),
+                heightBox12,
+                GetBuilder<AllContactController>(builder: (controller) {
+                  if (controller.inProgress) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return SizedBox(
+                      height: 550,
+                      child: ListView.builder(
+                        itemCount: controller.contactList?.length,
+                        itemBuilder: (context, index) {
+                          Map<String,dynamic> value = {
+                            'number' : controller.contactList?[index].contractNumber,
+                            'contactId' : controller.contactList?[index].sId,
+                          };
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 180.w,
+                                child: Text(
+                                  '${controller.contactList?[index].name}',
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              Text(
+                                '${controller.contactList?[index].contractNumber}',
                                 style: GoogleFonts.poppins(
-                                    fontSize: 17.sp,
                                     fontWeight: FontWeight.w500),
                               ),
-                            ),
-                            Text(
-                              '${controller.contactList?[index].contractNumber}',
-                              style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8.h),
-                              child: Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.pushNamed(context,
-                                          EditContactScreen.routeName,
-                                          arguments: value);
-                                    },
-                                    child: Container(
-                                      height: 28.h,
-                                      width: 28.h,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          border:
-                                              Border.all(color: Colors.blue)),
-                                      child: Icon(
-                                        Icons.edit,
-                                        size: 20.h,
-                                        color: Colors.blue,
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.h),
+                                child: Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(context,
+                                            EditContactScreen.routeName,
+                                            arguments: value);
+                                      },
+                                      child: Container(
+                                        height: 28.h,
+                                        width: 28.h,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            border:
+                                                Border.all(color: Colors.blue)),
+                                        child: Icon(
+                                          Icons.edit,
+                                          size: 20.h,
+                                          color: Colors.blue,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  widthBox8,
-                                  InkWell(
-                                    onTap: () {
-                                      deleteContact(
-                                          '${controller.contactList?[index].sId}');
-                                    },
-                                    child: Container(
-                                      height: 28.h,
-                                      width: 28.h,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          border: Border.all(
-                                              color: Colors.redAccent)),
-                                      child: Icon(
-                                        Icons.delete,
-                                        size: 20.h,
-                                        color: Colors.redAccent,
+                                    widthBox8,
+                                    InkWell(
+                                      onTap: () {
+                                        deleteContact(
+                                            '${controller.contactList?[index].sId}');
+                                      },
+                                      child: Container(
+                                        height: 28.h,
+                                        width: 28.h,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            border: Border.all(
+                                                color: Colors.redAccent)),
+                                        child: Icon(
+                                          Icons.delete,
+                                          size: 20.h,
+                                          color: Colors.redAccent,
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    ));
-              }),
-              GradientElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AddContactScreen.routeName);
-                  },
-                  text: '+ Add Contact')
-            ],
+                            ],
+                          );
+                        },
+                      ));
+                }),
+                GradientElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, AddContactScreen.routeName);
+                    },
+                    text: '+ Add Contact')
+              ],
+            ),
           )),
     );
   }

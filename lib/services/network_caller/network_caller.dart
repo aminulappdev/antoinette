@@ -53,7 +53,9 @@ class NetworkCaller {
   }
 
   Future<NetworkResponse> patchRequest(String url,
-      {Map<String, dynamic>? queryParams, String? accesToken}) async {
+      {Map<String, dynamic>? queryParams,
+      String? accesToken,
+      Map<String, dynamic>? body}) async {
     try {
       _logRequest(url);
 
@@ -65,14 +67,16 @@ class NetworkCaller {
       }
       Uri uri = Uri.parse(url);
       Map<String, String> headers = {
-        'content-type': 'application-json',
+        'content-type': 'application/json',
       };
 
       if (accesToken != null) {
         headers['Authorization'] = accesToken;
       }
 
-      var response = await patch(uri, headers: headers);
+      _logRequest(url, headers, body);
+
+      var response = await patch(uri, headers: headers, body: jsonEncode(body));
       _logResponse(url, response.statusCode, response.headers, response.body);
       if (response.statusCode == 200) {
         final debugMessage = jsonDecode(response.body);

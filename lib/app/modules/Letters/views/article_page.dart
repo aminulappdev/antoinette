@@ -106,9 +106,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
               builder: (controller) {
                 if (controller.inProgress && controller.page == 1) {
                   return const Center(child: CircularProgressIndicator());
-                }
-
-                if (controller.errorMessage!.contains("Access denied!") ==
+                } else if (controller.errorMessage
+                        ?.contains("Access denied!") ==
                     true) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     showDialog(
@@ -137,6 +136,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                               width: 120.w,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
+                                // ignore: deprecated_member_use
                                 color: const Color(0xff305FA1).withOpacity(0.1),
                                 border:
                                     Border.all(color: const Color(0xff305FA1)),
@@ -183,97 +183,98 @@ class _ArticleScreenState extends State<ArticleScreen> {
                   });
 
                   return const Center(child: Text(""));
-                }
-
-                return Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: controller.articlesList.length,
-                    itemBuilder: (context, index) {
-                      if (controller.articlesList[index].status ==
-                          'published') {
-                        var title =
-                            controller.articlesList[index].category?.title;
-                        if (searcCtrl.text.isEmpty ||
-                            (title != null &&
-                                title
-                                    .toLowerCase()
-                                    .contains(searcCtrl.text.toLowerCase()))) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 2.h),
-                            child: InkWell(
-                              onTap: () {
-                                getArticleScreen(
-                                    '${controller.articlesList[index].sId}');
-                              },
-                              child: Container(
-                                height: 200.h,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  image: DecorationImage(
-                                    image: controller.articlesList[index]
-                                                .thumbnail !=
-                                            null
-                                        ? NetworkImage(
-                                            '${controller.articlesList[index].thumbnail}')
-                                        : const AssetImage(
-                                                AssetsPath.womenBookRead)
-                                            as ImageProvider,
-                                    fit: BoxFit.fill,
+                } else if (controller.allProductList.isEmpty) {
+                  return Center(child: Text('No data available'));
+                } else {
+                  return Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: controller.articlesList.length,
+                      itemBuilder: (context, index) {
+                        if (controller.articlesList[index].status ==
+                            'published') {
+                          var title =
+                              controller.articlesList[index].category?.title;
+                          if (searcCtrl.text.isEmpty ||
+                              (title != null &&
+                                  title.toLowerCase().contains(
+                                      searcCtrl.text.toLowerCase()))) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 2.h),
+                              child: InkWell(
+                                onTap: () {
+                                  getArticleScreen(
+                                      '${controller.articlesList[index].sId}');
+                                },
+                                child: Container(
+                                  height: 200.h,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    image: DecorationImage(
+                                      image: controller.articlesList[index]
+                                                  .thumbnail !=
+                                              null
+                                          ? NetworkImage(
+                                              '${controller.articlesList[index].thumbnail}')
+                                          : const AssetImage(
+                                                  AssetsPath.womenBookRead)
+                                              as ImageProvider,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(18.0.h),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        height: 27.h,
-                                        width: 200.w,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            color: const Color.fromARGB(
-                                                222, 255, 255, 255)),
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 8.w),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              '${controller.articlesList[index].category?.title}',
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 10.sp),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(18.0.h),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          height: 27.h,
+                                          width: 200.w,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: const Color.fromARGB(
+                                                  222, 255, 255, 255)),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8.w),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                '${controller.articlesList[index].category?.title}',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 10.sp),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Text(
-                                        maxLines: 2,
-                                        '${controller.articlesList[index].title}',
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 12.sp,
-                                            color: Colors.white),
-                                      ),
-                                    ],
+                                        Text(
+                                          maxLines: 2,
+                                          '${controller.articlesList[index].title}',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 12.sp,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         }
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                );
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  );
+                }
               },
             )
           ],
@@ -301,5 +302,4 @@ class _ArticleScreenState extends State<ArticleScreen> {
       }
     }
   }
-  
 }

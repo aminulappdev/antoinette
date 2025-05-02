@@ -14,6 +14,7 @@ import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
 import 'package:antoinette/app/modules/session/views/session_screen.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,10 +30,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   AllProcuctController allProcuctController = Get.find<AllProcuctController>();
   AllSessionController allSessionController = Get.find<AllSessionController>();
+  ProfileController profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
-    Get.find<ProfileController>().getProfileData();
+    profileController.getProfileData();
+    box.write('user-name', profileController.profileModel?.data?.name);  
     allSessionController.getSessionList();
     print('function er age');
     allProcuctController.getProductList();
@@ -103,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   time: getGreeting(),
                   name: controller.inProgress
                       ? ''
-                      : '${controller.profileData?.name} 👋',
+                      : '${controller.profileData?.name ?? ''} 👋',
                 ),
                 Padding(
                   padding:
@@ -148,23 +151,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 GetBuilder<AllSessionController>(builder: (controller) {
                   if (controller.inProgress && controller.page == 1) {
                     return Center(child: CircularProgressIndicator());
+                  } else if (controller.sessionsList.isEmpty) {
+                    return SizedBox(
+                      height: 100,
+                      child: Center(child: Text('No data available')));
+                  } else {
+                    return SizedBox(
+                      height: 175,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.w),
+                            child: PsychoSupportCard(
+                              sessionItemModel: controller.sessionsList[index],
+                            ),
+                          );
+                        },
+                      ),
+                    );
                   }
-                  return SizedBox(
-                    height: 175,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
-                          child: PsychoSupportCard(
-                            sessionItemModel: controller.sessionsList[index],
-                          ),
-                        );
-                      },
-                    ), 
-                  );
                 }),
                 heightBox12,
                 SeeAllSection(
@@ -178,23 +186,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 GetBuilder<AllProcuctController>(builder: (controller) {
                   if (controller.inProgress) {
                     return Center(child: CircularProgressIndicator());
+                  } else if (controller.allProductList.isEmpty) {
+                    return SizedBox(
+                      height: 100,
+                      child: Center(child: Text('No data available')));
+                  } else {
+                    return SizedBox(
+                      height: 134.h,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.w),
+                            child: ProductCard(
+                              productsModel: controller.productsList[index],
+                            ),
+                          );
+                        },
+                      ),
+                    );
                   }
-                  return SizedBox(
-                    height: 134.h,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
-                          child: ProductCard(
-                            productsModel: controller.productsList[index],
-                          ),
-                        );
-                      },
-                    ),
-                  );
                 }),
               ],
             ),

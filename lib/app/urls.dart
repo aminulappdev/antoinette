@@ -17,6 +17,7 @@ class Urls {
   static const String allContacturl = '$_baseUrl/trusted-contracts';
   static const String profileUrl = '$_baseUrl/users/my-profile';
   static const String updateProfileUrl = '$_baseUrl/users/update-my-profile';
+  static const String studentSignUpUrl = '$_baseUrl/users/register-student';
   static const String addCheckIn = '$_baseUrl/check-in';
   static const String allCheckInUrl = '$_baseUrl/check-in';
   static const String contentUrl = '$_baseUrl/contents';
@@ -43,6 +44,8 @@ class Urls {
   static const String sendMessageUrl = '$_baseUrl/messages/send-messages';
   static const String allProductUrl = '$_baseUrl/products';
   static const String reschduleBookingtUrl = '$_baseUrl/products';
+  static const String refundPaymentUrl = '$_baseUrl/payments/refound-payment';
+
 
   // static String allProductUrl(
   //   String searchQuery,

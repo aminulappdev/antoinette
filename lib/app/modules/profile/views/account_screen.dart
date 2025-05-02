@@ -71,7 +71,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     child: Image.file(
                                       image!,
                                       width: 50.h,
-                                      height: 50.h,
+                                      height: 50.h, 
                                       fit: BoxFit.cover,
                                     ),
                                   )
@@ -206,6 +206,7 @@ class _AccountScreenState extends State<AccountScreen> {
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await updateProfileController.updateProfile(
+        isNameUpdate: true,
         name: nameCtrl.text,
         number: numberCtrl.text,
         image: image, // 🟢 এটুকু যোগ করো

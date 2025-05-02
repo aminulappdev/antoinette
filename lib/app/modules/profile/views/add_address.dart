@@ -35,12 +35,13 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GetBuilder<ProfileController>(builder: (controller) {
+        print('address type is : ${widget.type}');
         if (widget.type == 'Home') {
-          addressCtrl.text = controller.profileData!.homeAddress!;
+          addressCtrl.text = controller.profileData!.homeAddress ?? '';
         } else if (widget.type == 'Office') {
-          addressCtrl.text = controller.profileData!.officeAddress!;
+          addressCtrl.text = controller.profileData!.officeAddress ?? '';
         } else if (widget.type == 'Delivery') {
-          addressCtrl.text = controller.profileData!.deliveryAddress!;
+          addressCtrl.text = controller.profileData!.deliveryAddress ?? '';
         }
         return Padding(
           padding: EdgeInsets.all(16.0.h),

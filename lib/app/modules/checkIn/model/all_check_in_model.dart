@@ -1,141 +1,143 @@
 class AllCheckInModel {
-  bool? success;
-  int? statusCode;
-  String? message;
-  Meta? meta;
-  List<CheckInItemModel>? data;
+    AllCheckInModel({
+        required this.success,
+        required this.statusCode,
+        required this.message,
+        required this.meta,
+        required this.data,
+    });
 
-  AllCheckInModel(
-      {this.success, this.statusCode, this.message, this.meta, this.data});
+    final bool? success;
+    final int? statusCode;
+    final String? message;
+    final Meta? meta;
+    final List<CheckInItemModel> data;
 
-  AllCheckInModel.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    statusCode = json['statusCode'];
-    message = json['message'];
-    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
-    if (json['data'] != null) {
-      data = <CheckInItemModel>[];
-      json['data'].forEach((v) {
-        data!.add(CheckInItemModel.fromJson(v));
-      });
+    factory AllCheckInModel.fromJson(Map<String, dynamic> json){ 
+        return AllCheckInModel(
+            success: json["success"],
+            statusCode: json["statusCode"],
+            message: json["message"],
+            meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+            data: json["data"] == null ? [] : List<CheckInItemModel>.from(json["data"]!.map((x) => CheckInItemModel.fromJson(x))),
+        );
     }
-  }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['success'] = success;
-    data['statusCode'] = statusCode;
-    data['message'] = message;
-    if (meta != null) {
-      data['meta'] = meta!.toJson();
-    }
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Meta {
-  int? page;
-  int? limit;
-  int? total;
-  int? totalPage;
-
-  Meta({this.page, this.limit, this.total, this.totalPage});
-
-  Meta.fromJson(Map<String, dynamic> json) {
-    page = json['page'];
-    limit = json['limit'];
-    total = json['total'];
-    totalPage = json['totalPage'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    data['limit'] = limit;
-    data['total'] = total;
-    data['totalPage'] = totalPage;
-    return data;
-  }
 }
 
 class CheckInItemModel {
-  String? sId;
-  User? user;
-  String? timer;
-  String? quickCheckIn;
-  List<String>? trustedContracts;
-  bool? isSafe;
-  bool? isDeleted;
-  String? createdAt;
-  String? updatedAt;
+    CheckInItemModel({
+        required this.id,
+        required this.user,
+        required this.timer,
+        required this.quickCheckIn,
+        required this.trustedContracts,
+        required this.checkInTime,
+        required this.locationUrl,
+        required this.isSafe,
+        required this.isDeleted,
+        required this.createdAt,
+        required this.updatedAt,
+    });
 
-  CheckInItemModel(
-      {this.sId,
-      this.user,
-      this.timer,
-      this.quickCheckIn,
-      this.trustedContracts,
-      this.isSafe,
-      this.isDeleted,
-      this.createdAt,
-      this.updatedAt});
+    final String? id;
+    final User? user;
+    final String? timer;
+    final String? quickCheckIn;
+    final List<TrustedContract> trustedContracts;
+    final DateTime? checkInTime;
+    final String? locationUrl;
+    final bool? isSafe;
+    final bool? isDeleted;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
 
-  CheckInItemModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
-    timer = json['timer'];
-    quickCheckIn = json['quickCheckIn'];
-    trustedContracts = json['trustedContracts'].cast<String>();
-    isSafe = json['isSafe'];
-    isDeleted = json['isDeleted'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    if (user != null) {
-      data['user'] = user!.toJson();
+    factory CheckInItemModel.fromJson(Map<String, dynamic> json){ 
+        return CheckInItemModel(
+            id: json["_id"],
+            user: json["user"] == null ? null : User.fromJson(json["user"]),
+            timer: json["timer"],
+            quickCheckIn: json["quickCheckIn"],
+            trustedContracts: json["trustedContracts"] == null ? [] : List<TrustedContract>.from(json["trustedContracts"]!.map((x) => TrustedContract.fromJson(x))),
+            checkInTime: DateTime.tryParse(json["checkInTime"] ?? ""),
+            locationUrl: json["locationUrl"],
+            isSafe: json["isSafe"],
+            isDeleted: json["isDeleted"],
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+        );
     }
-    data['timer'] = timer;
-    data['quickCheckIn'] = quickCheckIn;
-    data['trustedContracts'] = trustedContracts;
-    data['isSafe'] = isSafe;
-    data['isDeleted'] = isDeleted;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    return data;
-  }
+
+}
+
+class TrustedContract {
+    TrustedContract({
+        required this.id,
+        required this.name,
+        required this.contractNumber,
+    });
+
+    final String? id;
+    final String? name;
+    final String? contractNumber;
+
+    factory TrustedContract.fromJson(Map<String, dynamic> json){ 
+        return TrustedContract(
+            id: json["_id"],
+            name: json["name"],
+            contractNumber: json["contractNumber"],
+        );
+    }
+
 }
 
 class User {
-  String? sId;
-  String? name;
-  String? email;
-  String? contactNumber;
-  String? photoUrl;
+    User({
+        required this.id,
+        required this.name,
+        required this.email,
+        required this.contactNumber,
+        required this.photoUrl,
+    });
 
-  User({this.sId, this.name, this.email, this.contactNumber, this.photoUrl});
+    final String? id;
+    final String? name;
+    final String? email;
+    final String? contactNumber;
+    final String? photoUrl;
 
-  User.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    email = json['email'];
-    contactNumber = json['contactNumber'];
-    photoUrl = json['photoUrl'];
-  }
+    factory User.fromJson(Map<String, dynamic> json){ 
+        return User(
+            id: json["_id"],
+            name: json["name"],
+            email: json["email"],
+            contactNumber: json["contactNumber"],
+            photoUrl: json["photoUrl"],
+        );
+    }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['name'] = name;
-    data['email'] = email;
-    data['contactNumber'] = contactNumber;
-    data['photoUrl'] = photoUrl;
-    return data;
-  }
+}
+
+class Meta {
+    Meta({
+        required this.page,
+        required this.limit,
+        required this.total,
+        required this.totalPage,
+    });
+
+    final int? page;
+    final int? limit;
+    final int? total;
+    final int? totalPage;
+
+    factory Meta.fromJson(Map<String, dynamic> json){ 
+        return Meta(
+            page: json["page"],
+            limit: json["limit"],
+            total: json["total"],
+            totalPage: json["totalPage"],
+        );
+    }
+
 }

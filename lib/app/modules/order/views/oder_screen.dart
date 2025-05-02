@@ -1,5 +1,5 @@
 import 'package:antoinette/app/modules/order/controllers/all_orders_controllers.dart';
-import 'package:antoinette/app/modules/order/controllers/payment_booking_id.dart';
+import 'package:antoinette/app/modules/history/controllers/payment_booking_id.dart';
 import 'package:antoinette/app/modules/order/views/order_details_screen.dart';
 import 'package:antoinette/app/modules/order/widget/my_order_card.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
@@ -152,30 +152,6 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
     );
   }
 
-  // void goToProductPage() {
-  //   Navigator.pushNamed(context, ProductScreen.routeName, arguments: true);
-  // }
-
-  // void makePayment(String id) async {
-  //   bool isSuccess =
-  //       await paymentByBookingIDController.getPaymentByBookingId(id);
-
-  //   if (isSuccess) {
-  //     if (paymentByBookingIDController.paymentByBookingIdModel != null &&
-  //         paymentByBookingIDController.paymentByBookingIdModel!.data != null &&
-  //         paymentByBookingIDController
-  //                 .paymentByBookingIdModel!.data!.paymentIntentId !=
-  //             null) {
-  //       var paymentIndentId = paymentByBookingIDController
-  //           .paymentByBookingIdModel!.data!.paymentIntentId!;
-  //       print('paymentindent id : $paymentIndentId');
-  //     } else {
-  //       print('Error: Payment Intent ID is missing inside success response.');
-  //     }
-  //   } else {
-  //     print('Error: Failed to fetch payment info.');
-  //   }
-  // }
 
   void goToProductPage() {
     Navigator.pushNamed(context, ProductScreen.routeName, arguments: true);

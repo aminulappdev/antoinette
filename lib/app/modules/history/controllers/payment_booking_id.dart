@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/order/model/payment_bt_booking_model.dart';
+import 'package:antoinette/app/modules/history/model/payment_bt_booking_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
+import 'package:antoinette/app/modules/authentication/controllers/student_sign_up_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/verify_email_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/agree_condition_widget.dart';
@@ -14,6 +15,8 @@ import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -31,6 +34,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController numberCtrl = TextEditingController();
   SignUpController signUpController = SignUpController();
+  final StudentSignUpController studentSignUpController =
+      Get.find<StudentSignUpController>();
+
   File? image;
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
 
@@ -185,36 +191,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                     // image show kora theke baki ...
+                    image != null
+                        ? Center(
+                            child: Image.file(
+                              image!,
+                              width: MediaQuery.of(context).size.width,
+                              height: 250.h,
+                              fit: BoxFit.fill,
+                            ),
+                          )
+                        : Container(),
                     heightBox12,
-                    Align(
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () {
-                          _imagePickerHelper.showAlertDialog(context,
-                              (File pickedImage) {
-                            setState(() {
-                              image = pickedImage;
-                            });
-                          });
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 220,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Add your identification'),
-                              widthBox4,
-                              Icon(Icons.upload)
-                            ],
-                          )),
-                        ),
-                      ),
-                    ),
+                    isStudentChecked == true
+                        ? Align(
+                            alignment: Alignment.center,
+                            child: InkWell(
+                              onTap: () {
+                                _imagePickerHelper.showAlertDialog(context,
+                                    (File pickedImage) {
+                                  setState(() {
+                                    image = pickedImage;
+                                  });
+                                });
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 220,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Add your identification'),
+                                    widthBox4,
+                                    Icon(Icons.upload)
+                                  ],
+                                )),
+                              ),
+                            ),
+                          )
+                        : Container(),
                     heightBox14,
                     AgreeConditionCheck(
                       onChanged: (value) {
@@ -234,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       child: GradientElevatedButton(
-                        onPressed: onTapToNextButton,
+                        onPressed: isStudentChecked == true ? signUpStudentFunction : signUpFunction,
                         text: 'Verify Email',
                       ),
                     ),
@@ -258,7 +276,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Future<void> onTapToNextButton() async {
+  Future<void> signUpFunction() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess = await studentSignUpController.studentSignUp(
+          nameCtrl.text,
+          emailCtrl.text,
+          passwordCtrl.text,
+          numberCtrl.text,
+          image);
+
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'New user created');
+          Navigator.pushNamed(context, VerifyEmailScreen.routeName,
+              arguments: signUpController.token);
+
+          // print('My token ---------------------------------------');
+          // print(signUpController.token);
+        } else {
+          if (mounted) {
+            showSnackBarMessage(context, signUpController.errorMessage!, true);
+          }
+        }
+      }
+    }
+  }
+
+  Future<void> signUpStudentFunction() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await signUpController.signUp(
           nameCtrl.text, emailCtrl.text, passwordCtrl.text, numberCtrl.text);
