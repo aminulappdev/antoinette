@@ -109,10 +109,10 @@ class _CanceledScreenState extends State<CanceledScreen> {
               controller: scrollController,
               itemCount: controller.bookingList.length,
               itemBuilder: (context, index) {
-                DateTime bookingDate =
-                    controller.bookingList[index].slot!.date!;
-                String formateBookingDate =
-                    DateFormat('MMMM dd, yyyy').format(bookingDate);
+              String bookingDateString = controller.bookingList[index].slot!.date!;
+DateTime bookingDate = DateTime.parse(bookingDateString);
+String formattedBookingDate = DateFormat('MMMM dd, yyyy').format(bookingDate);
+
 
                 if (controller.bookingList[index].status == 'cancelled') {
                   print('Cancelled data ache...........');
@@ -126,7 +126,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
                       name: 'Dr. Jane Smith',
                       therapyType:
                           '${controller.bookingList[index].therapyType}',
-                      date: formateBookingDate,
+                      date: formattedBookingDate,
                       time: '${controller.bookingList[index].slot?.startTime}',
                       imagePath:
                           '${controller.bookingList[index].session?.thumbnail}',
@@ -156,7 +156,7 @@ class _CanceledScreenState extends State<CanceledScreen> {
                       name: 'Dr. Jane Smith',
                       therapyType:
                           '${controller.bookingList[index].therapyType}',
-                      date: formateBookingDate,
+                      date: formattedBookingDate,
                       time: '${controller.bookingList[index].slot?.startTime}',
                       imagePath:
                           '${controller.bookingList[index].session?.thumbnail}',

@@ -59,16 +59,21 @@ class NetworkCaller {
     try {
       _logRequest(url);
 
-      if (queryParams != null) {
+      if (queryParams != null && queryParams.isNotEmpty) {
         url += '?';
         for (String param in queryParams.keys) {
           url += '$param=${queryParams[param]}&';
         }
+        url = url.substring(0, url.length - 1); // remove last "&"
       }
+
       Uri uri = Uri.parse(url);
-      Map<String, String> headers = {
-        'content-type': 'application/json',
-      };
+
+      // 🔧 Only set content-type if body is not null
+      Map<String, String> headers = {};
+      if (body != null) {
+        headers['content-type'] = 'application/json';
+      }
 
       if (accesToken != null) {
         headers['Authorization'] = accesToken;
@@ -76,11 +81,17 @@ class NetworkCaller {
 
       _logRequest(url, headers, body);
 
-      var response = await patch(uri, headers: headers, body: jsonEncode(body));
+      // 🔧 Send encoded body only if body is not null
+      final response = await patch(
+        uri,
+        headers: headers,
+        body: body != null ? jsonEncode(body) : null,
+      );
+
       _logResponse(url, response.statusCode, response.headers, response.body);
+
       if (response.statusCode == 200) {
         final debugMessage = jsonDecode(response.body);
-
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
@@ -91,14 +102,18 @@ class NetworkCaller {
         ErrorMessageModel errorMessageModel =
             ErrorMessageModel.fromJson(debugMessage);
         return NetworkResponse(
-            isSuccess: false,
-            statusCode: response.statusCode,
-            errorMessage: errorMessageModel.message ?? 'Wrong');
+          isSuccess: false,
+          statusCode: response.statusCode,
+          errorMessage: errorMessageModel.message ?? 'Something went wrong',
+        );
       }
     } catch (e) {
       _logResponse(url, -1, null, '', e.toString());
       return NetworkResponse(
-          isSuccess: false, statusCode: -1, errorMessage: e.toString());
+        isSuccess: false,
+        statusCode: -1,
+        errorMessage: e.toString(),
+      );
     }
   }
 

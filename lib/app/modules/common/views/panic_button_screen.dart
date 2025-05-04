@@ -131,18 +131,19 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
           context: context,
           barrierDismissible: false,
           builder: (context) => PanicAlertDialog(
-            onYesPressed: () async {
+            onYesPressed: () {
               Navigator.pop(context);
               setState(() {
                 isPressed = false; // Reset if user presses YES
               });
-
+            },
+            onNoPressed: () async {
+              print('Pannic start');
               await requestLocationPermission();
               await getCurrentLocation();
               print('lat : $latitude lng: $longitude');
               await onTapToNextButton();
-            },
-            onNoPressed: () {
+
               Navigator.pop(context);
               // Handle NO action (can add an emergency function here)
             },

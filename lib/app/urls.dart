@@ -64,6 +64,12 @@ class Urls {
     return '$_baseUrl/payments/reference/$id';
   }
 
+    static String checkingResuestId(
+    String id,
+  ) {
+    return '$_baseUrl/check-in/$id';
+  }
+
   static String cancelOrderById(
     String id,
   ) {

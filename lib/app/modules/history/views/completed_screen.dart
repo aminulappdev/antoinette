@@ -114,10 +114,10 @@ class _CompletedScreenState extends State<CompletedScreen> {
                 // ignore: unused_local_variable
                 DateTime today = DateTime.now();
 
-                DateTime bookingDate =
-                    controller.bookingList[index].slot!.date!;
-                String formateBookingDate =
-                    DateFormat('MMMM dd, yyyy').format(bookingDate);
+               String bookingDateString = controller.bookingList[index].slot!.date!;
+DateTime bookingDate = DateTime.parse(bookingDateString);
+String formattedBookingDate = DateFormat('MMMM dd, yyyy').format(bookingDate);
+
                 var title = controller.bookingList[index].session?.title;
 
                 if (today.isAfter(bookingDate)) {
@@ -130,7 +130,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                         name: 'Dr. Jane Smith',
                         therapyType:
                             '${controller.bookingList[index].therapyType}',
-                        date: formateBookingDate,
+                        date: formattedBookingDate,
                         time:
                             '${controller.bookingList[index].slot?.startTime}',
                         imagePath:
@@ -155,7 +155,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                         name: 'Dr. Jane Smith',
                         therapyType:
                             '${controller.bookingList[index].therapyType}',
-                        date: formateBookingDate,
+                        date: formattedBookingDate,
                         time:
                             '${controller.bookingList[index].slot?.startTime}',
                         imagePath:

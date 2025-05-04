@@ -304,6 +304,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
         if (mounted) {
           showSnackBarMessage(context, 'Checking Added');
           Get.find<AllCheckInController>().getCheckInList();
+          
           Navigator.pop(context);
           countdownController
               .startCountdown(_selectedDuration); // Start countdown globally

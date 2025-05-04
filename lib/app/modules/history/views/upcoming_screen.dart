@@ -96,24 +96,27 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             ],
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height, 
+            height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
               padding: EdgeInsets.zero,
               controller: scrollController,
-              itemCount: controller.bookingList.length, 
+              itemCount: controller.bookingList.length,
               itemBuilder: (context, index) {
                 DateTime dateString = controller.bookingList[index].createdAt!;
                 print(dateString);
-               //  String dateFormate = DateFormat('MMMM dd, yyyy').format(dateString);
+                //  String dateFormate = DateFormat('MMMM dd, yyyy').format(dateString);
                 DateTime today = DateTime.now();
 
-                DateTime bookingDate =
+                String bookingDateString =
                     controller.bookingList[index].slot!.date!;
-                String formateBookingDate =
+                DateTime bookingDate = DateTime.parse(bookingDateString);
+                String formattedBookingDate =
                     DateFormat('MMMM dd, yyyy').format(bookingDate);
+
                 if (today.isBefore(bookingDate)) {
-                  if (controller.bookingList[index].paymentStatus == 'paid' && controller.bookingList[index].status == 'confirmed') {
+                  if (controller.bookingList[index].paymentStatus == 'paid' &&
+                      controller.bookingList[index].status == 'confirmed') {
                     if (searcCtrl.text.isEmpty) {
                       return TwoOptionCard(
                         op1Name: 'Reschedule',
@@ -124,7 +127,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         name: 'Dr. Jane Smith',
                         therapyType:
                             '${controller.bookingList[index].therapyType}',
-                        date: formateBookingDate, 
+                        date: formattedBookingDate,
                         time:
                             '${controller.bookingList[index].slot?.startTime}',
                         imagePath:
@@ -136,9 +139,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             context,
                             RescheduleSessionScreen.routeName,
                             arguments: {
-                               'bookingId': controller.bookingList[index].id,
+                              'bookingId': controller.bookingList[index].id,
                               'sessionId':
-                                  controller.bookingList[ index].session?.id,
+                                  controller.bookingList[index].session?.id,
                             },
                           );
                         },
@@ -160,7 +163,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         name: 'Dr. Jane Smith',
                         therapyType:
                             '${controller.bookingList[index].therapyType}',
-                        date: formateBookingDate,
+                        date: formattedBookingDate,
                         time:
                             '${controller.bookingList[index].slot?.startTime}',
                         imagePath:
