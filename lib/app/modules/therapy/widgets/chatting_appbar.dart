@@ -1,5 +1,3 @@
-import 'package:antoinette/app/modules/therapy/views/camera_screen.dart';
-import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

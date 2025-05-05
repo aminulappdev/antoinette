@@ -1,5 +1,3 @@
-import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
-import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/onboarding/views/pannic_button/pannic_onboarding_screen.dart';
 import 'package:antoinette/app/modules/onboarding/widgets/bullet_point_widget.dart';
 import 'package:antoinette/app/utils/app_colors.dart';

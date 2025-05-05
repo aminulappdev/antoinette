@@ -2,13 +2,12 @@
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:antoinette/app/modules/session/model/all_session_model.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+ 
 class PsychoSupportCard extends StatefulWidget {
 
   final AllSessionItemModel sessionItemModel;
@@ -71,7 +70,7 @@ class _PsychoSupportCardState extends State<PsychoSupportCard> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(AssetsPath.womenBookRead),
+                      backgroundImage: NetworkImage('${widget.sessionItemModel.thumbnail}'),
                       radius: 16.r,
                     ),
                     widthBox4,

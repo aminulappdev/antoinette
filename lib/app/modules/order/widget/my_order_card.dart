@@ -50,7 +50,7 @@ class MyOrderCard extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
-                              image: AssetImage(AssetsPath.womenBookRead),
+                              image: AssetImage(AssetsPath.demo),
                               fit: BoxFit.fill)),
                     ),
                     widthBox8,

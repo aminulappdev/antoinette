@@ -20,7 +20,7 @@ class AllBookingController extends GetxController {
   List<AllBookingItemModel> bookingList = [];
   List<AllBookingItemModel> get allBooking => bookingList;
 
-  final int _limit = 30;
+  final int _limit = 9999;
   int page = 0;
  
   

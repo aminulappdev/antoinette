@@ -55,7 +55,7 @@ class _BookmarkArticleDetailsScreenState
                                     null
                                 ? NetworkImage(
                                     '${widget.bookmarkArticleItemModel.reference?.thumbnail}')
-                                : AssetImage(AssetsPath.womenBookRead),
+                                : AssetImage(AssetsPath.demo),
                             fit: BoxFit.fill),
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(

@@ -1,6 +1,5 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/add_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/model/feeling_model.dart';
-import 'package:antoinette/app/modules/dear_diary/widgets/drop_down_button.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
@@ -46,11 +45,11 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
         fontColor: Color(0xffFF3434), emojiPath: AssetsPath.angry),
     FeelingsModel('motivated', Color(0xffFF9318).withAlpha(10), Color(0xffFF9318), () {},
         fontColor: Color(0xffFF9318), emojiPath: AssetsPath.muscle),
-  ];
+  ]; 
 
   @override
   void initState() {
-    super.initState();
+    super.initState(); 
     userAccessId = profileController.profileData!.sId!;
     useName = profileController.profileData!.name!;
   }
@@ -151,20 +150,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                   ],
                 ),
                 heightBox12,
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Description', style: GoogleFonts.poppins(fontSize: 14.sp)),
-                    Row(
-                      children: [
-                        DropDownButton(option: ['Light Mode', 'Dark Mode', 'Eye Mode']),
-                        widthBox8,
-                        DropDownButton(option: ['cevat', 'poppins', 'outfit']),
-                      ],
-                    )
-                  ],
-                ),
+                Text('Description', style: GoogleFonts.poppins(fontSize: 14.sp)),
                 heightBox12,
                 TextFormField(
                   controller: desCtrl,
@@ -215,6 +201,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                           height: 44.h,
                           width: 172.w,
                           decoration: BoxDecoration(
+                            // ignore: deprecated_member_use
                             color: isSelected ? item.borderColor.withOpacity(0.2) : item.bgColor,
                             border: Border.all(
                               color: isSelected ? item.borderColor : const Color.fromARGB(255, 145, 144, 144),

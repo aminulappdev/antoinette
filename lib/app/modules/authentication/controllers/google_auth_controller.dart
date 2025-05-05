@@ -59,7 +59,7 @@ class GoogleAuthController extends GetxController {
         update();
         return true;
       } else {
-        if (response.errorMessage?.contains('credentials') == true) {
+        if (response.errorMessage.contains('credentials') == true) {
           await _googleSignIn.signOut(); // allow switching account
         }
 

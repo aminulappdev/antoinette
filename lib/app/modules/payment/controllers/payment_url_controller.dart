@@ -1,7 +1,6 @@
 import 'package:antoinette/app/modules/payment/views/payment_success_screen.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class PaymentURLController extends GetxController {

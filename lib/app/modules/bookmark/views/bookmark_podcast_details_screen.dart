@@ -79,7 +79,7 @@ class _BookMarkPodcastDetailsScreenState
                             null
                         ? NetworkImage(
                             '${widget.bookmarkPodcastDetailsItemModel.reference?.thumbnail}')
-                        : AssetImage(AssetsPath.womenBookRead),
+                        : AssetImage(AssetsPath.demo),
                     fit: BoxFit.fill),
               ),
             ),

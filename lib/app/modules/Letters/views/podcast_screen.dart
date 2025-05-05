@@ -146,7 +146,7 @@ class _PodcastScreenState extends State<PodcastScreen> {
                                                 ? NetworkImage(
                                                     '${controller.podcastList[index].thumbnail}')
                                                 : AssetImage(
-                                                    AssetsPath.womenBookRead),
+                                                    AssetsPath.demo),
                                             fit: BoxFit.fill),
                                       ),
                                     ),
@@ -256,7 +256,7 @@ class _PodcastScreenState extends State<PodcastScreen> {
                                                 ? NetworkImage(
                                                     '${controller.podcastList[index].thumbnail}')
                                                 : AssetImage(
-                                                    AssetsPath.womenBookRead),
+                                                    AssetsPath.demo),
                                             fit: BoxFit.fill),
                                       ),
                                     ),

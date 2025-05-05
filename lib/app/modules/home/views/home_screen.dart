@@ -1,6 +1,8 @@
 import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/notification_screen.dart';
 import 'package:antoinette/app/modules/history/views/history_screen.dart';
+import 'package:antoinette/app/modules/home/widgets/product_item_shimmer.dart';
+import 'package:antoinette/app/modules/home/widgets/session_item_shimmer.dart';
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
 import 'package:antoinette/app/modules/home/models/grid_view_model.dart';
 import 'package:antoinette/app/modules/home/widgets/grid_feature.dart';
@@ -150,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 heightBox8,
                 GetBuilder<AllSessionController>(builder: (controller) {
                   if (controller.inProgress && controller.page == 1) {
-                    return Center(child: CircularProgressIndicator());
+                    return SessionItemShimmerEffectWidget();
                   } else if (controller.sessionsList.isEmpty) {
                     return SizedBox(
                       height: 100,
@@ -175,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 }),
                 heightBox12,
-                SeeAllSection(
+                SeeAllSection( 
                   title: 'Shop Your Health Must-Haves',
                   ontap: () {
                     Navigator.pushNamed(context, ProductScreen.routeName,
@@ -185,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 heightBox8,
                 GetBuilder<AllProcuctController>(builder: (controller) {
                   if (controller.inProgress) {
-                    return Center(child: CircularProgressIndicator());
+                    return ProductItemShimmerEffectWidget();
                   } else if (controller.allProductList.isEmpty) {
                     return SizedBox(
                       height: 100,

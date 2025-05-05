@@ -201,7 +201,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                         children: [
                                           CircleAvatar(
                                             backgroundImage: AssetImage(
-                                                AssetsPath.womenBookRead),
+                                                AssetsPath.demo),
                                             radius: 18.r,
                                           ),
                                           widthBox4,
@@ -289,7 +289,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                           children: [
                                             CircleAvatar(
                                               backgroundImage: AssetImage(
-                                                  AssetsPath.womenBookRead),
+                                                  AssetsPath.demo),
                                               radius: 16.r,
                                             ),
                                             widthBox4,

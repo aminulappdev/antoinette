@@ -1,4 +1,3 @@
-import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/onboarding/views/page_view.dart';
 import 'package:antoinette/app/modules/onboarding/views/pannic_button/pannic_onboarding_screen.dart';
 import 'package:antoinette/app/utils/app_colors.dart';

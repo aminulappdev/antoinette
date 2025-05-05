@@ -1,6 +1,5 @@
 import 'package:antoinette/app/modules/history/controllers/all_booking_controller.dart';
 import 'package:antoinette/app/modules/history/widgets/rebook_card_widget.dart';
-import 'package:antoinette/app/modules/history/widgets/two_option_card_widget.dart';
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
@@ -114,9 +113,11 @@ class _CompletedScreenState extends State<CompletedScreen> {
                 // ignore: unused_local_variable
                 DateTime today = DateTime.now();
 
-               String bookingDateString = controller.bookingList[index].slot!.date!;
-DateTime bookingDate = DateTime.parse(bookingDateString);
-String formattedBookingDate = DateFormat('MMMM dd, yyyy').format(bookingDate);
+                String bookingDateString =
+                    controller.bookingList[index].slot!.date!;
+                DateTime bookingDate = DateTime.parse(bookingDateString);
+                String formattedBookingDate =
+                    DateFormat('MMMM dd, yyyy').format(bookingDate);
 
                 var title = controller.bookingList[index].session?.title;
 
@@ -173,6 +174,7 @@ String formattedBookingDate = DateFormat('MMMM dd, yyyy').format(bookingDate);
                     }
                   }
                 }
+                return null;
               },
             ),
           ),

@@ -24,7 +24,7 @@ class _ProductCardState extends State<ProductCard> {
       ProcuctDetailsController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return GestureDetector(
       onTap: getProductScreen,
       child: Container(
@@ -40,7 +40,7 @@ class _ProductCardState extends State<ProductCard> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: widget.productsModel.images.isEmpty
-                      ?  AssetImage(AssetsPath.womenBookRead)
+                      ?  AssetImage(AssetsPath.demo)
                           : NetworkImage(widget.productsModel.images[0].url ?? ''),
                           
                       fit: BoxFit.fill),

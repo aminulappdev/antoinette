@@ -135,7 +135,7 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
                                             null
                                         ? NetworkImage(
                                             '${controller.bookmarkArticleList[index].reference!.thumbnail}')
-                                        : AssetImage(AssetsPath.womenBookRead),
+                                        : AssetImage(AssetsPath.demo),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(20)),
                             child: Padding(
@@ -196,7 +196,7 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
                                             null
                                         ? NetworkImage(
                                             '${controller.bookmarkArticleList[index].reference!.thumbnail}')
-                                        : AssetImage(AssetsPath.womenBookRead),
+                                        : AssetImage(AssetsPath.demo),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(20)),
                             child: Padding(

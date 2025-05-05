@@ -32,7 +32,7 @@ class VideosScreen extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage(AssetsPath.womenBookRead)),
+                                image: AssetImage(AssetsPath.demo)),
                             borderRadius: BorderRadius.circular(20)),
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),

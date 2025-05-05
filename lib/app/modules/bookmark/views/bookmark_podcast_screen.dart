@@ -151,7 +151,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
                                               ? NetworkImage(
                                                   '${controller.bookmarkPodcastList[index].reference!.thumbnail}')
                                               : AssetImage(
-                                                  AssetsPath.womenBookRead),
+                                                  AssetsPath.demo),
                                           fit: BoxFit.fill),
                                     ),
                                   ),
@@ -264,7 +264,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
                                               ? NetworkImage(
                                                   '${controller.bookmarkPodcastList[index].reference!.thumbnail}')
                                               : AssetImage(
-                                                  AssetsPath.womenBookRead),
+                                                  AssetsPath.demo),
                                           fit: BoxFit.fill),
                                     ),
                                   ),

@@ -20,7 +20,7 @@ class BookmarkPodcastController extends GetxController {
   List<AllBookmarkPodcastItemModel> bookmarkPodcastsList = [];
   List<AllBookmarkPodcastItemModel> get bookmarkPodcastList => bookmarkPodcastsList;
 
-  final int _limit = 4;
+  final int _limit = 9999;
   int page = 0;
   String modeType = 'Podcast';
 

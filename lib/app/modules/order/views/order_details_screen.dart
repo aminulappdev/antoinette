@@ -69,7 +69,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         borderRadius: BorderRadius.circular(8),
                                         image: DecorationImage(
                                             image: AssetImage(
-                                                AssetsPath.womenBookRead),
+                                                AssetsPath.demo),
                                             fit: BoxFit.fill)),
                                   ),
                                   widthBox8,

@@ -85,7 +85,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                         ?.photoUrl ==
                                                     null
                                                 ? AssetImage(
-                                                    AssetsPath.womenBookRead)
+                                                    AssetsPath.demo)
                                                 : NetworkImage(
                                                     '${controller.profileData?.photoUrl}'),
                                             fit: BoxFit.fill)),

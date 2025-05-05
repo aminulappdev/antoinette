@@ -20,7 +20,7 @@ class BookmarkArticlesController extends GetxController {
   List<AllBookmarkArticleItemModel> bookmarkarticlesList = [];
   List<AllBookmarkArticleItemModel> get bookmarkArticleList => bookmarkarticlesList;
 
-  final int _limit = 4;
+  final int _limit = 9999;
   int page = 0;
   String modeType = 'Article';
 

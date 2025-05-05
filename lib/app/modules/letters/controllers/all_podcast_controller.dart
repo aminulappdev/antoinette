@@ -20,7 +20,7 @@ class AllPodcastController extends GetxController {
   List<AllPodcastItemModel> podcastList = [];
   List<AllPodcastItemModel> get allPodcastList => podcastList;
 
-  final int _limit = 10;
+  final int _limit = 9999;
   int page = 0;
 
   int? lastPage;

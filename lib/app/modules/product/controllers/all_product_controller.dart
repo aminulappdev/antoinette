@@ -22,7 +22,7 @@ class AllProcuctController extends GetxController {
 
   var allProductsList = <AllProductItemModel>[].obs;
 
-  final int _limit = 100;
+  final int _limit = 9999;
   int page = 0;
 
   int? lastPage;

@@ -1,5 +1,4 @@
 import 'package:antoinette/app/utils/app_colors.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';

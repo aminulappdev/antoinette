@@ -20,7 +20,7 @@ class AllSessionController extends GetxController {
   List<AllSessionItemModel> sessionsList = [];
   List<AllSessionItemModel> get allProductList => sessionsList;
 
-  final int _limit = 20;
+  final int _limit = 9999;
   int page = 0;
 
   

@@ -82,7 +82,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                   onTap: () {
                     Navigator.pushNamed(
                         context, SetJournalPasswordScreen.routeName);
-                  },
+                  }, 
                   child: CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
                     radius: 24.r,
@@ -105,7 +105,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [CustomPiChart(), MentalStatusWidget()],
-                ),
+                ), 
               ),
             ),
             heightBox8,
@@ -148,10 +148,10 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                         isBlur: isBlurList[index],
                         iconPath: controller.allDiaryList[index].feelings ==
                                 'happy'
-                            ? AssetsPath.happy
+                            ? AssetsPath.angle
                             : controller.allDiaryList[index].feelings ==
                                     'calm'
-                                ? AssetsPath.sad
+                                ? AssetsPath.happy
                                 : controller.allDiaryList[index].feelings ==
                                         'sad'
                                     ? AssetsPath.sad
@@ -163,7 +163,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                                                     .feelings ==
                                                 'motivated'
                                             ? AssetsPath.muscle
-                                            : AssetsPath.angle,
+                                            : AssetsPath.angry,
                         status: '${controller.allDiaryList[index].feelings}',
                         day: '${controller.allDiaryList[index].date}',
                         time: '${controller.allDiaryList[index].time}',

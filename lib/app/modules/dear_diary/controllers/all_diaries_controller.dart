@@ -20,7 +20,7 @@ class AllDiariesController extends GetxController {
   List<AllDiaryItemModel> diaryList = [];
   List<AllDiaryItemModel> get allDiaryList => diaryList;
 
-  final int _limit = 10;
+  final int _limit = 9999;
   int page = 0;
 
   int? lastPage;

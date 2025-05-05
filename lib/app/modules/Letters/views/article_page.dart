@@ -218,7 +218,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                           ? NetworkImage(
                                               '${controller.articlesList[index].thumbnail}')
                                           : const AssetImage(
-                                                  AssetsPath.womenBookRead)
+                                                  AssetsPath.demo)
                                               as ImageProvider,
                                       fit: BoxFit.fill,
                                     ),

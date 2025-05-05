@@ -60,7 +60,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                             image: widget.articleModel.thumbnail != null
                                 ? NetworkImage(
                                     '${widget.articleModel.thumbnail}')
-                                : AssetImage(AssetsPath.womenBookRead),
+                                : AssetImage(AssetsPath.demo),
                             fit: BoxFit.fill),
                         borderRadius: BorderRadius.circular(20)),
                     child: Padding(

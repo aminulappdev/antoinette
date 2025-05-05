@@ -20,7 +20,7 @@ class AllArticlesController extends GetxController {
   List<AllArticleItemModel> articlesList = [];
   List<AllArticleItemModel> get allProductList => articlesList;
 
-  final int _limit = 10;
+  final int _limit = 9999;
   int page = 0;
 
   int? lastPage;
