@@ -100,7 +100,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           child: Center(
                             child: Text(
                               'NO',
-                              style: TextStyle(
+                              style: TextStyle( 
                                   color: const Color(0xffA13430),
                                   fontSize: 14.sp),
                             ),
@@ -117,63 +117,67 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 controller.checkInList!.isEmpty) {
               return Center(child: Text('No data available'));
             } else {
-              return SizedBox(
-                height: 600.h,
-                child: ListView.builder(
-                  itemCount: controller.checkInList?.length,
-                  itemBuilder: (context, index) {
-                    String isoDate =
-                        '${controller.checkInList?[index].createdAt}';
-                    // Parse the ISO date string
-                    DateTime utcDate = DateTime.parse(isoDate);
-                    // Convert to local time if needed
-                    DateTime localDate = utcDate.toLocal();
-                    // Format it
-                    String formatted =
-                        DateFormat('d MMMM yyyy, h:mm a').format(localDate);
+              return Expanded(
+                child: SizedBox(
 
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.h),
-                      child: Container(
-                        height: 69.sp,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${controller.checkInList?[index].quickCheckIn}',
-                                    style: GoogleFonts.poppins(fontSize: 15.sp),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Check-In time : ${controller.checkInList?[index].timer}',
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 12.sp),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Text(
-                                formatted,
-                                style: GoogleFonts.poppins(fontSize: 12.sp),
-                              ),
-                            ],
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: controller.checkInList?.length,
+                    itemBuilder: (context, index) {
+                      String isoDate =
+                          '${controller.checkInList?[index].createdAt}';
+                      // Parse the ISO date string
+                      DateTime utcDate = DateTime.parse(isoDate);
+                      // Convert to local time if needed
+                      DateTime localDate = utcDate.toLocal();
+                      // Format it
+                      String formatted =
+                          DateFormat('d MMMM yyyy, h:mm a').format(localDate);
+
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4.h),
+                        child: Container(
+                          height: 69.sp,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${controller.checkInList?[index].quickCheckIn}',
+                                      style:
+                                          GoogleFonts.poppins(fontSize: 15.sp),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Check-In time : ${controller.checkInList?[index].timer}',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 12.sp),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Text(
+                                  formatted,
+                                  style: GoogleFonts.poppins(fontSize: 12.sp),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               );
             }

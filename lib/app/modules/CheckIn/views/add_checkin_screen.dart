@@ -34,7 +34,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
   bool isSelectedTA = false;
   bool isSelectedTWA = false;
   bool isSelectedCS = false;
-  int hours = 0, minutes = 15, seconds = 0;
+  int hours = 0, minutes = 0, seconds = 0;
   Duration _selectedDuration = const Duration(minutes: 15);
 
   List<String> selectedContacts = [];
@@ -207,7 +207,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                   return Center(child: CircularProgressIndicator());
                 }
                 return SizedBox(
-                  height: 100,
+                  height: 150.h,
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
                     itemCount: controller.contactList?.length,
@@ -242,14 +242,14 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
               }),
               SizedBox(height: 10.h),
               Center(
-                child: InkWell( 
+                child: InkWell(
                   onTap: () async {
                     await requestLocationPermission();
                     await getCurrentLocation();
                   },
                   child: Container(
-                    height: 36,
-                    width: 250,
+                    height: 36.h,
+                    width: 250.w,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         border:
@@ -259,20 +259,21 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 ),
               ),
               heightBox12,
-              latitude != null ? GradientElevatedButton(
-                onPressed: () {
-                  print('check in called');
-                  onTapToNextButton();
-                },
-                text: 'Check-In',
-              ): Opacity(
-                opacity: 0.4,
-                child: GradientElevatedButton(
-                  onPressed: () {
-                  },
-                  text: 'Check-In',
-                ),
-              ),
+              latitude != null
+                  ? GradientElevatedButton(
+                      onPressed: () {
+                        print('check in called');
+                        onTapToNextButton();
+                      },
+                      text: 'Check-In',
+                    )
+                  : Opacity(
+                      opacity: 0.4,
+                      child: GradientElevatedButton(
+                        onPressed: () {},
+                        text: 'Check-In',
+                      ),
+                    ),
               SizedBox(height: 6.h),
               Obx(() {
                 var remainingTime = countdownController.remainingTime.value;
@@ -292,19 +293,18 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
   Future<void> onTapToNextButton() async {
     if (quickChekIn != null && latitude != null) {
       final bool isSuccess = await addCheckInController.addCheckIn(
-         userId,
-        _selectedDuration.toString(),
-        quickChekIn!,
-        selectedContacts,
-        latitude!,
-        longitude!
-      );
+          userId,
+          _selectedDuration.toString(),
+          quickChekIn!,
+          selectedContacts,
+          latitude!,
+          longitude!);
 
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'Checking Added');
           Get.find<AllCheckInController>().getCheckInList();
-          
+
           Navigator.pop(context);
           countdownController
               .startCountdown(_selectedDuration); // Start countdown globally

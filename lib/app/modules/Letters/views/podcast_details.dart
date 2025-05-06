@@ -41,8 +41,9 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
   }
 
   Future<void> initializeAudio() async {
-    // final String? url = widget.podcastModel.fileLink;
-    final String url = 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3';
+    final String url = widget.podcastModel.fileLink ?? '';
+    print(url);
+    // final String url = 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3';
 
     if (url.isEmpty) {
       showSnackBarMessage(context, 'Invalid audio URL', true);
