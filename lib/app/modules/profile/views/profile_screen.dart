@@ -123,60 +123,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontSize: 12, fontWeight: FontWeight.w500),
                 ),
                 heightBox4,
-                GetBuilder<ContentController>(builder: (controller) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProfileDrawerFeature(
-                        feature: 'Policies',
-                        icon: Icons.security,
-                        ontap: () {
-                          Navigator.pushNamed(context, InfoScreen.routeName,
-                              arguments: {
-                                'appBarTitle': 'Privacy and Policies',
-                                'data':
-                                    '${controller.contentlist?[0].privacyPolicy}'
-                              });
-                        },
-                      ),
-                      ProfileDrawerFeature(
-                        feature: 'Terms & Condition',
-                        icon: Icons.help,
-                        ontap: () {
-                          Navigator.pushNamed(context, InfoScreen.routeName,
-                              arguments: {
-                                'appBarTitle': 'Terms & Conditions',
-                                'data':
-                                    '${controller.contentlist?[0].termsAndConditions}'
-                              });
-                        },
-                      ),
-                      ProfileDrawerFeature(
-                        feature: 'About Us',
-                        icon: Icons.info,
-                        ontap: () {
-                          Navigator.pushNamed(context, InfoScreen.routeName,
-                              arguments: {
-                                'appBarTitle': 'About Us',
-                                'data': '${controller.contentlist?[0].aboutUs}'
-                              });
-                        },
-                      ),
-                      heightBox8,
-                      Text(
-                        'Logout',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12, fontWeight: FontWeight.w500),
-                      ),
-                      heightBox4,
-                      ProfileDrawerFeature(
-                        feature: 'Logout',
-                        icon: Icons.logout,
-                        ontap: onTapLogoutBTN,
-                      ),
-                    ],
-                  );
-                }),
+                GetBuilder<ContentController>(
+                  builder: (controller) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProfileDrawerFeature(
+                          feature: 'Policies',
+                          icon: Icons.security,
+                          ontap: () {
+                            Navigator.pushNamed(context, InfoScreen.routeName,
+                                arguments: {
+                                  'appBarTitle': 'Privacy and Policies',
+                                  'data':
+                                      '${controller.contentlist?[0].privacyPolicy}'
+                                });
+                          },
+                        ),
+                        ProfileDrawerFeature(
+                          feature: 'Terms & Condition',
+                          icon: Icons.help,
+                          ontap: () {
+                            Navigator.pushNamed(context, InfoScreen.routeName,
+                                arguments: {
+                                  'appBarTitle': 'Terms & Conditions',
+                                  'data':
+                                      '${controller.contentlist?[0].termsAndConditions}'
+                                });
+                          },
+                        ),
+                        ProfileDrawerFeature(
+                          feature: 'About Us',
+                          icon: Icons.info,
+                          ontap: () {
+                            Navigator.pushNamed(
+                                context, InfoScreen.routeName, arguments: {
+                              'appBarTitle': 'About Us',
+                              'data': '${controller.contentlist?[0].aboutUs}'
+                            });
+                          },
+                        ),
+                        heightBox8,
+                        Text(
+                          'Logout',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12, fontWeight: FontWeight.w500),
+                        ),
+                        heightBox4,
+                        ProfileDrawerFeature(
+                          feature: 'Logout',
+                          icon: Icons.logout,
+                          ontap: onTapLogoutBTN,
+                        ),
+                        heightBox8,
+                        Text(
+                          'Delete Account',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12, fontWeight: FontWeight.w500),
+                        ),
+                        heightBox4,
+                        ProfileDrawerFeature(
+                          feature: 'Delete account',
+                          icon: Icons.delete,
+                          ontap: onTapDeleteBTN,
+                        ),
+                      ],
+                    );
+                  },
+                ),
                 heightBox30,
                 Align(
                   alignment: Alignment.center,
@@ -220,7 +234,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               // Clear local token
               box.remove('user-login-access-token');
-              print('Token after logout: ${box.read('user-login-access-token')}');
+              print(
+                  'Token after logout: ${box.read('user-login-access-token')}');
+
+              // Redirect to Sign In
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                SignInScreen.routeName,
+                (Route<dynamic> route) => false,
+              );
+            },
+            child: Container(
+              height: 32.h,
+              width: 120.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xff305FA1).withOpacity(0.1),
+                border: Border.all(color: Color(0xff305FA1)),
+              ),
+              child: Center(
+                child: Text(
+                  'YES',
+                  style: TextStyle(color: Color(0xff305FA1), fontSize: 14),
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              height: 32.h,
+              width: 120.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xffA13430).withOpacity(0.1),
+                border: Border.all(color: Color(0xffA13430)),
+              ),
+              child: Center(
+                child: Text(
+                  'NO',
+                  style: TextStyle(color: Color(0xffA13430), fontSize: 14.sp),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  
+  void onTapDeleteBTN() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Center(
+          child: Text(
+            textAlign: TextAlign.center,
+            'Do you want to log out this profile?',
+            style: GoogleFonts.poppins(fontSize: 20),
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              // Google Sign-Out
+              try {
+                await GoogleSignIn().signOut();
+                print('Google signed out');
+              } catch (e) {
+                print('Error signing out from Google: $e');
+              }
+
+              // Clear local token
+              box.remove('user-login-access-token');
+              print(
+                  'Token after logout: ${box.read('user-login-access-token')}');
 
               // Redirect to Sign In
               Navigator.pushNamedAndRemoveUntil(

@@ -52,6 +52,7 @@ import 'package:antoinette/app/modules/letters/controllers/article_details_contr
 import 'package:antoinette/app/modules/product/controllers/product_details_controllers.dart';
 import 'package:antoinette/app/modules/product/controllers/product_order_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/content_controller.dart';
+import 'package:antoinette/app/modules/profile/controllers/delete_account_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/update_profile_controller.dart';
 import 'package:antoinette/app/modules/session/controllers/all_session_controller.dart';
@@ -127,6 +128,7 @@ class ControllerBinder extends Bindings {
     Get.put(PannicController());
     Get.put(CheckInRequestController());
     Get.put(CountdownController());
+    Get.put(DeleteAccountController());
 
   
     
