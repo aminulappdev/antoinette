@@ -1,4 +1,4 @@
-package com.example.antoinette
+package com.antoinette.antoinette
 
 import io.flutter.embedding.android.FlutterActivity
 
