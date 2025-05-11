@@ -14,7 +14,7 @@ class PaymentURLController extends GetxController {
   String? get accessToken => _accessToken;
 
   Future<bool> paymentUrl(String paymentLink) async {
-    bool isSuccess = false;
+    bool isSuccess = false; 
 
     _inProgress = true;
 

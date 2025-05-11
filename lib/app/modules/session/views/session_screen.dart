@@ -130,19 +130,16 @@ class _SessionScreenState extends State<SessionScreen> {
               GetBuilder<AllSessionController>(builder: (controller) {
                 if (controller.inProgress && controller.page == 1) {
                   return Center(child: CircularProgressIndicator());
-                } 
+                }
                 return SizedBox(
-                  height: 700.h,                   
+                  height: 700.h,
                   child: ListView.builder(
-
-                                padding: EdgeInsets.zero, 
-
+                    padding: EdgeInsets.zero,
                     scrollDirection: Axis.vertical,
                     itemCount: controller.sessionsList.length,
                     itemBuilder: (context, index) {
-                      var sessionTitle =
-                          controller.allProductList[index].title;
-    
+                      var sessionTitle = controller.allProductList[index].title;
+
                       if (searcCtrl.text.isEmpty) {
                         return Padding(
                             padding: EdgeInsets.symmetric(
@@ -154,7 +151,6 @@ class _SessionScreenState extends State<SessionScreen> {
                               },
                               child: Container(
                                 height: 220.h,
-                               
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(8)),
@@ -173,7 +169,8 @@ class _SessionScreenState extends State<SessionScreen> {
                                       child: Padding(
                                         padding: EdgeInsets.all(8.0.h),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
@@ -183,7 +180,6 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   fontSize: 16.sp,
                                                   color: Colors.green),
                                             ),
-                                            
                                             Text(
                                               'Per session: ${controller.allProductList[index].fee}\$',
                                               style: GoogleFonts.poppins(
@@ -200,18 +196,17 @@ class _SessionScreenState extends State<SessionScreen> {
                                       child: Row(
                                         children: [
                                           CircleAvatar(
-                                            backgroundImage: AssetImage(
-                                                AssetsPath.demo),
-                                            radius: 18.r,
-                                          ),
+                                              backgroundImage: NetworkImage(
+                                                  '${controller.allProductList[index].thumbnail}'),
+                                              radius: 18.r,
+                                            ),
                                           widthBox4,
                                           FittedBox(
                                             child: SizedBox(
                                               width: 250.h,
                                               child: Text(
                                                 maxLines: 2,
-                                                overflow:
-                                                    TextOverflow.ellipsis,
+                                                overflow: TextOverflow.ellipsis,
                                                 '${controller.allProductList[index].title}',
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 14.sp,
@@ -288,8 +283,8 @@ class _SessionScreenState extends State<SessionScreen> {
                                         child: Row(
                                           children: [
                                             CircleAvatar(
-                                              backgroundImage: AssetImage(
-                                                  AssetsPath.demo),
+                                              backgroundImage: NetworkImage(
+                                                  '${controller.allProductList[index].thumbnail}'),
                                               radius: 16.r,
                                             ),
                                             widthBox4,

@@ -14,7 +14,7 @@ class PaymentController extends GetxController {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
-  PaymentModel? paymentModel;
+  PaymentModel? paymentModel; 
   PaymentModel? get paymentData => paymentModel; 
 
 

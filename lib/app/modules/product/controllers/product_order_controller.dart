@@ -13,7 +13,7 @@ class ProductOrderController extends GetxController {
 
   // OrderResponseModel? orderResponseModel;
   // OrderResponseItemModel? get orderResponseData => orderResponseModel?.data;
- 
+
   OrderResponseModel? orderResponseModel;
   OrderResponseItemModel? get orderResponseData => orderResponseModel?.data;
 
@@ -36,21 +36,21 @@ class ProductOrderController extends GetxController {
     _inProgress = true;
 
     update();
-   
+
     Map<String, dynamic> requestBody = {
       "items": [
         {
           "product": productId, // add productID
           "quantity": quantity,
-          "price": double.parse(price.toStringAsFixed(2)), // calculate form frontent
+          "price": price.toInt(), // calculate form frontent
           "totalPrice":
-              double.parse(totalPrice.toStringAsFixed(2)), // calculate form frontent total product price
+              totalPrice.toInt(), // calculate form frontent total product price
           "discount": discount
         }
       ],
       "orderData": {
         "user": userId, // add userId
-        "amount": double.parse(amount.toStringAsFixed(2)), // calculate form frontend
+        "amount": amount.toInt(), // calculate form frontend
         "deliveryCharge": deliveryCharge,
         // billing details sent form frontend
         "billingDetails": {

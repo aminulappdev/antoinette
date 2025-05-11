@@ -46,6 +46,8 @@ class Urls {
   static const String reschduleBookingtUrl = '$_baseUrl/products';
   static const String refundPaymentUrl = '$_baseUrl/payments/refound-payment';
   static const String pannicUrl = '$_baseUrl/trusted-contracts/send-message';
+  static const String notificationStatusUrl = '$_baseUrl/users/configure-notify';
+  
 
 
   // static String allProductUrl(
@@ -62,6 +64,12 @@ class Urls {
     String id,
   ) {
     return '$_baseUrl/payments/reference/$id';
+  }
+
+  static String deleteUserById(
+    String id,
+  ) {
+    return '$_baseUrl/users/$id';
   }
 
     static String checkingResuestId(

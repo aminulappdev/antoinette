@@ -26,7 +26,7 @@ class AntoinetteApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       minTextAdapt: true,
-      splitScreenMode: true,
+      splitScreenMode: true, 
       builder: (context, child) { 
         return GetMaterialApp(
           initialBinding: ControllerBinder(),

@@ -4,27 +4,25 @@ import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class RefundPaymentController extends GetxController {
+class ChangeNotificationController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  int? lastPage;
-
-  Future<bool> refundPayment(String indentId, dynamic amount) async {
+  Future<bool> notificationStatus(bool status) async {
     bool isSuccess = false;
+
     _inProgress = true;
+
     update();
 
-    Map<String, dynamic> requestBody = {"intendId": indentId};
+    Map<String, dynamic> requestBody = {"isEnableNotify": status};
 
-    final NetworkResponse response = await Get.find<NetworkCaller>().patchRequest(
-      Urls.refundPaymentUrl,
-      body: requestBody,
-      accesToken: box.read('user-login-access-token'),
-    );
+    final NetworkResponse response = await Get.find<NetworkCaller>()
+        .patchRequest(Urls.notificationStatusUrl,
+            body: requestBody, accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
       _errorMessage = null;

@@ -203,7 +203,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
               ),
               heightBox4,
               GetBuilder<AllContactController>(builder: (controller) {
-                if (controller.inProgress) {
+                if (controller.inProgress) { 
                   return Center(child: CircularProgressIndicator());
                 }
                 return SizedBox(

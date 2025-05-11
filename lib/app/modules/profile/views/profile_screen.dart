@@ -4,6 +4,7 @@ import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/order/views/oder_screen.dart';
 import 'package:antoinette/app/modules/payment/views/subscription_page.dart';
 import 'package:antoinette/app/modules/profile/controllers/content_controller.dart';
+import 'package:antoinette/app/modules/profile/controllers/delete_account_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/views/account_screen.dart';
 import 'package:antoinette/app/modules/profile/views/address_screen.dart';
@@ -30,6 +31,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  final DeleteAccountController deleteAccountController = DeleteAccountController();
   @override
   void initState() {
     Get.find<ContentController>().getContent();
@@ -182,10 +185,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontSize: 12, fontWeight: FontWeight.w500),
                         ),
                         heightBox4,
-                        ProfileDrawerFeature(
-                          feature: 'Delete account',
-                          icon: Icons.delete,
-                          ontap: onTapDeleteBTN,
+                        GetBuilder<ProfileController>(
+                          builder: (controller) {
+                            return ProfileDrawerFeature(
+                              feature: 'Delete account',
+                              icon: Icons.delete,
+                              ontap: () {
+                                onTapDeleteBTN('${controller.profileData?.sId}');                             
+                              },
+                            );
+                          }
                         ),
                       ],
                     );
@@ -284,7 +293,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   
-  void onTapDeleteBTN() {
+  void onTapDeleteBTN(String id) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -301,19 +310,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
           GestureDetector(
             onTap: () async {
               // Google Sign-Out
-              try {
+              try { 
                 await GoogleSignIn().signOut();
+                 final bool isSuccess = await deleteAccountController.deleteProfile(id);
+                 if(isSuccess){
+                  print('User account deleted');
+                 }
                 print('Google signed out');
               } catch (e) {
                 print('Error signing out from Google: $e');
               }
 
               // Clear local token
-              box.remove('user-login-access-token');
-              print(
-                  'Token after logout: ${box.read('user-login-access-token')}');
-
-              // Redirect to Sign In
+              box.remove('user-login-access-token');          
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 SignInScreen.routeName,

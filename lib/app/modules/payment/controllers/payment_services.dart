@@ -15,7 +15,7 @@ class PaymentService {
 
     Map<String, dynamic> paymentData = {
       'link' : paymentController.paymentData?.data,
-      'reference' : referenceId
+      'reference' : referenceId 
     };
 
     if (isSuccess) {

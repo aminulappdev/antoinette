@@ -27,7 +27,8 @@ class CheckOutScreen extends StatefulWidget {
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
   final PaymentController paymentController = PaymentController();
-  final ProductOrderController productOrderController = Get.find<ProductOrderController>();
+  final ProductOrderController productOrderController =
+      Get.find<ProductOrderController>();
   ProfileController profileController = Get.find<ProfileController>();
   final PaymentService paymentService = PaymentService();
 
@@ -48,7 +49,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   void initState() {
     super.initState();
     profileController.getProfileData();
-    deliveryAddress = profileController.profileData?.homeAddress ?? 'Please update your address';
+    deliveryAddress = profileController.profileData?.homeAddress ??
+        'Please update your address';
     myUserId = profileController.profileData?.id ?? '';
     price = (widget.productModel.amount ?? 0.0) * quantity;
     discount = widget.productModel.discount ?? 0;
@@ -76,8 +78,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 CustomAppBar(name: 'Checkout'),
                 heightBox8,
                 CheckoutUserInfo(
-                  name: controller.profileData?.name ?? 'Sunan Rahman',
-                  number: controller.profileData?.contactNumber ?? '+49 176 12345678',
+                  name: controller.profileData?.name ?? 'name',
+                  number: controller.profileData?.contactNumber ??
+                      '+49 176 12345678',
                 ),
                 heightBox8,
                 Row(
@@ -89,11 +92,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           setState(() {
                             selectedButtonIndex = index;
                             if (selectedButtonIndex == 0) {
-                              deliveryAddress = controller.profileData?.homeAddress ?? 'Please update your address';
+                              deliveryAddress =
+                                  controller.profileData?.homeAddress ??
+                                      'Please update your address';
                             } else if (selectedButtonIndex == 1) {
-                              deliveryAddress = controller.profileData?.officeAddress ?? 'Please update your address';
+                              deliveryAddress =
+                                  controller.profileData?.officeAddress ??
+                                      'Please update your address';
                             } else if (selectedButtonIndex == 2) {
-                              deliveryAddress = controller.profileData?.deliveryAddress ?? 'Please update your address';
+                              deliveryAddress =
+                                  controller.profileData?.deliveryAddress ??
+                                      'Please update your address';
                             }
                             print('Selected address: $deliveryAddress');
                           });
@@ -112,7 +121,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               buttonNames[index],
                               style: TextStyle(
                                 fontSize: 12.sp,
-                                color: selectedButtonIndex == index ? Colors.white : Colors.black,
+                                color: selectedButtonIndex == index
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                             ),
                           ),
@@ -142,7 +153,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 heightBox12,
                 Text(
                   'Price Details',
-                  style: GoogleFonts.poppins(fontSize: 15.sp, fontWeight: FontWeight.w500),
+                  style: GoogleFonts.poppins(
+                      fontSize: 15.sp, fontWeight: FontWeight.w500),
                 ),
                 heightBox12,
                 PriceRow(
@@ -199,10 +211,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               productOrderFunction(
                                 controller.profileData?.sId ?? '',
                                 '5',
-                                controller.profileData?.name ?? 'Sunan Rahman',
+                                controller.profileData?.name ?? 'Name',
                                 '10-10-2024',
                                 deliveryAddress,
-                                controller.profileData?.contactNumber ?? '+49 176 12345678',
+                                controller.profileData?.contactNumber ??
+                                    '+49 176 12345678',
                                 controller.profileData?.email ?? '',
                               );
                             },
@@ -240,11 +253,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   height: 77.h,
                   width: 75.w,
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      image: AssetImage(AssetsPath.medichine),
+                      
+                      image: widget.productModel.images?.isNotEmpty == true
+                          ? NetworkImage(
+                              '${widget.productModel.images?[0].url}')
+                          : NetworkImage(
+                              'https://defaultimageurl.com/default.png'),
                       fit: BoxFit.fill,
                     ),
-                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
                 widthBox8,
@@ -263,10 +281,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             setState(() {
                               if (quantity > 1) {
                                 quantity--;
-                                price = (widget.productModel.amount ?? 0.0) * quantity;
+                                price = (widget.productModel.amount ?? 0.0) *
+                                    quantity;
                                 item--;
                                 _calculateTotalPrice();
-                                print('Minus: Quantity=$quantity, Price=$price, Total=$mainTotalPrice');
+                                print(
+                                    'Minus: Quantity=$quantity, Price=$price, Total=$mainTotalPrice');
                               }
                             });
                           },
@@ -287,12 +307,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             setState(() {
                               if (widget.productModel.quantity! > quantity) {
                                 quantity++;
-                                price = (widget.productModel.amount ?? 0.0) * quantity;
+                                price = (widget.productModel.amount ?? 0.0) *
+                                    quantity;
                                 item++;
                                 _calculateTotalPrice();
-                                print('Plus: Quantity=$quantity, Price=$price, Total=$mainTotalPrice');
+                                print(
+                                    'Plus: Quantity=$quantity, Price=$price, Total=$mainTotalPrice');
                               } else {
-                                print('Cannot increase quantity beyond ${widget.productModel.quantity}');
+                                print(
+                                    'Cannot increase quantity beyond ${widget.productModel.quantity}');
                               }
                             });
                           },
@@ -363,7 +386,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     } else {
       if (mounted) {
         print('Error show ----------------------------------');
-        showSnackBarMessage(context, productOrderController.errorMessage!, true);
+        showSnackBarMessage(
+            context, productOrderController.errorMessage!, true);
       }
     }
   }
