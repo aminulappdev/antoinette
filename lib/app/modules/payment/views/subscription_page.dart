@@ -97,7 +97,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     height: height / 20,
                   ),
                   GradientElevatedButton(
-                    onPressed: (){
+                    onPressed: () {
                       buyNowBTN(allPackageController.packageItemList![1].sId!);
                     },
                     text: 'Buy now',
@@ -330,20 +330,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Future<void> buyNowBTN(String packageid) async {
     // Check if packageId is null
     final bool isSuccess = await subscriptionController.getSubcription(userId, packageid);
- 
+
     if (isSuccess) {
-      if (mounted) {
-           paymentService.payment(
+      if (mounted) {  // Ensure the widget is still mounted before calling payment
+        paymentService.payment(
           context,
           'Subscription',
           userId,
           subscriptionController.subscriptionResponseData!.id!,
         );
-        
-
       }
     } else {
-      if (mounted) {
+      if (mounted) {  // Ensure the widget is still mounted before showing snackbar
         showSnackBarMessage(context, subscriptionController.errorMessage!, true);
       }
     }

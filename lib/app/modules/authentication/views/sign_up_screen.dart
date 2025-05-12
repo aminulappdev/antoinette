@@ -66,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               heightBox16,
               WelcomeText(
                 title: 'Let’s Begin Your Journey',
-                subtitle: 'Just a few details  to make this space yours.',
+                subtitle: 'Just a few details to make this space yours.',
               ),
               heightBox50,
               Form(
@@ -252,7 +252,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       child: GradientElevatedButton(
-                        onPressed: isStudentChecked == true ? signUpStudentFunction : signUpFunction,
+                        onPressed: isStudentChecked == true && image == null
+                            ? showModel // If image is null, show the model
+                            : isStudentChecked == true
+                                ? signUpStudentFunction
+                                : signUpFunction,
                         text: 'Verify Email',
                       ),
                     ),
@@ -274,6 +278,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> showModel() async {
+    showSnackBarMessage(context, 'Please upload your identification image.');
   }
 
   Future<void> signUpFunction() async {
@@ -303,21 +311,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> signUpStudentFunction() async {
+    print('Student signup function');
     if (_formKey.currentState!.validate()) {
-      final bool isSuccess = await signUpController.signUp(
-          nameCtrl.text, emailCtrl.text, passwordCtrl.text, numberCtrl.text);
+      final bool isSuccess = await studentSignUpController.studentSignUp(
+          nameCtrl.text,
+          emailCtrl.text,
+          passwordCtrl.text,
+          numberCtrl.text,
+          image);
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'New user created');
+          showSnackBarMessage(context, 'New student user created');
           Navigator.pushNamed(context, VerifyEmailScreen.routeName,
-              arguments: signUpController.token);
+              arguments: studentSignUpController.token);
 
           // print('My token ---------------------------------------');
           // print(signUpController.token);
         } else {
           if (mounted) {
-            showSnackBarMessage(context, signUpController.errorMessage!, true);
+            showSnackBarMessage(
+                context, studentSignUpController.errorMessage!, true);
           }
         }
       }

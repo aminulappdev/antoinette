@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:antoinette/app/modules/authentication/model/sign_up_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -14,36 +15,34 @@ class StudentSignUpController extends GetxController {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
+  String? _token;
+  String? get token => _token;
+
   String? addressFiled;
 
-  /// 🔁 Update Profile Function
-  Future<bool> studentSignUp( 
+  /// 🔁 Student Sign Up Function
+  Future<bool> studentSignUp(
     String? name,
     String? email,
     String? password,
     String? number,
     File? image,
   ) async {
-    print('Image ache ?? ................................');
-    print(image);
+    print('Image ache ................................');
+    print(image?.path);
+
     bool isSuccess = false;
     _inProgress = true;
     update();
-
+    print('problem bahire');
     try {
-      String? token = box.read('user-login-access-token');
-      if (token == null || token.isEmpty) {
-        _errorMessage = "User not authenticated";
-        _inProgress = false;
-        update();
-        return false;
-      }
-
+      print('try te dukche');
+     
+      
+      print('Acces token ');
       var uri = Uri.parse(Urls.studentSignUpUrl);
-      var request = http.MultipartRequest('PUT', uri);
+      var request = http.MultipartRequest('POST', uri);
 
-      // ✅ Only Authorization header
-      request.headers['Authorization'] = token;
 
       // ✅ Set 'data' field with JSON-encoded string
       Map<String, dynamic> jsonFields = {
@@ -55,10 +54,11 @@ class StudentSignUpController extends GetxController {
 
       request.fields['data'] = jsonEncode(jsonFields);
 
+      print('data asche');
+
       // ✅ Add image if available
       if (image != null) {
-        print('Image ache ekhane ................................');
-        print(image);
+        print('Image is here, processing...');
         String imagePath = image.path;
         String? mimeType = lookupMimeType(imagePath) ?? 'image/jpeg';
 
@@ -75,20 +75,25 @@ class StudentSignUpController extends GetxController {
       var streamedResponse = await request.send();
       var responseBody = await streamedResponse.stream.bytesToString();
 
-      print('📥 Server Response:');
-      print(responseBody);
+      print('📥 Server Response: $responseBody');
 
       var decodedResponse = jsonDecode(responseBody);
 
-      if (streamedResponse.statusCode == 200) {
+      if (streamedResponse.statusCode == 200 || streamedResponse.statusCode == 201) {
+        print('Success');
+
+
         _errorMessage = null;
         isSuccess = true;
+
+        final signInModel = SignInModel.fromJson(decodedResponse);
+        _token = signInModel.data?.otpToken?.token;
       } else {
-        _errorMessage =
-            decodedResponse['message'] ?? "Failed to update profile";
+        _errorMessage = decodedResponse['message'] ?? "Failed to sign up";
       }
     } catch (e) {
-      _errorMessage = "Error updating profile: $e";
+       print('problem');
+      _errorMessage = "Error signing up: $e";
     } finally {
       _inProgress = false;
       update();
