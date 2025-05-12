@@ -97,11 +97,13 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                         ),
                       ],
                     ),
-                    SessionSchedule(
-                      date: '',
-                      time: '',
-                      address: '${controller.sessionModel?.location}',
-                    ),
+                    controller.inProgress
+                        ? Text('')
+                        : SessionSchedule(
+                            date: '',
+                            time: '',
+                            address: '${controller.sessionModel?.location}',
+                          ),
                     heightBox8,
                     SessionBar(
                       sessionId: widget.sessionId,

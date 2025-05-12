@@ -109,12 +109,12 @@ class _SignInScreenState extends State<SignInScreen> {
                       ontap: onTapGoogleSignIn,
                     ),
                     heightBox12,
-                    ContinueElevatedButton(
-                      name: 'Continue with apple',
-                      logoPath: AssetsPath.appleLogo,
-                      ontap: () {},
-                    ),
-                    heightBox12,
+                    // ContinueElevatedButton(
+                    //   name: 'Continue with apple',
+                    //   logoPath: AssetsPath.appleLogo,
+                    //   ontap: () {},
+                    // ),
+                    // heightBox12,
                     AuthenticationFooterSection(
                       fTextName: 'Don’t have an account? ',
                       fTextColor: Color(0xff33363F),
@@ -140,19 +140,19 @@ class _SignInScreenState extends State<SignInScreen> {
 
     if (isSuccess) {
       if (context.mounted) {
-        showSnackBarMessage(context, 'Google দিয়ে লগইন সফল হয়েছে');
+        showSnackBarMessage(context, 'Google success');
       }
     } else {
-      String message = controller.errorMessage ?? 'Google লগইন ব্যর্থ হয়েছে';
+      String message = controller.errorMessage ?? 'Google failed';
 
       if (message.contains('credentials')) {
         if (context.mounted) {
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
-              title: Text("অ্যাকাউন্ট সমস্যা"),
-              content: Text("এই ইমেইলটি আগে থেকেই রেজিস্টার করা আছে ইমেইল-পাসওয়ার্ড দিয়ে। দয়া করে অন্য Google অ্যাকাউন্ট সিলেক্ট করুন।"),
-              actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("ঠিক আছে"))],
+              title: Text("Account problem"),
+              content: Text("This account already registered. try another accoubt"),
+              actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("Correct"))],
             ),
           );
         }

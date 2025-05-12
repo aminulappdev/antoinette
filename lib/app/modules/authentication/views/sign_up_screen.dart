@@ -109,7 +109,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (value!.isEmpty) {
                           return 'Enter mobile number';
                         }
-
                         return null;
                       },
                       decoration: InputDecoration(
@@ -252,11 +251,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       child: GradientElevatedButton(
-                        onPressed: isStudentChecked == true && image == null
-                            ? showModel // If image is null, show the model
-                            : isStudentChecked == true
-                                ? signUpStudentFunction
-                                : signUpFunction,
+                        onPressed: isStudentChecked == false
+                            ? signUpFunction // If isStudentChecked is false, call signUpFunction
+                            : (image == null
+                                ? showModel // If image is null, show the model
+                                : signUpStudentFunction), // If image is not null, call signUpStudentFunction
                         text: 'Verify Email',
                       ),
                     ),
@@ -286,21 +285,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> signUpFunction() async {
     if (_formKey.currentState!.validate()) {
-      final bool isSuccess = await studentSignUpController.studentSignUp(
+      final bool isSuccess = await signUpController.signUp(
           nameCtrl.text,
           emailCtrl.text,
           passwordCtrl.text,
           numberCtrl.text,
-          image);
+          );
 
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'New user created');
           Navigator.pushNamed(context, VerifyEmailScreen.routeName,
               arguments: signUpController.token);
-
-          // print('My token ---------------------------------------');
-          // print(signUpController.token);
         } else {
           if (mounted) {
             showSnackBarMessage(context, signUpController.errorMessage!, true);
@@ -311,7 +307,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> signUpStudentFunction() async {
-    print('Student signup function');
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await studentSignUpController.studentSignUp(
           nameCtrl.text,
@@ -325,9 +320,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           showSnackBarMessage(context, 'New student user created');
           Navigator.pushNamed(context, VerifyEmailScreen.routeName,
               arguments: studentSignUpController.token);
-
-          // print('My token ---------------------------------------');
-          // print(signUpController.token);
         } else {
           if (mounted) {
             showSnackBarMessage(

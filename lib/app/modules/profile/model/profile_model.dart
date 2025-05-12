@@ -39,21 +39,24 @@ class ProfileData {
   String? id;
   String? createdAt;
   String? updatedAt;
+  bool? isStudent; // ✅ New field added
 
-  ProfileData(
-      {this.sId,
-      this.name,
-      this.email,
-      this.contactNumber,
-      this.homeAddress,
-      this.officeAddress,
-      this.deliveryAddress,
-      this.photoUrl,
-      this.age,
-      this.status,
-      this.id,
-      this.createdAt,
-      this.updatedAt});
+  ProfileData({
+    this.sId,
+    this.name,
+    this.email,
+    this.contactNumber,
+    this.homeAddress,
+    this.officeAddress,
+    this.deliveryAddress,
+    this.photoUrl,
+    this.age,
+    this.status,
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.isStudent, // ✅ Include in constructor
+  });
 
   ProfileData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -69,6 +72,7 @@ class ProfileData {
     id = json['id'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    isStudent = json['isStudent']; // ✅ Parse from JSON
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +90,7 @@ class ProfileData {
     data['id'] = id;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['isStudent'] = isStudent; // ✅ Include in toJson
     return data;
   }
 }

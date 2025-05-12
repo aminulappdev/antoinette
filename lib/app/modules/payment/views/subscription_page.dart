@@ -10,9 +10,6 @@ import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   static const String routeName = '/subscription-screen';
@@ -23,27 +20,16 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  bool isMonthly = true;
-  bool isYearly = false;
   ProfileController profileController = Get.find<ProfileController>();
   SubscriptionController subscriptionController = SubscriptionController();
   AllPackageController allPackageController = Get.find<AllPackageController>();
-  String packageId = '';
-  late String userId;
-  int indexx = 0;
   final PaymentService paymentService = PaymentService();
+  late String userId;
 
   @override
   void initState() {
     super.initState();
-
-    // Ensure profileData is not null
-    if (profileController.profileData != null) {
-      userId = profileController.profileData!.sId!;
-    } else {   
-      userId = '';
-    }
-
+    userId = profileController.profileData?.sId ?? '';
     allPackageController.getAllPackage();
   }
 
@@ -51,288 +37,149 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: GetBuilder<AllPackageController>(builder: (controller) {
-        if (controller.inProgress) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(),
-          child: Padding(
-            padding: EdgeInsets.all(height / 72),
+      body: GetBuilder<AllPackageController>(
+        builder: (controller) {
+          if (controller.inProgress) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (controller.packageItemList == null || controller.packageItemList!.isEmpty) {
+            return const Center(child: Text("No packages available"));
+          }
+
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  heightBox20,
-                  CustomAppBar(name: 'Subscriptions'),
-                  SizedBox(
-                    height: height / 24,
-                  ),
+                  const CustomAppBar(name: 'Subscriptions'),
+                  SizedBox(height: 24.h),
                   Text(
                     'Premium Membership',
                     style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.iconButtonThemeColor),
-                  ),
-                  SizedBox(
-                    height: height / 80,
-                  ),
-                  SizedBox(
-                    height: 150.h,
-                    child: ListView.builder(
-                      itemCount: controller.packageItemList?[indexx].description?.length,
-                      itemBuilder: (context, index) {
-                        return costomRow('${controller.packageItemList?[indexx].description?[index]}', height, width);
-                      },
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.iconButtonThemeColor,
                     ),
                   ),
-                  packageSection(height, width,
-                      monthlyAmount: controller.packageItemList![1].price.toString(),
-                      yearlyAmount: controller.packageItemList![0].price.toString()),
-                  SizedBox(
-                    height: height / 20,
-                  ),
-                  GradientElevatedButton(
-                    onPressed: () {
-                      buyNowBTN(allPackageController.packageItemList![1].sId!);
+                  SizedBox(height: 20.h),
+
+                  // 🔄 DYNAMIC PACKAGE LIST
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.packageItemList!.length,
+                    itemBuilder: (context, pkgIndex) {
+                      final package = controller.packageItemList![pkgIndex];
+
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 24.h),
+                        padding: EdgeInsets.all(16.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // 🔹 Title
+                            Text(
+                              package.title ?? '',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+
+                            // 🔹 Subtitle
+                            Text(
+                              package.subtitle ?? '',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            SizedBox(height: 10.h),
+
+                            // 🔹 Price and Billing
+                            Text(
+                              "\$${package.price} / ${package.billingCycle}",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+
+                            SizedBox(height: 16.h),
+
+                            // 🔹 Features List
+                            Text(
+                              "Features:",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                package.description?.length ?? 0,
+                                (descIndex) => Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 4),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Icon(Icons.check_circle, size: 18, color: Colors.green),
+                                      SizedBox(width: 6.w),
+                                      Expanded(
+                                        child: Text(
+                                          package.description![descIndex],
+                                          style: TextStyle(fontSize: 14.sp),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(height: 24.h),
+
+                            // ✅ BUY NOW BUTTON
+                            SizedBox(
+                              width: double.infinity,
+                              child: GradientElevatedButton(
+                                text: 'Buy Now',
+                                onPressed: () {
+                                  buyNowBTN(package.sId!);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     },
-                    text: 'Buy now',
                   ),
                 ],
               ),
             ),
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget packageSection(double height, double width, {String monthlyAmount = '0', String yearlyAmount = '0'}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        GestureDetector(
-          onTap: () {
-            packageId = allPackageController.packageItemList![1].sId!;
-            isMonthly = true;
-            isYearly = false;
-            setState(() {
-              indexx = 0;
-            });
-          },
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                height: height / 4.5,
-                width: width / 2.2,
-                decoration: BoxDecoration(
-                    border: GradientBoxBorder(
-                      gradient: LinearGradient(
-                        colors: isMonthly
-                            ? AppColors.gradiantColors
-                            : [Colors.black, Colors.black],
-                      ),
-                      width: 1.5,
-                    ),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: EdgeInsets.all(height / 100),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GradientText(
-                            'Monthly',
-                            style: GoogleFonts.urbanist(
-                                fontSize: height / 36,
-                                fontWeight: FontWeight.w400),
-                            colors: isMonthly
-                                ? AppColors.gradiantColors
-                                : [Colors.black, Colors.black],
-                          ),
-                          GradientText(
-                            '\$${allPackageController.packageItemList?[1].price}',
-                            style: GoogleFonts.urbanist(
-                                fontSize: height / 30,
-                                fontWeight: FontWeight.w800),
-                            colors: isMonthly
-                                ? AppColors.gradiantColors
-                                : [Colors.black, Colors.black],
-                          ),
-                        ],
-                      ),
-                      GradientText(
-                        'Select your plan',
-                        style: GoogleFonts.urbanist(
-                            fontSize: height / 50, fontWeight: FontWeight.w400),
-                        colors: isMonthly
-                            ? AppColors.gradiantColors
-                            : [Colors.black, Colors.black],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: isMonthly,
-                child: Positioned(
-                  top: -10,
-                  right: 0,
-                  child: Container(
-                    height: height / 30,
-                    width: height / 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: AppColors.gradiantColors,
-                      ),
-                    ),
-                    child: Icon(Icons.done, color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            packageId = allPackageController.packageItemList![0].sId!;
-            isMonthly = false;
-            isYearly = true;
-            setState(() {
-              indexx = 1;
-            });
-          },
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                height: height / 4.5,
-                width: width / 2.2,
-                decoration: BoxDecoration(
-                    border: GradientBoxBorder(
-                      gradient: LinearGradient(
-                        colors: isYearly
-                            ? AppColors.gradiantColors
-                            : [Colors.black, Colors.black],
-                      ),
-                      width: 1.5,
-                    ),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: EdgeInsets.all(height / 100),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GradientText(
-                            'Yearly',
-                            style: GoogleFonts.urbanist(
-                                fontSize: height / 36,
-                                fontWeight: FontWeight.w400),
-                            colors: isYearly
-                                ? AppColors.gradiantColors
-                                : [Colors.black, Colors.black],
-                          ),
-                          GradientText(
-                            '\$${allPackageController.packageItemList?[0].price}',
-                            style: GoogleFonts.urbanist(
-                                fontSize: height / 30,
-                                fontWeight: FontWeight.w800),
-                            colors: isYearly
-                                ? AppColors.gradiantColors
-                                : [Colors.black, Colors.black],
-                          ),
-                        ],
-                      ),
-                      GradientText(
-                        'Select your plan',
-                        style: GoogleFonts.urbanist(
-                            fontSize: height / 50, fontWeight: FontWeight.w400),
-                        colors: isYearly
-                            ? AppColors.gradiantColors
-                            : [Colors.black, Colors.black],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: isYearly,
-                child: Positioned(
-                  top: -10,
-                  right: 0,
-                  child: Container(
-                    height: height / 30,
-                    width: height / 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: AppColors.gradiantColors,
-                      ),
-                    ),
-                    child: Icon(Icons.done, color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget costomRow(String name, double height, double width) {
-    return Row(
-      children: [
-        ShaderMask(
-          shaderCallback: (bounds) => LinearGradient(
-            colors: AppColors.gradiantColors,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ).createShader(bounds),
-          child: Icon(
-            Icons.check_circle_sharp,
-            color: Colors.white,
-          ),
-        ),
-        SizedBox(
-          width: 4,
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width - 60.w,
-          child: Text(
-            name,
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
-          ),
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
 
   Future<void> buyNowBTN(String packageid) async {
-    // Check if packageId is null
     final bool isSuccess = await subscriptionController.getSubcription(userId, packageid);
-
     if (isSuccess) {
-      if (mounted) {  // Ensure the widget is still mounted before calling payment
+      if (mounted) {
         paymentService.payment(
           context,
           'Subscription',
@@ -341,8 +188,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         );
       }
     } else {
-      if (mounted) {  // Ensure the widget is still mounted before showing snackbar
-        showSnackBarMessage(context, subscriptionController.errorMessage!, true);
+      if (mounted) {
+        showSnackBarMessage(context, subscriptionController.errorMessage ?? "Something went wrong", true);
       }
     }
   }
