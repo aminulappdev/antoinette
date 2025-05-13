@@ -12,6 +12,7 @@ import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
+import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-
-// All necessary imports here...
 
 class SignInScreen extends StatefulWidget {
   static const String routeName = '/sign-in-screen';
@@ -34,9 +33,11 @@ class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
-  SignInController signInController = SignInController();
-  ForgotPasswordController forgotPasswordController =
-      ForgotPasswordController();
+
+  // 🔄 updated: GetX এর সাথে কাজ করার জন্য Get.put ব্যবহার করেছি
+  final SignInController signInController = Get.put(SignInController());
+  final ForgotPasswordController forgotPasswordController =
+      Get.put(ForgotPasswordController());
 
   bool _obscureText = true;
   bool isChecked = false;
@@ -75,8 +76,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
                         if (value!.isEmpty) return 'Enter email';
-                        if (!EmailValidator.validate(value))
+                        if (!EmailValidator.validate(value)) {
                           return 'Enter a valid email address';
+                        }
                         return null;
                       },
                       decoration: InputDecoration(
@@ -112,24 +114,48 @@ class _SignInScreenState extends State<SignInScreen> {
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ForgotPasswordRow(ontap: forgotPasswordBTN),
-                    ),
-                    heightBox24,
-                    GetBuilder<SignInController>(
+
+                    GetBuilder<ForgotPasswordController>(
                       builder: (controller) {
-                        return Visibility(
-                          visible: !controller.inProgress,
-                          replacement: const CircularProgressIndicator(),
-                          child: ElevatedButton(
-                            onPressed: onTapToNextButton,
-                            child:
-                                const Icon(Icons.arrow_circle_right_outlined),
+                        return Align(
+                          alignment: Alignment.centerRight,
+                          child: ForgotPasswordRow(
+                            ontap: controller.inProgress
+                                ? () {}
+                                : forgotPasswordBTN,
                           ),
                         );
                       },
                     ),
+
+                    heightBox24,
+
+                    // 🔄 updated: SignIn Button with internal loader
+                    GetBuilder<SignInController>(
+                      builder: (controller) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            GradientElevatedButton(
+                              onPressed: controller.inProgress
+                                  ? () {}
+                                  : () => onTapToNextButton(),
+                              text: controller.inProgress ? '' : 'Sign in',
+                            ),
+                            if (controller.inProgress)
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
+                    ),
+
                     Liner(),
                     ContinueElevatedButton(
                       name: 'Continue with google',
@@ -137,12 +163,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       ontap: onTapGoogleSignIn,
                     ),
                     heightBox12,
-                    // ContinueElevatedButton(
-                    //   name: 'Continue with apple',
-                    //   logoPath: AssetsPath.appleLogo,
-                    //   ontap: () {},
-                    // ),
-                    // heightBox12,
                     AuthenticationFooterSection(
                       fTextName: 'Don’t have an account? ',
                       fTextColor: Color(0xff33363F),
@@ -176,11 +196,12 @@ class _SignInScreenState extends State<SignInScreen> {
       if (message.contains('credentials')) {
         if (context.mounted) {
           showDialog(
+            // ignore: use_build_context_synchronously
             context: context,
             builder: (_) => AlertDialog(
               title: Text("Account problem"),
               content:
-                  Text("This account already registered. try another accoubt"),
+                  Text("This account already registered. try another account"),
               actions: [
                 TextButton(
                     onPressed: () => Navigator.pop(context),
@@ -220,7 +241,9 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> forgotPasswordBTN() async {
     final bool isSuccess =
         await forgotPasswordController.forgotPassword(emailCtrl.text);
-    if (isSuccess && mounted) {
+    if (emailCtrl.text.isEmpty) {
+      showSnackBarMessage(context, 'Please input valid email', true);
+    } else if (isSuccess && mounted) {
       Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
     } else if (mounted) {
       showSnackBarMessage(context,

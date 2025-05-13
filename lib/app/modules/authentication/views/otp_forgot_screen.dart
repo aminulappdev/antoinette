@@ -10,8 +10,7 @@ import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -26,8 +25,8 @@ class OTPVerifyForgotScreen extends StatefulWidget {
 class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController otpCtrl = TextEditingController();
-  VerifyOtpController verifyOtpController = VerifyOtpController();
-  ResendOTPController resendOTPController = ResendOTPController();
+  VerifyOtpController verifyOtpController = Get.put(VerifyOtpController());
+  ResendOTPController resendOTPController = Get.put(ResendOTPController());
 
   RxInt remainingTime = 60.obs;
   late Timer timer;
@@ -36,11 +35,10 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
   final info = box.read('fotgot-password-info');
   String email = '';
 
- 
   @override
   void initState() {
     resendOTP();
-   
+
     email = info['email'];
 
     super.initState();
@@ -64,7 +62,6 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
     if (isSuccess) {
       if (mounted) {
-       
         showSnackBarMessage(context, 'OTP succsessfully sent');
       } else {
         if (mounted) {
@@ -108,6 +105,9 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                   children: [
                     SizedBox(
                       child: PinCodeTextField(
+                        onChanged: (value) {
+                          setState(() {});
+                        },
                         controller: otpCtrl,
                         length: 6,
                         animationType: AnimationType.fade,
@@ -130,9 +130,35 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                       ),
                     ),
                     heightBox8,
-                    GradientElevatedButton(
-                      onPressed: onTapToNextButton,
-                      text: 'Confirm',
+                    GetBuilder<VerifyOtpController>(
+                      builder: (controller) {
+                        bool isOtpFilled = otpCtrl.text.length == 6;
+
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Opacity(
+                              opacity: isOtpFilled ? 1.0 : 0.5,
+                              child: GradientElevatedButton(
+                                onPressed:
+                                    (!isOtpFilled || controller.inProgress)
+                                        ? () {}
+                                        : () => onTapToNextButton(),
+                                text: controller.inProgress ? '' : 'Confirm',
+                              ),
+                            ),
+                            if (controller.inProgress)
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
                     ),
                     heightBox12,
                     Obx(
@@ -180,8 +206,8 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
-      final bool isSuccess =
-          await verifyOtpController.verifyOtp(otpCtrl.text, resendOTPController.accessToken.toString());
+      final bool isSuccess = await verifyOtpController.verifyOtp(
+          otpCtrl.text, resendOTPController.accessToken.toString());
 
       if (isSuccess) {
         if (mounted) {
@@ -192,6 +218,13 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
             showSnackBarMessage(
                 context, verifyOtpController.errorMessage!, true);
           }
+        }
+        
+      }
+      else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, verifyOtpController.errorMessage ?? 'failed', true);
         }
       }
     }

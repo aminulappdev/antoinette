@@ -9,6 +9,8 @@ import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,8 +28,8 @@ class OTPVerifyScreen extends StatefulWidget {
 class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController otpCtrl = TextEditingController();
-  VerifyOtpController verifyOtpController = VerifyOtpController();
-  SignUpController signUpController = SignUpController();
+  VerifyOtpController verifyOtpController = Get.put(VerifyOtpController());
+  SignUpController signUpController = Get.put(SignUpController());
 
   RxInt remainingTime = 60.obs;
   late Timer timer;
@@ -37,6 +39,10 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   void initState() {
     resendOTP();
     super.initState();
+
+    otpCtrl.addListener(() {
+      setState(() {}); // OTP text change হলে rebuild হবে
+    });
   }
 
   void resendOTP() {
@@ -106,9 +112,35 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                       appContext: context,
                     ),
                     heightBox8,
-                    GradientElevatedButton(
-                      onPressed: onTapToNextButton,
-                      text: 'Confirm',
+                    GetBuilder<VerifyOtpController>(
+                      builder: (controller) {
+                        bool isOtpFilled = otpCtrl.text.length == 6;
+
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Opacity(
+                              opacity: isOtpFilled ? 1.0 : 0.5,
+                              child: GradientElevatedButton(
+                                onPressed:
+                                    (!isOtpFilled || controller.inProgress)
+                                        ? () {}
+                                        : () => onTapToNextButton(),
+                                text: controller.inProgress ? '' : 'Confirm',
+                              ),
+                            ),
+                            if (controller.inProgress)
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
                     ),
                     heightBox12,
                     Obx(

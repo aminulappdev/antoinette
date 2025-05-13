@@ -16,7 +16,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -33,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController numberCtrl = TextEditingController();
-  SignUpController signUpController = SignUpController();
+  SignUpController signUpController = Get.put(SignUpController());
   final StudentSignUpController studentSignUpController =
       Get.find<StudentSignUpController>();
 
@@ -241,24 +240,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     heightBox24,
-                    Visibility(
-                      visible: showButton,
-                      replacement: Opacity(
-                        opacity: 0.5,
-                        child: GradientElevatedButton(
-                          text: 'Verify Email',
-                          onPressed: () {},
-                        ),
-                      ),
-                      child: GradientElevatedButton(
-                        onPressed: isStudentChecked == false
-                            ? signUpFunction // If isStudentChecked is false, call signUpFunction
-                            : (image == null
-                                ? showModel // If image is null, show the model
-                                : signUpStudentFunction), // If image is not null, call signUpStudentFunction
-                        text: 'Verify Email',
-                      ),
+                    GetBuilder<SignUpController>(
+                      builder: (controller) {
+                        return Visibility(
+                          visible: showButton,
+                          replacement: Opacity(
+                            opacity: 0.5,
+                            child: GradientElevatedButton(
+                              text: 'Verify Email',
+                              onPressed: () {}, // Disabled
+                            ),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              GradientElevatedButton(
+                                onPressed: controller.inProgress
+                                    ? () {} // Prevent tap when loading
+                                    : (isStudentChecked == false
+                                        ? () => signUpFunction()
+                                        : (image == null
+                                            ? () => showModel()
+                                            : () => signUpStudentFunction())),
+                                text:
+                                    controller.inProgress ? '' : 'Verify Email',
+                              ),
+                              if (controller.inProgress)
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
+
                     heightBox12,
                     AuthenticationFooterSection(
                       fTextName: 'Already received your letter? ',
@@ -286,11 +307,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<void> signUpFunction() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await signUpController.signUp(
-          nameCtrl.text,
-          emailCtrl.text,
-          passwordCtrl.text,
-          numberCtrl.text,
-          );
+        nameCtrl.text,
+        emailCtrl.text,
+        passwordCtrl.text,
+        numberCtrl.text,
+      );
 
       if (isSuccess) {
         if (mounted) {
