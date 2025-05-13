@@ -35,7 +35,7 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
     const DearDiaryScreen(),
   
   ];
-  
+   
    @override
   void initState() {
     Get.find<ProfileController>().getProfileData();

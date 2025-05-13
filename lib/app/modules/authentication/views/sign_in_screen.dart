@@ -12,7 +12,6 @@ import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
-import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +30,13 @@ class SignInScreen extends StatefulWidget {
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> { 
+class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
   SignInController signInController = SignInController();
-  ForgotPasswordController forgotPasswordController = ForgotPasswordController();
+  ForgotPasswordController forgotPasswordController =
+      ForgotPasswordController();
 
   bool _obscureText = true;
   bool isChecked = false;
@@ -63,7 +63,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Email', style: GoogleFonts.poppins(fontSize: 12.sp, fontWeight: FontWeight.w400, color: Color(0xff626262))),
+                    Text('Email',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
                     heightBox8,
                     TextFormField(
                       controller: emailCtrl,
@@ -71,13 +75,20 @@ class _SignInScreenState extends State<SignInScreen> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
                         if (value!.isEmpty) return 'Enter email';
-                        if (!EmailValidator.validate(value)) return 'Enter a valid email address';
+                        if (!EmailValidator.validate(value))
+                          return 'Enter a valid email address';
                         return null;
                       },
-                      decoration: InputDecoration(hintText: 'example@gmail.com', hintStyle: TextStyle(color: Colors.grey)),
+                      decoration: InputDecoration(
+                          hintText: 'example@gmail.com',
+                          hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Password', style: GoogleFonts.poppins(fontSize: 12.sp, fontWeight: FontWeight.w400, color: Color(0xff626262))),
+                    Text('Password',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
                     heightBox8,
                     TextFormField(
                       controller: passwordCtrl,
@@ -89,8 +100,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       obscureText: _obscureText,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
-                          onPressed: () => setState(() => _obscureText = !_obscureText),
+                          icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.grey),
+                          onPressed: () =>
+                              setState(() => _obscureText = !_obscureText),
                         ),
                         hintText: '***********',
                         hintStyle: TextStyle(color: Colors.grey),
@@ -101,7 +117,19 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: ForgotPasswordRow(ontap: forgotPasswordBTN),
                     ),
                     heightBox24,
-                    GradientElevatedButton(onPressed: onTapToNextButton, text: 'Sign in'),
+                    GetBuilder<SignInController>(
+                      builder: (controller) {
+                        return Visibility(
+                          visible: !controller.inProgress,
+                          replacement: const CircularProgressIndicator(),
+                          child: ElevatedButton(
+                            onPressed: onTapToNextButton,
+                            child:
+                                const Icon(Icons.arrow_circle_right_outlined),
+                          ),
+                        );
+                      },
+                    ),
                     Liner(),
                     ContinueElevatedButton(
                       name: 'Continue with google',
@@ -151,8 +179,13 @@ class _SignInScreenState extends State<SignInScreen> {
             context: context,
             builder: (_) => AlertDialog(
               title: Text("Account problem"),
-              content: Text("This account already registered. try another accoubt"),
-              actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("Correct"))],
+              content:
+                  Text("This account already registered. try another accoubt"),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text("Correct"))
+              ],
             ),
           );
         }
@@ -166,27 +199,32 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
-      final bool isSuccess = await signInController.signIn(emailCtrl.text, passwordCtrl.text, isChecked);
+      final bool isSuccess = await signInController.signIn(
+          emailCtrl.text, passwordCtrl.text, isChecked);
 
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'Login successfully done');
-          Navigator.pushNamedAndRemoveUntil(context, MainButtonNavbarScreen.routeName, (route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              context, MainButtonNavbarScreen.routeName, (route) => false);
         }
       } else {
         if (mounted) {
-          showSnackBarMessage(context, signInController.errorMessage ?? 'Login failed', true);
+          showSnackBarMessage(
+              context, signInController.errorMessage ?? 'Login failed', true);
         }
       }
     }
   }
 
   Future<void> forgotPasswordBTN() async {
-    final bool isSuccess = await forgotPasswordController.forgotPassword(emailCtrl.text);
+    final bool isSuccess =
+        await forgotPasswordController.forgotPassword(emailCtrl.text);
     if (isSuccess && mounted) {
       Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
     } else if (mounted) {
-      showSnackBarMessage(context, forgotPasswordController.errorMessage ?? 'Error occurred', true);
+      showSnackBarMessage(context,
+          forgotPasswordController.errorMessage ?? 'Error occurred', true);
     }
   }
 

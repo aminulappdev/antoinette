@@ -27,8 +27,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
   void initState() {
     super.initState();
     socketService.init();
-    friendController
-        .getAllFriends(); // Ensure data is loaded when screen is initialized
+    friendController.getAllFriends(); // Ensure data is loaded when screen is initialized
   }
 
   @override
@@ -41,7 +40,6 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox24,
-              // CustomSearchBar(shouldBackButton: false),
               Row(
                 children: [
                   Expanded(
@@ -94,36 +92,39 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
               SizedBox(
                 height: 650.h,
                 child: GetBuilder<FriendController>(
-                  // Fetch friends from controller
                   builder: (controller) {
                     if (controller.inProgress) {
                       return const Center(child: CircularProgressIndicator());
                     }
-    
+
                     if (controller.friendList.isEmpty) {
                       return const Center(child: Text('No Friends Found'));
                     }
-    
+
                     return ListView.builder(
                       padding: EdgeInsets.zero,
                       itemCount: controller.friendList.length,
                       itemBuilder: (context, index) {
                         var friend = controller.friendList[index];
-                        var name = friend.chat!.participants[0].name!;
-                        if (searcCtrl.text.isEmpty) {
+                        var chat = friend.chat;
+                        var name = chat?.participants?[0].name ?? 'Unknown';
+                        var photoUrl = chat?.participants?[0].photoUrl ?? '';
+                        var messageText = friend.message?.text ?? 'No Message';
+                        var chatId = chat?.id ?? '';
+                        var receiverId = chat?.participants?[0].id ?? '';
+                        var receiverName = chat?.participants?[0].name ?? 'Unknown';
+                        var receiverImage = chat?.participants?[0].photoUrl ?? '';
+
+                        if (searcCtrl.text.isEmpty || name.toLowerCase().contains(searcCtrl.text.toLowerCase())) {
                           return Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: GestureDetector(
                               onTap: () {
-                                // Navigating to the message screen when a friend is clicked
                                 Get.to(TextTherapyScreen(
-                                  chatId: friend.chat!.id!,
-                                  receiverId:
-                                      friend.chat!.participants[0].id!,
-                                  receiverName:
-                                      friend.chat!.participants[0].name!,
-                                  receiverImage:
-                                      friend.chat!.participants[0].photoUrl!,
+                                  chatId: chatId,
+                                  receiverId: receiverId,
+                                  receiverName: receiverName,
+                                  receiverImage: receiverImage,
                                 ));
                               },
                               child: Container(
@@ -134,22 +135,16 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.w),
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w),
                                   child: Row(
                                     children: [
                                       Container(
                                         height: 50.h,
                                         width: 50.w,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(8),
                                           image: DecorationImage(
-                                            image: NetworkImage(friend
-                                                    .chat
-                                                    ?.participants[0]
-                                                    .photoUrl ??
-                                                ''),
+                                            image: NetworkImage(photoUrl),
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -158,104 +153,20 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                                       Padding(
                                         padding: EdgeInsets.all(4.0.h),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              friend.chat?.participants[0]
-                                                      .name ??
-                                                  "Unknown",
+                                              name,
                                               style: GoogleFonts.poppins(
                                                   fontSize: 16.sp,
-                                                  fontWeight:
-                                                      FontWeight.w500),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             heightBox12,
                                             Text(
-                                              friend.message!.text ?? 'No mesage',
+                                              messageText,
                                               style: GoogleFonts.poppins(
                                                   fontSize: 14.sp,
-                                                  fontWeight:
-                                                      FontWeight.w400),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        } else if (name
-                            .toLowerCase()
-                            .contains(searcCtrl.text.toLowerCase())) {
-                          return Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                // Navigating to the message screen when a friend is clicked
-                                Get.to(TextTherapyScreen(
-                                  chatId: friend.chat!.id!,
-                                  receiverId:
-                                      friend.chat!.participants[0].id!,
-                                  receiverName:
-                                      friend.chat!.participants[0].name!,
-                                  receiverImage:
-                                      friend.chat!.participants[0].photoUrl!,
-                                ));
-                              },
-                              child: Container(
-                                height: 66.h,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.w),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 50.h,
-                                        width: 50.w,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          image: DecorationImage(
-                                            image: NetworkImage(friend
-                                                    .chat
-                                                    ?.participants[0]
-                                                    .photoUrl ??
-                                                ''),
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ),
-                                      widthBox8,
-                                      Padding(
-                                        padding: EdgeInsets.all(2.0.h),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              friend.chat?.participants[0]
-                                                      .name ??
-                                                  "Unknown",
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 16.sp,
-                                                  fontWeight:
-                                                      FontWeight.w500),
-                                            ),
-                                            heightBox12,
-                                            Text(
-                                              'That sounds tough. Stress from work can',
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 12.sp,
-                                                  fontWeight:
-                                                      FontWeight.w400),
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                           ],
                                         ),

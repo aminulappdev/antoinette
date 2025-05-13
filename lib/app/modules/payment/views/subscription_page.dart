@@ -3,7 +3,6 @@ import 'package:antoinette/app/modules/payment/controllers/payment_services.dart
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
-import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
@@ -25,11 +24,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   AllPackageController allPackageController = Get.find<AllPackageController>();
   final PaymentService paymentService = PaymentService();
   late String userId;
+  bool isStudent = false;
 
   @override
   void initState() {
     super.initState();
     userId = profileController.profileData?.sId ?? '';
+    isStudent = profileController.profileData!.isStudent ?? false;
     allPackageController.getAllPackage();
   }
 
@@ -45,7 +46,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (controller.packageItemList == null || controller.packageItemList!.isEmpty) {
+          if (controller.packageItemList == null ||
+              controller.packageItemList!.isEmpty) {
             return const Center(child: Text("No packages available"));
           }
 
@@ -69,12 +71,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
                   // 🔄 DYNAMIC PACKAGE LIST
                   ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: controller.packageItemList!.length,
                     itemBuilder: (context, pkgIndex) {
                       final package = controller.packageItemList![pkgIndex];
-
+                      int? price = (package.price! / 2).toInt() ;
                       return Container(
                         margin: EdgeInsets.only(bottom: 24.h),
                         padding: EdgeInsets.all(16.w),
@@ -108,7 +111,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
                             // 🔹 Price and Billing
                             Text(
-                              "\$${package.price} / ${package.billingCycle}",
+                              "\$$price / ${package.billingCycle}",
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -132,11 +135,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               children: List.generate(
                                 package.description?.length ?? 0,
                                 (descIndex) => Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 4),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      const Icon(Icons.check_circle, size: 18, color: Colors.green),
+                                      const Icon(Icons.check_circle,
+                                          size: 18, color: Colors.green),
                                       SizedBox(width: 6.w),
                                       Expanded(
                                         child: Text(
@@ -177,7 +183,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   Future<void> buyNowBTN(String packageid) async {
-    final bool isSuccess = await subscriptionController.getSubcription(userId, packageid);
+    final bool isSuccess =
+        await subscriptionController.getSubcription(userId, packageid);
     if (isSuccess) {
       if (mounted) {
         paymentService.payment(
@@ -189,7 +196,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, subscriptionController.errorMessage ?? "Something went wrong", true);
+        showSnackBarMessage(
+            context,
+            subscriptionController.errorMessage ?? "Something went wrong",
+            true);
       }
     }
   }

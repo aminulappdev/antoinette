@@ -1,3 +1,4 @@
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/controllers/delete_contact_controller.dart';
 import 'package:antoinette/app/modules/contact/views/add_contact_screen.dart';
@@ -40,10 +41,42 @@ class _ContactScreenState extends State<ContactScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 heightBox20,
-                CustomAppBar(name: 'Trusted Contacts'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        radius: 24.r,
+                        child: Icon(
+                          Icons.arrow_back,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Trusted Contacts',
+                      style: GoogleFonts.poppins(
+                        fontSize: 18.sp,
+                        color: Color(0xff626262),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Container(
+                      width: 36.w,
+                    )
+                  ],
+                ),
                 heightBox12,
                 GetBuilder<AllContactController>(builder: (controller) {
-                  if (controller.inProgress) {
+                  if (controller.contactList == null ||
+                      controller.contactList!.isEmpty) {
+                    return SizedBox(
+                        height: 100,
+                        child: Center(child: Text('No contact available')));
+                  } else if (controller.inProgress) {
                     return Center(child: CircularProgressIndicator());
                   }
                   return SizedBox(
@@ -51,15 +84,16 @@ class _ContactScreenState extends State<ContactScreen> {
                       child: ListView.builder(
                         itemCount: controller.contactList?.length,
                         itemBuilder: (context, index) {
-                          Map<String,dynamic> value = {
-                            'number' : controller.contactList?[index].contractNumber,
-                            'contactId' : controller.contactList?[index].sId,
+                          Map<String, dynamic> value = {
+                            'number':
+                                controller.contactList?[index].contractNumber,
+                            'contactId': controller.contactList?[index].sId,
                           };
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                width: 180.w,
+                                width: 150.w,
                                 child: Text(
                                   '${controller.contactList?[index].name}',
                                   style: GoogleFonts.poppins(

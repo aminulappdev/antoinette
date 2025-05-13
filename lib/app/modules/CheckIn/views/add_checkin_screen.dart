@@ -203,18 +203,34 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
               ),
               heightBox4,
               GetBuilder<AllContactController>(builder: (controller) {
-                if (controller.inProgress) { 
+                if (controller.contactList == null ||
+                    controller.contactList!.isEmpty) {
+                  return SizedBox(
+                    height: 150.h,
+                    child: Center(child: Text('No contacts available')),
+                  );
+                } else if (controller.inProgress) {
                   return Center(child: CircularProgressIndicator());
                 }
+
                 return SizedBox(
                   height: 150.h,
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
                     itemCount: controller.contactList?.length,
                     itemBuilder: (context, index) {
-                      var contactId = controller.contactList?[index].sId;
-                      var contact = controller.contactList?[index].name;
-                      userId = controller.contactList![index].user!.sId!;
+                      // Ensure the contact data is not null
+                      var contact = controller.contactList?[index];
+                      if (contact == null) {
+                        return SizedBox
+                            .shrink(); // Return an empty widget if the contact is null
+                      }
+
+                      var contactId = contact.sId;
+                      var contactName = contact.name;
+                      userId = contact.user?.sId ??
+                          ''; // Ensure userId is set safely
+
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: 4),
                         child: Row(
@@ -232,7 +248,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                               },
                             ),
                             widthBox4,
-                            Text(contact!),
+                            Text(contactName ?? 'Unknown'),
                           ],
                         ),
                       );
@@ -259,7 +275,8 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 ),
               ),
               heightBox12,
-              latitude != null
+              // Check-In button logic with condition
+              latitude != null && quickChekIn != null && selectedContacts.isNotEmpty
                   ? GradientElevatedButton(
                       onPressed: () {
                         print('check in called');
@@ -275,14 +292,6 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                       ),
                     ),
               SizedBox(height: 6.h),
-              Obx(() {
-                var remainingTime = countdownController.remainingTime.value;
-                return Text(
-                  'Time Left: ${remainingTime.inMinutes}:${(remainingTime.inSeconds % 60).toString().padLeft(2, '0')}',
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                );
-              }),
             ],
           ),
         ),

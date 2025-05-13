@@ -19,13 +19,15 @@ class SignInController extends GetxController {
     bool isSuccess = false;
 
     _inProgress = true; 
-
     update();
 
     Map<String, dynamic> requestBody = {"email": email, "password": password};
 
     final NetworkResponse response =
         await Get.find<NetworkCaller>().postRequest(Urls.signIn, requestBody);
+
+     _inProgress = false;
+    update();
 
     if (response.isSuccess) {
       _errorMessage = null;
@@ -39,8 +41,7 @@ class SignInController extends GetxController {
       _errorMessage = response.errorMessage;
     }
 
-    _inProgress = false;
-    update();
+   
     return isSuccess;
   }
 }

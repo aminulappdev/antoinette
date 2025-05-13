@@ -24,15 +24,15 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(_loadMoreData);
+    // scrollController.addListener(_loadMoreData);
   }
 
-  void _loadMoreData() {
-    if (scrollController.position.extentAfter < 500 &&
-        !allProcuctController.inProgress) {
-      allProcuctController.fetchAllProducts(null); // Trigger fetch more data
-    }
-  }
+  // void _loadMoreData() {
+  //   if (scrollController.position.extentAfter < 500 &&
+  //       !allProcuctController.inProgress) {
+  //     allProcuctController.fetchAllProducts(null); // Trigger fetch more data
+  //   }
+  // }
 
   void _onSearch() {
     String query = searchController.text;
@@ -50,18 +50,22 @@ class _ProductScreenState extends State<ProductScreen> {
             heightBox20,
             Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    radius: 24.r,
-                    child: Icon(
-                      Icons.arrow_back,
-                    ),
-                  ),
-                ),
+                widget.shouldBackButton == false
+                    ? Container() 
+                    : GestureDetector(
+                        onTap: () {
+                          widget.shouldBackButton == false
+                              ? null
+                              : Navigator.pop(context);
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          radius: 24.r,
+                          child: Icon(
+                            Icons.arrow_back,
+                          ),
+                        ),
+                      ),
                 widthBox4,
                 Expanded(
                   child: Container(
@@ -115,43 +119,31 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             heightBox12,
             Expanded(
-              child: SizedBox(
-                child: Obx(
-                  () {
-                    if (allProcuctController.inProgress &&
-                        allProcuctController.page == 1) {
-                      return Center(child: CircularProgressIndicator());
-                    }
+              child: SizedBox(child: GetBuilder<AllProcuctController>(
+                builder: (controller) {
+                  if (controller.inProgress) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: GridView.builder(
-                            padding: EdgeInsets.zero,
-                            itemCount:
-                                allProcuctController.allProductsList.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisSpacing: 12,
-                                    mainAxisSpacing: 16,
-                                    childAspectRatio: 1.35,
-                                    crossAxisCount: 2),
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                                child: ProductCard(
-                                  productsModel: allProcuctController
-                                      .allProductsList[index],
-                                ),
-                              );
-                            },
-                          ),
+                  return GridView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: controller.allProductsList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 16,
+                        childAspectRatio: 1.35,
+                        crossAxisCount: 2),
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: ProductCard(
+                          productsModel: controller.allProductsList[index],
                         ),
-                      ],
-                    );
-                  },
-                ),
-              ),
+                      );
+                    },
+                  );
+                },
+              )),
             ),
           ],
         ),

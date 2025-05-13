@@ -6,7 +6,6 @@ import 'package:antoinette/app/modules/product/widgets/checkout_user_info.dart';
 import 'package:antoinette/app/modules/product/widgets/price_row.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -208,16 +207,19 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           height: 42.h,
                           child: GradientElevatedButton(
                             onPressed: () {
-                              productOrderFunction(
-                                controller.profileData?.sId ?? '',
-                                '5',
-                                controller.profileData?.name ?? 'Name',
-                                '10-10-2024',
-                                deliveryAddress,
-                                controller.profileData?.contactNumber ??
-                                    '+49 176 12345678',
-                                controller.profileData?.email ?? '',
-                              );
+                              deliveryAddress == 'Please update your address'
+                                  ? showSnackBarMessage(context,
+                                      'Please fill-up your address', true)
+                                  : productOrderFunction(
+                                      controller.profileData?.sId ?? '',
+                                      '5',
+                                      controller.profileData?.name ?? 'Name',
+                                      '10-10-2024',
+                                      deliveryAddress,
+                                      controller.profileData?.contactNumber ??
+                                          '+49 176 12345678',
+                                      controller.profileData?.email ?? '',
+                                    );
                             },
                             text: 'Place order',
                           ),
@@ -255,7 +257,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      
                       image: widget.productModel.images?.isNotEmpty == true
                           ? NetworkImage(
                               '${widget.productModel.images?[0].url}')

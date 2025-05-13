@@ -138,10 +138,10 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                   
                   GradientElevatedButton(
                       onPressed: () {
-                        // print('Clicked on submit button');
-                        // print("Selected Mood: $selectedMood");
-                        // addChatTherapist(
-                        //     userId, widget.slotData['therapyId']);
+                        print('Clicked on submit button');
+                        print("Selected Mood: $selectedMood");
+                        addChatTherapist(
+                            userId, widget.slotData['therapyId']);
                         widget.slotData['bookingId'] == null
                             ? bookingButton()
                             : rescheduleBookingButton();
@@ -234,6 +234,9 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     if (isSuccess) {
       if (mounted) {
         showSnackBarMessage(context, 'Added new chat');
+        print('Chat create hoye geche .............................................');
+        print('Therapoist id :  $therapistId');
+        print('Chat create hoye geche .............................................');
       } else {
         if (mounted) {
           showSnackBarMessage(context, addChatController.errorMessage!, true);

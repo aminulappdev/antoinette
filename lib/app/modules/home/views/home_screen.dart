@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               sessionItemModel: controller.sessionsList[index],
                             ),
                           );
-                        },
+                        }, 
                       ),
                     );
                   }

@@ -1,5 +1,4 @@
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
-import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +54,7 @@ class PannicOnboardingPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
+                      Navigator.pushNamed(context, SignInScreen.routeName);
                     },
                     child: Text(
                       'Skip',

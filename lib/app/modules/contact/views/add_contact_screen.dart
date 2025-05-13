@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class AddContactScreen extends StatefulWidget {
   static const String routeName = '/add-contact-screen';
@@ -29,95 +30,105 @@ class _AddContactScreenState extends State<AddContactScreen> {
   late String userId;
   bool togggleActive = false;
   bool isToggled = false;
+  PhoneNumber? phoneNumber;
 
   @override
   void initState() {
     userId = profileController.profileData!.sId!;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                heightBox20,
-                CustomAppBar(name: 'Add Trusted Contacts'),
-                heightBox12,
-                Text('Name',
-                    style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff626262))),
-                heightBox8,
-                TextFormField(
-                  controller: nameCtrl,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'Enter name';
-                    }
-    
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Colors.grey)),
+        padding: EdgeInsets.all(12.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              heightBox20,
+              CustomAppBar(name: 'Add Trusted Contacts'),
+              heightBox12,
+              Text('Name',
+                  style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff626262))),
+              heightBox8,
+              TextFormField(
+                controller: nameCtrl,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                keyboardType: TextInputType.emailAddress,
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Enter name';
+                  }
+
+                  return null;
+                },
+                decoration: InputDecoration(hintStyle: TextStyle(color: Colors.grey)),
+              ),
+              heightBox8,
+              Text('Phone Number',
+                  style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff626262))),
+              heightBox8,
+              InternationalPhoneNumberInput(
+                onInputChanged: (PhoneNumber number) {
+                  setState(() {
+                    phoneNumber = number;
+                  });
+                },
+                onInputValidated: (bool value) {
+                  // Optionally handle validation here
+                },
+                selectorConfig: SelectorConfig(
+                  selectorType: PhoneInputSelectorType.DIALOG,
                 ),
-                heightBox8,
-                Text('Number',
-                    style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff626262))),
-                heightBox8,
-                TextFormField(
-                  controller: numberCtrl,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  keyboardType: TextInputType.number,
-                  validator: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'Enter number';
-                    }
-    
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Colors.grey)),
-                ),
-                heightBox30,
-                GradientElevatedButton(onPressed: onTapToNextButton, text: 'Save')
-              ],
-            ),
-          )),
+                hintText: 'Enter your phone number',
+                ignoreBlank: false,
+                textFieldController: numberCtrl,
+                formatInput: false,
+                keyboardType: TextInputType.phone,
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Enter phone number';
+                  }
+                  return null;
+                },
+              ),
+              heightBox30,
+              GradientElevatedButton(onPressed: onTapToNextButton, text: 'Save')
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
+      if (phoneNumber == null || phoneNumber!.phoneNumber == null) {
+        showSnackBarMessage(context, 'Please enter a valid phone number');
+        return;
+      }
+
       final bool isSuccess =
-          await addContactController.addContact(nameCtrl.text, numberCtrl.text, userId);
+          await addContactController.addContact(nameCtrl.text, phoneNumber!.phoneNumber!, userId);
 
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'Contact added');
           Get.find<AllContactController>().getContactList();
           Navigator.pushNamed(context, ContactScreen.routeName);
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, addContactController.errorMessage!, true);
-          }
         }
       } else {
         if (mounted) {
-          // print('Error show ----------------------------------');
-          showSnackBarMessage(
-              context, addContactController.errorMessage!, true);
+          showSnackBarMessage(context, addContactController.errorMessage!, true);
         }
       }
     }
