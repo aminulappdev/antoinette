@@ -27,7 +27,7 @@ class PdfController extends GetxController {
               ),
               pw.SizedBox(height: 20),
               pw.Text(
-                'Payment Total: \$$price',
+                'Payment Total: ₦$price',
                 style: pw.TextStyle(
                   fontSize: 18,
                   fontWeight: pw.FontWeight.bold,

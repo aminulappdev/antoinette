@@ -181,8 +181,8 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   color: Colors.green),
                                             ),
                                             Text(
-                                              'Per session: ${controller.allProductList[index].fee}\$',
-                                              style: GoogleFonts.poppins(
+                                              'Per session: ${controller.allProductList[index].fee}₦',
+                                              style: GoogleFonts.roboto(
                                                   fontSize: 16.sp,
                                                   color: Colors.white),
                                             )
@@ -268,8 +268,8 @@ class _SessionScreenState extends State<SessionScreen> {
                                               heightBox50,
                                               heightBox30,
                                               Text(
-                                                'Per session: ${controller.allProductList[index].fee}\$',
-                                                style: GoogleFonts.poppins(
+                                                'Per session: ${controller.allProductList[index].fee}₦',
+                                                style: GoogleFonts.roboto(
                                                     fontSize: 12.sp,
                                                     color: Colors.white),
                                               )

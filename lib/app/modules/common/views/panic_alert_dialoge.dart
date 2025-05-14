@@ -23,7 +23,7 @@ class PanicAlertDialog extends StatelessWidget {
           onTap: () => onYesPressed(),
           child: Container(
             height: 32.0,
-            width: 120.0,
+            width: 110.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Color(0xff305FA1).withOpacity(0.1),
@@ -41,7 +41,7 @@ class PanicAlertDialog extends StatelessWidget {
           onTap: () => onNoPressed(),
           child: Container(
             height: 32.0,
-            width: 120.0,
+            width: 110.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Color(0xffA13430).withOpacity(0.1),

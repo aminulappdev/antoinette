@@ -1,14 +1,18 @@
 import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/my_subscription_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
+import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart'; // Added for font support
 
 class SubscriptionScreen extends StatefulWidget {
   static const String routeName = '/subscription-screen';
@@ -20,11 +24,15 @@ class SubscriptionScreen extends StatefulWidget {
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   ProfileController profileController = Get.find<ProfileController>();
-  SubscriptionController subscriptionController = SubscriptionController();
+  SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
   AllPackageController allPackageController = Get.find<AllPackageController>();
   final PaymentService paymentService = PaymentService();
+  final MySubscriptionController mySubscriptionController =
+      Get.find<MySubscriptionController>();
   late String userId;
   bool isStudent = false;
+  bool isSubscriptionActive = false;
 
   @override
   void initState() {
@@ -32,6 +40,22 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     userId = profileController.profileData?.sId ?? '';
     isStudent = profileController.profileData!.isStudent ?? false;
     allPackageController.getAllPackage();
+    mySubscriptionController.getMySubscriptions().then((_) {
+      _checkSubscriptionStatus();
+    });
+  }
+
+  void _checkSubscriptionStatus() {
+    if (mySubscriptionController.subscriptionData != null &&
+        mySubscriptionController.subscriptionData!.isNotEmpty) {
+      DateTime expireDate =
+          mySubscriptionController.subscriptionData![0].expiredAt!;
+      DateTime today = DateTime.now();
+      isSubscriptionActive = expireDate.isAfter(today);
+    } else {
+      isSubscriptionActive = false;
+    }
+    setState(() {});
   }
 
   @override
@@ -59,6 +83,74 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 children: [
                   const CustomAppBar(name: 'Subscriptions'),
                   SizedBox(height: 24.h),
+                  SizedBox(
+                    height: 120,
+                    child: GetBuilder<MySubscriptionController>(
+                      builder: (controller) {
+                        if (controller.inProgress) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (controller.subscriptionData!.isEmpty) {
+                          return const Center(
+                              child: Text("No subscription available"));
+                        }
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            DateTime expireDate =
+                                controller.subscriptionData![index].expiredAt!;
+                            DateTime today = DateTime.now();
+                            String formattedBookingDate =
+                                DateFormat('MMMM dd, yyyy').format(expireDate);
+
+                            // Calculate days left
+                            int daysLeft = expireDate
+                                .difference(today)
+                                .inDays; // Calculate difference in days
+                            String daysLeftText = daysLeft > 0
+                                ? '$daysLeft days left'
+                                : 'Expired'; // Show "Expired" if days are 0 or negative
+
+                            return Card(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Basic Plan',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      heightBox4,
+                                      Text(
+                                        daysLeftText,
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      heightBox4,
+                                      Text(
+                                        'Expiry date $formattedBookingDate',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      heightBox4,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
                   Text(
                     'Premium Membership',
                     style: TextStyle(
@@ -67,8 +159,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       color: AppColors.iconButtonThemeColor,
                     ),
                   ),
-                  SizedBox(height: 20.h),
-
+                  SizedBox(height: 10.h),
                   // 🔄 DYNAMIC PACKAGE LIST
                   ListView.builder(
                     padding: EdgeInsets.zero,
@@ -77,7 +168,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     itemCount: controller.packageItemList!.length,
                     itemBuilder: (context, pkgIndex) {
                       final package = controller.packageItemList![pkgIndex];
-                      int? price = (package.price! / 2).toInt() ;
+                      int? price = isStudent == true
+                          ? (package.price! / 2).toInt()
+                          : package.price;
                       return Container(
                         margin: EdgeInsets.only(bottom: 24.h),
                         padding: EdgeInsets.all(16.w),
@@ -110,9 +203,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             SizedBox(height: 10.h),
 
                             // 🔹 Price and Billing
+
                             Text(
-                              "\$$price / ${package.billingCycle}",
-                              style: TextStyle(
+                              "₦$price / ${package.billingCycle}",
+                              style: GoogleFonts.roboto(
+                                // Added GoogleFonts to support ₦
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -161,10 +256,37 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             // ✅ BUY NOW BUTTON
                             SizedBox(
                               width: double.infinity,
-                              child: GradientElevatedButton(
-                                text: 'Buy Now',
-                                onPressed: () {
-                                  buyNowBTN(package.sId!);
+                              child: GetBuilder<SubscriptionController>(
+                                builder: (controller) {
+                                  return Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Opacity(
+                                        opacity:
+                                            isSubscriptionActive ? 0.5 : 1.0,
+                                        child: GradientElevatedButton(
+                                          onPressed: (isSubscriptionActive ||
+                                                  controller.inProgress)
+                                              ? () {}
+                                              : () => buyNowBTN(package.sId!),
+                                          text: controller.inProgress
+                                              ? ''
+                                              : isSubscriptionActive
+                                                  ? 'Active Subscription'
+                                                  : 'Buy Now',
+                                        ),
+                                      ),
+                                      if (controller.inProgress)
+                                        SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                    ],
+                                  );
                                 },
                               ),
                             ),

@@ -60,22 +60,20 @@ class _ReceptionState extends State<Reception> {
       var controller = Get.find<AllSessionSlotByIdController>();
 
       List<DateTime> validDates = [];
-      List<DateTime> bookedDates = []; // To track booked dates
+      List<DateTime> bookedDates = [];
 
-      // Iterate over session slots and segregate booked and available dates
       controller.sessionListById?.forEach((sessionSlot) {
         DateTime date = DateTime.parse(sessionSlot.date!);
-
         if (sessionSlot.isBooked == true) {
-          bookedDates.add(date); // If the slot is booked, add to disabledDates
+          bookedDates.add(date);
         } else {
           validDates.add(date);
         }
       });
 
       setState(() {
-        enabledDates = validDates; // Valid dates
-        disabledDates = bookedDates; // Booked dates
+        enabledDates = validDates;
+        disabledDates = bookedDates;
       });
     });
   }
@@ -108,7 +106,7 @@ class _ReceptionState extends State<Reception> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        value: selectedTherapy, // The value of the selected item
+                        value: selectedTherapy,
                         isExpanded: true,
                         icon:
                             Icon(Icons.arrow_drop_down, color: Colors.black54),
@@ -121,7 +119,7 @@ class _ReceptionState extends State<Reception> {
                         }).toList(),
                         onChanged: (String? newValue) {
                           setState(() {
-                            selectedTherapy = newValue!; // Update selected value
+                            selectedTherapy = newValue!;
                           });
                         },
                       ),
@@ -161,7 +159,6 @@ class _ReceptionState extends State<Reception> {
                 ),
               ),
               enabledDayPredicate: (day) {
-                // Check if the day is either available or not booked
                 return enabledDates.any((date) =>
                         date.year == day.year &&
                         date.month == day.month &&
@@ -179,9 +176,8 @@ class _ReceptionState extends State<Reception> {
                 String timeSlot = entry.key;
                 String slotId = entry.value;
 
-                // Check if slot is booked
                 if (controller.bookedSlots.contains(slotId)) {
-                  return SizedBox.shrink(); // Skip booked slots
+                  return SizedBox.shrink();
                 }
 
                 return Padding(
@@ -195,7 +191,7 @@ class _ReceptionState extends State<Reception> {
                           setState(() {
                             selectedSlotId = value;
                             selectedTimeSlot = timeSlot;
-                            this.slotId = selectedSlotId!; // Update slotId
+                            this.slotId = selectedSlotId!;
                             print('Selected slot ID: $selectedSlotId');
                           });
                         },
@@ -210,22 +206,33 @@ class _ReceptionState extends State<Reception> {
             ),
             heightBox8,
             GetBuilder<SessionDetailsController>(builder: (controller) {
-              return GradientElevatedButton(
-                  onPressed: () {
-                    print('Add chat er data ..............');
-                    print(controller.sessionDetailsModel?.data!.therapist?.sId);
+              void handleBooking() {
+                if (selectedSlotId == null) return; // কিছু না করো
+                print('Add chat er data ..............');
+                print(controller.sessionDetailsModel?.data!.therapist?.sId);
 
-                    print('Details page er session id : ${widget.sessionId}');
-                    print('Details page er slot id : ${selectedSlotId!}');
-                    slotData['sessionId'] = widget.sessionId;
-                    slotData['slotId'] = selectedSlotId!;
-                    slotData['therapyType'] = selectedTherapy;
-                    slotData['therapyId'] = controller.sessionDetailsModel?.data!.therapist?.sId;
+                print('Details page er session id : ${widget.sessionId}');
+                print('Details page er slot id : ${selectedSlotId!}');
+                slotData['sessionId'] = widget.sessionId;
+                slotData['slotId'] = selectedSlotId!;
+                slotData['therapyType'] = selectedTherapy;
+                slotData['therapyId'] =
+                    controller.sessionDetailsModel?.data!.therapist?.sId;
 
-                    Navigator.pushNamed(context, SessionFormScreen.routeName,
-                        arguments: slotData);
-                  },
-                  text: 'Book now');
+                Navigator.pushNamed(context, SessionFormScreen.routeName,
+                    arguments: slotData);
+              }
+
+              return Opacity(
+                opacity: selectedSlotId == null ? 0.5 : 1.0,
+                child: IgnorePointer(
+                  ignoring: selectedSlotId == null, // যেন ট্যাপ কাজ না করে
+                  child: GradientElevatedButton(
+                    onPressed: handleBooking, // এখন এটা কখনো null হবে না
+                    text: 'Book now',
+                  ),
+                ),
+              );
             })
           ],
         ),

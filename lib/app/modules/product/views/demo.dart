@@ -308,7 +308,7 @@
 //                       heightBox8,
 //                       PriceRow(
 //                         name: 'Shipping Fee',
-//                         price: '\$5.00',
+//                         price: '₦5.00',
 //                         nameSize: 14,
 //                         priceSize: 14,
 //                       ),

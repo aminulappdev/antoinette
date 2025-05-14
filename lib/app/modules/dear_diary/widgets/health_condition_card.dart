@@ -19,15 +19,17 @@ class HealthConditionCard extends StatelessWidget {
 
   const HealthConditionCard({
     super.key,
-    required this.iconPath,
+    required this.iconPath, 
     required this.status,
     required this.day,
     required this.time,
     required this.description,
     required this.lockOntap,
-    
     required this.themeColor,
-    required this.isBlur, required this.onDeleteTap, required this.onEditTap, required this.titleColor,
+    required this.isBlur, 
+    required this.onDeleteTap, 
+    required this.onEditTap, 
+    required this.titleColor,
   });
 
   @override
@@ -77,7 +79,6 @@ class HealthConditionCard extends StatelessWidget {
                     ),
                   ],
                 ),
-               
                 Row(
                   children: [
                     InkWell(
@@ -89,41 +90,40 @@ class HealthConditionCard extends StatelessWidget {
                         size: 26.h,
                       ),
                     ),
-                    
                     PopupMenuButton<int>(
-                    icon: Icon(Icons.more_vert, size: 24),
-                    onSelected: (value) {
-                      if (value == 1) {
-                        onEditTap();
-                      } else if (value == 2) {
-                        onDeleteTap();
-                      }
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return [
-                        PopupMenuItem<int>(
-                          value: 1,
-                          child: Row(
-                            children: [
-                              Icon(Icons.edit, size: 20),
-                              SizedBox(width: 8),
-                              Text("Update"),
-                            ],
+                      icon: Icon(Icons.more_vert, size: 24),
+                      onSelected: (value) {
+                        if (value == 1) {
+                          onEditTap();
+                        } else if (value == 2) {
+                          onDeleteTap();
+                        }
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem<int>(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                Icon(Icons.edit, size: 20),
+                                SizedBox(width: 8),
+                                Text("Update"),
+                              ],
+                            ),
                           ),
-                        ),
-                        PopupMenuItem<int>(
-                          value: 2,
-                          child: Row(
-                            children: [
-                              Icon(Icons.delete, size: 20),
-                              SizedBox(width: 8),
-                              Text("Delete"),
-                            ],
+                          PopupMenuItem<int>(
+                            value: 2,
+                            child: Row(
+                              children: [
+                                Icon(Icons.delete, size: 20),
+                                SizedBox(width: 8),
+                                Text("Delete"),
+                              ],
+                            ),
                           ),
-                        ),
-                      ];
-                    },
-                                    ),
+                        ];
+                      },
+                    ),
                   ],
                 )
               ],
@@ -150,4 +150,3 @@ class HealthConditionCard extends StatelessWidget {
     );
   }
 }
-

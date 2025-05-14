@@ -48,6 +48,7 @@ class Urls {
   static const String refundPaymentUrl = '$_baseUrl/payments/refound-payment';
   static const String pannicUrl = '$_baseUrl/trusted-contracts/send-message';
   static const String notificationStatusUrl = '$_baseUrl/users/configure-notify';
+  static const String mySubscriptionUrl = '$_baseUrl/subscriptions/my-subscriptions';
 
   
 
@@ -66,6 +67,12 @@ class Urls {
     String id,
   ) {
     return '$_baseUrl/payments/reference/$id';
+  }
+
+   static String deleteBookmarkId(
+    String id,
+  ) {
+    return '$_baseUrl/content-bookmarks/$id';
   }
 
   static String deleteUserById(

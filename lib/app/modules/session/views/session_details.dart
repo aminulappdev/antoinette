@@ -82,8 +82,8 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                           width: 70.w,
                           child: RichText(
                             text: TextSpan(
-                              text: '\$${controller.sessionModel?.fee}.00',
-                              style: GoogleFonts.poppins(
+                              text: '₦${controller.sessionModel?.fee}.00',
+                              style: GoogleFonts.roboto(
                                   fontSize: 12.sp, color: Colors.black),
                               children: [
                                 TextSpan(

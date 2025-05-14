@@ -21,7 +21,8 @@ class AddAdderssScreen extends StatefulWidget {
 class _AddAdderssScreenState extends State<AddAdderssScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController addressCtrl = TextEditingController();
-  UpdateProfileController updateProfileController = UpdateProfileController();
+  UpdateProfileController updateProfileController =
+      Get.put(UpdateProfileController());
 
   bool isChecked = false;
 
@@ -48,10 +49,9 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                 heightBox20,
+                heightBox20,
                 CustomAppBar(name: 'Edit Address'),
                 heightBox12,
                 Form(
@@ -73,7 +73,6 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
                           }
                           return null;
                         },
-                      
                       ),
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +91,7 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
                       //     ),
                       //     const Text('Home'),
                       //     widthBox12,
-    
+
                       //     // Office
                       //     Checkbox(
                       //       shape: const CircleBorder(),
@@ -107,7 +106,7 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
                       //     ),
                       //     const Text('Office'),
                       //     widthBox12,
-    
+
                       //     // Delivery
                       //     Checkbox(
                       //       shape: const CircleBorder(),
@@ -124,8 +123,30 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
                       //   ],
                       // ),
                       heightBox12,
-                      GradientElevatedButton(
-                          onPressed: onTapToNextButton, text: 'Save')
+                      GetBuilder<UpdateProfileController>(
+                        builder: (controller) {
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              GradientElevatedButton(
+                                onPressed: controller.inProgress
+                                    ? () {}
+                                    : () => onTapToNextButton(),
+                                text: controller.inProgress ? '' : 'Save',
+                              ),
+                              if (controller.inProgress)
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -148,7 +169,6 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
           showSnackBarMessage(context, 'Address updated');
           Navigator.pop(context);
         } else {
-
           if (mounted) {
             showSnackBarMessage(
                 context, updateProfileController.errorMessage!, true);

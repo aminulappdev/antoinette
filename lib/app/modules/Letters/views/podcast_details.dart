@@ -1,5 +1,8 @@
+
 import 'dart:io';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_controller.dart';
+import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
+import 'package:antoinette/app/modules/bookmark/controller/delete_bookmark_controller.dart';
 import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart';
 import 'package:antoinette/app/modules/letters/views/player_widget.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
@@ -26,10 +29,15 @@ class PodcastDetailsScreen extends StatefulWidget {
 
 class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
   final BookMarkController bookMarkController = BookMarkController();
+  final DeleteBookmarkController deleteBookmarkController = DeleteBookmarkController();
+  BookmarkPodcastController bookmarkPodcastController =
+      Get.find<BookmarkPodcastController>();
   late String userId;
   ProfileController profileController = Get.find<ProfileController>();
   late AudioPlayer player;
-  bool isBookmarked = false;
+  bool isBookmarked = false; // Track whether the podcast is bookmarked or not
+  String? bookmarkId; // Store the bookmark ID for deletion
+  bool _isLoading = false; // Track loading state for bookmark action
 
   @override
   void initState() {
@@ -38,12 +46,26 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
     initializeAudio();
+    // Fetch bookmark list and check if current podcast is bookmarked
+    bookmarkPodcastController.getbookmarkArticleList().then((_) {
+      checkIfBookmarked();
+    });
+  }
+
+  // Check if the current podcast is in the bookmark list
+  void checkIfBookmarked() {
+    final podcastId = widget.podcastModel.sId;
+    final bookmarkItem = bookmarkPodcastController.bookmarkPodcastList
+        .firstWhereOrNull((item) => item.reference?.sId == podcastId);
+    setState(() {
+      isBookmarked = bookmarkItem != null;
+      bookmarkId = bookmarkItem?.sId;
+    });
   }
 
   Future<void> initializeAudio() async {
     final String url = widget.podcastModel.fileLink ?? '';
     print(url);
-    // final String url = 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3';
 
     if (url.isEmpty) {
       showSnackBarMessage(context, 'Invalid audio URL', true);
@@ -90,7 +112,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heightBox20,
+            SizedBox(height: 20.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -105,24 +127,49 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isBookmarked = !isBookmarked;
-                    });
-                    bookmark(userId, '${widget.podcastModel.sId}');
-                  },
+                  onTap: _isLoading
+                      ? null // Disable tap during loading
+                      : () async {
+                          setState(() {
+                            _isLoading = true; // Start loading
+                          });
+                          if (!isBookmarked) {
+                            // Add bookmark
+                            await bookmark(userId, widget.podcastModel.sId ?? '');
+                          } else {
+                            // Remove bookmark
+                            await removeBookmark(bookmarkId);
+                          }
+                          // Refresh bookmark list after adding/removing
+                          await bookmarkPodcastController.getbookmarkArticleList();
+                          checkIfBookmarked(); // Update bookmark status
+                          setState(() {
+                            _isLoading = false; // Stop loading
+                          });
+                        },
                   child: CircleAvatar(
                     radius: 21.r,
                     backgroundColor: const Color(0xff000000).withOpacity(0.1),
-                    child: Icon(
-                      isBookmarked ? Icons.favorite : Icons.favorite_border_sharp,
-                      color: isBookmarked ? Colors.red : Colors.white,
-                    ),
+                    child: _isLoading
+                        ? SizedBox(
+                            width: 24.r,
+                            height: 24.r,
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Icon(
+                            isBookmarked
+                                ? Icons.favorite
+                                : Icons.favorite_border_sharp,
+                            color: isBookmarked ? Colors.red : Colors.white,
+                          ),
                   ),
-                )
+                ),
               ],
             ),
-            heightBox16,
+            SizedBox(height: 16.h),
             Container(
               height: 274.h,
               width: MediaQuery.of(context).size.width,
@@ -137,17 +184,17 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                 ),
               ),
             ),
-            heightBox8,
+            SizedBox(height: 8.h),
             Text(
               widget.podcastModel.title ?? '',
               style: GoogleFonts.poppins(fontSize: 15.sp),
             ),
-            heightBox12,
+            SizedBox(height: 12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Author: ${widget.podcastModel.author ?? ''}',
+                  'Author: ${widget.podcastModel.author ?? 'Unknown'}',
                   style: GoogleFonts.poppins(fontSize: 12.sp),
                 ),
                 Text(
@@ -156,7 +203,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                 ),
               ],
             ),
-            heightBox30,
+            SizedBox(height: 30.h),
             PlayerWidget(player: player),
           ],
         ),
@@ -165,17 +212,50 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
   }
 
   Future<void> bookmark(String user, String reference) async {
+    if (reference.isEmpty) {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBarMessage(context, 'Invalid podcast ID', true);
+      return;
+    }
     final bool isSuccess =
         await bookMarkController.addBookmark(user, reference, 'Podcast');
 
-    if (isSuccess) {
-      if (mounted) {
-        showSnackBarMessage(context, 'Bookmark added');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context, bookMarkController.errorMessage!, true);
-      }
+    if (isSuccess && mounted) {
+      showSnackBarMessage(context, 'Bookmark added');
+      setState(() {
+        isBookmarked = true; // Update status only on success
+      });
+    } else if (mounted) {
+      showSnackBarMessage(context, bookMarkController.errorMessage ?? 'Error occurred', true);
+      setState(() {
+        _isLoading = false; // Ensure loading stops on error
+      });
+    }
+  }
+
+  Future<void> removeBookmark(String? bookmarkId) async {
+    if (bookmarkId == null || bookmarkId.isEmpty) {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBarMessage(context, 'Invalid bookmark ID', true);
+      return;
+    }
+    final bool isSuccess = await deleteBookmarkController.deleteBookmark(bookmarkId);
+
+    if (isSuccess && mounted) {
+      showSnackBarMessage(context, 'Bookmark removed');
+      setState(() {
+        isBookmarked = false; // Update status only on success
+        this.bookmarkId = null; // Clear bookmark ID
+      });
+    } else if (mounted) {
+      showSnackBarMessage(context, deleteBookmarkController.errorMessage ?? 'Error occurred', true);
+      setState(() {
+        _isLoading = false; // Ensure loading stops on error
+      });
     }
   }
 

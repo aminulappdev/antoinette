@@ -28,7 +28,7 @@ class SeeAllSection extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                'See all..',
+                '',
                 style: GoogleFonts.poppins(
                     fontSize: 12.sp,
                     color: AppColors.iconButtonThemeColor),

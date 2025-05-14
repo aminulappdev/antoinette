@@ -24,7 +24,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController numberCtrl = TextEditingController();
-  AddContactController addContactController = AddContactController();
+  AddContactController addContactController = Get.put(AddContactController());
   ProfileController profileController = Get.find<ProfileController>();
 
   late String userId;
@@ -68,7 +68,8 @@ class _AddContactScreenState extends State<AddContactScreen> {
 
                   return null;
                 },
-                decoration: InputDecoration(hintStyle: TextStyle(color: Colors.grey)),
+                decoration:
+                    InputDecoration(hintStyle: TextStyle(color: Colors.grey)),
               ),
               heightBox8,
               Text('Phone Number',
@@ -102,7 +103,31 @@ class _AddContactScreenState extends State<AddContactScreen> {
                 },
               ),
               heightBox30,
-              GradientElevatedButton(onPressed: onTapToNextButton, text: 'Save')
+              GetBuilder<AddContactController>(
+                builder: (controller) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      GradientElevatedButton(
+                        onPressed: controller.inProgress
+                            ? () {}
+                            : () => onTapToNextButton(),
+                        text: controller.inProgress ? '' : 'Save',
+                      ),
+                      if (controller.inProgress)
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+             
             ],
           ),
         ),
@@ -117,8 +142,8 @@ class _AddContactScreenState extends State<AddContactScreen> {
         return;
       }
 
-      final bool isSuccess =
-          await addContactController.addContact(nameCtrl.text, phoneNumber!.phoneNumber!, userId);
+      final bool isSuccess = await addContactController.addContact(
+          nameCtrl.text, phoneNumber!.phoneNumber!, userId);
 
       if (isSuccess) {
         if (mounted) {
@@ -128,7 +153,8 @@ class _AddContactScreenState extends State<AddContactScreen> {
         }
       } else {
         if (mounted) {
-          showSnackBarMessage(context, addContactController.errorMessage!, true);
+          showSnackBarMessage(
+              context, addContactController.errorMessage!, true);
         }
       }
     }

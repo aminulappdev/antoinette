@@ -165,7 +165,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 heightBox8,
                 PriceRow(
                   name: 'Shipping Fee',
-                  price: '\$5.00',
+                  price: '₦5.00',
                   nameSize: 14,
                   priceSize: 14,
                 ),
@@ -203,27 +203,62 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
                         child: SizedBox(
-                          width: 159.w,
-                          height: 42.h,
-                          child: GradientElevatedButton(
-                            onPressed: () {
-                              deliveryAddress == 'Please update your address'
-                                  ? showSnackBarMessage(context,
-                                      'Please fill-up your address', true)
-                                  : productOrderFunction(
-                                      controller.profileData?.sId ?? '',
-                                      '5',
-                                      controller.profileData?.name ?? 'Name',
-                                      '10-10-2024',
-                                      deliveryAddress,
-                                      controller.profileData?.contactNumber ??
-                                          '+49 176 12345678',
-                                      controller.profileData?.email ?? '',
-                                    );
-                            },
-                            text: 'Place order',
-                          ),
-                        ),
+                            width: 159.w,
+                            height: 42.h,
+                            child: GetBuilder<ProductOrderController>(
+                              builder: (orderController) {
+                                bool isLoading = orderController.inProgress;
+
+                                return Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    IgnorePointer(
+                                      ignoring: isLoading,
+                                      child: GradientElevatedButton(
+                                        onPressed: () {
+                                          if (deliveryAddress ==
+                                              'Please update your address') {
+                                            showSnackBarMessage(
+                                              context,
+                                              'Please fill-up your address',
+                                              true,
+                                            );
+                                          } else {
+                                            productOrderFunction(
+                                              profileController
+                                                      .profileData?.sId ??
+                                                  '',
+                                              '5',
+                                              profileController
+                                                      .profileData?.name ??
+                                                  'Name',
+                                              '10-10-2024',
+                                              deliveryAddress,
+                                              profileController.profileData
+                                                      ?.contactNumber ??
+                                                  '+49 176 12345678',
+                                              profileController
+                                                      .profileData?.email ??
+                                                  '',
+                                            );
+                                          }
+                                        },
+                                        text: isLoading ? '' : 'Place order',
+                                      ),
+                                    ),
+                                    if (isLoading)
+                                      const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                  ],
+                                );
+                              },
+                            )),
                       ),
                     ],
                   ),

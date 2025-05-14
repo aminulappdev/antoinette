@@ -52,7 +52,7 @@ class _SignInScreenState extends State<SignInScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox20,
-              CustomAppBar(name: 'Sign In'),
+              CustomAppBar(name: 'Sign In', offPopBack: true,),
               heightBox16,
               WelcomeText(
                 title: 'Hi, Welcome back!',

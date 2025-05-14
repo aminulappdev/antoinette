@@ -99,9 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTapNotification: () {
                     Navigator.pushNamed(context, NotificationScreen.routeName);
                   },
-                  onTapPublic: () {
-                    Navigator.pushNamed(context, HistoryScreen.routeName);
-                  },
+                  
                 ),
                 heightBox16,
                 WelcomeTextHomePage(

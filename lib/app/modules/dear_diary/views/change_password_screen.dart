@@ -123,6 +123,7 @@ class _ChangeJournalPasswordScreenState
                       ),
                     ),
                     heightBox24,
+                    
                     GradientElevatedButton(
                       onPressed: () {
                         onTapToNextButton(

@@ -124,7 +124,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
     _timer = Timer(Duration(seconds: 2), () {
       if (isHolding) {
         setState(() {
-          isPressed = true;
+          // isPressed = true; // Removed to set only on success
         });
 
         showDialog(
@@ -154,19 +154,29 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
   }
 
   Future<void> onTapToNextButton() async {
-    if (latitude != null) {
+    if (latitude != null && longitude != null) {
       final bool isSuccess =
           await pannicController.panicFunction(latitude!, longitude!);
 
       if (isSuccess) {
         if (mounted) {
+          setState(() {
+            isPressed = true; // Set isPressed only on success
+          });
           showSnackBarMessage(context, 'Sms sent all trusted contact');
           Navigator.pop(context);
         }
       } else {
         if (mounted) {
+          setState(() {
+            isPressed = false; // Ensure isPressed is false on error
+          });
           showSnackBarMessage(context, pannicController.errorMessage!, true);
         }
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, 'Location not available', true);
       }
     }
   }

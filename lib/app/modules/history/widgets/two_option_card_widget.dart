@@ -126,8 +126,8 @@ class TwoOptionCard extends StatelessWidget {
                       style: GoogleFonts.poppins(fontSize: 12.sp),
                     ),
                     Text(
-                      '\$$price',
-                      style: GoogleFonts.poppins(fontSize: 12.sp),
+                      '₦$price',
+                      style: GoogleFonts.roboto(fontSize: 12.sp),
                     ),
                   ],
                 ),

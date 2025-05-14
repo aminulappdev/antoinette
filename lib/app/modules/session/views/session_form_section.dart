@@ -39,7 +39,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
     print(widget.slotData['slotId']);
     print(widget.slotData['bookingId']);
-    
+
     // print(
     //     'UserId : $userId\nSession id : ${widget.slotData['sessionId']}\nSession slot : ${widget.slotData['slotId']}');
     super.initState();
@@ -111,7 +111,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                     ),
                   ),
                   heightBox8,
-    
+
                   /// ✅ Single-select checkbox section
                   Wrap(
                     spacing: 10.w,
@@ -135,18 +135,46 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                     }).toList(),
                   ),
                   heightBox12,
-                  
-                  GradientElevatedButton(
-                      onPressed: () {
-                        print('Clicked on submit button');
-                        print("Selected Mood: $selectedMood");
-                        addChatTherapist(
-                            userId, widget.slotData['therapyId']);
-                        widget.slotData['bookingId'] == null
-                            ? bookingButton()
-                            : rescheduleBookingButton();
-                      },
-                      text: 'Submit')
+
+                  GetBuilder<BookingController>(builder: (controller) {
+                    bool isDisabled =
+                        selectedMood == null || controller.inProgress;
+
+                    return Opacity(
+                      opacity: selectedMood == null ? 0.5 : 1.0,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          IgnorePointer(
+                            ignoring:
+                                isDisabled, // ইগনোর করবো যদি disable অবস্থায় থাকে
+                            child: GradientElevatedButton(
+                              onPressed: () {
+                                print('Clicked on submit button');
+                                print("Selected Mood: $selectedMood");
+
+                                addChatTherapist(
+                                    userId, widget.slotData['therapyId']);
+                                widget.slotData['bookingId'] == null
+                                    ? bookingButton()
+                                    : rescheduleBookingButton();
+                              },
+                              text: controller.inProgress ? '' : 'Submit',
+                            ),
+                          ),
+                          if (controller.inProgress)
+                            const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  })
                 ],
               ),
             ),
@@ -157,7 +185,6 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   }
 
   Future<void> bookingButton() async {
-    
     // if (widget.slotData['bookingId'] == null ||
     //     widget.slotData['slotId'] == null) {
     //   // print('main funtion e jay nay');
@@ -216,10 +243,8 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
     if (isSuccess) {
       if (mounted) {
-
-      showSnackBarMessage(context, 'Booking successful');
-      Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
-
+        showSnackBarMessage(context, 'Booking successful');
+        Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
       }
     } else {
       if (mounted) {
@@ -234,9 +259,11 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     if (isSuccess) {
       if (mounted) {
         showSnackBarMessage(context, 'Added new chat');
-        print('Chat create hoye geche .............................................');
+        print(
+            'Chat create hoye geche .............................................');
         print('Therapoist id :  $therapistId');
-        print('Chat create hoye geche .............................................');
+        print(
+            'Chat create hoye geche .............................................');
       } else {
         if (mounted) {
           showSnackBarMessage(context, addChatController.errorMessage!, true);

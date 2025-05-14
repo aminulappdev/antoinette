@@ -24,6 +24,7 @@ class _PodcastScreenState extends State<PodcastScreen> {
   final ScrollController scrollController = ScrollController();
   final TextEditingController searcCtrl = TextEditingController();
   String search = '';
+  bool isLoading = false; // New state to track loading
 
   @override
   void initState() {
@@ -37,9 +38,13 @@ class _PodcastScreenState extends State<PodcastScreen> {
         !allPodcastController.inProgress) {
       allPodcastController.getPodcastList();
     }
-    {
-      allPodcastController.getPodcastList();
-    }
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    searcCtrl.dispose();
+    super.dispose();
   }
 
   @override
@@ -111,234 +116,149 @@ class _PodcastScreenState extends State<PodcastScreen> {
               return Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
+                  controller: scrollController, // Attach ScrollController
                   itemCount: controller.podcastList.length,
                   itemBuilder: (context, index) {
                     if (controller.podcastList[index].status == 'published') {
-                      var title = controller.allPodcastList[index].title;
-                      if (searcCtrl.text.isEmpty) {
+                      var title = controller.podcastList[index].title;
+                      if (searcCtrl.text.isEmpty ||
+                          (title != null &&
+                              title
+                                  .toLowerCase()
+                                  .contains(searcCtrl.text.toLowerCase()))) {
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 4.h),
-                          child: GestureDetector(
-                            onTap: () {
-                              getPodcastScreen(
-                                  '${controller.podcastList[index].sId}');
-                            },
-                            child: Container(
-                              height: 104.h,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 84.h,
-                                      width: 73.w,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(8),
-                                        image: DecorationImage(
-                                            image: controller.podcastList[index]
-                                                        .thumbnail !=
-                                                    null
-                                                ? NetworkImage(
-                                                    '${controller.podcastList[index].thumbnail}')
-                                                : AssetImage(
-                                                    AssetsPath.demo),
-                                            fit: BoxFit.fill),
-                                      ),
-                                    ),
-                                    widthBox4,
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                          child: Stack(
+                            children: [
+                              GestureDetector(
+                                onTap: isLoading
+                                    ? null
+                                    : () {
+                                        getPodcastScreen(
+                                            '${controller.podcastList[index].sId}');
+                                      },
+                                child: Container(
+                                  height: 104.h,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Row(
                                       children: [
-                                        SizedBox(
-                                          width: 180.h,
-                                          child: Text(
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            '${controller.podcastList[index].title}',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 16.sp),
+                                        Container(
+                                          height: 84.h,
+                                          width: 73.w,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            image: DecorationImage(
+                                                image: controller
+                                                            .podcastList[index]
+                                                            .thumbnail !=
+                                                        null
+                                                    ? NetworkImage(
+                                                        '${controller.podcastList[index].thumbnail}')
+                                                    : AssetImage(
+                                                        AssetsPath.demo),
+                                                fit: BoxFit.fill),
                                           ),
                                         ),
-                                        heightBox4,
-                                        SizedBox(
-                                          width: 180.w,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                height: 30.h,
-                                                width: 64.w,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    border: Border.all(
-                                                        color: Colors.grey)),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Episod ${controller.podcastList[index].episodeNumber}',
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 10.sp),
-                                                  ),
-                                                ),
+                                        widthBox4,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: 180.h,
+                                              child: Text(
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                '${controller.podcastList[index].title}',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 16.sp),
                                               ),
-                                              Container(
-                                                height: 30.h,
-                                                width: 64.w,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    border: Border.all(
-                                                        color: Colors.grey)),
-                                                child: Center(
-                                                  child: Text(
-                                                    '${controller.podcastList[index].duration} min',
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 10.sp),
+                                            ),
+                                            heightBox4,
+                                            SizedBox(
+                                              width: 180.w,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    height: 30.h,
+                                                    width: 64.w,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Center(
+                                                      child: Text(
+                                                        'Episod ${controller.podcastList[index].episodeNumber}',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                fontSize:
+                                                                    10.sp),
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
+                                                  Container(
+                                                    height: 30.h,
+                                                    width: 64.w,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Center(
+                                                      child: Text(
+                                                        '${controller.podcastList[index].duration} min',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                fontSize:
+                                                                    10.sp),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            )
+                                          ],
+                                        ),
+                                        widthBox40,
+                                        CircleAvatar(
+                                          radius: 21.r,
+                                          backgroundColor: Color(0xffA57EA5),
+                                          child: Icon(Icons.play_arrow),
                                         )
                                       ],
                                     ),
-                                    widthBox40,
-                                    CircleAvatar(
-                                      radius: 21.r,
-                                      backgroundColor: Color(0xffA57EA5),
-                                      child: Icon(Icons.play_arrow),
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      } else if (title!
-                          .toLowerCase()
-                          .contains(searcCtrl.text.toLowerCase())) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 4.h),
-                          child: GestureDetector(
-                            onTap: () {
-                              getPodcastScreen(
-                                  '${controller.podcastList[index].sId}');
-                            },
-                            child: Container(
-                              height: 104.h,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 84.h,
-                                      width: 73.w,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(8),
-                                        image: DecorationImage(
-                                            image: controller.podcastList[index]
-                                                        .thumbnail !=
-                                                    null
-                                                ? NetworkImage(
-                                                    '${controller.podcastList[index].thumbnail}')
-                                                : AssetImage(
-                                                    AssetsPath.demo),
-                                            fit: BoxFit.fill),
-                                      ),
-                                    ),
-                                    widthBox4,
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 180.h,
-                                          child: Text(
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            '${controller.podcastList[index].title}',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 16.sp),
-                                          ),
-                                        ),
-                                        heightBox4,
-                                        SizedBox(
-                                          width: 180.w,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                height: 30.h,
-                                                width: 64.w,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    border: Border.all(
-                                                        color: Colors.grey)),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Episod ${controller.podcastList[index].episodeNumber}',
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 10.sp),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 30.h,
-                                                width: 64.w,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    border: Border.all(
-                                                        color: Colors.grey)),
-                                                child: Center(
-                                                  child: Text(
-                                                    '${controller.podcastList[index].duration} min',
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 10.sp),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    widthBox40,
-                                    CircleAvatar(
-                                      radius: 21.r,
-                                      backgroundColor: Color(0xffA57EA5),
-                                      child: Icon(Icons.play_arrow),
-                                    )
-                                  ],
+                              if (isLoading) // Show loader when loading
+                                Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.transparent),
+                                  ),
                                 ),
-                              ),
-                            ),
+                            ],
                           ),
                         );
-                      } else {
-                        return Container();
                       }
-                    } else {
-                      return Container();
                     }
+                    return const SizedBox.shrink();
                   },
                 ),
               );
@@ -350,18 +270,30 @@ class _PodcastScreenState extends State<PodcastScreen> {
   }
 
   Future<void> getPodcastScreen(String id) async {
+    if (isLoading) return; // Prevent multiple clicks
+
+    setState(() {
+      isLoading = true; // Start loading
+    });
+
     final bool isSuccess = await podcastDetailsController.getPodcastDetails(id);
 
     if (isSuccess) {
       if (mounted) {
         Navigator.pushNamed(context, PodcastDetailsScreen.routeName,
             arguments: podcastDetailsController.podcastModel);
-      } else {
-        if (mounted) {
-          showSnackBarMessage(
-              context, podcastDetailsController.errorMessage!, true);
-        }
       }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, podcastDetailsController.errorMessage!, true);
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        isLoading = false; // Stop loading
+      });
     }
   }
 }

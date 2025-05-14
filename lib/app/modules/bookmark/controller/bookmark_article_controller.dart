@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 class BookmarkArticlesController extends GetxController {
   bool _inProgress = false;
-  bool get inProgress => _inProgress;
+  bool get inProgress => _inProgress; 
 
   bool get initialInProgress => page == 1;
 

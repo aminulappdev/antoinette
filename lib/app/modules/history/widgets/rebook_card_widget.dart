@@ -117,8 +117,8 @@ class RebookCard extends StatelessWidget {
                       style: GoogleFonts.poppins(fontSize: 12.sp),
                     ),
                     Text(
-                      '\$$time',
-                      style: GoogleFonts.poppins(fontSize: 12.sp),
+                      '₦$time',
+                      style: GoogleFonts.roboto(fontSize: 12.sp),
                     ),
                   ],
                 ),

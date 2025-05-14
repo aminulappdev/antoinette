@@ -60,6 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               heightBox20,
               CustomAppBar(
+                offPopBack: true,
                 name: 'Sign Up',
               ),
               heightBox16,

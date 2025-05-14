@@ -11,6 +11,7 @@ import 'package:antoinette/app/modules/authentication/controllers/sign_in_contro
 import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/verify_otp_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
+import 'package:antoinette/app/modules/bookmark/controller/delete_bookmark_controller.dart';
 import 'package:antoinette/app/modules/chatting/controllers/add_chat_controller.dart';
 import 'package:antoinette/app/modules/chatting/controllers/all_friend_controller.dart';
 import 'package:antoinette/app/modules/chatting/controllers/message_send_controller.dart';
@@ -45,6 +46,7 @@ import 'package:antoinette/app/modules/order/controllers/order_details_controlle
 import 'package:antoinette/app/modules/history/controllers/payment_booking_id.dart';
 import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/confirmed_payment_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/my_subscription_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_url_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
@@ -131,6 +133,8 @@ class ControllerBinder extends Bindings {
     Get.put(CountdownController());
     Get.put(DeleteAccountController());
     Get.put(ChangeNotificationController());
+    Get.put(MySubscriptionController());
+    Get.put(DeleteBookmarkController());
 
   
     

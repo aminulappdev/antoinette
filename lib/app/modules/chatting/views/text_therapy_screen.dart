@@ -39,6 +39,8 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
       Get.put(MessageSendController());
   final ScrollController _scrollController = ScrollController();
   bool isLoading = false;
+  bool isSending = false;
+  bool isTextEmpty = true;
   String updatesenderId = '';
   String updatereceiverId = '';
   late String senderId;
@@ -71,13 +73,21 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
         _scrollToEnd();
       });
     });
+
+    // Add listener to track text field content
+    messageController.addListener(() {
+      setState(() {
+        isTextEmpty = messageController.text.trim().isEmpty;
+      });
+    });
   }
 
   @override
   void dispose() {
+    messageController.dispose(); // Dispose the controller
     _scrollController.dispose();
     socketService.sokect.off(
-        'new-message::${widget.chatId}'); // Remove socket listener when the screen is disposed
+        'new-message::${widget.chatId}'); // Remove socket listener
     super.dispose();
   }
 
@@ -96,8 +106,6 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
   // Handle incoming messages from the socket
   void _handleIncomingMessage(dynamic data) {
     socketService.messageList.add(data); // Add the new message to the list
-    // print(socketService.messageList.length.toString() +
-    //     " this is message list demo length");
     _scrollToEnd(); // Scroll to the latest message
   }
 
@@ -132,37 +140,35 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true, // Adjust for keyboard
       body: Padding(
         padding: EdgeInsets.all(12.0.h),
-
         child: Column(
           children: [
             heightBox24,
-            CustomChatAppBar(name: widget.receiverName,),
+            CustomChatAppBar(name: widget.receiverName),
             Expanded(
               child: Obx(() {
-                // The list of messages will be automatically updated when the message list is updated
                 if (messageFetchController.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
                 }
-    
+
                 if (messageFetchController.messageList.isEmpty) {
                   return const Center(child: Text('No Messages Found'));
                 }
-    
+
                 return ListView.builder(
                   controller: _scrollController,
                   itemCount: socketService.messageList.length,
                   itemBuilder: (context, index) {
                     var message = socketService.messageList[index];
-    
-                    // Check if senderId is null, if yes, use sender as fallback
+
                     var senderId = message['senderId'] ?? message['sender'];
-    
+
                     print('Sender confusion ............................');
                     print(message['senderId']);
                     print(message['sender']);
-    
+
                     return Align(
                       alignment: senderId == widget.receiverId
                           ? Alignment.centerLeft
@@ -194,17 +200,43 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                     Expanded(
                       child: TextFormField(
                         controller: messageController,
-                        decoration:
-                            InputDecoration(hintText: 'Type your message'),
+                        decoration: InputDecoration(
+                          hintText: 'Type your message',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Message cannot be empty';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.send),
-                      onPressed: () {
-                        sendMessageBTN(widget.chatId, messageController.text,
-                            widget.receiverId);
-                      }, // Use the sendMessage method here
-                    ),
+                    isSending
+                        ? const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                          )
+                        : IconButton(
+                            icon: Icon(
+                              Icons.send,
+                              color: isTextEmpty ? Colors.grey : Colors.blue,
+                            ),
+                            onPressed: isSending || isTextEmpty
+                                ? null
+                                : () {
+                                    sendMessageBTN(
+                                        widget.chatId,
+                                        messageController.text,
+                                        widget.receiverId);
+                                  },
+                          ),
                   ],
                 ),
               ),
@@ -216,28 +248,37 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
   }
 
   Future<void> sendMessageBTN(
-      String chatId, String text, String recieverId) async {
-    if (_formKey.currentState!.validate()) {
+      String chatId, String text, String receiverId) async {
+    if (_formKey.currentState!.validate() && !isSending && text.trim().isNotEmpty) {
+      setState(() {
+        isSending = true; // Start loader
+      });
+
       final bool isSuccess =
-          await messageSendController.sendMessage(chatId, text, recieverId);
+          await messageSendController.sendMessage(chatId, text, receiverId);
 
       if (isSuccess) {
         if (mounted) {
           messageController.clear();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _scrollToEnd(); // Scroll to the latest message after sending
+          });
           // showSnackBarMessage(context, 'Message sent');
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, messageSendController.errorMessage!, true);
-          }
         }
       } else {
         if (mounted) {
-          // print('Error show ----------------------------------');
-          showSnackBarMessage(context,
-              messageSendController.errorMessage ?? 'Ekhanei problem', true);
+          showSnackBarMessage(
+              context, messageSendController.errorMessage ?? 'Ekhanei problem', true);
         }
       }
+
+      if (mounted) {
+        setState(() {
+          isSending = false; // Stop loader
+        });
+      }
+    } else if (text.trim().isEmpty) {
+      Get.snackbar('Error', 'Message cannot be empty');
     }
   }
 }

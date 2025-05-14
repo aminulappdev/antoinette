@@ -56,8 +56,8 @@ class _PsychoSupportCardState extends State<PsychoSupportCard> {
                       heightBox50,
                       heightBox30,
                       Text(
-                        'Per session: ${widget.sessionItemModel.fee}\$',
-                        style: GoogleFonts.poppins(
+                        'Per session: ${widget.sessionItemModel.fee}₦',
+                        style: GoogleFonts.roboto(
                             fontSize: 12.sp, color: Colors.white),
                       )
                     ],

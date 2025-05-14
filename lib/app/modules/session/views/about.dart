@@ -84,8 +84,8 @@ class _AboutState extends State<About> {
             ),
             heightBox4,
             Text(
-              '\$${controller.sessionModel?.fee} per session',
-              style: GoogleFonts.poppins(
+              '₦${controller.sessionModel?.fee} per session',
+              style: GoogleFonts.roboto(
                 fontSize: 12.sp,
               ),
             ),

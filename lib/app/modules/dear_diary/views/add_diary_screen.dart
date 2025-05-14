@@ -26,30 +26,36 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
   final TextEditingController timeController = TextEditingController();
   final AddDiariesController addDiariesController = AddDiariesController();
   final ProfileController profileController = Get.find<ProfileController>();
- 
+
   late String userAccessId;
   late String useName;
   String selectedFeeling = '';
   int? selectedFeelingIndex;
-   
+
   final List<FeelingsModel> feelingsList = [
-    FeelingsModel('happy', Color(0xffFFD634).withAlpha(10), Color(0xffE9BD0F), () {},
+    FeelingsModel(
+        'happy', Color(0xffFFD634).withAlpha(10), Color(0xffE9BD0F), () {},
         fontColor: Color(0xffE9BD0F), emojiPath: AssetsPath.angle),
-    FeelingsModel('calm', Color(0xff82FF34).withAlpha(10), Color(0xff5AE205), () {},
+    FeelingsModel(
+        'calm', Color(0xff82FF34).withAlpha(10), Color(0xff5AE205), () {},
         fontColor: Color(0xff5AE205), emojiPath: AssetsPath.happy),
-    FeelingsModel('sad', Color(0xff346EFF).withAlpha(10), Color(0xff346EFF), () {},
+    FeelingsModel(
+        'sad', Color(0xff346EFF).withAlpha(10), Color(0xff346EFF), () {},
         fontColor: Color(0xff346EFF), emojiPath: AssetsPath.sad),
-    FeelingsModel('anxious', Color(0xffC000E7).withAlpha(10), Color(0xffC000E7), () {},
+    FeelingsModel(
+        'anxious', Color(0xffC000E7).withAlpha(10), Color(0xffC000E7), () {},
         fontColor: Color(0xffC000E7), emojiPath: AssetsPath.tired),
-    FeelingsModel('angry', Color(0xffFF3434).withAlpha(10), Color(0xffFF3434), () {},
+    FeelingsModel(
+        'angry', Color(0xffFF3434).withAlpha(10), Color(0xffFF3434), () {},
         fontColor: Color(0xffFF3434), emojiPath: AssetsPath.angry),
-    FeelingsModel('motivated', Color(0xffFF9318).withAlpha(10), Color(0xffFF9318), () {},
+    FeelingsModel(
+        'motivated', Color(0xffFF9318).withAlpha(10), Color(0xffFF9318), () {},
         fontColor: Color(0xffFF9318), emojiPath: AssetsPath.muscle),
-  ]; 
+  ];
 
   @override
   void initState() {
-    super.initState(); 
+    super.initState();
     userAccessId = profileController.profileData!.sId!;
     useName = profileController.profileData!.name!;
   }
@@ -63,7 +69,8 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
     );
     if (picked != null) {
       setState(() {
-        dateController.text = "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+        dateController.text =
+            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
       });
     }
   }
@@ -116,7 +123,8 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                               controller: dateController,
                               readOnly: true,
                               onTap: () => _selectDate(context),
-                              decoration: InputDecoration(hintText: 'Select date'),
+                              decoration:
+                                  InputDecoration(hintText: 'Select date'),
                             ),
                           ),
                         ],
@@ -141,7 +149,8 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                               controller: timeController,
                               readOnly: true,
                               onTap: () => _selectTime(context),
-                              decoration: InputDecoration(hintText: 'Select time'),
+                              decoration:
+                                  InputDecoration(hintText: 'Select time'),
                             ),
                           ),
                         ],
@@ -150,7 +159,8 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                   ],
                 ),
                 heightBox12,
-                Text('Description', style: GoogleFonts.poppins(fontSize: 14.sp)),
+                Text('Description',
+                    style: GoogleFonts.poppins(fontSize: 14.sp)),
                 heightBox12,
                 TextFormField(
                   controller: desCtrl,
@@ -167,17 +177,22 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(useName, style: GoogleFonts.caveat(fontSize: 12.sp, color: Color(0xffD9A48E))),
-                      Container(height: 1.h, width: 50.w, color: Color(0xffD9A48E)),
+                      Text(useName,
+                          style: GoogleFonts.caveat(
+                              fontSize: 12.sp, color: Color(0xffD9A48E))),
+                      Container(
+                          height: 1.h, width: 50.w, color: Color(0xffD9A48E)),
                     ],
                   ),
                 ),
                 heightBox12,
-                Text('How Are You Feeling Today?', style: GoogleFonts.poppins(fontSize: 14.sp)),
+                Text('How Are You Feeling Today?',
+                    style: GoogleFonts.poppins(fontSize: 14.sp)),
                 heightBox12,
                 SizedBox(
                   height: 250.h,
                   child: GridView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: feelingsList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 3.5,
@@ -188,7 +203,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                     itemBuilder: (context, index) {
                       final item = feelingsList[index];
                       final isSelected = selectedFeelingIndex == index;
-    
+
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -202,9 +217,13 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                           width: 172.w,
                           decoration: BoxDecoration(
                             // ignore: deprecated_member_use
-                            color: isSelected ? item.borderColor.withOpacity(0.2) : item.bgColor,
+                            color: isSelected
+                                ? item.borderColor.withOpacity(0.2)
+                                : item.bgColor,
                             border: Border.all(
-                              color: isSelected ? item.borderColor : const Color.fromARGB(255, 145, 144, 144),
+                              color: isSelected
+                                  ? item.borderColor
+                                  : const Color.fromARGB(255, 145, 144, 144),
                               width: isSelected ? 2 : 1,
                             ),
                             borderRadius: BorderRadius.circular(8),
@@ -234,18 +253,44 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                     },
                   ),
                 ),
-                GradientElevatedButton(
-                  onPressed: () {
-                    onTapToNextButton(
-                      userAccessId,
-                      dateController.text,
-                      timeController.text,
-                      desCtrl.text,
-                      selectedFeeling,
+                GetBuilder<AddDiariesController>(
+                  builder: (controller) {
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        desCtrl.text.isEmpty
+                            ? Opacity(
+                                opacity: 0.3,
+                                child: GradientElevatedButton(
+                                  text: '',
+                                  onPressed: () {},
+                                ),
+                              )
+                            : GradientElevatedButton(
+                                onPressed: controller.inProgress
+                                    ? () {}
+                                    : () => onTapToNextButton(
+                                          userAccessId,
+                                          dateController.text,
+                                          timeController.text,
+                                          desCtrl.text,
+                                          selectedFeeling,
+                                        ),
+                                text: controller.inProgress ? '' : 'Save',
+                              ),
+                        if (controller.inProgress)
+                          SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          ),
+                      ],
                     );
                   },
-                  text: 'Save',
-                )
+                ),
               ],
             ),
           ),
@@ -254,9 +299,11 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
     );
   }
 
-  Future<void> onTapToNextButton(String userId, String date, String time, String des, String feeling) async {
+  Future<void> onTapToNextButton(String userId, String date, String time,
+      String des, String feeling) async {
     if (_formKey.currentState!.validate()) {
-      final bool isSuccess = await addDiariesController.addDiaries(userId, date, time, des, feeling);
+      final bool isSuccess = await addDiariesController.addDiaries(
+          userId, date, time, des, feeling);
 
       if (isSuccess) {
         if (mounted) {
@@ -266,7 +313,10 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
         }
       } else {
         if (mounted) {
-          showSnackBarMessage(context, addDiariesController.errorMessage ?? 'Something went wrong', true);
+          showSnackBarMessage(
+              context,
+              addDiariesController.errorMessage ?? 'Something went wrong',
+              true);
         }
       }
     }

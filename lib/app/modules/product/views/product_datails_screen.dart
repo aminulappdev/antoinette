@@ -51,8 +51,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                   Text(
-                    '\$${widget.productModel.amount}',
-                    style: GoogleFonts.poppins(
+                    '₦${widget.productModel.amount}',
+                    style: GoogleFonts.roboto(
                         fontSize: 16.h, fontWeight: FontWeight.w500),
                   ),
                 ],
@@ -75,7 +75,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               //       Text('SPF: 50+'),
               //       Text('Formulation: Lotion'),
               //       Text('Volume: 150 ml'),
-              //       Text('Price: \$18.99'),
+              //       Text('Price: ₦18.99'),
               //       Text(
               //           'Key Ingredients: Avobenzone, Octinoxate, Titanium Dioxide'),
               //       Text('Water Resistance: Up to 80 minutes'),
@@ -219,7 +219,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
                     Padding(
                       padding:  EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Text('\$${widget.productModel.amount}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                      child: Text('₦${widget.productModel.amount}',style: GoogleFonts.roboto(fontSize: 16,fontWeight: FontWeight.w600),),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12),

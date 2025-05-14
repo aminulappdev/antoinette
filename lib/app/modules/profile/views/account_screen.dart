@@ -12,7 +12,7 @@ import 'package:antoinette/app/widgets/image_picker.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart'; 
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -29,7 +29,8 @@ class _AccountScreenState extends State<AccountScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nameCtrl = TextEditingController();
   TextEditingController numberCtrl = TextEditingController();
-  UpdateProfileController updateProfileController = UpdateProfileController();
+  UpdateProfileController updateProfileController =
+      Get.put(UpdateProfileController());
 
   @override
   void initState() {
@@ -56,7 +57,7 @@ class _AccountScreenState extends State<AccountScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                   heightBox20,
+                  heightBox20,
                   CustomAppBar(name: 'Update profile'),
                   heightBox12,
                   Row(
@@ -71,7 +72,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     child: Image.file(
                                       image!,
                                       width: 50.h,
-                                      height: 50.h, 
+                                      height: 50.h,
                                       fit: BoxFit.cover,
                                     ),
                                   )
@@ -84,8 +85,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             image: controller.profileData
                                                         ?.photoUrl ==
                                                     null
-                                                ? AssetImage(
-                                                    AssetsPath.demo)
+                                                ? AssetImage(AssetsPath.demo)
                                                 : NetworkImage(
                                                     '${controller.profileData?.photoUrl}'),
                                             fit: BoxFit.fill)),
@@ -192,8 +192,30 @@ class _AccountScreenState extends State<AccountScreen> {
                   SizedBox(
                     height: 200.h,
                   ),
-                  GradientElevatedButton(
-                      onPressed: onTapToNextButton, text: 'Save')
+                  GetBuilder<UpdateProfileController>(
+                    builder: (controller) {
+                      return Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          GradientElevatedButton(
+                            onPressed: controller.inProgress
+                                ? () {}
+                                : () => onTapToNextButton(),
+                            text: controller.inProgress ? '' : 'Save',
+                          ),
+                          if (controller.inProgress)
+                            SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

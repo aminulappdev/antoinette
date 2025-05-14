@@ -22,60 +22,74 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   ProcuctDetailsController procuctDetailsController =
       ProcuctDetailsController();
+  bool isLoading = false; // New state to track loading
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: getProductScreen,
+      onTap: isLoading ? null : getProductScreen, // Disable tap when loading
       child: Container(
         height: 134.h,
         width: 156.w,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(8)),
-        child: Column(
+        child: Stack(
           children: [
-            Container(
-              height: 100.h,
-              width: 156.h,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: widget.productsModel.images.isEmpty
-                      ?  AssetImage(AssetsPath.demo)
-                          : NetworkImage(widget.productsModel.images[0].url ?? ''),
-                          
-                      fit: BoxFit.fill),
-                  borderRadius: BorderRadius.circular(8)),
-              child: Padding(
-                padding: EdgeInsets.all(8.0.h),
-              ),
+            Column(
+              children: [
+                Container(
+                  height: 100.h,
+                  width: 156.h,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: widget.productsModel.images.isEmpty
+                              ? AssetImage(AssetsPath.demo)
+                              : NetworkImage(widget.productsModel.images[0].url ?? ''),
+                          fit: BoxFit.fill),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0.h),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 80,
+                        child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          widget.productsModel.name!,
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      widthBox4,
+                      Text(
+                        '₦${widget.productsModel.amount}',
+                        style: GoogleFonts.roboto(
+                            fontSize: 12.sp,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 80,
-                    child: Text(
-                      overflow: TextOverflow.ellipsis,
-                      widget.productsModel.name!,
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
+            if (isLoading) // Show loader when loading
+              Opacity(
+                opacity: 0.1,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                   ),
-                  widthBox4,
-                  Text(
-                    '\$${widget.productsModel.amount}',
-                    style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
+                ),
               ),
-            )
           ],
         ),
       ),
@@ -83,6 +97,12 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   Future<void> getProductScreen() async {
+    if (isLoading) return; // Prevent multiple clicks
+
+    setState(() {
+      isLoading = true; // Start loading
+    });
+
     print('Hello');
     print(widget.productsModel.name);
     print(widget.productsModel.id);
@@ -93,15 +113,18 @@ class _ProductCardState extends State<ProductCard> {
       if (mounted) {
         Navigator.pushNamed(context, ProductDetailScreen.routeName,
             arguments: procuctDetailsController.productModel);
-
-        // print('My token ---------------------------------------');
-        // print(signUpController.token);
-      } else {
-        if (mounted) {
-          showSnackBarMessage(
-              context, procuctDetailsController.errorMessage!, true);
-        }
       }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, procuctDetailsController.errorMessage!, true);
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        isLoading = false; // Stop loading
+      });
     }
   }
 }

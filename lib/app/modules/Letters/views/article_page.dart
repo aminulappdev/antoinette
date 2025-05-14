@@ -27,6 +27,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
   final ScrollController scrollController = ScrollController();
   final TextEditingController searcCtrl = TextEditingController();
   String search = '';
+  bool isLoading = false; // New state to track loading
 
   @override
   void initState() {
@@ -40,6 +41,13 @@ class _ArticleScreenState extends State<ArticleScreen> {
         !allArticlesController.inProgress) {
       allArticlesController.getArticlesList();
     }
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    searcCtrl.dispose();
+    super.dispose();
   }
 
   @override
@@ -136,7 +144,6 @@ class _ArticleScreenState extends State<ArticleScreen> {
                               width: 120.w,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                // ignore: deprecated_member_use
                                 color: const Color(0xff305FA1).withOpacity(0.1),
                                 border:
                                     Border.all(color: const Color(0xff305FA1)),
@@ -189,6 +196,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                   return Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
+                      controller: scrollController,
                       itemCount: controller.articlesList.length,
                       itemBuilder: (context, index) {
                         if (controller.articlesList[index].status ==
@@ -201,71 +209,86 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                       searcCtrl.text.toLowerCase()))) {
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: 2.h),
-                              child: InkWell(
-                                onTap: () {
-                                  getArticleScreen(
-                                      '${controller.articlesList[index].sId}');
-                                },
-                                child: Container(
-                                  height: 200.h,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    image: DecorationImage(
-                                      image: controller.articlesList[index]
-                                                  .thumbnail !=
-                                              null
-                                          ? NetworkImage(
-                                              '${controller.articlesList[index].thumbnail}')
-                                          : const AssetImage(
-                                                  AssetsPath.demo)
-                                              as ImageProvider,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(18.0.h),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          height: 27.h,
-                                          width: 200.w,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              color: const Color.fromARGB(
-                                                  222, 255, 255, 255)),
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 8.w),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                '${controller.articlesList[index].category?.title}',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 10.sp),
+                              child: Stack(
+                                children: [
+                                  InkWell(
+                                    onTap: isLoading
+                                        ? null
+                                        : () {
+                                            getArticleScreen(
+                                                '${controller.articlesList[index].sId}');
+                                          },
+                                    child: Container(
+                                      height: 200.h,
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        image: DecorationImage(
+                                          image: controller.articlesList[index]
+                                                      .thumbnail !=
+                                                  null
+                                              ? NetworkImage(
+                                                  '${controller.articlesList[index].thumbnail}')
+                                              : const AssetImage(
+                                                  AssetsPath.demo) as ImageProvider,
+                                          fit: BoxFit.fill,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(18.0.h),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              height: 27.h,
+                                              width: 200.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: const Color.fromARGB(
+                                                      222, 255, 255, 255)),
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 8.w),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    '${controller.articlesList[index].category?.title}',
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 10.sp),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                            Text(
+                                              maxLines: 2,
+                                              '${controller.articlesList[index].title}',
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 12.sp,
+                                                  color: Colors.white),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          maxLines: 2,
-                                          '${controller.articlesList[index].title}',
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 12.sp,
-                                              color: Colors.white),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  if (isLoading) // Show loader when loading
+                                    Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                            Colors.transparent),
+                                      ),
+                                    ),
+                                ],
                               ),
                             );
                           }
@@ -284,6 +307,12 @@ class _ArticleScreenState extends State<ArticleScreen> {
   }
 
   Future<void> getArticleScreen(String id) async {
+    if (isLoading) return; // Prevent multiple clicks
+
+    setState(() {
+      isLoading = true; // Start loading
+    });
+
     final bool isSuccess =
         await articletDetailsController.getArticleDetails(id);
 
@@ -300,6 +329,12 @@ class _ArticleScreenState extends State<ArticleScreen> {
         showSnackBarMessage(
             context, articletDetailsController.errorMessage!, true);
       }
+    }
+
+    if (mounted) {
+      setState(() {
+        isLoading = false; // Stop loading
+      });
     }
   }
 }

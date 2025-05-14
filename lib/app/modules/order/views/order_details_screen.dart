@@ -118,8 +118,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              '\$${controller.orderDetailsData!.amount}',
-                                              style: GoogleFonts.poppins(
+                                              '₦${controller.orderDetailsData!.amount}',
+                                              style: GoogleFonts.roboto(
                                                   fontSize: 14.sp),
                                             ),
                                             Text(

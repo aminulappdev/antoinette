@@ -92,8 +92,8 @@ class MyOrderCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '\$$price',
-                                style: GoogleFonts.poppins(fontSize: 14.sp),
+                                '₦$price',
+                                style: GoogleFonts.roboto(fontSize: 14.sp),
                               ),
                               Text(
                                 'Qty: $quantity',
