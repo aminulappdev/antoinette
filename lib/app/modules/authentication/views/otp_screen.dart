@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:antoinette/app/modules/authentication/controllers/resend_otp_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/sign_up_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/verify_otp_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/auth_header_text.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -27,6 +29,7 @@ class OTPVerifyScreen extends StatefulWidget {
 
 class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    ResendOTPController resendOTPController = Get.put(ResendOTPController());
   TextEditingController otpCtrl = TextEditingController();
   VerifyOtpController verifyOtpController = Get.put(VerifyOtpController());
   SignUpController signUpController = Get.put(SignUpController());
@@ -34,10 +37,13 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   RxInt remainingTime = 60.obs;
   late Timer timer;
   RxBool enableResendCodeButtom = false.obs;
+  final info = box.read('user-email');
+  String email = '';
 
   @override
   void initState() {
     resendOTP();
+  
     super.initState();
 
     otpCtrl.addListener(() {
@@ -45,7 +51,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
     });
   }
 
-  void resendOTP() {
+  void resendOTP() async {
     enableResendCodeButtom.value = false;
     remainingTime.value = 60;
     timer = Timer.periodic(
@@ -58,8 +64,23 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
         }
       },
     );
-  }
 
+    final bool isSuccess = await resendOTPController.resendOTP(box.read('user-email'));
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'OTP succsessfully sent');
+      } else {
+        if (mounted) {
+          showSnackBarMessage(context, resendOTPController.errorMessage!, true);
+        }
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, resendOTPController.errorMessage!, true);
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +97,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
               heightBox16,
               AuthHeaderText(
                 title: 'Enter OTP',
-                subtitle: 'We have just sentb you 6 digitcode via uour email.',
+                subtitle: 'We have just sent you 6 digit code via your email.',
                 titleFontSize: 20,
                 subtitleFontSize: 12,
                 sizeBoxHeight: 200,
@@ -211,10 +232,16 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
         } else {
           if (mounted) {
             showSnackBarMessage(
-                context, verifyOtpController.errorMessage!, true);
+                context, verifyOtpController.errorMessage ?? 'Otp did not match', true);
           }
         }
       }
+       else {
+          if (mounted) {
+            showSnackBarMessage(
+                context, verifyOtpController.errorMessage ?? 'Something went wrong', true);
+          }
+        }
     }
   }
 

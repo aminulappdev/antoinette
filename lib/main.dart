@@ -12,7 +12,7 @@ void main() async {
   // ignore: unused_local_variable
   SocketService socketService = Get.put(SocketService());
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(); 
   await GetStorage.init();
   await socketService.init();
   runApp(const AntoinetteApp());

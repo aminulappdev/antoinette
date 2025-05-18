@@ -9,7 +9,7 @@ import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart'; 
 
 class ResetPasswordScreen extends StatefulWidget {
   static const String routeName = '/reset-password-screen';
@@ -26,6 +26,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   ResetPasswordController resetPasswordController =
       Get.put(ResetPasswordController());
   bool _obscureText = true;
+  bool _obscureText2 = true;
 
   final info = box.read('fotgot-password-info');
   final userAccessToken = box.read('user-access-token');
@@ -79,6 +80,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         if (value!.isEmpty) {
                           return 'Enter password';
                         }
+                        // ignore: curly_braces_in_flow_control_structures
+                        else if(value.length < 6) return 'Password must be at least 6 characters';
                         return null;
                       },
                       obscureText: _obscureText,
@@ -114,9 +117,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         if (value!.isEmpty) {
                           return 'Enter password';
                         }
+                        // ignore: curly_braces_in_flow_control_structures
+                        else if(value.length < 6) return 'Password must be at least 6 characters';
                         return null;
                       },
-                      obscureText: _obscureText,
+                      obscureText: _obscureText2,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -127,7 +132,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _obscureText = !_obscureText;
+                              _obscureText2 = !_obscureText2;
                             });
                           },
                         ),

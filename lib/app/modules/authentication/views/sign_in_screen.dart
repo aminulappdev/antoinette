@@ -3,6 +3,7 @@ import 'package:antoinette/app/modules/authentication/controllers/google_auth_co
 import 'package:antoinette/app/modules/authentication/controllers/sign_in_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_up_screen.dart';
+import 'package:antoinette/app/modules/authentication/views/verify_email_screen.dart';
 import 'package:antoinette/app/modules/authentication/widgets/continue_elevated_button.dart';
 import 'package:antoinette/app/modules/authentication/widgets/footer_section.dart';
 import 'package:antoinette/app/modules/authentication/widgets/forgot_password_row.dart';
@@ -96,7 +97,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       controller: passwordCtrl,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter password';
+                        if (value!.isEmpty) {
+                          return 'Enter password';
+                        // ignore: curly_braces_in_flow_control_structures
+                        } else if(value.length < 6) return 'Password must be at least 6 characters';
                         return null;
                       },
                       obscureText: _obscureText,
@@ -222,7 +226,12 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await signInController.signIn(
           emailCtrl.text, passwordCtrl.text, isChecked);
+      if(signInController.errorMessage!.contains('verified')){
+Navigator.pushNamed(context, VerifyEmailScreen.routeName);
 
+     
+
+      }
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'Login successfully done');

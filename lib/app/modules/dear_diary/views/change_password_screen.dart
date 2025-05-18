@@ -158,6 +158,12 @@ class _ChangeJournalPasswordScreenState
           }
         }
       }
+      else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, changeJournalPasswordController.errorMessage ?? 'Failed', true);
+        }
+      }
     }
   }
 

@@ -214,13 +214,13 @@ class AppRoutes {
     SubscriptionScreen.routeName: (context) => const SubscriptionScreen(),
     PaymentDetailsScreen.routeName: (context) => const PaymentDetailsScreen(),
 
-    PaymentWebviewScreen.routeName: (context) {
-      final args =
-          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      return PaymentWebviewScreen(
-        paymentData: args,
-      );
-    },
+    // PaymentWebviewScreen.routeName: (context) {
+    //   final args =
+    //       ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    //   return PaymentWebviewScreen(
+    //     paymentData: args,
+    //   );
+    // },
 
     AddCheckInScreen.routeName: (context) => const AddCheckInScreen(),
     PaymentSuccessScreen.routeName: (context) => const PaymentSuccessScreen(),

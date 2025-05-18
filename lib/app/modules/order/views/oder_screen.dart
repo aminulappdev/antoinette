@@ -23,7 +23,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
   final AllOrderController allOrderController = Get.find<AllOrderController>();
   final PaymentByBookingIDController paymentByBookingIDController =
       Get.find<PaymentByBookingIDController>();
-  final PaymentService paymentService = PaymentService();
+  // final PaymentService paymentService = PaymentService();
 
   String selectedType = "All";
   final List<String> options = [
@@ -153,18 +153,18 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
   }
 
 
-  void goToProductPage() {
-    Navigator.pushNamed(context, ProductScreen.routeName, arguments: true);
-  }
+  // void goToProductPage() {
+  //   Navigator.pushNamed(context, ProductScreen.routeName, arguments: true);
+  // }
 
-  void makePayment(String orderId, String userId) async {
-    await paymentService.payment(
-      context,
-      'Order',
-      userId,
-      orderId,
-    );
-  }
+  // void makePayment(String orderId, String userId) async {
+  //   await paymentService.payment(
+  //     context,
+  //     'Order',
+  //     userId,
+  //     orderId,
+  //   );
+  // }
 
   @override
   void dispose() {
@@ -173,4 +173,8 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
     makePayment('', '');
     super.dispose();
   }
+  
+  goToProductPage() {}
+  
+  makePayment(String s, String t) {}
 }

@@ -29,7 +29,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   final AddChatController addChatController = Get.find<AddChatController>();
   final RescheduleBookingController rescheduleBookingController =
       Get.find<RescheduleBookingController>();
-  final PaymentService paymentService = PaymentService();
+  // final PaymentService paymentService = PaymentService();
   String? selectedMood; // For storing selected mood
 
   @override
@@ -75,10 +75,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff626262))),
                   heightBox8,
-                  TextFormField(
-                    enabled: false,
-                    initialValue: controller.profileData!.name,
-                  ),
+                  Text(controller.profileData!.name ?? '',),
                   heightBox12,
                   Text('Age',
                       style: GoogleFonts.poppins(
@@ -86,10 +83,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff626262))),
                   heightBox8,
-                  TextFormField(
-                    enabled: false,
-                    initialValue: controller.profileData!.age ?? 'empty',
-                  ),
+                  Text(controller.profileData!.age ?? 'Not mentioned'),
                   heightBox12,
                   Text('Contact',
                       style: GoogleFonts.poppins(
@@ -97,10 +91,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff626262))),
                   heightBox8,
-                  TextFormField(
-                    enabled: false,
-                    initialValue: controller.profileData!.contactNumber,
-                  ),
+                  Text( controller.profileData!.contactNumber ?? ''),
                   heightBox12,
                   Text(
                     'Current Emotional State:',
@@ -184,41 +175,41 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     );
   }
 
-  Future<void> bookingButton() async {
-    // if (widget.slotData['bookingId'] == null ||
-    //     widget.slotData['slotId'] == null) {
-    //   // print('main funtion e jay nay');
-    //   showSnackBarMessage(
-    //       context, "Please select a valid date and time slot", true);
-    //   return;
-    // }
+  // Future<void> bookingButton() async {
+  //   // if (widget.slotData['bookingId'] == null ||
+  //   //     widget.slotData['slotId'] == null) {
+  //   //   // print('main funtion e jay nay');
+  //   //   showSnackBarMessage(
+  //   //       context, "Please select a valid date and time slot", true);
+  //   //   return;
+  //   // }
 
-    if (selectedMood == null) {
-      // print('Select your mood');
-      showSnackBarMessage(
-          context, "Please select your current emotional state", true);
-      return;
-    }
+  //   if (selectedMood == null) {
+  //     // print('Select your mood');
+  //     showSnackBarMessage(
+  //         context, "Please select your current emotional state", true);
+  //     return;
+  //   }
 
-    final bool isSuccess = await bookingController.bookingSession(
-        userId,
-        widget.slotData['sessionId'],
-        widget.slotData['slotId'],
-        widget.slotData['therapyType'],
-        selectedMood!);
+  //   final bool isSuccess = await bookingController.bookingSession(
+  //       userId,
+  //       widget.slotData['sessionId'],
+  //       widget.slotData['slotId'],
+  //       widget.slotData['therapyType'],
+  //       selectedMood!);
 
-    if (isSuccess) {
-      if (mounted) {
-        paymentService.payment(context, 'Booking', userId,
-            bookingController.sessionBookingResponseData!.id!);
-        // showSnackBarMessage(context, 'Booking successful');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context, bookingController.errorMessage!, true);
-      }
-    }
-  }
+  //   if (isSuccess) {
+  //     if (mounted) {
+  //       paymentService.payment(context, 'Booking', userId,
+  //           bookingController.sessionBookingResponseData!.id!);
+  //       // showSnackBarMessage(context, 'Booking successful');
+  //     }
+  //   } else {
+  //     if (mounted) {
+  //       showSnackBarMessage(context, bookingController.errorMessage!, true);
+  //     }
+  //   }
+  // }
 
   Future<void> rescheduleBookingButton() async {
     if (widget.slotData['sessionId'] == null ||
@@ -279,4 +270,6 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
     // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
   }
+  
+  bookingButton() {}
 }

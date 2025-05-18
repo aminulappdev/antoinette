@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/authentication/model/sign_up_model.dart';
 import 'package:antoinette/app/urls.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
@@ -38,6 +39,7 @@ class SignUpController extends GetxController {
       
       final signInModel = SignInModel.fromJson(response.responseData);
       _token = signInModel.data?.otpToken?.token;
+      box.write('user-email',email);
     } else {
       _errorMessage = response.errorMessage;
     }

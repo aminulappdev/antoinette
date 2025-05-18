@@ -1,0 +1,2 @@
+D:/antoinette/android/app/.cxx/Debug/k172e1v1/x86_64/CMakeFiles/edit_cache.dir
+D:/antoinette/android/app/.cxx/Debug/k172e1v1/x86_64/CMakeFiles/rebuild_cache.dir

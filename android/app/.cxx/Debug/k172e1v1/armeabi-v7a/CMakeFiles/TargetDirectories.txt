@@ -1,0 +1,2 @@
+D:/antoinette/android/app/.cxx/Debug/k172e1v1/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/antoinette/android/app/.cxx/Debug/k172e1v1/armeabi-v7a/CMakeFiles/rebuild_cache.dir

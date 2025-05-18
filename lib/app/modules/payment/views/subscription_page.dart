@@ -27,7 +27,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   SubscriptionController subscriptionController =
       Get.put(SubscriptionController());
   AllPackageController allPackageController = Get.find<AllPackageController>();
-  final PaymentService paymentService = PaymentService();
+ // final PaymentService paymentService = PaymentService();
   final MySubscriptionController mySubscriptionController =
       Get.find<MySubscriptionController>();
   late String userId;
@@ -254,42 +254,42 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             SizedBox(height: 24.h),
 
                             // ✅ BUY NOW BUTTON
-                            SizedBox(
-                              width: double.infinity,
-                              child: GetBuilder<SubscriptionController>(
-                                builder: (controller) {
-                                  return Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Opacity(
-                                        opacity:
-                                            isSubscriptionActive ? 0.5 : 1.0,
-                                        child: GradientElevatedButton(
-                                          onPressed: (isSubscriptionActive ||
-                                                  controller.inProgress)
-                                              ? () {}
-                                              : () => buyNowBTN(package.sId!),
-                                          text: controller.inProgress
-                                              ? ''
-                                              : isSubscriptionActive
-                                                  ? 'Active Subscription'
-                                                  : 'Buy Now',
-                                        ),
-                                      ),
-                                      if (controller.inProgress)
-                                        SizedBox(
-                                          width: 24,
-                                          height: 24,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
+                            // SizedBox(
+                            //   width: double.infinity,
+                            //   child: GetBuilder<SubscriptionController>(
+                            //     builder: (controller) {
+                            //       return Stack(
+                            //         alignment: Alignment.center,
+                            //         children: [
+                            //           Opacity(
+                            //             opacity:
+                            //                 isSubscriptionActive ? 0.5 : 1.0,
+                            //             child: GradientElevatedButton(
+                            //               onPressed: (isSubscriptionActive ||
+                            //                       controller.inProgress)
+                            //                   ? () {}
+                            //                   : () => buyNowBTN(package.sId!),
+                            //               text: controller.inProgress
+                            //                   ? ''
+                            //                   : isSubscriptionActive
+                            //                       ? 'Active Subscription'
+                            //                       : 'Buy Now',
+                            //             ),
+                            //           ),
+                            //           if (controller.inProgress)
+                            //             SizedBox(
+                            //               width: 24,
+                            //               height: 24,
+                            //               child: CircularProgressIndicator(
+                            //                 strokeWidth: 2,
+                            //                 color: Colors.white,
+                            //               ),
+                            //             ),
+                            //         ],
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
                           ],
                         ),
                       );
@@ -304,25 +304,25 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     );
   }
 
-  Future<void> buyNowBTN(String packageid) async {
-    final bool isSuccess =
-        await subscriptionController.getSubcription(userId, packageid);
-    if (isSuccess) {
-      if (mounted) {
-        paymentService.payment(
-          context,
-          'Subscription',
-          userId,
-          subscriptionController.subscriptionResponseData!.id!,
-        );
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(
-            context,
-            subscriptionController.errorMessage ?? "Something went wrong",
-            true);
-      }
-    }
-  }
+  // Future<void> buyNowBTN(String packageid) async {
+  //   final bool isSuccess =
+  //       await subscriptionController.getSubcription(userId, packageid);
+  //   if (isSuccess) {
+  //     if (mounted) {
+  //       paymentService.payment(
+  //         context,
+  //         'Subscription',
+  //         userId,
+  //         subscriptionController.subscriptionResponseData!.id!,
+  //       );
+  //     }
+  //   } else {
+  //     if (mounted) {
+  //       showSnackBarMessage(
+  //           context,
+  //           subscriptionController.errorMessage ?? "Something went wrong",
+  //           true);
+  //     }
+  //   }
+  // }
 }

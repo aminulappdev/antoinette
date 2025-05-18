@@ -7,6 +7,7 @@ import 'package:antoinette/app/modules/authentication/views/verify_email_screen.
 import 'package:antoinette/app/modules/authentication/widgets/agree_condition_widget.dart';
 import 'package:antoinette/app/modules/authentication/widgets/footer_section.dart';
 import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -104,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TextFormField(
                       controller: numberCtrl,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.number,
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return 'Enter mobile number';
@@ -153,6 +154,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (value!.isEmpty) {
                           return 'Enter password';
                         }
+                        // ignore: curly_braces_in_flow_control_structures
+                        else if(value.length < 6) return 'Password must be at least 6 characters';
                         return null;
                       },
                       obscureText: _obscureText,
@@ -339,6 +342,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       if (isSuccess) {
         if (mounted) {
+          
           showSnackBarMessage(context, 'New student user created');
           Navigator.pushNamed(context, VerifyEmailScreen.routeName,
               arguments: studentSignUpController.token);

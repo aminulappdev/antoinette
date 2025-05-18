@@ -37,7 +37,7 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
   @override
   void initState() {
-    resendOTP();
+
 
     email = info['email'];
 
@@ -62,7 +62,7 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'OTP succsessfully sent');
+        showSnackBarMessage(context, 'OTP successfully sent');
       } else {
         if (mounted) {
           showSnackBarMessage(context, resendOTPController.errorMessage!, true);
