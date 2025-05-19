@@ -34,6 +34,7 @@ class VerifyOtpController extends GetxController {
       // Save token here
       final otpModel = OtpModel.fromJson(response.responseData);
       _accessToken = otpModel.data?.token;
+      box.remove('user-token');
       box.write('user-access-token', otpModel.data?.token);
     } else {
       _errorMessage = response.errorMessage;

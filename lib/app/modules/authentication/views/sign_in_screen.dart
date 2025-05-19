@@ -53,7 +53,10 @@ class _SignInScreenState extends State<SignInScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox20,
-              CustomAppBar(name: 'Sign In', offPopBack: true,),
+              CustomAppBar(
+                name: 'Sign In',
+                offPopBack: true,
+              ),
               heightBox16,
               WelcomeText(
                 title: 'Hi, Welcome back!',
@@ -99,8 +102,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return 'Enter password';
-                        // ignore: curly_braces_in_flow_control_structures
-                        } else if(value.length < 6) return 'Password must be at least 6 characters';
+                          // ignore: curly_braces_in_flow_control_structures
+                        } else if (value.length < 6)
+                          return 'Password must be at least 6 characters';
                         return null;
                       },
                       obscureText: _obscureText,
@@ -226,11 +230,9 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await signInController.signIn(
           emailCtrl.text, passwordCtrl.text, isChecked);
-      if(signInController.errorMessage!.contains('verified')){
-Navigator.pushNamed(context, VerifyEmailScreen.routeName);
-
-     
-
+      if (signInController.errorMessage!.contains('verified')) {
+        Navigator.pushNamed(context, VerifyEmailScreen.routeName,
+            arguments: 'empty-token');
       }
       if (isSuccess) {
         if (mounted) {

@@ -40,6 +40,8 @@ class SignUpController extends GetxController {
       final signInModel = SignInModel.fromJson(response.responseData);
       _token = signInModel.data?.otpToken?.token;
       box.write('user-email',email);
+      box.write('user-token',_token);
+      // Get.offAllNamed(Routes.home);
     } else {
       _errorMessage = response.errorMessage;
     }

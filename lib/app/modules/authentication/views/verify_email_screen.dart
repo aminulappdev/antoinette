@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/authentication/views/otp_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
+import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
@@ -61,7 +62,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               GradientElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, OTPVerifyScreen.routeName,
-                      arguments: widget.token);
+                      arguments: box.read('user-token'));
                 },
                 text: 'Confirm Now',
               ),
