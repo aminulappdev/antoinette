@@ -141,7 +141,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
                     heightBox10,
                     Text(
-                        'Order Id : ${controller.orderDetailsData!.transactionId}'),
+                        'Order Id : ${controller.orderDetailsData!.id}'),
                     heightBox4,
                     Text(
                         'Delivery Address : ${controller.orderDetailsData!.billingDetails?.address}'),
@@ -150,7 +150,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         'Date : ${controller.orderDetailsData!.billingDetails?.pickupDate}'),
                     heightBox4,
                     Text(
-                        'Payment Method : ${controller.orderDetailsData!.transactionId}'),
+                        'Payment Method : Card'),
                     heightBox30,
                     Text(
                       'Price Details',

@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/authentication/controllers/forgot_password_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/google_auth_controller.dart';
+import 'package:antoinette/app/modules/authentication/controllers/resend_otp_controller.dart';
 import 'package:antoinette/app/modules/authentication/controllers/sign_in_controller.dart';
 import 'package:antoinette/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:antoinette/app/modules/authentication/views/sign_up_screen.dart';
@@ -37,6 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // 🔄 updated: GetX এর সাথে কাজ করার জন্য Get.put ব্যবহার করেছি
   final SignInController signInController = Get.put(SignInController());
+  final ResendOTPController resendOTPController = Get.put(ResendOTPController());
   final ForgotPasswordController forgotPasswordController =
       Get.put(ForgotPasswordController());
 
@@ -230,17 +232,35 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await signInController.signIn(
           emailCtrl.text, passwordCtrl.text, isChecked);
-      if (signInController.errorMessage!.contains('verified')) {
-        Navigator.pushNamed(context, VerifyEmailScreen.routeName,
-            arguments: 'empty-token');
-      }
+      
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'Login successfully done');
           Navigator.pushNamedAndRemoveUntil(
               context, MainButtonNavbarScreen.routeName, (route) => false);
         }
-      } else {
+      }
+      else if (signInController.errorMessage!.contains('verified')) {
+         final bool isSuccess = await resendOTPController.resendOTP(
+          emailCtrl.text);
+         
+
+      if (isSuccess) {
+        showSnackBarMessage(
+              context, 'You are not verified, please verify your email');
+         Navigator.pushNamed(context, VerifyEmailScreen.routeName,
+            arguments: resendOTPController.accessToken);
+      }
+      else {
+         if (mounted) {
+          showSnackBarMessage(
+              context, resendOTPController.errorMessage ?? 'Failed', true);
+        }
+      }
+
+       
+      }
+       else {
         if (mounted) {
           showSnackBarMessage(
               context, signInController.errorMessage ?? 'Login failed', true);

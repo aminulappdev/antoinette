@@ -4,8 +4,6 @@ import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class AllDiariesController extends GetxController {
   bool _inProgress = false;
@@ -21,30 +19,35 @@ class AllDiariesController extends GetxController {
   List<AllDiaryItemModel> get allDiaryList => diaryList;
 
   final int _limit = 9999;
-  int page = 0;
 
+  // Pagination state
+  int page = 0;
   int? lastPage;
 
-  Future<bool> getDiaryList() async {
-    // Early return if already in progress
-    if (_inProgress) {
-      return false;
+  // Fetch fresh diary list (used for real-time updates)
+  Future<bool> getDiaryList({bool refresh = false}) async {
+    // Prevent duplicate requests
+    if (_inProgress) return false;
+
+    // If refreshing, reset state
+    if (refresh) {
+      page = 0;
+      lastPage = null;
+      diaryList.clear();
     }
 
-    // Increment page for pagination
+    // Increment page for new fetch
     page++;
 
-    // Prevent fetching if the last page is reached
+    // Prevent over-fetching
     if (lastPage != null && page > lastPage!) return false;
 
-    // Start loading indicator
     _inProgress = true;
-    update(); // Ensure UI gets updated on inProgress change
+    update(); // Notifies listeners (UI)
 
     bool isSuccess = false;
     Map<String, dynamic> queryparam = {'limit': _limit, 'page': page};
 
-    // Fetch access token and make sure it is valid
     _accessToken = box.read('user-login-access-token');
     if (_accessToken == null) {
       _inProgress = false;
@@ -58,25 +61,22 @@ class AllDiariesController extends GetxController {
       accesToken: _accessToken,
     );
 
-    // Handle the response
     if (response.isSuccess) {
-      _errorMessage = null;  // Reset error message on success
+      _errorMessage = null;
       isSuccess = true;
 
       AllDiaryModel allDiaryModel = AllDiaryModel.fromJson(response.responseData);
-      diaryList.addAll(allDiaryModel.data ?? []); // Add new diaries
+      diaryList.addAll(allDiaryModel.data ?? []);
 
-      // Update pagination state
       if (allDiaryModel.meta?.totalPage != null) {
         lastPage = allDiaryModel.meta!.totalPage;
       }
     } else {
-      _errorMessage = response.errorMessage; // Set the error message if any
+      _errorMessage = response.errorMessage;
     }
 
-    // End loading indicator
     _inProgress = false;
-    update(); // Ensure UI updates after request completes
+    update();
 
     return isSuccess;
   }

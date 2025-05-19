@@ -29,21 +29,21 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
       AccessJournalPasswordController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
-  final AllDiariesController allDiariesController =
-      Get.find<AllDiariesController>();
-  final DeleteDiariesController deleteDiariesController =
-      DeleteDiariesController();
+  final AllDiariesController allDiariesController = Get.find<AllDiariesController>();
+  final DeleteDiariesController deleteDiariesController = DeleteDiariesController();
 
   List<bool> isBlurList = [];
 
   @override
   void initState() {
     super.initState();
-    allDiariesController.getDiaryList().then((_) {
-      setState(() {
-        isBlurList = List.generate(
-            allDiariesController.allDiaryList.length, (_) => true);
-      });
+    _loadDiaries();
+  }
+
+  Future<void> _loadDiaries() async {
+    await allDiariesController.getDiaryList(refresh: true);
+    setState(() {
+      isBlurList = List.generate(allDiariesController.allDiaryList.length, (_) => true);
     });
   }
 
@@ -60,35 +60,34 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, AddDiaryScreen.routeName);
+                  onTap: () async {
+                    await Navigator.pushNamed(context, AddDiaryScreen.routeName);
+                    // Refresh list after returning from Add screen
+                    await _loadDiaries();
                   },
                   child: Container(
                     height: 42.h,
                     width: 310.w,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 202, 200, 200)),
+                      border: Border.all(color: const Color.fromARGB(255, 202, 200, 200)),
                       color: const Color(0xffEDE6E4),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Center(
-                      child: Icon(Icons.add,
-                          color: AppColors.iconButtonThemeColor),
+                      child: Icon(Icons.add, color: AppColors.iconButtonThemeColor),
                     ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(
-                        context, SetJournalPasswordScreen.routeName);
-                  }, 
+                    Navigator.pushNamed(context, SetJournalPasswordScreen.routeName);
+                  },
                   child: CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
                     radius: 24.r,
                     child: const Icon(Icons.lock),
                   ),
-                )
+                ),
               ],
             ),
             heightBox12,
@@ -100,12 +99,11 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
+                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [CustomPiChart(), MentalStatusWidget()],
-                ), 
+                ),
               ),
             ),
             heightBox8,
@@ -122,33 +120,25 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                   itemCount: controller.allDiaryList.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.only(bottom: 8),
                       child: HealthConditionCard(
                         titleColor: Colors.black,
-                        isBlur: isBlurList[index],
-                        iconPath: controller.allDiaryList[index].feelings ==
-                                'happy'
+                        isBlur: isBlurList.length > index ? isBlurList[index] : true,
+                        iconPath: controller.allDiaryList[index].feelings == 'happy'
                             ? AssetsPath.angle
-                            : controller.allDiaryList[index].feelings ==
-                                    'calm'
+                            : controller.allDiaryList[index].feelings == 'calm'
                                 ? AssetsPath.happy
-                                : controller.allDiaryList[index].feelings ==
-                                        'sad'
+                                : controller.allDiaryList[index].feelings == 'sad'
                                     ? AssetsPath.sad
-                                    : controller.allDiaryList[index]
-                                                .feelings ==
-                                            'anxious'
+                                    : controller.allDiaryList[index].feelings == 'anxious'
                                         ? AssetsPath.tired
-                                        : controller.allDiaryList[index]
-                                                    .feelings ==
-                                                'motivated'
+                                        : controller.allDiaryList[index].feelings == 'motivated'
                                             ? AssetsPath.muscle
                                             : AssetsPath.angry,
                         status: '${controller.allDiaryList[index].feelings}',
                         day: '${controller.allDiaryList[index].date}',
                         time: '${controller.allDiaryList[index].time}',
-                        description:
-                            '${controller.allDiaryList[index].description}',
+                        description: '${controller.allDiaryList[index].description}',
                         lockOntap: () {
                           if (!isBlurList[index]) {
                             setState(() {
@@ -182,8 +172,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           title: const Text("Enter Password", style: TextStyle(fontSize: 12)),
           content: Form(
             key: _formKey,
@@ -224,57 +213,52 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        allDiariesController.getDiaryList();
-        allDiariesController.update();
+        // Refresh the diary list and update blur list
+        await allDiariesController.getDiaryList(refresh: true);
+        setState(() {
+          isBlurList = List.generate(allDiariesController.allDiaryList.length, (_) => true);
+        });
         showSnackBarMessage(context, 'Successfully deleted!');
       }
     } else {
       if (mounted) {
         showSnackBarMessage(
-            context,
-            deleteDiariesController.errorMessage ?? 'Something went wrong',
-            true);
+          context,
+          deleteDiariesController.errorMessage ?? 'Something went wrong',
+          true,
+        );
       }
     }
   }
 
   Future<void> onTapToNextButton(String password, int index, String action, {String? diaryId}) async {
-    print('Password entered: $password, Action: $action, DiaryId: $diaryId');
     if (_formKey.currentState!.validate()) {
-      print('Form validation passed');
-      final bool isSuccess =
-          await accessJournalPasswordController.accessJournalPassword(password);
-      print('Password validation result: $isSuccess');
+      final bool isSuccess = await accessJournalPasswordController.accessJournalPassword(password);
 
       if (isSuccess) {
-        print('Password is correct');
         clearTextField();
         Navigator.pop(context); // Close dialog first
         if (mounted) {
           if (action == 'view') {
-            print('Unblurring diary at index: $index');
             setState(() {
               isBlurList[index] = false;
             });
             showSnackBarMessage(context, 'Access granted');
           } else if (action == 'edit' && diaryId != null) {
-            print('Navigating to EditDiaryScreen with diaryId: $diaryId');
             await Navigator.pushNamed(context, EditDiaryScreen.routeName, arguments: diaryId);
+            // Refresh diary list & blur states after editing
+            await _loadDiaries();
             showSnackBarMessage(context, 'Access granted for edit');
           } else if (action == 'delete' && diaryId != null) {
-            print('Deleting diary with id: $diaryId');
             await deleteDiary(diaryId);
           }
         }
       } else {
-        print('Invalid password');
         if (mounted) {
           clearTextField();
           showSnackBarMessage(context, 'Invalid password', true);
         }
       }
-    } else {
-      print('Form validation failed');
     }
   }
 

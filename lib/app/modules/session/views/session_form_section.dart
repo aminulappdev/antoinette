@@ -29,7 +29,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   final AddChatController addChatController = Get.find<AddChatController>();
   final RescheduleBookingController rescheduleBookingController =
       Get.find<RescheduleBookingController>();
-  // final PaymentService paymentService = PaymentService();
+  final PaymentService paymentService = PaymentService();
   String? selectedMood; // For storing selected mood
 
   @override
@@ -175,41 +175,41 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     );
   }
 
-  // Future<void> bookingButton() async {
-  //   // if (widget.slotData['bookingId'] == null ||
-  //   //     widget.slotData['slotId'] == null) {
-  //   //   // print('main funtion e jay nay');
-  //   //   showSnackBarMessage(
-  //   //       context, "Please select a valid date and time slot", true);
-  //   //   return;
-  //   // }
+  Future<void> bookingButton() async {
+    // if (widget.slotData['bookingId'] == null ||
+    //     widget.slotData['slotId'] == null) {
+    //   // print('main funtion e jay nay');
+    //   showSnackBarMessage(
+    //       context, "Please select a valid date and time slot", true);
+    //   return;
+    // }
 
-  //   if (selectedMood == null) {
-  //     // print('Select your mood');
-  //     showSnackBarMessage(
-  //         context, "Please select your current emotional state", true);
-  //     return;
-  //   }
+    if (selectedMood == null) {
+      // print('Select your mood');
+      showSnackBarMessage(
+          context, "Please select your current emotional state", true);
+      return;
+    }
 
-  //   final bool isSuccess = await bookingController.bookingSession(
-  //       userId,
-  //       widget.slotData['sessionId'],
-  //       widget.slotData['slotId'],
-  //       widget.slotData['therapyType'],
-  //       selectedMood!);
+    final bool isSuccess = await bookingController.bookingSession(
+        userId,
+        widget.slotData['sessionId'],
+        widget.slotData['slotId'],
+        widget.slotData['therapyType'],
+        selectedMood!);
 
-  //   if (isSuccess) {
-  //     if (mounted) {
-  //       paymentService.payment(context, 'Booking', userId,
-  //           bookingController.sessionBookingResponseData!.id!);
-  //       // showSnackBarMessage(context, 'Booking successful');
-  //     }
-  //   } else {
-  //     if (mounted) {
-  //       showSnackBarMessage(context, bookingController.errorMessage!, true);
-  //     }
-  //   }
-  // }
+    if (isSuccess) {
+      if (mounted) {
+        paymentService.payment(context, 'Booking', userId,
+            bookingController.sessionBookingResponseData!.id!);
+        // showSnackBarMessage(context, 'Booking successful');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, bookingController.errorMessage!, true);
+      }
+    }
+  }
 
   Future<void> rescheduleBookingButton() async {
     if (widget.slotData['sessionId'] == null ||
@@ -271,5 +271,5 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
   }
   
-  bookingButton() {}
+ 
 }

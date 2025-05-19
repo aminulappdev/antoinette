@@ -29,7 +29,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   final ProductOrderController productOrderController =
       Get.find<ProductOrderController>();
   ProfileController profileController = Get.find<ProfileController>();
-  // final PaymentService paymentService = PaymentService();
+  final PaymentService paymentService = PaymentService();
 
   int selectedButtonIndex = 0;
   String deliveryAddress = '';
@@ -408,24 +408,23 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       email,
     );
 
-  //   if (isSuccess) {
-  //     print('Reference id is...........');
-  //     print(productOrderController.orderResponseData!.id!);
-  //     if (mounted) {
-  //       paymentService.payment(
-  //         context,
-  //         'Order',
-  //         userId,
-  //         productOrderController.orderResponseData!.id!,
-  //       );
-  //     }
-  //   } else {
-  //     if (mounted) {
-  //       print('Error show ----------------------------------');
-  //       showSnackBarMessage(
-  //           context, productOrderController.errorMessage!, true);
-  //     }
-  //   }
-  // }
-}
+    if (isSuccess) {
+      print('Reference id is...........');
+      print(productOrderController.orderResponseData!.id!);
+      if (mounted) {
+        paymentService.payment(
+          context,
+          'Order',
+          userId,
+          productOrderController.orderResponseData!.id!,
+        );
+      }
+    } else {
+      if (mounted) {
+        print('Error show ----------------------------------');
+        showSnackBarMessage(
+            context, productOrderController.errorMessage!, true);
+      }
+    }
+  }
 }
