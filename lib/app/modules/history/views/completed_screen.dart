@@ -128,7 +128,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                         status: '${controller.bookingList[index].status}',
                         title:
                             '${controller.bookingList[index].session?.title}',
-                        name: 'Dr. Jane Smith',
+                        name: '${controller.bookingList[index].session!.therapist?.user?.name}',
                         therapyType:
                             '${controller.bookingList[index].therapyType}',
                         date: formattedBookingDate,

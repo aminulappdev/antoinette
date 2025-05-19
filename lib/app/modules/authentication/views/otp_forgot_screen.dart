@@ -37,16 +37,29 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
   @override
   void initState() {
-
+    super.initState();
 
     email = info['email'];
 
-    super.initState();
+    // Start the timer without calling resendOTP
+    remainingTime.value = 16;
+    enableResendCodeButtom.value = false;
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (t) {
+        remainingTime.value--;
+        if (remainingTime.value == 0) {
+          t.cancel();
+          enableResendCodeButtom.value = true;
+        }
+      },
+    );
   }
 
   void resendOTP() async {
+    print('resendOTP called'); // For debugging
     enableResendCodeButtom.value = false;
-    remainingTime.value = 60;
+    remainingTime.value = 16;
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (t) {
@@ -63,14 +76,11 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
     if (isSuccess) {
       if (mounted) {
         showSnackBarMessage(context, 'OTP successfully sent');
-      } else {
-        if (mounted) {
-          showSnackBarMessage(context, resendOTPController.errorMessage!, true);
-        }
+        clearTextField(); // Clear OTP field after successful resend
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, resendOTPController.errorMessage!, true);
+        showSnackBarMessage(context, resendOTPController.errorMessage ?? 'Failed to resend OTP', true);
       }
     }
   }
@@ -113,16 +123,16 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                         animationType: AnimationType.fade,
                         keyboardType: TextInputType.number,
                         pinTheme: PinTheme(
-                            borderWidth: 0.2,
-                            shape: PinCodeFieldShape.box,
-                            borderRadius: BorderRadius.circular(12.r),
-                            inactiveColor: const Color.fromARGB(218, 222, 220,
-                                220), // Border color when not filled
-                            fieldHeight: 55.h,
-                            fieldWidth: 55.h,
-                            activeFillColor: Colors.white,
-                            inactiveFillColor: Colors.white,
-                            selectedFillColor: Colors.white),
+                          borderWidth: 0.2,
+                          shape: PinCodeFieldShape.box,
+                          borderRadius: BorderRadius.circular(12.r),
+                          inactiveColor: const Color.fromARGB(218, 222, 220, 220),
+                          fieldHeight: 55.h,
+                          fieldWidth: 55.h,
+                          activeFillColor: Colors.white,
+                          inactiveFillColor: Colors.white,
+                          selectedFillColor: Colors.white,
+                        ),
                         animationDuration: const Duration(milliseconds: 300),
                         backgroundColor: Colors.transparent,
                         enableActiveFill: true,
@@ -168,27 +178,39 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                           onTap: () {
                             resendOTP();
                           },
-                          child: Text('Resend code',
-                              style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w500)),
+                          child: Text(
+                            'Resend code',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                         child: RichText(
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                  text: 'Resend code',
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.black, fontSize: 16.sp)),
+                                text: 'Resend code in ',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
                               TextSpan(
-                                  text: '$remainingTime',
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.orange, fontSize: 16.sp)),
+                                text: '${remainingTime.value}',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.orange,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
                               TextSpan(
-                                  text: 's',
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.black, fontSize: 16.sp)),
+                                text: 's',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -207,24 +229,22 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await verifyOtpController.verifyOtp(
-          otpCtrl.text, resendOTPController.accessToken.toString());
+        otpCtrl.text,
+        resendOTPController.accessToken.toString(),
+      );
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Otp verification successfully done');
+          showSnackBarMessage(context, 'OTP verification successfully done');
           Navigator.pushNamed(context, ResetPasswordScreen.routeName);
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, verifyOtpController.errorMessage!, true);
-          }
         }
-        
-      }
-      else {
+      } else {
         if (mounted) {
           showSnackBarMessage(
-              context, verifyOtpController.errorMessage ?? 'failed', true);
+            context,
+            verifyOtpController.errorMessage ?? 'OTP verification failed',
+            true,
+          );
         }
       }
     }
@@ -232,12 +252,13 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
   void clearTextField() {
     otpCtrl.clear();
+    setState(() {}); // Update UI to reflect cleared field
   }
 
   @override
   void dispose() {
-    super.dispose();
-
+    timer.cancel(); // Prevent memory leaks
     otpCtrl.dispose();
+    super.dispose();
   }
 }

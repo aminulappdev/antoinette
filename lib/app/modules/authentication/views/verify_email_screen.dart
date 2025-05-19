@@ -62,7 +62,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               GradientElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, OTPVerifyScreen.routeName,
-                      arguments: box.read('user-token'));
+                      arguments: widget.token);
                 },
                 text: 'Confirm Now',
               ),

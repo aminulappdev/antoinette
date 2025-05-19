@@ -29,14 +29,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   bool _obscureText2 = true;
 
   final info = box.read('fotgot-password-info');
-  final userAccessToken = box.read('user-access-token');
+  
   String email = '';
   String accessToken = '';
 
   @override
   void initState() {
     email = info['email'];
-    accessToken = userAccessToken;
+    accessToken = info['token'];
     super.initState();
   }
 

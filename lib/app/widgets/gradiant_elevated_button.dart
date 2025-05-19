@@ -7,10 +7,10 @@ class GradientElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
 
-  const GradientElevatedButton({
+  const GradientElevatedButton( {
     super.key,
-    required this.onPressed,
-    required this.text,
+    
+    required this.text, required this.onPressed, 
   });
 
   @override
