@@ -22,43 +22,84 @@ class ArticleDetailsScreen extends StatefulWidget {
 }
 
 class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
-  final BookMarkController bookMarkController = BookMarkController();
-  final DeleteBookmarkController deleteBookmarkController = DeleteBookmarkController();
-  late String userId;
-  ProfileController profileController = Get.find<ProfileController>();
-  BookmarkArticlesController bookmarkArticlesController =
-      Get.find<BookmarkArticlesController>();
+  final BookMarkController bookMarkController = Get.find<BookMarkController>();
+  final DeleteBookmarkController deleteBookmarkController = Get.find<DeleteBookmarkController>();
+  final ProfileController profileController = Get.find<ProfileController>();
+  final BookmarkArticlesController bookmarkArticlesController = Get.find<BookmarkArticlesController>();
 
-  bool isBookmarked = false; // Track whether the article is bookmarked or not
-  String? bookmarkId; // Store the bookmark ID for deletion
-  bool _isLoading = false; // Track loading state for bookmark action
+  bool isBookmarked = false;
+  String? bookmarkId;
+  bool _isLoading = false;
+  String? userId;
 
   @override
   void initState() {
     super.initState();
-    userId = profileController.profileData!.sId!;
-    // Fetch bookmark list and check if current article is bookmarked
-    bookmarkArticlesController.getbookmarkArticleList().then((_) {
-      checkIfBookmarked();
-    });
+    // Load profile data
+    if (profileController.profileData != null) {
+      userId = profileController.profileData!.sId;
+      _loadBookmarkStatus();
+    } else {
+      profileController.getProfileData().then((_) {
+        if (mounted) {
+          setState(() {
+            userId = profileController.profileData?.sId;
+          });
+          _loadBookmarkStatus();
+        }
+      });
+    }
   }
 
-  // Check if the current article is in the bookmark list
-  void checkIfBookmarked() {
+  // Load bookmark status
+  Future<void> _loadBookmarkStatus() async {
+    if (userId == null || widget.articleModel.sId == null) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid user or article ID', true);
+      }
+      return;
+    }
+    try {
+      await bookmarkArticlesController.refreshBookmarkList();
+      _checkIfBookmarked();
+    } catch (e) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Failed to load bookmark list: $e', true);
+      }
+    }
+  }
+
+  // Check if the article is bookmarked
+  void _checkIfBookmarked() {
     final articleId = widget.articleModel.sId;
+    if (articleId == null) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid article ID', true);
+      }
+      return;
+    }
     final bookmarkItem = bookmarkArticlesController.bookmarkArticleList
         .firstWhereOrNull((item) => item.reference?.sId == articleId);
-    setState(() {
-      isBookmarked = bookmarkItem != null;
-      bookmarkId = bookmarkItem?.sId;
-    });
+    if (mounted) {
+      setState(() {
+        isBookmarked = bookmarkItem != null;
+        bookmarkId = bookmarkItem?.sId;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     String? isoDate = widget.articleModel.publishedAt;
-    DateTime parsedDate = DateTime.parse(isoDate!);
-    String readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
+    String readableDate = '';
+    if (isoDate != null) {
+      try {
+        DateTime parsedDate = DateTime.parse(isoDate);
+        readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
+      } catch (e) {
+        readableDate = 'Unknown Date';
+      }
+    }
 
     return Scaffold(
       body: Padding(
@@ -68,101 +109,102 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20.h),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 2.h),
-                child: Container(
-                  height: 200.h,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: widget.articleModel.thumbnail != null
-                          ? NetworkImage('${widget.articleModel.thumbnail}')
-                          : const AssetImage(AssetsPath.demo),
-                      fit: BoxFit.fill,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: CircleAvatar(
+                      radius: 21.r,
+                      backgroundColor: const Color(0xff000000).withOpacity(0.1),
+                      child: const Icon(Icons.arrow_back, color: Colors.white),
                     ),
-                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(12.0.h),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
+                  GestureDetector(
+                    onTap: _isLoading || userId == null || widget.articleModel.sId == null
+                        ? null
+                        : () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            try {
+                              if (!isBookmarked) {
+                                await _bookmarkArticle();
+                              } else {
+                                await _removeBookmark();
+                              }
+                              // Refresh bookmark list
+                              await bookmarkArticlesController.refreshBookmarkList();
+                              _checkIfBookmarked();
+                            } catch (e) {
+                              if (mounted) {
+                                showSnackBarMessage(context, 'Error: $e', true);
+                              }
+                            } finally {
+                              if (mounted) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
+                            }
                           },
-                          child: CircleAvatar(
-                            radius: 21.r,
-                            backgroundColor:
-                                const Color(0xff000000).withOpacity(0.1),
-                            child: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
+                    child: CircleAvatar(
+                      radius: 21.r,
+                      backgroundColor: const Color(0xff000000).withOpacity(0.1),
+                      child: _isLoading
+                          ? SizedBox(
+                              width: 24.r,
+                              height: 24.r,
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Icon(
+                              isBookmarked ? Icons.favorite : Icons.favorite_border_sharp,
+                              color: isBookmarked ? Colors.red : Colors.white,
                             ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: _isLoading
-                              ? null // Disable tap during loading
-                              : () async {
-                                  setState(() {
-                                    _isLoading = true; // Start loading
-                                  });
-                                  if (!isBookmarked) {
-                                    // Add bookmark
-                                    await bookmark(userId, widget.articleModel.sId ?? '');
-                                  } else {
-                                    // Remove bookmark
-                                    await removeBookmark(bookmarkId ?? '');
-                                  }
-                                  // Refresh bookmark list after adding/removing
-                                  await bookmarkArticlesController.getbookmarkArticleList();
-                                  checkIfBookmarked(); // Update bookmark status
-                                  setState(() {
-                                    _isLoading = false; // Stop loading
-                                  });
-                                },
-                          child: CircleAvatar(
-                            radius: 21.r,
-                            backgroundColor:
-                                const Color(0xff000000).withOpacity(0.1),
-                            child: _isLoading
-                                ? SizedBox(
-                                    width: 24.r,
-                                    height: 24.r,
-                                    child: const CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Icon(
-                                    isBookmarked
-                                        ? Icons.favorite
-                                        : Icons.favorite_border_sharp,
-                                    color: isBookmarked ? Colors.red : Colors.white,
-                                  ),
-                          ),
-                        ),
-                      ],
                     ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+              Container(
+                height: 274.h,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                    image: widget.articleModel.thumbnail != null
+                        ? NetworkImage(widget.articleModel.thumbnail!)
+                        : const AssetImage(AssetsPath.demo),
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
+              SizedBox(height: 8.h),
               Text(
-                widget.articleModel.title ?? '',
-                style: GoogleFonts.poppins(fontSize: 16.sp),
+                widget.articleModel.title ?? 'No Title',
+                style: GoogleFonts.poppins(fontSize: 15.sp),
               ),
-              Text(
-                'Author: ${widget.articleModel.author ?? 'Unknown'}',
-                style: GoogleFonts.poppins(fontSize: 12.sp),
+              SizedBox(height: 12.h),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Author: ${widget.articleModel.author ?? 'Unknown'}',
+                    style: GoogleFonts.poppins(fontSize: 12.sp),
+                  ),
+                  Text(
+                    'Published Date: $readableDate',
+                    style: GoogleFonts.poppins(fontSize: 12.sp),
+                  ),
+                ],
               ),
-              Text(
-                'Published Date: $readableDate',
-                style: GoogleFonts.poppins(fontSize: 12.sp),
-              ),
-              SizedBox(height: 4.h),
-              Html(data: widget.articleModel.description ?? ''),
+              SizedBox(height: 16.h),
+              Html(data: widget.articleModel.description ?? 'No Description'),
             ],
           ),
         ),
@@ -170,44 +212,65 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
     );
   }
 
-  Future<void> bookmark(String user, String reference) async {
-    if (reference.isEmpty) {
-      setState(() {
-        _isLoading = false;
-      });
-      showSnackBarMessage(context, 'Invalid article ID', true);
+  Future<void> _bookmarkArticle() async {
+    if (userId == null || widget.articleModel.sId == null) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid user or article ID', true);
+      }
       return;
     }
-    final bool isSuccess =
-        await bookMarkController.addBookmark(user, reference, 'Article');
-
-    if (isSuccess && mounted) {
-      showSnackBarMessage(context, 'Bookmark added');
-      setState(() {
-        isBookmarked = true; // Update status only on success
-      });
-    } else if (mounted) {
-      showSnackBarMessage(context, bookMarkController.errorMessage ?? 'Error occurred', true);
+    try {
+      final bool isSuccess = await bookMarkController.addBookmark(userId!, widget.articleModel.sId!, 'Article');
+      if (isSuccess && mounted) {
+        showSnackBarMessage(context, 'Bookmark added');
+        setState(() {
+          isBookmarked = true; // Update state on success
+        });
+      } else if (mounted) {
+        showSnackBarMessage(context, bookMarkController.errorMessage ?? 'Failed to add bookmark', true);
+      }
+    } catch (e) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Error adding bookmark: $e', true);
+      }
     }
   }
 
-  Future<void> removeBookmark(String bookmarkId) async {
-    if (bookmarkId.isEmpty) {
-      setState(() {
-        _isLoading = false;
-      });
-      showSnackBarMessage(context, 'Invalid bookmark ID', true);
+  Future<void> _removeBookmark() async {
+    if (bookmarkId == null) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid bookmark ID', true);
+      }
+      // Refresh list to ensure UI consistency
+      await bookmarkArticlesController.refreshBookmarkList();
+      _checkIfBookmarked();
       return;
     }
-    final bool isSuccess = await deleteBookmarkController.deleteBookmark(bookmarkId);
-
-    if (isSuccess && mounted) {
-      showSnackBarMessage(context, 'Bookmark removed');
-      setState(() {
-        isBookmarked = false; // Update status only on success
-      });
-    } else if (mounted) {
-      showSnackBarMessage(context, deleteBookmarkController.errorMessage ?? 'Error occurred', true);
+    try {
+      final bool isSuccess = await deleteBookmarkController.deleteBookmark(bookmarkId!);
+      if (isSuccess && mounted) {
+        showSnackBarMessage(context, 'Bookmark removed');
+        setState(() {
+          isBookmarked = false; // Update state on success
+          bookmarkId = null; // Reset bookmark ID
+        });
+      } else if (mounted) {
+        // Handle "Content bookmark not found" error
+        if (deleteBookmarkController.errorMessage?.contains('Content bookmark not found') == true) {
+          showSnackBarMessage(context, 'Bookmark not found, refreshing list', true);
+          await bookmarkArticlesController.refreshBookmarkList();
+          _checkIfBookmarked();
+        } else {
+          showSnackBarMessage(context, deleteBookmarkController.errorMessage ?? 'Failed to remove bookmark', true);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Error removing bookmark: $e', true);
+      }
+      // Refresh list in case of error to ensure UI consistency
+      await bookmarkArticlesController.refreshBookmarkList();
+      _checkIfBookmarked();
     }
   }
 

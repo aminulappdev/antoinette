@@ -29,20 +29,20 @@ class AntoinetteApp extends StatelessWidget {
       splitScreenMode: true, 
       builder: (context, child) { 
         return GetMaterialApp(
-          initialBinding: ControllerBinder(),
-          debugShowCheckedModeBanner: false,
-          title: 'antoinette',
-          theme: ThemeData(
-            primaryColor: Color(0xffA57EA5).withOpacity(0.1),
-            scaffoldBackgroundColor: AppColors.primaryBackgroundColor,
-            inputDecorationTheme: inputDecoration(),
-            useMaterial3: true,
-            fontFamily: 'Poppins',
-            textTheme: TextTheme(),
-          ),
-          initialRoute: AppRoutes.initialRoute,
-          routes: AppRoutes.appRoutes,
-        );
+  initialBinding: ControllerBinder(),
+  debugShowCheckedModeBanner: false,
+  title: 'antoinette',
+  theme: ThemeData(
+    primaryColor: Color(0xffA57EA5).withOpacity(0.1),
+    scaffoldBackgroundColor: AppColors.primaryBackgroundColor,
+    inputDecorationTheme: inputDecoration(),
+    useMaterial3: true,
+    fontFamily: 'Poppins',
+    textTheme: TextTheme(),
+  ),
+  initialRoute: AppRoutes.initialRoute, // Line 31
+  routes: AppRoutes.appRoutes,
+);
       },
     );
   }

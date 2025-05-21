@@ -17,26 +17,24 @@ class BookmarkPodcastScreen extends StatefulWidget {
 }
 
 class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
-  BookmarkPodcastDetailsController bookmarkPodcastDetailsController =
-      BookmarkPodcastDetailsController();
-  BookmarkPodcastController bookmarkPodcastController =
-      Get.find<BookmarkPodcastController>();
+  final BookmarkPodcastDetailsController bookmarkPodcastDetailsController = BookmarkPodcastDetailsController();
+  final BookmarkPodcastController bookmarkPodcastController = Get.find<BookmarkPodcastController>();
   final ScrollController scrollController = ScrollController();
   final TextEditingController searcCtrl = TextEditingController();
   String search = '';
-  bool _isTapping = false; // Flag to prevent multiple taps
+  bool _isTapping = false;
 
   @override
   void initState() {
-    bookmarkPodcastController.getbookmarkArticleList();
+    print('Open bookmark podcast page');
+    bookmarkPodcastController.refreshBookmarkList(); // Fetch fresh list on init
     scrollController.addListener(_loadMoreData);
     super.initState();
   }
 
   void _loadMoreData() {
-    if (scrollController.position.extentAfter < 500 &&
-        !bookmarkPodcastController.inProgress) {
-      bookmarkPodcastController.getbookmarkArticleList();
+    if (scrollController.position.extentAfter < 500 && !bookmarkPodcastController.inProgress) {
+      bookmarkPodcastController.getbookmarkPodcastList();
     }
   }
 
@@ -48,6 +46,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Search bar (not dependent on Obx)
             Row(
               children: [
                 Expanded(
@@ -55,9 +54,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
                     height: 48.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: Colors.grey[300]!,
-                      ),
+                      border: Border.all(color: Colors.grey[300]!),
                     ),
                     child: Row(
                       children: [
@@ -97,29 +94,28 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
               ],
             ),
             SizedBox(height: 10.h),
-            GetBuilder<BookmarkPodcastController>(builder: (controller) {
-              if (controller.inProgress && controller.page == 1) {
+            // Use Obx only for the list portion that depends on bookmarkPodcastList
+            Obx(() {
+              if (bookmarkPodcastController.inProgress && bookmarkPodcastController.initialInProgress) {
                 return const Center(child: CircularProgressIndicator());
               }
               return SizedBox(
                 height: 645.h,
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  controller: scrollController,
-                  itemCount: controller.bookmarkPodcastList.length,
-                  itemBuilder: (context, index) {
-                    var title = controller.bookmarkPodcastList[index].reference?.title;
-
-                    if (searcCtrl.text.isEmpty) {
-                      return buildPodcastItem(context, controller, index);
-                    } else if (title != null &&
-                        title.toLowerCase().contains(searcCtrl.text.toLowerCase())) {
-                      return buildPodcastItem(context, controller, index);
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  },
-                ),
+                child: bookmarkPodcastController.bookmarkPodcastList.isEmpty
+                    ? const Center(child: Text('No bookmarks found'))
+                    : ListView.builder(
+                        padding: EdgeInsets.zero,
+                        controller: scrollController,
+                        itemCount: bookmarkPodcastController.bookmarkPodcastList.length,
+                        itemBuilder: (context, index) {
+                          var title = bookmarkPodcastController.bookmarkPodcastList[index].reference?.title;
+                          if (searcCtrl.text.isEmpty ||
+                              (title != null && title.toLowerCase().contains(searcCtrl.text.toLowerCase()))) {
+                            return buildPodcastItem(context, bookmarkPodcastController, index);
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
               );
             }),
           ],
@@ -128,8 +124,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
     );
   }
 
-  Widget buildPodcastItem(
-      BuildContext context, BookmarkPodcastController controller, int index) {
+  Widget buildPodcastItem(BuildContext context, BookmarkPodcastController controller, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
       child: GestureDetector(
@@ -140,8 +135,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
                   setState(() {
                     _isTapping = true;
                   });
-                  await getBookmarkPodcastScreen(
-                      controller.bookmarkPodcastList[index].sId ?? '');
+                  await getBookmarkPodcastScreen(controller.bookmarkPodcastList[index].sId ?? '');
                   setState(() {
                     _isTapping = false;
                   });
@@ -166,8 +160,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
                       image: controller.bookmarkPodcastList[index].reference?.thumbnail != null
-                          ? NetworkImage(
-                              controller.bookmarkPodcastList[index].reference!.thumbnail!)
+                          ? NetworkImage(controller.bookmarkPodcastList[index].reference!.thumbnail!)
                           : const AssetImage(AssetsPath.demo),
                       fit: BoxFit.fill,
                     ),
@@ -201,7 +194,7 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                'Episod 12', // Replace with dynamic data if available
+                                'Episode 12', // Replace with dynamic data if available
                                 style: GoogleFonts.poppins(fontSize: 10.sp),
                               ),
                             ),
@@ -240,9 +233,8 @@ class _BookmarkPodcastScreenState extends State<BookmarkPodcastScreen> {
   }
 
   Future<void> getBookmarkPodcastScreen(String id) async {
-    if (id.isEmpty) return; // Guard against empty ID
-    final bool isSuccess =
-        await bookmarkPodcastDetailsController.getBookmarkPodcastDetails(id);
+    if (id.isEmpty) return;
+    final bool isSuccess = await bookmarkPodcastDetailsController.getBookmarkPodcastDetails(id);
 
     if (isSuccess && mounted) {
       Navigator.pushNamed(context, BookMarkPodcastDetailsScreen.routeName,

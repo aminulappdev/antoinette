@@ -6,28 +6,41 @@ import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
 class BookmarkPodcastController extends GetxController {
-  bool _inProgress = false; 
-  bool get inProgress => _inProgress;
+  final RxBool _inProgress = false.obs;
+  bool get inProgress => _inProgress.value;
 
   bool get initialInProgress => page == 1;
 
-  String? _errorMessage;
-  String? get errorMessage => _errorMessage;
+  final RxString _errorMessage = RxString('');
+  String? get errorMessage => _errorMessage.value;
 
-  String? _accessToken;
-  String? get accessToken => _accessToken;
+  final RxString _accessToken = RxString('');
+  String? get accessToken => _accessToken.value;
 
-  List<AllBookmarkPodcastItemModel> bookmarkPodcastsList = [];
-  List<AllBookmarkPodcastItemModel> get bookmarkPodcastList => bookmarkPodcastsList;
+  final RxList<AllBookmarkPodcastItemModel> _bookmarkPodcastsList = <AllBookmarkPodcastItemModel>[].obs;
+  List<AllBookmarkPodcastItemModel> get bookmarkPodcastList => _bookmarkPodcastsList;
 
   final int _limit = 9999;
   int page = 0;
   String modeType = 'Podcast';
-
   int? lastPage;
 
-  Future<bool> getbookmarkArticleList() async {
-    if (_inProgress) {
+
+  @override
+  void onInit() {
+    super.onInit();
+      
+       if (box.read('user-login-access-token') == null) {
+      print(
+          "///////////////////////////////////////////////////////////////////");
+    } else {
+      _accessToken.value = box.read('user-login-access-token');
+    }
+     
+  }
+
+  Future<bool> getbookmarkPodcastList() async {
+    if (_inProgress.value) {
       return false;
     }
     page++;
@@ -35,36 +48,38 @@ class BookmarkPodcastController extends GetxController {
     if (lastPage != null && page > lastPage!) return false;
 
     bool isSuccess = false;
+    _inProgress.value = true;
 
-    _inProgress = true;
-
-    update();
-
-    Map<String, dynamic> queryparam = {'limit': _limit, 'page': page, 'modeType' : modeType};
+    Map<String, dynamic> queryparam = {'limit': _limit, 'page': page, 'modeType': modeType};
 
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
-        Urls.bookmarkArticleUrl,
-        queryParams: queryparam,
-        accesToken: box.read('user-login-access-token'));
+      Urls.bookmarkArticleUrl, // Assuming this URL also serves podcast bookmarks
+      queryParams: queryparam,
+      accesToken: box.read('user-login-access-token'),
+    );
 
     if (response.isSuccess) {
-      _errorMessage = null;
+      _errorMessage.value = '';
       isSuccess = true;
 
-      AllBookmarkPodcastModel allPodcastModel =
-          AllBookmarkPodcastModel.fromJson(response.responseData);
-
-      bookmarkPodcastsList.addAll(allPodcastModel.data ?? []);
+      AllBookmarkPodcastModel allPodcastModel = AllBookmarkPodcastModel.fromJson(response.responseData);
+      _bookmarkPodcastsList.addAll(allPodcastModel.data ?? []); // Update RxList
 
       if (allPodcastModel.meta?.totalPage != null) {
         lastPage = allPodcastModel.meta!.totalPage;
       }
     } else {
-      _errorMessage = response.errorMessage;
+      _errorMessage.value = response.errorMessage;
     }
 
-    _inProgress = false;
-    update();
+    _inProgress.value = false;
     return isSuccess;
+  }
+
+  Future<bool> refreshBookmarkList() async {
+    page = 0; // Reset pagination
+    _bookmarkPodcastsList.clear(); // Clear existing list
+    lastPage = null; // Reset last page
+    return await getbookmarkPodcastList(); // Fetch fresh list
   }
 }

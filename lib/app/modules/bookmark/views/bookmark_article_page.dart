@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_details_controller.dart';
+import 'package:antoinette/app/modules/bookmark/controller/delete_bookmark_controller.dart';
 import 'package:antoinette/app/modules/bookmark/views/bookmark_article_details_page.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
@@ -17,26 +18,24 @@ class BookmarkArticleScreen extends StatefulWidget {
 }
 
 class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
-  BookmarkArticleDetailsController bookmarkArticleDetailsController =
-      BookmarkArticleDetailsController();
-  BookmarkArticlesController bookmarkArticlesController =
-      Get.find<BookmarkArticlesController>();
+  final BookmarkArticleDetailsController bookmarkArticleDetailsController = BookmarkArticleDetailsController();
+  final BookmarkArticlesController bookmarkArticlesController = Get.find<BookmarkArticlesController>();
+  final DeleteBookmarkController deleteBookmarkController = Get.find<DeleteBookmarkController>();
   final ScrollController scrollController = ScrollController();
   final TextEditingController searcCtrl = TextEditingController();
   String search = '';
-  bool _isTapping = false; // Flag to prevent multiple taps
+  bool _isTapping = false;
 
   @override
   void initState() {
-    bookmarkArticlesController.getbookmarkArticleList();
-    print(bookmarkArticlesController.bookmarkarticlesList);
+    print('Open bookmark article page');
+    bookmarkArticlesController.refreshBookmarkList(); // Fetch fresh list on init
     scrollController.addListener(_loadMoreData);
     super.initState();
   }
 
   void _loadMoreData() {
-    if (scrollController.position.extentAfter < 500 &&
-        !bookmarkArticlesController.inProgress) {
+    if (scrollController.position.extentAfter < 500 && !bookmarkArticlesController.inProgress) {
       bookmarkArticlesController.getbookmarkArticleList();
     }
   }
@@ -46,91 +45,88 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(12.0.h),
-        child: GetBuilder<BookmarkArticlesController>(builder: (controller) {
-          if (controller.inProgress && controller.page == 1) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 48.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color: Colors.grey[300]!,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Search bar (not dependent on Obx)
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 48.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: Colors.grey[300]!),
+                    ),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {});
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Icon(
+                              Icons.search_rounded,
+                              size: 30.h,
+                              color: AppColors.iconButtonThemeColor,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {});
+                        Expanded(
+                          child: TextFormField(
+                            controller: searcCtrl,
+                            onChanged: (value) {
+                              setState(() {
+                                search = value;
+                              });
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                              child: Icon(
-                                Icons.search_rounded,
-                                size: 30.h,
-                                color: AppColors.iconButtonThemeColor,
-                              ),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
                             ),
                           ),
-                          Expanded(
-                            child: TextFormField(
-                              controller: searcCtrl,
-                              onChanged: (value) {
-                                setState(() {
-                                  search = value;
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                contentPadding: EdgeInsets.zero,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 10.h),
-              SizedBox(
-                height: 680.h,
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  controller: scrollController,
-                  itemCount: controller.bookmarkarticlesList.length,
-                  itemBuilder: (context, index) {
-                    var title = controller.bookmarkArticleList[index].reference?.title;
-
-                    if (searcCtrl.text.isEmpty) {
-                      return buildArticleItem(context, controller, index);
-                    } else if (title != null &&
-                        title.toLowerCase().contains(searcCtrl.text.toLowerCase())) {
-                      return buildArticleItem(context, controller, index);
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  },
                 ),
-              ),
-            ],
-          );
-        }),
+              ],
+            ),
+            SizedBox(height: 10.h),
+            // Use Obx only for the list portion that depends on bookmarkArticleList
+            Obx(() {
+              if (bookmarkArticlesController.inProgress && bookmarkArticlesController.initialInProgress) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return SizedBox(
+                height: 680.h,
+                child: bookmarkArticlesController.bookmarkArticleList.isEmpty
+                    ? const Center(child: Text('No bookmarks found'))
+                    : ListView.builder(
+                        padding: EdgeInsets.zero,
+                        controller: scrollController,
+                        itemCount: bookmarkArticlesController.bookmarkArticleList.length,
+                        itemBuilder: (context, index) {
+                          var title = bookmarkArticlesController.bookmarkArticleList[index].reference?.title;
+                          if (searcCtrl.text.isEmpty ||
+                              (title != null && title.toLowerCase().contains(searcCtrl.text.toLowerCase()))) {
+                            return buildArticleItem(context, bookmarkArticlesController, index);
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildArticleItem(
-      BuildContext context, BookmarkArticlesController controller, int index) {
+  Widget buildArticleItem(BuildContext context, BookmarkArticlesController controller, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.h),
       child: InkWell(
@@ -141,8 +137,7 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
                   setState(() {
                     _isTapping = true;
                   });
-                  await getBookmarkArticleScreen(
-                      controller.bookmarkArticleList[index].sId ?? '');
+                  await getBookmarkArticleScreen(controller.bookmarkArticleList[index].sId ?? '');
                   setState(() {
                     _isTapping = false;
                   });
@@ -155,44 +150,74 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
             color: Colors.grey,
             image: DecorationImage(
               image: controller.bookmarkArticleList[index].reference?.thumbnail != null
-                  ? NetworkImage(
-                      controller.bookmarkArticleList[index].reference!.thumbnail!)
+                  ? NetworkImage(controller.bookmarkArticleList[index].reference!.thumbnail!)
                   : const AssetImage(AssetsPath.demo),
               fit: BoxFit.fill,
             ),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Padding(
-            padding: EdgeInsets.all(20.0.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 200.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: const Color.fromARGB(222, 255, 255, 255),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 50,
-                      child: Text(
-                        controller.bookmarkArticleList[index].reference?.title ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: GoogleFonts.poppins(fontSize: 10.sp),
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(20.0.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 200.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color.fromARGB(222, 255, 255, 255),
                       ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 50,
+                          child: Text(
+                            controller.bookmarkArticleList[index].reference?.title ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: GoogleFonts.poppins(fontSize: 10.sp),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      controller.bookmarkArticleList[index].reference?.title ?? '',
+                      style: GoogleFonts.poppins(fontSize: 16.sp, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 10.h,
+                right: 10.h,
+                child: GestureDetector(
+                  onTap: _isTapping
+                      ? null
+                      : () async {
+                          if (!_isTapping) {
+                            setState(() {
+                              _isTapping = true;
+                            });
+                            await _removeBookmark(controller.bookmarkArticleList[index].sId ?? '');
+                            setState(() {
+                              _isTapping = false;
+                            });
+                          }
+                        },
+                  child: CircleAvatar(
+                    radius: 21.r,
+                    backgroundColor: const Color(0xff000000).withOpacity(0.1),
+                    child: Icon(
+                      Icons.favorite,
+                      color: Colors.red,
                     ),
                   ),
                 ),
-                Text(
-                  controller.bookmarkArticleList[index].reference?.title ?? '',
-                  style: GoogleFonts.poppins(fontSize: 16.sp, color: Colors.white),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -200,22 +225,44 @@ class _BookmarkArticleScreenState extends State<BookmarkArticleScreen> {
   }
 
   Future<void> getBookmarkArticleScreen(String id) async {
-    if (id.isEmpty) return; // Guard against empty ID
-    final bool isSuccess =
-        await bookmarkArticleDetailsController.getBookmarkArticleDetails(id);
+    if (id.isEmpty) return;
+    final bool isSuccess = await bookmarkArticleDetailsController.getBookmarkArticleDetails(id);
 
     if (isSuccess && mounted) {
-      print('my data ..............................');
-      print(
-          '${bookmarkArticleDetailsController.bookmarkArticleModel?.reference?.title}');
-      print(
-          '${bookmarkArticleDetailsController.bookmarkArticleModel?.reference?.description}');
-
+      print('Bookmark article details: ${bookmarkArticleDetailsController.bookmarkArticleModel?.reference?.title}');
       Navigator.pushNamed(context, BookmarkArticleDetailsScreen.routeName,
           arguments: bookmarkArticleDetailsController.bookmarkArticleModel);
     } else if (mounted) {
       showSnackBarMessage(
           context, bookmarkArticleDetailsController.errorMessage ?? 'Error occurred', true);
+    }
+  }
+
+  Future<void> _removeBookmark(String bookmarkId) async {
+    if (bookmarkId.isEmpty) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid bookmark ID', true);
+      }
+      return;
+    }
+    try {
+      final bool isSuccess = await deleteBookmarkController.deleteBookmark(bookmarkId);
+      if (isSuccess && mounted) {
+        showSnackBarMessage(context, 'Bookmark removed');
+        await bookmarkArticlesController.refreshBookmarkList();
+      } else if (mounted) {
+        if (deleteBookmarkController.errorMessage?.contains('Content bookmark not found') == true) {
+          showSnackBarMessage(context, 'Bookmark not found, refreshing list', true);
+          await bookmarkArticlesController.refreshBookmarkList();
+        } else {
+          showSnackBarMessage(context, deleteBookmarkController.errorMessage ?? 'Failed to remove bookmark', true);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Error removing bookmark: $e', true);
+      }
+      await bookmarkArticlesController.refreshBookmarkList();
     }
   }
 

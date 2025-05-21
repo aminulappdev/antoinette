@@ -43,7 +43,7 @@ class _BookmarkArticleDetailsScreenState
                   onTap: () {
                     Navigator.pushNamed(
                         context, BookmarkArticleDetailsScreen.routeName);
-                  },
+                  }, 
                   child: Container(
                     height: 200.h,
                     width: MediaQuery.of(context).size.width,

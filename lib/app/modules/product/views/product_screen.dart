@@ -17,26 +17,26 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  AllProcuctController allProcuctController = Get.find<AllProcuctController>();
+  final AllProcuctController allProductController = Get.find<AllProcuctController>();
   final TextEditingController searchController = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    // scrollController.addListener(_loadMoreData);
+    scrollController.addListener(_loadMoreData);
+    // Initial fetch
+    allProductController.fetchAllProducts(null);
   }
 
-  // void _loadMoreData() {
-  //   if (scrollController.position.extentAfter < 500 &&
-  //       !allProcuctController.inProgress) {
-  //     allProcuctController.fetchAllProducts(null); // Trigger fetch more data
-  //   }
-  // }
+  void _loadMoreData() {
+    if (scrollController.position.extentAfter < 500 && !allProductController.inProgress) {
+      allProductController.fetchAllProducts(null); // Trigger fetch more data
+    }
+  }
 
-  void _onSearch() {
-    String query = searchController.text;
-    allProcuctController.onSearchQueryChangedProducts(query); // Trigger search
+  void _onSearch(String query) {
+    allProductController.onSearchQueryChangedProducts(query); // Trigger search
   }
 
   @override
@@ -50,56 +50,47 @@ class _ProductScreenState extends State<ProductScreen> {
             heightBox20,
             Row(
               children: [
-                widget.shouldBackButton == false
-                    ? Container() 
-                    : GestureDetector(
-                        onTap: () {
-                          widget.shouldBackButton == false
-                              ? null
-                              : Navigator.pop(context);
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          radius: 24.r,
-                          child: Icon(
-                            Icons.arrow_back,
-                          ),
-                        ),
+                if (widget.shouldBackButton)
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      radius: 24.r,
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
                       ),
-                widthBox4,
+                    ),
+                  ),
+                if (widget.shouldBackButton) widthBox4,
                 Expanded(
                   child: Container(
                     height: 48.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: Colors.grey[300]!,
-                      ),
+                      border: Border.all(color: Colors.grey[300]!),
                     ),
                     child: Row(
                       children: [
-                        GestureDetector(
-                          onTap: _onSearch,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Icon(
-                              Icons.search_rounded,
-                              size: 30.h,
-                              color: AppColors.iconButtonThemeColor,
-                            ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          child: Icon(
+                            Icons.search_rounded,
+                            size: 30.h,
+                            color: AppColors.iconButtonThemeColor,
                           ),
                         ),
                         Expanded(
                           child: TextFormField(
                             controller: searchController,
-                            onChanged: (_) {
-                              _onSearch(); // Trigger search on text change
-                            },
+                            onChanged: _onSearch,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               contentPadding: EdgeInsets.zero,
+                              hintText: 'Search products...',
+                              hintStyle: GoogleFonts.poppins(fontSize: 14.sp),
                             ),
                           ),
                         ),
@@ -114,36 +105,49 @@ class _ProductScreenState extends State<ProductScreen> {
               width: 200.w,
               child: Text(
                 'Shop Your Health Must-Haves',
-                style: GoogleFonts.poppins(fontSize: 20),
+                style: GoogleFonts.poppins(fontSize: 20.sp),
               ),
             ),
             heightBox12,
             Expanded(
-              child: SizedBox(child: GetBuilder<AllProcuctController>(
-                builder: (controller) {
-                  if (controller.inProgress) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  return GridView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: controller.allProductsList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 1.35,
-                        crossAxisCount: 2),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w),
-                        child: ProductCard(
-                          productsModel: controller.allProductsList[index],
-                        ),
-                      );
-                    },
+              child: Obx(() {
+                if (allProductController.inProgress && allProductController.allProductsList.isEmpty) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                final filteredList = searchController.text.isEmpty
+                    ? allProductController.allProductsList
+                    : allProductController.allProductsList
+                        .where((product) =>
+                            product.name!.toLowerCase().contains(searchController.text.toLowerCase()))
+                        .toList();
+                if (filteredList.isEmpty && !allProductController.inProgress) {
+                  return Center(
+                    child: Text(
+                      'No products found',
+                      style: GoogleFonts.poppins(fontSize: 16.sp),
+                    ),
                   );
-                },
-              )),
+                }
+                return GridView.builder(
+                  controller: scrollController,
+                  padding: EdgeInsets.zero,
+                  itemCount: filteredList.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.35,
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child: ProductCard(
+                        productsModel: filteredList[index],
+                      ),
+                    );
+                  },
+                );
+              }),
             ),
           ],
         ),
@@ -154,7 +158,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void dispose() {
     scrollController.dispose();
-    allProcuctController.fetchAllProducts(null);
+    searchController.dispose();
     super.dispose();
   }
 }

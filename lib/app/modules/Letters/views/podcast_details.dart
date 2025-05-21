@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_controller.dart';
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
@@ -7,7 +6,6 @@ import 'package:antoinette/app/modules/letters/model/podcast_details_model.dart'
 import 'package:antoinette/app/modules/letters/views/player_widget.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
-import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -28,73 +26,109 @@ class PodcastDetailsScreen extends StatefulWidget {
 }
 
 class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
-  final BookMarkController bookMarkController = BookMarkController();
-  final DeleteBookmarkController deleteBookmarkController = DeleteBookmarkController();
-  BookmarkPodcastController bookmarkPodcastController =
-      Get.find<BookmarkPodcastController>();
+  final BookMarkController bookMarkController = Get.find<BookMarkController>();
+  final DeleteBookmarkController deleteBookmarkController = Get.find<DeleteBookmarkController>();
+  final BookmarkPodcastController bookmarkPodcastController = Get.find<BookmarkPodcastController>();
+  final ProfileController profileController = Get.find<ProfileController>();
   late String userId;
-  ProfileController profileController = Get.find<ProfileController>();
   late AudioPlayer player;
-  bool isBookmarked = false; // Track whether the podcast is bookmarked or not
-  String? bookmarkId; // Store the bookmark ID for deletion
-  bool _isLoading = false; // Track loading state for bookmark action
+  bool isBookmarked = false;
+  String? bookmarkId;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    userId = profileController.profileData!.sId!;
+    // Ensure profile data is loaded
+    if (profileController.profileData != null) {
+      userId = profileController.profileData!.sId!;
+      _loadBookmarkStatus();
+    } else {
+      profileController.getProfileData().then((_) {
+        if (mounted) {
+          setState(() {
+            userId = profileController.profileData?.sId ?? '';
+          });
+          _loadBookmarkStatus();
+        }
+      });
+    }
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
     initializeAudio();
-    // Fetch bookmark list and check if current podcast is bookmarked
-    bookmarkPodcastController.getbookmarkArticleList().then((_) {
-      checkIfBookmarked();
-    });
   }
 
-  // Check if the current podcast is in the bookmark list
-  void checkIfBookmarked() {
+  // Load bookmark status
+  Future<void> _loadBookmarkStatus() async {
+    if (userId.isEmpty || widget.podcastModel.sId == null) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid user or podcast ID', true);
+      }
+      return;
+    }
+    try {
+      await bookmarkPodcastController.refreshBookmarkList();
+      _checkIfBookmarked();
+    } catch (e) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Failed to load bookmark list: $e', true);
+      }
+    }
+  }
+
+  // Check if the podcast is bookmarked
+  void _checkIfBookmarked() {
     final podcastId = widget.podcastModel.sId;
+    if (podcastId == null) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid podcast ID', true);
+      }
+      return;
+    }
     final bookmarkItem = bookmarkPodcastController.bookmarkPodcastList
         .firstWhereOrNull((item) => item.reference?.sId == podcastId);
-    setState(() {
-      isBookmarked = bookmarkItem != null;
-      bookmarkId = bookmarkItem?.sId;
-    });
+    if (mounted) {
+      setState(() {
+        isBookmarked = bookmarkItem != null;
+        bookmarkId = bookmarkItem?.sId;
+      });
+    }
   }
 
   Future<void> initializeAudio() async {
     final String url = widget.podcastModel.fileLink ?? '';
-    print(url);
+    print('Audio URL: $url');
 
     if (url.isEmpty) {
-      showSnackBarMessage(context, 'Invalid audio URL', true);
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid audio URL', true);
+      }
       return;
     }
 
     try {
-      // Try to play directly from URL
       await player.setSource(UrlSource(url));
       print('✅ Playing from URL directly: $url');
     } catch (e) {
       print('❌ Failed to play from URL. Trying to download. Error: $e');
-
       try {
         final response = await http.get(Uri.parse(url));
-
         if (response.statusCode == 200) {
           final dir = await getTemporaryDirectory();
           final file = File('${dir.path}/temp_audio.mp3');
           await file.writeAsBytes(response.bodyBytes);
           print('✅ File downloaded at ${file.path}');
-
           await player.setSource(DeviceFileSource(file.path));
         } else {
-          showSnackBarMessage(context, 'Server error (${response.statusCode})', true);
+          if (mounted) {
+            showSnackBarMessage(context, 'Server error (${response.statusCode})', true);
+          }
           print('❌ Server responded with ${response.statusCode}');
         }
       } catch (e) {
-        showSnackBarMessage(context, 'Could not download or play audio.', true);
+        if (mounted) {
+          showSnackBarMessage(context, 'Could not download or play audio.', true);
+        }
         print('❌ Exception while downloading: $e');
       }
     }
@@ -103,8 +137,15 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     String? isoDate = widget.podcastModel.publishedAt;
-    DateTime parsedDate = DateTime.parse(isoDate!);
-    String readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
+    String readableDate = '';
+    if (isoDate != null) {
+      try {
+        DateTime parsedDate = DateTime.parse(isoDate);
+        readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
+      } catch (e) {
+        readableDate = 'Unknown Date';
+      }
+    }
 
     return Scaffold(
       body: Padding(
@@ -127,25 +168,32 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: _isLoading
-                      ? null // Disable tap during loading
+                  onTap: _isLoading || userId.isEmpty || widget.podcastModel.sId == null
+                      ? null
                       : () async {
                           setState(() {
-                            _isLoading = true; // Start loading
+                            _isLoading = true;
                           });
-                          if (!isBookmarked) {
-                            // Add bookmark
-                            await bookmark(userId, widget.podcastModel.sId ?? '');
-                          } else {
-                            // Remove bookmark
-                            await removeBookmark(bookmarkId);
+                          try {
+                            if (!isBookmarked) {
+                              await _bookmarkPodcast();
+                            } else {
+                              await _removeBookmark();
+                            }
+                            // Refresh bookmark list after action
+                            await bookmarkPodcastController.refreshBookmarkList();
+                            _checkIfBookmarked();
+                          } catch (e) {
+                            if (mounted) {
+                              showSnackBarMessage(context, 'Error: $e', true);
+                            }
+                          } finally {
+                            if (mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
                           }
-                          // Refresh bookmark list after adding/removing
-                          await bookmarkPodcastController.getbookmarkArticleList();
-                          checkIfBookmarked(); // Update bookmark status
-                          setState(() {
-                            _isLoading = false; // Stop loading
-                          });
                         },
                   child: CircleAvatar(
                     radius: 21.r,
@@ -160,9 +208,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                             ),
                           )
                         : Icon(
-                            isBookmarked
-                                ? Icons.favorite
-                                : Icons.favorite_border_sharp,
+                            isBookmarked ? Icons.favorite : Icons.favorite_border_sharp,
                             color: isBookmarked ? Colors.red : Colors.white,
                           ),
                   ),
@@ -178,7 +224,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
                   image: widget.podcastModel.thumbnail != null
-                      ? NetworkImage('${widget.podcastModel.thumbnail}')
+                      ? NetworkImage(widget.podcastModel.thumbnail!)
                       : const AssetImage(AssetsPath.demo) as ImageProvider,
                   fit: BoxFit.fill,
                 ),
@@ -186,7 +232,7 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
             ),
             SizedBox(height: 8.h),
             Text(
-              widget.podcastModel.title ?? '',
+              widget.podcastModel.title ?? 'No Title',
               style: GoogleFonts.poppins(fontSize: 15.sp),
             ),
             SizedBox(height: 12.h),
@@ -211,51 +257,64 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
     );
   }
 
-  Future<void> bookmark(String user, String reference) async {
-    if (reference.isEmpty) {
-      setState(() {
-        _isLoading = false;
-      });
-      showSnackBarMessage(context, 'Invalid podcast ID', true);
+  Future<void> _bookmarkPodcast() async {
+    if (userId.isEmpty || widget.podcastModel.sId == null) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid user or podcast ID', true);
+      }
       return;
     }
-    final bool isSuccess =
-        await bookMarkController.addBookmark(user, reference, 'Podcast');
-
-    if (isSuccess && mounted) {
-      showSnackBarMessage(context, 'Bookmark added');
-      setState(() {
-        isBookmarked = true; // Update status only on success
-      });
-    } else if (mounted) {
-      showSnackBarMessage(context, bookMarkController.errorMessage ?? 'Error occurred', true);
-      setState(() {
-        _isLoading = false; // Ensure loading stops on error
-      });
+    try {
+      final bool isSuccess = await bookMarkController.addBookmark(userId, widget.podcastModel.sId!, 'Podcast');
+      if (isSuccess && mounted) {
+        showSnackBarMessage(context, 'Bookmark added');
+        setState(() {
+          isBookmarked = true;
+        });
+      } else if (mounted) {
+        showSnackBarMessage(context, bookMarkController.errorMessage ?? 'Failed to add bookmark', true);
+      }
+    } catch (e) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Error adding bookmark: $e', true);
+      }
     }
   }
 
-  Future<void> removeBookmark(String? bookmarkId) async {
-    if (bookmarkId == null || bookmarkId.isEmpty) {
-      setState(() {
-        _isLoading = false;
-      });
-      showSnackBarMessage(context, 'Invalid bookmark ID', true);
+  Future<void> _removeBookmark() async {
+    if (bookmarkId == null) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Invalid bookmark ID', true);
+      }
+      // Refresh list to ensure UI consistency
+      await bookmarkPodcastController.refreshBookmarkList();
+      _checkIfBookmarked();
       return;
     }
-    final bool isSuccess = await deleteBookmarkController.deleteBookmark(bookmarkId);
-
-    if (isSuccess && mounted) {
-      showSnackBarMessage(context, 'Bookmark removed');
-      setState(() {
-        isBookmarked = false; // Update status only on success
-        this.bookmarkId = null; // Clear bookmark ID
-      });
-    } else if (mounted) {
-      showSnackBarMessage(context, deleteBookmarkController.errorMessage ?? 'Error occurred', true);
-      setState(() {
-        _isLoading = false; // Ensure loading stops on error
-      });
+    try {
+      final bool isSuccess = await deleteBookmarkController.deleteBookmark(bookmarkId!);
+      if (isSuccess && mounted) {
+        showSnackBarMessage(context, 'Bookmark removed');
+        setState(() {
+          isBookmarked = false;
+          bookmarkId = null;
+        });
+      } else if (mounted) {
+        if (deleteBookmarkController.errorMessage?.contains('Content bookmark not found') == true) {
+          showSnackBarMessage(context, 'Bookmark not found, refreshing list', true);
+          await bookmarkPodcastController.refreshBookmarkList();
+          _checkIfBookmarked();
+        } else {
+          showSnackBarMessage(context, deleteBookmarkController.errorMessage ?? 'Failed to remove bookmark', true);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Error removing bookmark: $e', true);
+      }
+      // Refresh list in case of error to ensure UI consistency
+      await bookmarkPodcastController.refreshBookmarkList();
+      _checkIfBookmarked();
     }
   }
 

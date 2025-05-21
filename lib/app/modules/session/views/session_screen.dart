@@ -2,7 +2,6 @@ import 'package:antoinette/app/modules/session/controllers/all_session_controlle
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
-import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';

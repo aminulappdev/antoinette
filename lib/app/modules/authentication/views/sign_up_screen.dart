@@ -103,6 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: Color(0xff626262))),
                     heightBox8,
                     TextFormField(
+                      maxLength: 15,
                       controller: numberCtrl,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.number,
@@ -155,7 +156,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return 'Enter password';
                         }
                         // ignore: curly_braces_in_flow_control_structures
-                        else if(value.length < 6) return 'Password must be at least 6 characters';
+                        else if (value.length < 6)
+                          return 'Password must be at least 6 characters';
                         return null;
                       },
                       obscureText: _obscureText,
@@ -328,6 +330,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           }
         }
       }
+      else {
+          if (mounted) {
+            showSnackBarMessage(context, signUpController.errorMessage!, true);
+          }
+        }
     }
   }
 
@@ -342,7 +349,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          
           showSnackBarMessage(context, 'New student user created');
           Navigator.pushNamed(context, VerifyEmailScreen.routeName,
               arguments: studentSignUpController.token);
@@ -351,6 +357,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             showSnackBarMessage(
                 context, studentSignUpController.errorMessage!, true);
           }
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, studentSignUpController.errorMessage ?? 'Failed', true);
         }
       }
     }
