@@ -16,7 +16,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CheckOutScreen extends StatefulWidget {
-  final ProductModel productModel;
+  final ProductModel productModel; 
   static const String routeName = '/checkout-screen';
   const CheckOutScreen({super.key, required this.productModel});
 
