@@ -60,9 +60,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox20,
-              CustomAppBar(
-                offPopBack: true,
-                name: 'Sign Up',
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, SignInScreen.routeName);
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      radius: 24.r,
+                      child: Icon(
+                        Icons.arrow_back,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    'Sign up',
+                    style: GoogleFonts.poppins(
+                      fontSize: 18.sp,
+                      color: Color(0xff626262),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    width: 36.w,
+                  )
+                ],
               ),
               heightBox16,
               WelcomeText(
@@ -329,12 +353,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             showSnackBarMessage(context, signUpController.errorMessage!, true);
           }
         }
-      }
-      else {
-          if (mounted) {
-            showSnackBarMessage(context, signUpController.errorMessage!, true);
-          }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(context, signUpController.errorMessage!, true);
         }
+      }
     }
   }
 

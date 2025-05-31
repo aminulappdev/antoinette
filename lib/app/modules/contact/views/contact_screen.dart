@@ -167,7 +167,7 @@ class _ContactScreenState extends State<ContactScreen> {
                     text: '+ Add Contact')
               ],
             ),
-          )),
+          )), 
     );
   }
 

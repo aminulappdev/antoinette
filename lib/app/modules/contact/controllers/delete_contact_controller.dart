@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 class DeleteContactController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
-
+ 
  
 
   String? _errorMessage; 

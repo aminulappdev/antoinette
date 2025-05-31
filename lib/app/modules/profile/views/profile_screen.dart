@@ -201,14 +201,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 heightBox30,
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Seal your letter and sign off',
-                    style: GoogleFonts.poppins(
-                        fontSize: 14.sp, color: Color(0xffA01D21)),
-                  ),
-                )
+                // Align(
+                //   alignment: Alignment.center,
+                //   child: Text(
+                //     'Seal your letter and sign off',
+                //     style: GoogleFonts.poppins(
+                //         fontSize: 14.sp, color: Color(0xffA01D21)),
+                //   ),
+                // )
               ],
             ),
           ),

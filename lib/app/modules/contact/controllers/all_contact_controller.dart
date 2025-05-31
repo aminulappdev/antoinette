@@ -21,7 +21,7 @@ class AllContactController extends GetxController {
 
   AllContactModel? _allContactModel;
   List<AllContactItemModel>? get contactList => _allContactModel?.data;
-
+ 
   Future<bool> getContactList() async {
   
     bool isSuccess = false;

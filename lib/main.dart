@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:antoinette/app/app_binding.dart';
 import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
 import 'package:antoinette/app/routes/app_routes.dart';

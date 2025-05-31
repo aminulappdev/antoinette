@@ -17,26 +17,25 @@ class BookmarkPodcastController extends GetxController {
   final RxString _accessToken = RxString('');
   String? get accessToken => _accessToken.value;
 
-  final RxList<AllBookmarkPodcastItemModel> _bookmarkPodcastsList = <AllBookmarkPodcastItemModel>[].obs;
-  List<AllBookmarkPodcastItemModel> get bookmarkPodcastList => _bookmarkPodcastsList;
+  final RxList<AllBookmarkPodcastItemModel> _bookmarkPodcastsList =
+      <AllBookmarkPodcastItemModel>[].obs;
+  List<AllBookmarkPodcastItemModel> get bookmarkPodcastList =>
+      _bookmarkPodcastsList;
 
   final int _limit = 9999;
   int page = 0;
   String modeType = 'Podcast';
   int? lastPage;
 
-
   @override
   void onInit() {
     super.onInit();
-      
-       if (box.read('user-login-access-token') == null) {
-      print(
-          "///////////////////////////////////////////////////////////////////");
+
+    if (box.read('user-login-access-token') == null) {
+      print("User login access null");
     } else {
       _accessToken.value = box.read('user-login-access-token');
     }
-     
   }
 
   Future<bool> getbookmarkPodcastList() async {
@@ -50,7 +49,11 @@ class BookmarkPodcastController extends GetxController {
     bool isSuccess = false;
     _inProgress.value = true;
 
-    Map<String, dynamic> queryparam = {'limit': _limit, 'page': page, 'modeType': modeType};
+    Map<String, dynamic> queryparam = {
+      'limit': _limit,
+      'page': page,
+      'modeType': modeType
+    };
 
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
       Urls.bookmarkArticleUrl, // Assuming this URL also serves podcast bookmarks
@@ -62,7 +65,8 @@ class BookmarkPodcastController extends GetxController {
       _errorMessage.value = '';
       isSuccess = true;
 
-      AllBookmarkPodcastModel allPodcastModel = AllBookmarkPodcastModel.fromJson(response.responseData);
+      AllBookmarkPodcastModel allPodcastModel =
+          AllBookmarkPodcastModel.fromJson(response.responseData);
       _bookmarkPodcastsList.addAll(allPodcastModel.data ?? []); // Update RxList
 
       if (allPodcastModel.meta?.totalPage != null) {

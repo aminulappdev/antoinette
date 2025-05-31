@@ -46,90 +46,88 @@ class _SetJournalPasswordScreenState extends State<SetJournalPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(12.0.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                heightBox4,
-                CustomAppBar(
-                  name: 'Set Password',
-                ),
-                heightBox16,
-                if (!_isPasswordSet) // Show form only if password is not set
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Enter New Password',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
-                        heightBox8,
-                        TextFormField(
-                          controller: passwordCtrl,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'Enter password';
-                            }
-                            return null;
-                          },
-                          obscureText: _obscureText,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscureText
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscureText = !_obscureText;
-                                });
-                              },
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(12.0.h),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              heightBox24,
+              CustomAppBar(
+                name: 'Set Password',
+              ),
+              heightBox16,
+              if (!_isPasswordSet) // Show form only if password is not set
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Enter New Password',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff626262))),
+                      heightBox8,
+                      TextFormField(
+                        controller: passwordCtrl,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'Enter password';
+                          }
+                          return null;
+                        },
+                        obscureText: _obscureText,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.grey,
                             ),
-                            hintText: '***********',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                        heightBox24,
-                        GradientElevatedButton(
-                          onPressed: () {
-                            onTapToNextButton(passwordCtrl.text);
-                          },
-                          text: 'Set Password',
-                        ),
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, ChangeJournalPasswordScreen.routeName);
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
                             },
-                            child: Text('Change password'),
                           ),
+                          hintText: '***********',
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
-                      ],
-                    ),
+                      ),
+                      heightBox24,
+                      GradientElevatedButton(
+                        onPressed: () {
+                          onTapToNextButton(passwordCtrl.text);
+                        },
+                        text: 'Set Password',
+                      ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, ChangeJournalPasswordScreen.routeName);
+                          },
+                          child: Text('Change password'),
+                        ),
+                      ),
+                    ],
                   ),
-                if (_isPasswordSet)
-                  Center(
-                    child: Text(
-                      'Password is already set. Please use "Change password" to update.',
-                      style: GoogleFonts.poppins(
-                          fontSize: 16.sp, color: Colors.grey[600]),
-                      textAlign: TextAlign.center,
-                    ),
+                ),
+              if (_isPasswordSet)
+                Center(
+                  child: Text(
+                    'Password is already set. Please use "Change password" to update.',
+                    style: GoogleFonts.poppins(
+                        fontSize: 16.sp, color: Colors.grey[600]),
+                    textAlign: TextAlign.center,
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),
