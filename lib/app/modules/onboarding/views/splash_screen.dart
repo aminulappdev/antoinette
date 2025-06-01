@@ -3,6 +3,7 @@ import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = '/';
@@ -25,16 +26,18 @@ class _SplashScreenState extends State<SplashScreen> {
     final isLoggedIn = box.read('user-login-access-token') != null;
     Navigator.pushReplacementNamed(
       context,
-      isLoggedIn ? MainButtonNavbarScreen.routeName : OnboardingScreen.routeName,
+      isLoggedIn
+          ? MainButtonNavbarScreen.routeName
+          : OnboardingScreen.routeName,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xffD9A48E),
-      body: Center(
-        child: Image(image: AssetImage(AssetsPath.spLogo)),
+    return Scaffold(
+      body: SvgPicture.asset(
+        AssetsPath.spBackground,
+        fit: BoxFit.fill,
       ),
     );
   }

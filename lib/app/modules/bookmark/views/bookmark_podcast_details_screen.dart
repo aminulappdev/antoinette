@@ -32,7 +32,7 @@ class _BookMarkPodcastDetailsScreenState
   @override
   void initState() {
     super.initState();
-    userId = profileController.profileData!.sId!;
+    userId = profileController.profileData!.id!;
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
     player.setSource(UrlSource(

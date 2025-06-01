@@ -1,96 +1,116 @@
 class ProfileModel {
-  bool? success;
-  int? statusCode;
-  String? message;
-  ProfileData? data;
+    ProfileModel({
+        required this.success,
+        required this.statusCode,
+        required this.message,
+        required this.data,
+    });
 
-  ProfileModel({this.success, this.statusCode, this.message, this.data});
+    final bool? success;
+    final int? statusCode;
+    final String? message;
+    final ProfileData? data;
 
-  ProfileModel.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    statusCode = json['statusCode'];
-    message = json['message'];
-    data = json['data'] != null ? ProfileData.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['success'] = success;
-    data['statusCode'] = statusCode;
-    data['message'] = message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
+    factory ProfileModel.fromJson(Map<String, dynamic> json){ 
+        return ProfileModel(
+            success: json["success"],
+            statusCode: json["statusCode"],
+            message: json["message"],
+            data: json["data"] == null ? null : ProfileData.fromJson(json["data"]),
+        );
     }
-    return data;
-  }
+
 }
 
 class ProfileData {
-  String? sId;
-  String? name;
-  String? email;
-  String? contactNumber;
-  String? homeAddress;
-  String? officeAddress;
-  String? deliveryAddress;
-  String? photoUrl;
-  String? age;
-  String? status;
-  String? id;
-  String? createdAt;
-  String? updatedAt;
-  bool? isStudent; // ✅ New field added
+    ProfileData({
+        required this.journalVerification,
+        required this.id,
+        required this.name,
+        required this.email,
+        required this.contactNumber,
+        required this.homeAddress,
+        required this.officeAddress,
+        required this.deliveryAddress,
+        required this.photoUrl,
+        required this.age,
+        required this.status,
+        required this.documents,
+        required this.isStudent,
+        required this.dataId,
+        required this.createdAt,
+        required this.updatedAt,
+    });
 
-  ProfileData({
-    this.sId,
-    this.name,
-    this.email,
-    this.contactNumber,
-    this.homeAddress,
-    this.officeAddress,
-    this.deliveryAddress,
-    this.photoUrl,
-    this.age,
-    this.status,
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.isStudent, // ✅ Include in constructor
-  });
+    final JournalVerification? journalVerification;
+    final String? id;
+    final String? name;
+    final String? email;
+    final String? contactNumber;
+    final dynamic homeAddress;
+    final dynamic officeAddress;
+    final dynamic deliveryAddress;
+    final dynamic photoUrl;
+    final dynamic age;
+    final String? status;
+    final dynamic documents;
+    final bool? isStudent;
+    final String? dataId;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
 
-  ProfileData.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    email = json['email'];
-    contactNumber = json['contactNumber'];
-    homeAddress = json['homeAddress'];
-    officeAddress = json['officeAddress'];
-    deliveryAddress = json['deliveryAddress'];
-    photoUrl = json['photoUrl'];
-    age = json['age'];
-    status = json['status'];
-    id = json['id'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    isStudent = json['isStudent']; // ✅ Parse from JSON
-  }
+    factory ProfileData.fromJson(Map<String, dynamic> json){ 
+        return ProfileData(
+            journalVerification: json["journalVerification"] == null ? null : JournalVerification.fromJson(json["journalVerification"]),
+            id: json["_id"],
+            name: json["name"],
+            email: json["email"],
+            contactNumber: json["contactNumber"],
+            homeAddress: json["homeAddress"],
+            officeAddress: json["officeAddress"],
+            deliveryAddress: json["deliveryAddress"],
+            photoUrl: json["photoUrl"],
+            age: json["age"],
+            status: json["status"],
+            documents: json["documents"],
+            isStudent: json["isStudent"],
+            dataId: json["id"],
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+        );
+    }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['name'] = name;
-    data['email'] = email;
-    data['contactNumber'] = contactNumber;
-    data['homeAddress'] = homeAddress;
-    data['officeAddress'] = officeAddress;
-    data['deliveryAddress'] = deliveryAddress;
-    data['photoUrl'] = photoUrl;
-    data['age'] = age;
-    data['status'] = status;
-    data['id'] = id;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['isStudent'] = isStudent; // ✅ Include in toJson
-    return data;
-  }
+}
+
+class JournalVerification {
+    JournalVerification({
+        required this.password,
+        required this.faceLock,
+    });
+
+    final FaceLock? password;
+    final FaceLock? faceLock;
+
+    factory JournalVerification.fromJson(Map<String, dynamic> json){ 
+        return JournalVerification(
+            password: json["password"] == null ? null : FaceLock.fromJson(json["password"]),
+            faceLock: json["faceLock"] == null ? null : FaceLock.fromJson(json["faceLock"]),
+        );
+    }
+
+}
+
+class FaceLock {
+    FaceLock({
+        required this.key,
+    });
+
+    final dynamic key;
+
+    factory FaceLock.fromJson(Map<String, dynamic> json){ 
+        return FaceLock(
+            key: json["key"],
+        );
+    }
+
 }

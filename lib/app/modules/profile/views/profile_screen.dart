@@ -191,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               feature: 'Delete account',
                               icon: Icons.delete,
                               ontap: () {
-                                onTapDeleteBTN('${controller.profileData?.sId}');                             
+                                onTapDeleteBTN('${controller.profileData?.id}');                             
                               },
                             );
                           }

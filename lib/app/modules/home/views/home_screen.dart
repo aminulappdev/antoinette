@@ -1,6 +1,5 @@
 import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/notification_screen.dart';
-import 'package:antoinette/app/modules/history/views/history_screen.dart';
 import 'package:antoinette/app/modules/home/widgets/product_item_shimmer.dart';
 import 'package:antoinette/app/modules/home/widgets/session_item_shimmer.dart';
 import 'package:antoinette/app/modules/letters/views/letter_screen.dart';
@@ -161,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 5,
+                        itemCount: controller.sessionsList.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -196,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 4,
+                        itemCount: controller.productsList.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 4.w),

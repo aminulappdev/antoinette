@@ -34,7 +34,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
 
   @override
   void initState() {
-    userId = profileController.profileData!.sId!;
+    userId = profileController.profileData!.id!;
     super.initState();
   }
 

@@ -1,8 +1,12 @@
 class Urls {
- static const String _baseUrl = 'http://172.252.13.74:5001/api/v1';
+ //static const String _baseUrl = 'http://172.252.13.74:5001/api/v1';
   //  static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
- static const String socketUrl = 'http://172.252.13.74:4001/';
+ //static const String socketUrl = 'http://172.252.13.74:4001/';
   //  static const String socketUrl = 'http://192.168.10.144:4001/';
+
+  static const String _baseUrl = 'https://www.api.dearhenrietta.com/api/v1';
+ static const String socketUrl = 'https://www.socket.dearhenrietta.com/';
+
 
   static const String signUp = '$_baseUrl/users/register';
   static const String verifOtp = '$_baseUrl/otp/verify-otp';
@@ -35,7 +39,7 @@ class Urls {
   static const String allPackageUrl = '$_baseUrl/packages';
   static const String subscriptionUrl = '$_baseUrl/subscriptions';
   static const String dashboardUrl = '$_baseUrl/dear-dairies/dashboard-data';
-  static const String allDiarydUrl = '$_baseUrl/dear-dairies';
+  static const String allDiarydUrl = '$_baseUrl/dear-dairies/my-dairies';
   static const String orderProductUrl = '$_baseUrl/orders';
   static const String paymentCheckoutUrl = '$_baseUrl/payments/checkout';
   static const String allBookingUrl = '$_baseUrl/bookings/my-bookings';

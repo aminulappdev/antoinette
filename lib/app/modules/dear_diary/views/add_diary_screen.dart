@@ -52,11 +52,11 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
         'motivated', Color(0xffFF9318).withAlpha(10), Color(0xffFF9318), () {},
         fontColor: Color(0xffFF9318), emojiPath: AssetsPath.muscle),
   ];
-
+ 
   @override
   void initState() {
     super.initState();
-    userAccessId = profileController.profileData!.sId!;
+    userAccessId = profileController.profileData!.id!;
     useName = profileController.profileData!.name!;
   }
 

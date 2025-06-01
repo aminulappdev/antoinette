@@ -7,6 +7,7 @@ import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart
 import 'package:antoinette/app/modules/dear_diary/widgets/custom_pichart.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/health_condition_card.dart';
 import 'package:antoinette/app/modules/dear_diary/widgets/mental_status.dart';
+import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
@@ -29,8 +30,11 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
       AccessJournalPasswordController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
-  final AllDiariesController allDiariesController = Get.find<AllDiariesController>();
-  final DeleteDiariesController deleteDiariesController = DeleteDiariesController();
+  final AllDiariesController allDiariesController =
+      Get.find<AllDiariesController>();
+  final DeleteDiariesController deleteDiariesController =
+      DeleteDiariesController();
+  final ProfileController profileController = Get.find<ProfileController>();
 
   List<bool> isBlurList = [];
 
@@ -38,12 +42,14 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
   void initState() {
     super.initState();
     _loadDiaries();
+    profileController.getProfileData();
   }
 
   Future<void> _loadDiaries() async {
     await allDiariesController.getDiaryList(refresh: true);
     setState(() {
-      isBlurList = List.generate(allDiariesController.allDiaryList.length, (_) => true);
+      isBlurList =
+          List.generate(allDiariesController.allDiaryList.length, (_) => true);
     });
   }
 
@@ -61,7 +67,19 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
               children: [
                 InkWell(
                   onTap: () async {
-                    await Navigator.pushNamed(context, AddDiaryScreen.routeName);
+                    if (profileController
+                            .profileData!.journalVerification!.password?.key ==
+                        null) {
+                      print('Password is null');
+                      showSnackBarMessage(
+                          context,
+                          'Please set a password for your journal first.',
+                          true);
+                      return;
+                    } else {
+                      await Navigator.pushNamed(
+                          context, AddDiaryScreen.routeName);
+                    }
                     // Refresh list after returning from Add screen
                     await _loadDiaries();
                   },
@@ -69,18 +87,21 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                     height: 42.h,
                     width: 310.w,
                     decoration: BoxDecoration(
-                      border: Border.all(color: const Color.fromARGB(255, 202, 200, 200)),
+                      border: Border.all(
+                          color: const Color.fromARGB(255, 202, 200, 200)),
                       color: const Color(0xffEDE6E4),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Center(
-                      child: Icon(Icons.add, color: AppColors.iconButtonThemeColor),
+                      child: Icon(Icons.add,
+                          color: AppColors.iconButtonThemeColor),
                     ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, SetJournalPasswordScreen.routeName);
+                    Navigator.pushNamed(
+                        context, SetJournalPasswordScreen.routeName);
                   },
                   child: CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
@@ -123,37 +144,77 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                       padding: const EdgeInsets.only(bottom: 8),
                       child: HealthConditionCard(
                         titleColor: Colors.black,
-                        isBlur: isBlurList.length > index ? isBlurList[index] : true,
-                        iconPath: controller.allDiaryList[index].feelings == 'happy'
+                        isBlur: isBlurList.length > index
+                            ? isBlurList[index]
+                            : true,
+                        iconPath: controller.allDiaryList[index].feelings ==
+                                'happy'
                             ? AssetsPath.angle
                             : controller.allDiaryList[index].feelings == 'calm'
                                 ? AssetsPath.happy
-                                : controller.allDiaryList[index].feelings == 'sad'
+                                : controller.allDiaryList[index].feelings ==
+                                        'sad'
                                     ? AssetsPath.sad
-                                    : controller.allDiaryList[index].feelings == 'anxious'
+                                    : controller.allDiaryList[index].feelings ==
+                                            'anxious'
                                         ? AssetsPath.tired
-                                        : controller.allDiaryList[index].feelings == 'motivated'
+                                        : controller.allDiaryList[index]
+                                                    .feelings ==
+                                                'motivated'
                                             ? AssetsPath.muscle
                                             : AssetsPath.angry,
                         status: '${controller.allDiaryList[index].feelings}',
                         day: '${controller.allDiaryList[index].date}',
                         time: '${controller.allDiaryList[index].time}',
-                        description: '${controller.allDiaryList[index].description}',
+                        description:
+                            '${controller.allDiaryList[index].description}',
                         lockOntap: () {
-                          if (!isBlurList[index]) {
-                            setState(() {
-                              isBlurList[index] = true;
-                            });
+                          if (profileController.profileData!
+                                  .journalVerification!.password?.key ==
+                              null) {
+                            showSnackBarMessage(
+                                context,
+                                'Please set a password for your journal first.',
+                                true);
+                            return;
                           } else {
-                            lockButton(index, 'view');
+                            if (!isBlurList[index]) {
+                              setState(() {
+                                isBlurList[index] = true;
+                              });
+                            } else {
+                              lockButton(index, 'view');
+                            }
                           }
                         },
                         themeColor: const Color(0xffD9A48E).withAlpha(20),
                         onDeleteTap: () {
-                          lockButton(index, 'delete', diaryId: controller.allDiaryList[index].sId);
+                          if (profileController.profileData!
+                                  .journalVerification!.password?.key ==
+                              null) {
+                            showSnackBarMessage(
+                                context,
+                                'Please set a password for your journal first.',
+                                true);
+                            return;
+                          } else {
+                            lockButton(index, 'delete',
+                                diaryId: controller.allDiaryList[index].sId);
+                          }
                         },
                         onEditTap: () {
-                          lockButton(index, 'edit', diaryId: controller.allDiaryList[index].sId);
+                          if (profileController.profileData!
+                                  .journalVerification!.password?.key ==
+                              null) {
+                            showSnackBarMessage(
+                                context,
+                                'Please set a password for your journal first.',
+                                true);
+                            return;
+                          } else {
+                            lockButton(index, 'edit',
+                                diaryId: controller.allDiaryList[index].sId);
+                          }
                         },
                       ),
                     );
@@ -172,7 +233,8 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           title: const Text("Enter Password", style: TextStyle(fontSize: 12)),
           content: Form(
             key: _formKey,
@@ -196,7 +258,8 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                 SizedBox(height: 20.h),
                 GradientElevatedButton(
                   onPressed: () {
-                    onTapToNextButton(passwordController.text, index, action, diaryId: diaryId);
+                    onTapToNextButton(passwordController.text, index, action,
+                        diaryId: diaryId);
                   },
                   text: 'Enter',
                 ),
@@ -216,7 +279,8 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
         // Refresh the diary list and update blur list
         await allDiariesController.getDiaryList(refresh: true);
         setState(() {
-          isBlurList = List.generate(allDiariesController.allDiaryList.length, (_) => true);
+          isBlurList = List.generate(
+              allDiariesController.allDiaryList.length, (_) => true);
         });
         showSnackBarMessage(context, 'Successfully deleted!');
       }
@@ -231,9 +295,11 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
     }
   }
 
-  Future<void> onTapToNextButton(String password, int index, String action, {String? diaryId}) async {
+  Future<void> onTapToNextButton(String password, int index, String action,
+      {String? diaryId}) async {
     if (_formKey.currentState!.validate()) {
-      final bool isSuccess = await accessJournalPasswordController.accessJournalPassword(password);
+      final bool isSuccess =
+          await accessJournalPasswordController.accessJournalPassword(password);
 
       if (isSuccess) {
         clearTextField();
@@ -245,7 +311,8 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
             });
             showSnackBarMessage(context, 'Access granted');
           } else if (action == 'edit' && diaryId != null) {
-            await Navigator.pushNamed(context, EditDiaryScreen.routeName, arguments: diaryId);
+            await Navigator.pushNamed(context, EditDiaryScreen.routeName,
+                arguments: diaryId);
             // Refresh diary list & blur states after editing
             await _loadDiaries();
             showSnackBarMessage(context, 'Access granted for edit');

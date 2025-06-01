@@ -37,13 +37,13 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
     super.initState();
     // Load profile data
     if (profileController.profileData != null) {
-      userId = profileController.profileData!.sId;
+      userId = profileController.profileData!.id;
       _loadBookmarkStatus();
     } else {
       profileController.getProfileData().then((_) {
         if (mounted) {
           setState(() {
-            userId = profileController.profileData?.sId;
+            userId = profileController.profileData?.id;
           });
           _loadBookmarkStatus();
         }

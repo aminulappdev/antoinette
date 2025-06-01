@@ -41,13 +41,13 @@ class _PodcastDetailsScreenState extends State<PodcastDetailsScreen> {
     super.initState();
     // Ensure profile data is loaded
     if (profileController.profileData != null) {
-      userId = profileController.profileData!.sId!;
+      userId = profileController.profileData!.id!;
       _loadBookmarkStatus();
     } else {
       profileController.getProfileData().then((_) {
         if (mounted) {
           setState(() {
-            userId = profileController.profileData?.sId ?? '';
+            userId = profileController.profileData?.id ?? '';
           });
           _loadBookmarkStatus();
         }

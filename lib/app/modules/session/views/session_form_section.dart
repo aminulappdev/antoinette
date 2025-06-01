@@ -34,7 +34,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 
   @override
   void initState() {
-    userId = profileController.profileData!.sId!;
+    userId = profileController.profileData!.id!;
     print('Therapy Id ............');
 
     print(widget.slotData['slotId']);

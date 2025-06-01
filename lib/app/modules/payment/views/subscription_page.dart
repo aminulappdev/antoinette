@@ -37,7 +37,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   void initState() {
     super.initState();
-    userId = profileController.profileData?.sId ?? '';
+    userId = profileController.profileData?.id ?? '';
     isStudent = profileController.profileData!.isStudent ?? false;
     allPackageController.getAllPackage();
     mySubscriptionController.getMySubscriptions().then((_) {
