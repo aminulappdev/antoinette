@@ -47,7 +47,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heightBox20,
+            heightBox24,
             CustomAppBar(name: "My Orders"),
             Row(
               children: [

@@ -20,7 +20,7 @@ class _LetterScreenState extends State<LetterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heightBox20,
+            heightBox24,
             Padding(
               padding:  EdgeInsets.all(8.0.h),
               child: CustomAppBar(name: 'Letters to you'),

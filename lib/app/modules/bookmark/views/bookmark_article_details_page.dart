@@ -36,7 +36,7 @@ class _BookmarkArticleDetailsScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: GestureDetector(

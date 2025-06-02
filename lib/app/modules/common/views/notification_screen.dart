@@ -56,7 +56,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(name: 'Notification'),
               heightBox5,
               Row(

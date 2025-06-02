@@ -5,12 +5,10 @@ import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class MentalStatusWidget extends StatefulWidget {
-  const MentalStatusWidget({
-    super.key,
-    
-  });
+  const MentalStatusWidget({super.key});
 
   @override
   State<MentalStatusWidget> createState() => _MentalStatusWidgetState();
@@ -21,9 +19,9 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
       Get.find<GetDashboardController>();
 
   bool _isDropdownOpen = false;
-  String _selectedMonth = 'January';
+  String _selectedMonth = DateFormat.MMMM().format(DateTime.now());
   String currentYear = DateTime.now().year.toString();
-  String date = '2025-04';
+  String date = DateFormat('yyyy-MM').format(DateTime.now());
 
   final LayerLink _layerLink = LayerLink();
   final GlobalKey _dropdownKey = GlobalKey();
@@ -60,7 +58,8 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
 
   void _showDropdown() {
     final overlay = Overlay.of(context);
-    final RenderBox renderBox = _dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox renderBox =
+        _dropdownKey.currentContext!.findRenderObject() as RenderBox;
     final Size size = renderBox.size;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
 
@@ -95,30 +94,36 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
                   'December',
                 ])
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
                         _selectedMonth = month;
                         final index = [
-                          'January',
-                          'February',
-                          'March',
-                          'April',
-                          'May',
-                          'June',
-                          'July',
-                          'August',
-                          'September',
-                          'October',
-                          'November',
-                          'December'
-                        ].indexOf(month) + 1;
+                              'January',
+                              'February',
+                              'March',
+                              'April',
+                              'May',
+                              'June',
+                              'July',
+                              'August',
+                              'September',
+                              'October',
+                              'November',
+                              'December'
+                            ].indexOf(month) +
+                            1;
                         date = '$currentYear-${index.toString().padLeft(2, '0')}';
-                        getDashboardController.getDashboard(date);
                         _toggleDropdown();
                       });
+                      // Debounce API call
+                      await Future.delayed(Duration(milliseconds: 300));
+                      if (mounted) {
+                        await getDashboardController.getDashboard(date);
+                      }
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -196,22 +201,33 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
                 width: 150.w,
                 child: Center(child: CircularProgressIndicator()));
             }
+            if (controller.errorMessage != null) {
+              return Text(controller.errorMessage!);
+            }
             return Row(
               children: [
                 Column(
                   children: [
                     StatusCard(
-                      percent: controller.dashboardData?.feelingsStatusData?.sad?.toString() ?? '0',
+                      percent:
+                          controller.dashboardData?.feelingsStatusData?.sad?.toString() ??
+                              '0',
                       emojiPath: AssetsPath.sad,
                     ),
                     SizedBox(height: 10.h),
                     StatusCard(
-                      percent: controller.dashboardData?.feelingsStatusData?.angry?.toString() ?? '0',
+                      percent: controller
+                              .dashboardData?.feelingsStatusData?.angry
+                              ?.toString() ??
+                          '0',
                       emojiPath: AssetsPath.angry,
                     ),
                     SizedBox(height: 10.h),
                     StatusCard(
-                      percent: controller.dashboardData?.feelingsStatusData?.motivated?.toString() ?? '0',
+                      percent: controller
+                              .dashboardData?.feelingsStatusData?.motivated
+                              ?.toString() ??
+                          '0',
                       emojiPath: AssetsPath.muscle,
                     ),
                   ],
@@ -220,18 +236,27 @@ class _MentalStatusWidgetState extends State<MentalStatusWidget> {
                 Column(
                   children: [
                     StatusCard(
-                      percent: controller.dashboardData?.feelingsStatusData?.calm?.toString() ?? '0',
-                      emojiPath: AssetsPath.tired,
-                    ),
-                    SizedBox(height: 10.h),
-                    StatusCard(
-                      percent: controller.dashboardData?.feelingsStatusData?.happy?.toString() ?? '0',
+                      percent: controller
+                              .dashboardData?.feelingsStatusData?.calm
+                              ?.toString() ??
+                          '0',
                       emojiPath: AssetsPath.happy,
                     ),
                     SizedBox(height: 10.h),
                     StatusCard(
-                      percent: controller.dashboardData?.feelingsStatusData?.anxious?.toString() ?? '0',
+                      percent: controller
+                              .dashboardData?.feelingsStatusData?.happy
+                              ?.toString() ??
+                          '0',
                       emojiPath: AssetsPath.angle,
+                    ),
+                    SizedBox(height: 10.h),
+                    StatusCard(
+                      percent: controller
+                              .dashboardData?.feelingsStatusData?.anxious
+                              ?.toString() ??
+                          '0',
+                      emojiPath: AssetsPath.tired,
                     ),
                   ],
                 )

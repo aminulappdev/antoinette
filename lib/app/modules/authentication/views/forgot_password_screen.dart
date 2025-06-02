@@ -36,7 +36,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(
                 name: 'Forgot Password',
               ),

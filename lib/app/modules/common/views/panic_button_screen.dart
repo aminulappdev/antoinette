@@ -52,7 +52,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              heightBox20,
+              heightBox24,
               Align(
                 alignment: Alignment.topLeft,
                 child: GestureDetector(

@@ -30,7 +30,7 @@ class _AdderssScreenState extends State<AdderssScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-               heightBox20,
+               heightBox24,
               CustomAppBar(name: 'Address'),
               heightBox14,
               AddressCardWidget(

@@ -35,7 +35,7 @@ class _VerifyEmailScreenWithForgotState extends State<VerifyEmailScreenWithForgo
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(
                 name: 'Check Email',
               ),

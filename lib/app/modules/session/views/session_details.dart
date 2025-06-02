@@ -38,7 +38,7 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(name: 'Session Details'),
               heightBox12,
               GetBuilder<SessionDetailsController>(builder: (controller) {

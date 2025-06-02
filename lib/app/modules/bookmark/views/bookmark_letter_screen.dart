@@ -27,7 +27,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heightBox20,
+            heightBox24,
             Padding(
             padding:  EdgeInsets.all(12.0.h),
               child: CustomAppBar(name: 'Bookmarks'),

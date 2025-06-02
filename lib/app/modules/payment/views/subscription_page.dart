@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:google_fonts/google_fonts.dart'; // Added for font support
+import 'package:google_fonts/google_fonts.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   static const String routeName = '/subscription-screen';
@@ -27,35 +27,63 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   SubscriptionController subscriptionController =
       Get.put(SubscriptionController());
   AllPackageController allPackageController = Get.find<AllPackageController>();
- final PaymentService paymentService = PaymentService();
+  final PaymentService paymentService = PaymentService();
   final MySubscriptionController mySubscriptionController =
       Get.find<MySubscriptionController>();
   late String userId;
   bool isStudent = false;
-  bool isSubscriptionActive = false;
+  bool isMonthlyActive = false;
+  bool isYearlyActive = false;
 
   @override
   void initState() {
     super.initState();
     userId = profileController.profileData?.id ?? '';
-    isStudent = profileController.profileData!.isStudent ?? false;
+    isStudent = profileController.profileData?.isStudent ?? false;
     allPackageController.getAllPackage();
     mySubscriptionController.getMySubscriptions().then((_) {
       _checkSubscriptionStatus();
+    }).catchError((error) {
+      print("Error fetching subscriptions: $error");
     });
   }
 
+  String? _getBillingCycle(String? subscriptionId) {
+    if (subscriptionId == null) return null;
+    final package = allPackageController.packageItemList?.firstWhere(
+      (pkg) => pkg.sId == subscriptionId,
+      orElse: () => null as dynamic, // workaround for nullable, but better to use try-catch
+    );
+    return package?.billingCycle?.toLowerCase();
+  }
+
   void _checkSubscriptionStatus() {
-    if (mySubscriptionController.subscriptionData != null &&
-        mySubscriptionController.subscriptionData!.isNotEmpty) {
-      DateTime expireDate =
-          mySubscriptionController.subscriptionData![0].expiredAt!;
-      DateTime today = DateTime.now();
-      isSubscriptionActive = expireDate.isAfter(today);
-    } else {
-      isSubscriptionActive = false;
+    try {
+      if (mySubscriptionController.subscriptionData == null ||
+          mySubscriptionController.subscriptionData!.isEmpty) {
+        isMonthlyActive = false;
+        isYearlyActive = false;
+      } else {
+        isMonthlyActive = mySubscriptionController.subscriptionData!.any(
+          (subscription) =>
+              (subscription.paymentStatus ?? "") == "paid" &&
+              (subscription.status ?? "") == "confirmed" &&
+              (_getBillingCycle(subscription.id) ?? "") == "monthly" &&
+              (subscription.expiredAt?.isAfter(DateTime.now()) ?? false),
+        );
+
+        isYearlyActive = mySubscriptionController.subscriptionData!.any(
+          (subscription) =>
+              (subscription.paymentStatus ?? "") == "paid" &&
+              (subscription.status ?? "") == "confirmed" &&
+              (_getBillingCycle(subscription.id) ?? "") == "yearly" &&
+              (subscription.expiredAt?.isAfter(DateTime.now()) ?? false),
+        );
+      }
+      setState(() {});
+    } catch (e) {
+      print("Error in _checkSubscriptionStatus: $e");
     }
-    setState(() {});
   }
 
   @override
@@ -81,6 +109,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 12.h),
                   const CustomAppBar(name: 'Subscriptions'),
                   SizedBox(height: 24.h),
                   SizedBox(
@@ -91,27 +120,37 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           return const Center(
                               child: CircularProgressIndicator());
                         }
-                        if (controller.subscriptionData!.isEmpty) {
+                        final activeSubscriptions = controller
+                                .subscriptionData?.where(
+                                  (subscription) =>
+                                      (subscription.paymentStatus ?? "") ==
+                                          "paid" &&
+                                      (subscription.status ?? "") == "confirmed" &&
+                                      (subscription.expiredAt?.isAfter(
+                                              DateTime.now()) ??
+                                          false),
+                                )
+                                .toList() ??
+                            [];
+
+                        if (activeSubscriptions.isEmpty) {
                           return const Center(
-                              child: Text("No subscription available"));
+                              child: Text("No active subscription"));
                         }
+
                         return ListView.builder(
                           padding: EdgeInsets.zero,
-                          itemCount: 1,
+                          itemCount: activeSubscriptions.length,
                           itemBuilder: (context, index) {
-                            DateTime expireDate =
-                                controller.subscriptionData![index].expiredAt!;
+                            final subscription = activeSubscriptions[index];
+                            DateTime? expireDate = subscription.expiredAt;
+                            if (expireDate == null) return const SizedBox.shrink();
                             DateTime today = DateTime.now();
                             String formattedBookingDate =
                                 DateFormat('MMMM dd, yyyy').format(expireDate);
-
-                            // Calculate days left
-                            int daysLeft = expireDate
-                                .difference(today)
-                                .inDays; // Calculate difference in days
-                            String daysLeftText = daysLeft > 0
-                                ? '$daysLeft days left'
-                                : 'Expired'; // Show "Expired" if days are 0 or negative
+                            int daysLeft = expireDate.difference(today).inDays;
+                            String daysLeftText =
+                                daysLeft > 0 ? '$daysLeft days left' : 'Expired';
 
                             return Card(
                               child: Container(
@@ -121,11 +160,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Basic Plan',
+                                        (_getBillingCycle(subscription.id) ??
+                                                    "monthly") ==
+                                                "monthly"
+                                            ? 'Monthly Plan'
+                                            : 'Yearly Plan',
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600),
@@ -160,7 +202,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     ),
                   ),
                   SizedBox(height: 10.h),
-                  // 🔄 DYNAMIC PACKAGE LIST
                   ListView.builder(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
@@ -168,9 +209,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     itemCount: controller.packageItemList!.length,
                     itemBuilder: (context, pkgIndex) {
                       final package = controller.packageItemList![pkgIndex];
-                      int? price = isStudent == true
-                          ? (package.price! / 2).toInt()
+                      int? price = isStudent
+                          ? (package.price ?? 0 / 2).toInt()
                           : package.price;
+                      bool isPackageActive = (package.billingCycle?.toLowerCase() ??
+                              "monthly") ==
+                          "monthly"
+                          ? isMonthlyActive
+                          : isYearlyActive;
+
                       return Container(
                         margin: EdgeInsets.only(bottom: 24.h),
                         padding: EdgeInsets.all(16.w),
@@ -182,7 +229,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // 🔹 Title
                             Text(
                               package.title ?? '',
                               style: TextStyle(
@@ -191,8 +237,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                             SizedBox(height: 4.h),
-
-                            // 🔹 Subtitle
                             Text(
                               package.subtitle ?? '',
                               style: TextStyle(
@@ -201,21 +245,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                             SizedBox(height: 10.h),
-
-                            // 🔹 Price and Billing
-
                             Text(
-                              "₦$price / ${package.billingCycle}",
+                              "₦$price / ${package.billingCycle?.toLowerCase() ?? 'monthly'}",
                               style: GoogleFonts.roboto(
-                                // Added GoogleFonts to support ₦
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-
                             SizedBox(height: 16.h),
-
-                            // 🔹 Features List
                             Text(
                               "Features:",
                               style: TextStyle(
@@ -224,7 +261,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                             SizedBox(height: 8.h),
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: List.generate(
@@ -241,7 +277,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                       SizedBox(width: 6.w),
                                       Expanded(
                                         child: Text(
-                                          package.description![descIndex],
+                                          package.description![descIndex] ?? '',
                                           style: TextStyle(fontSize: 14.sp),
                                         ),
                                       ),
@@ -250,10 +286,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 ),
                               ),
                             ),
-
                             SizedBox(height: 24.h),
-
-                           // ✅ BUY NOW BUTTON
                             SizedBox(
                               width: double.infinity,
                               child: GetBuilder<SubscriptionController>(
@@ -262,16 +295,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                     alignment: Alignment.center,
                                     children: [
                                       Opacity(
-                                        opacity:
-                                            isSubscriptionActive ? 0.5 : 1.0,
+                                        opacity: isPackageActive ? 0.5 : 1.0,
                                         child: GradientElevatedButton(
-                                          onPressed: (isSubscriptionActive ||
+                                          onPressed: (isPackageActive ||
                                                   controller.inProgress)
-                                              ? () {}
+                                              ? () {} // Empty function when disabled
                                               : () => buyNowBTN(package.sId!),
                                           text: controller.inProgress
                                               ? ''
-                                              : isSubscriptionActive
+                                              : isPackageActive
                                                   ? 'Active Subscription'
                                                   : 'Buy Now',
                                         ),
@@ -305,23 +337,31 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   Future<void> buyNowBTN(String packageid) async {
-    final bool isSuccess =
-        await subscriptionController.getSubcription(userId, packageid);
-    if (isSuccess) {
-      if (mounted) {
-        paymentService.payment(
-          context,
-          'Subscription',
-          userId,
-          subscriptionController.subscriptionResponseData!.id!,
-        );
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(
+    try {
+      final bool isSuccess =
+          await subscriptionController.getSubcription(userId, packageid);
+      if (isSuccess) {
+        if (mounted) {
+          await paymentService.payment(
             context,
-            subscriptionController.errorMessage ?? "Something went wrong",
-            true);
+            'Subscription',
+            userId,
+            subscriptionController.subscriptionResponseData!.id!,
+          );
+          await mySubscriptionController.getMySubscriptions();
+          _checkSubscriptionStatus();
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context,
+              subscriptionController.errorMessage ?? "Something went wrong",
+              true);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        showSnackBarMessage(context, "An error occurred: $e", true);
       }
     }
   }

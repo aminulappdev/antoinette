@@ -57,7 +57,7 @@ class _AccountScreenState extends State<AccountScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  heightBox20,
+                  heightBox24,
                   CustomAppBar(name: 'Update profile'),
                   heightBox12,
                   Row(

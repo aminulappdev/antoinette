@@ -56,7 +56,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  heightBox20,
+                  heightBox24,
                   CustomAppBar(name: 'Let’s Get to Know You'),
                   Text(
                     'This form helps your therapist understand your needs better. Answer as openly as you feel comfortable.',

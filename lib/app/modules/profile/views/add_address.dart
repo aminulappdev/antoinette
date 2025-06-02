@@ -51,7 +51,7 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                heightBox20,
+                heightBox24,
                 CustomAppBar(name: 'Edit Address'),
                 heightBox12,
                 Form(

@@ -40,7 +40,7 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                heightBox20,
+                heightBox24,
                 CustomAppBar(name: 'Edit Dear Diary'),
                 heightBox24,
                 TextFormField(

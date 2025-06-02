@@ -59,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

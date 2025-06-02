@@ -48,7 +48,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(name: 'Add Trusted Contacts'),
               heightBox12,
               Text('Name',

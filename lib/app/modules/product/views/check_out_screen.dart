@@ -73,7 +73,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                heightBox20,
+                heightBox24,
                 CustomAppBar(name: 'Checkout'),
                 heightBox8,
                 CheckoutUserInfo(

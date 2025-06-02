@@ -49,7 +49,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(
                 name: 'Reset Password',
               ),

@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/access_journal_key_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/all_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/controllers/delete_diary_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/get_dashboard_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/views/add_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/edit_diary_screen.dart';
 import 'package:antoinette/app/modules/dear_diary/views/set_password_screen.dart';
@@ -16,6 +17,7 @@ import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class DearDiaryScreen extends StatefulWidget {
   static const String routeName = '/dear-diary-screen';
@@ -35,6 +37,8 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
   final DeleteDiariesController deleteDiariesController =
       DeleteDiariesController();
   final ProfileController profileController = Get.find<ProfileController>();
+  final GetDashboardController getDashboardController =
+      Get.find<GetDashboardController>();
 
   List<bool> isBlurList = [];
 
@@ -47,6 +51,9 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
 
   Future<void> _loadDiaries() async {
     await allDiariesController.getDiaryList(refresh: true);
+    // Refresh dashboard data after diary list is loaded
+    String currentDate = DateFormat('yyyy-MM').format(DateTime.now());
+    await getDashboardController.getDashboard(currentDate);
     setState(() {
       isBlurList =
           List.generate(allDiariesController.allDiaryList.length, (_) => true);
@@ -131,7 +138,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
             Expanded(
               child: GetBuilder<AllDiariesController>(builder: (controller) {
                 if (controller.inProgress) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child:  CircularProgressIndicator());
                 }
                 if (controller.allDiaryList.isEmpty) {
                   return const Center(child: Text("No diaries available"));
@@ -277,11 +284,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
     if (isSuccess) {
       if (mounted) {
         // Refresh the diary list and update blur list
-        await allDiariesController.getDiaryList(refresh: true);
-        setState(() {
-          isBlurList = List.generate(
-              allDiariesController.allDiaryList.length, (_) => true);
-        });
+        await _loadDiaries();
         showSnackBarMessage(context, 'Successfully deleted!');
       }
     } else {
@@ -313,7 +316,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
           } else if (action == 'edit' && diaryId != null) {
             await Navigator.pushNamed(context, EditDiaryScreen.routeName,
                 arguments: diaryId);
-            // Refresh diary list & blur states after editing
+            // Refresh diary list & dashboard after editing
             await _loadDiaries();
             showSnackBarMessage(context, 'Access granted for edit');
           } else if (action == 'delete' && diaryId != null) {

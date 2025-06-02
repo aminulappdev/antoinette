@@ -31,7 +31,7 @@ class PannicOnboardingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            heightBox20,
+            heightBox24,
             Visibility(
               visible: !showBackButton,
               replacement: Row(

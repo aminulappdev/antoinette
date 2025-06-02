@@ -77,7 +77,7 @@ class ControllerBinder extends Bindings {
     Get.put(ResendOTPController());
     Get.put(ResetPasswordController());
     Get.put(GoogleAuthController());
-    Get.put(AllProcuctController());
+    Get.put(AllProductController());
     Get.put(ProcuctDetailsController());
     Get.put(FacebookAuthController());
     Get.put(AllSessionController());

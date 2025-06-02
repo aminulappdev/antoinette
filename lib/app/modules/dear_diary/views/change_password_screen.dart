@@ -43,7 +43,7 @@ class _ChangeJournalPasswordScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(
                 name: 'Change Password',
               ),

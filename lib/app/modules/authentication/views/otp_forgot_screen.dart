@@ -94,7 +94,7 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(
                 name: 'OTP Verification',
               ),

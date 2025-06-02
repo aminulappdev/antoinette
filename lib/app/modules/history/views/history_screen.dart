@@ -22,7 +22,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(name: 'History'),
               HistoryBar(),           
             ],

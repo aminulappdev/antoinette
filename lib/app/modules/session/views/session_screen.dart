@@ -38,9 +38,6 @@ class _SessionScreenState extends State<SessionScreen> {
         !allSessionController.inProgress) {
       allSessionController.getSessionList();
     }
-    {
-      allSessionController.getSessionList();
-    }
   }
 
   @override
@@ -118,9 +115,9 @@ class _SessionScreenState extends State<SessionScreen> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: SizedBox(
-                  width: 200.w,
+                  width: 300.w,
                   child: Text(
-                    'Shop Your Health Must-Haves',
+                    'Expert Psychological Support at Your Fingertips',
                     style: GoogleFonts.poppins(fontSize: 20),
                   ),
                 ),
@@ -130,14 +127,26 @@ class _SessionScreenState extends State<SessionScreen> {
                 if (controller.inProgress && controller.page == 1) {
                   return Center(child: CircularProgressIndicator());
                 }
+                // Check if the list is empty and not in progress
+                if (!controller.inProgress &&
+                    (controller.allProductList.isEmpty)) {
+                  return Center(
+                    child: Text(
+                      'Data session available',
+                      style: GoogleFonts.poppins(fontSize: 18.sp),
+                    ),
+                  );
+                }
                 return SizedBox(
                   height: 700.h,
                   child: ListView.builder(
+                    controller: scrollController,
                     padding: EdgeInsets.zero,
                     scrollDirection: Axis.vertical,
-                    itemCount: controller.sessionsList.length,
+                    itemCount: controller.allProductList.length,
                     itemBuilder: (context, index) {
-                      var sessionTitle = controller.allProductList[index].title;
+                      var sessionTitle =
+                          controller.allProductList[index].title ?? '';
 
                       if (searcCtrl.text.isEmpty) {
                         return Padding(
@@ -161,7 +170,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                               image: NetworkImage(
-                                                  '${controller.allProductList[index].thumbnail}'),
+                                                  '${controller.allProductList[index].thumbnail ?? ''}'),
                                               fit: BoxFit.fill),
                                           borderRadius:
                                               BorderRadius.circular(8)),
@@ -174,13 +183,13 @@ class _SessionScreenState extends State<SessionScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              '${controller.allProductList[index].status}',
+                                              '${controller.allProductList[index].status ?? ''}',
                                               style: GoogleFonts.poppins(
                                                   fontSize: 16.sp,
                                                   color: Colors.green),
                                             ),
                                             Text(
-                                              'Per session: ${controller.allProductList[index].fee}₦',
+                                              'Per session: ${controller.allProductList[index].fee ?? 0}₦',
                                               style: GoogleFonts.roboto(
                                                   fontSize: 16.sp,
                                                   color: Colors.white),
@@ -195,10 +204,10 @@ class _SessionScreenState extends State<SessionScreen> {
                                       child: Row(
                                         children: [
                                           CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  '${controller.allProductList[index].thumbnail}'),
-                                              radius: 18.r,
-                                            ),
+                                            backgroundImage: NetworkImage(
+                                                '${controller.allProductList[index].thumbnail ?? ''}'),
+                                            radius: 18.r,
+                                          ),
                                           widthBox4,
                                           FittedBox(
                                             child: SizedBox(
@@ -206,7 +215,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                               child: Text(
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
-                                                '${controller.allProductList[index].title}',
+                                                '${controller.allProductList[index].title ?? ''}',
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 14.sp,
                                                     color: Colors.black,
@@ -222,7 +231,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                 ),
                               ),
                             ));
-                      } else if (sessionTitle!
+                      } else if (sessionTitle
                           .toLowerCase()
                           .contains(searcCtrl.text.toLowerCase())) {
                         return Padding(
@@ -248,7 +257,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 image: NetworkImage(
-                                                    '${controller.allProductList[index].thumbnail}'),
+                                                    '${controller.allProductList[index].thumbnail ?? ''}'),
                                                 fit: BoxFit.fill),
                                             borderRadius:
                                                 BorderRadius.circular(8)),
@@ -259,7 +268,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                '${controller.allProductList[index].status}',
+                                                '${controller.allProductList[index].status ?? ''}',
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 10.sp,
                                                     color: Colors.green),
@@ -267,7 +276,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                               heightBox50,
                                               heightBox30,
                                               Text(
-                                                'Per session: ${controller.allProductList[index].fee}₦',
+                                                'Per session: ${controller.allProductList[index].fee ?? 0}₦',
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 12.sp,
                                                     color: Colors.white),
@@ -283,7 +292,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                           children: [
                                             CircleAvatar(
                                               backgroundImage: NetworkImage(
-                                                  '${controller.allProductList[index].thumbnail}'),
+                                                  '${controller.allProductList[index].thumbnail ?? ''}'),
                                               radius: 16.r,
                                             ),
                                             widthBox4,
@@ -294,12 +303,12 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   maxLines: 2,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  '${controller.allProductList[index].title}',
+                                                  controller.allProductList[index].title ?? '',
                                                   style: GoogleFonts.poppins(
                                                       fontSize: 12.sp,
                                                       color: Colors.black,
                                                       fontWeight:
-                                                          FontWeight.w600),
+                                                          FontWeight.w500),
                                                 ),
                                               ),
                                             ),
@@ -326,9 +335,6 @@ class _SessionScreenState extends State<SessionScreen> {
   }
 
   Future<void> getSessionScreen(String id) async {
-    // print('Hello');
-    // print(widget.sessionItemModel.description);
-    // print(widget.sessionItemModel.sId);
     final bool isSuccess = await sessionDetailsController.getSessionDetails(id);
 
     if (isSuccess) {
@@ -337,11 +343,11 @@ class _SessionScreenState extends State<SessionScreen> {
         print('Session id is : ${sessionDetailsController.sessionModel?.sId}');
         Navigator.pushNamed(context, SessionDetailsScreen.routeName,
             arguments: id);
-      } else {
-        if (mounted) {
-          showSnackBarMessage(
-              context, sessionDetailsController.errorMessage!, true);
-        }
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, sessionDetailsController.errorMessage ?? "Something went wrong", true);
       }
     }
   }

@@ -68,7 +68,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(name: 'Add Check-In'),
               heightBox12,
               Row(

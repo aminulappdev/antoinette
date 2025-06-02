@@ -17,7 +17,7 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  final AllProcuctController allProductController = Get.find<AllProcuctController>();
+  final AllProductController allProductController = Get.find<AllProductController>();
   final TextEditingController searchController = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
@@ -47,7 +47,7 @@ class _ProductScreenState extends State<ProductScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heightBox20,
+            heightBox24,
             Row(
               children: [
                 if (widget.shouldBackButton)
@@ -118,12 +118,12 @@ class _ProductScreenState extends State<ProductScreen> {
                     ? allProductController.allProductsList
                     : allProductController.allProductsList
                         .where((product) =>
-                            product.name!.toLowerCase().contains(searchController.text.toLowerCase()))
+                            product.name?.toLowerCase().contains(searchController.text.toLowerCase()) ?? false)
                         .toList();
                 if (filteredList.isEmpty && !allProductController.inProgress) {
                   return Center(
                     child: Text(
-                      'No products found',
+                      'Data session available',
                       style: GoogleFonts.poppins(fontSize: 16.sp),
                     ),
                   );

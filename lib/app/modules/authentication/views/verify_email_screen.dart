@@ -32,7 +32,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(
                 name: 'Verify Email',
               ),

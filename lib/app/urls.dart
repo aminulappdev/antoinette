@@ -44,7 +44,7 @@ class Urls {
   static const String paymentCheckoutUrl = '$_baseUrl/payments/checkout';
   static const String allBookingUrl = '$_baseUrl/bookings/my-bookings';
   static const String allOrderUrl = '$_baseUrl/orders/my-orders';
-  static const String allNotificationUrl = '$_baseUrl/notification';
+  static const String allNotificationUrl = '$_baseUrl/notification/my-notification';
   static const String allFriendsChatnUrl = '$_baseUrl/chats/my-chat-list';
   static const String addChatnUrl = '$_baseUrl/chats';
   static const String sendMessageUrl = '$_baseUrl/messages/send-messages';

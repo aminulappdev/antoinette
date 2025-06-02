@@ -32,7 +32,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(name: 'Product Details'),
               heightBox12,
            HomeCarouselSlider(images: widget.productModel.images ?? []),

@@ -57,7 +57,7 @@ class _ProductCardState extends State<ProductCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 80,
+                        width: 60.w,
                         child: Text(
                           overflow: TextOverflow.ellipsis,
                           widget.productsModel.name!,

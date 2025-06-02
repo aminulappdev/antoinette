@@ -110,7 +110,7 @@ class _PaymentDetailsScreen extends State<PaymentDetailsScreen> {
                                   '${controller.confirmedPaymentResponseModel?.data?.amount}',
                               nameSize: 14,
                               priceSize: 14,
-                            ),
+                            ), 
                           ],
                         ),
                       ),

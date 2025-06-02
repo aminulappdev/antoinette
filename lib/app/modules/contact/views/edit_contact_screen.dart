@@ -41,7 +41,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                heightBox20,
+                heightBox24,
                 CustomAppBar(name: 'Edit Trusted Contacts'),
                 heightBox12,
                 Text('Number',

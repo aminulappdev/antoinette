@@ -51,7 +51,7 @@ class _BookMarkPodcastDetailsScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            heightBox20,
+            heightBox24,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

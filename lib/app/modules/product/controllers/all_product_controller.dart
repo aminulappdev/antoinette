@@ -5,7 +5,7 @@ import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
-class AllProcuctController extends GetxController {
+class AllProductController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -24,31 +24,38 @@ class AllProcuctController extends GetxController {
 
   final int _limit = 9999;
   int page = 0;
-
   int? lastPage;
-
-  
 
   Future<bool> getProductList() async {
     if (_inProgress) {
       return false;
     }
-    // page++;
 
-    // if (lastPage != null && page > lastPage!) return false;
+    page++; // Increment page for pagination
+
+    if (lastPage != null && page > lastPage!) {
+      page--; // Revert page increment if exceeding last page
+      return false;
+    }
 
     bool isSuccess = false;
 
     _inProgress = true;
-
     update();
+
+    // Clear productsList only on the first page to prevent duplicates
+    if (page == 1) {
+      productsList.clear();
+      allProductsList.clear();
+    }
 
     Map<String, dynamic> queryparam = {'limit': _limit, 'page': page};
 
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
-        Urls.allProductUrl,
-        queryParams: queryparam,
-        accesToken: box.read('user-login-access-token'));
+      Urls.allProductUrl,
+      queryParams: queryparam,
+      accesToken: box.read('user-login-access-token'),
+    );
 
     if (response.isSuccess) {
       _errorMessage = null;
@@ -57,12 +64,14 @@ class AllProcuctController extends GetxController {
       AllProductPeginationModel allProductPeginationModel =
           AllProductPeginationModel.fromJson(response.responseData);
       productsList.addAll(allProductPeginationModel.data);
-      
+      allProductsList.addAll(allProductPeginationModel.data); // Sync with RxList
+
       if (allProductPeginationModel.meta?.totalPage != null) {
         lastPage = allProductPeginationModel.meta!.totalPage;
       }
     } else {
       _errorMessage = response.errorMessage;
+      page--; // Revert page increment on failure
     }
 
     _inProgress = false;
@@ -70,18 +79,31 @@ class AllProcuctController extends GetxController {
     return isSuccess;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchAllProducts(null);
+  // Reset page and fetch products (for refresh or initial load)
+  Future<bool> refreshProducts() async {
+    page = 0; // Reset to page 0 so next getProductList starts at page 1
+    return await getProductList();
   }
 
-  Future<void> fetchAllProducts(String? sessionQuery) async {   
-    Map<String, dynamic> queryparam = {'limit': _limit, 'page': page, 'searchTerm' : sessionQuery ?? ''};
+  Future<void> fetchAllProducts(String? sessionQuery) async {
+    Map<String, dynamic> queryparam = {
+      'limit': _limit,
+      'page': 1, // Always fetch first page for search
+      if (sessionQuery != null && sessionQuery.isNotEmpty) 'searchTerm': sessionQuery,
+    };
+
+    _inProgress = true;
+    update();
+
+    // Clear lists for search to avoid duplicates
+    productsList.clear();
+    allProductsList.clear();
+
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
-       queryParams: queryparam,
-        Urls.allProductUrl,
-        accesToken: box.read('user-login-access-token'));
+      Urls.allProductUrl,
+      queryParams: queryparam,
+      accesToken: box.read('user-login-access-token'),
+    );
 
     if (response.isSuccess) {
       _errorMessage = null;
@@ -89,15 +111,23 @@ class AllProcuctController extends GetxController {
       AllProductPeginationModel allProductPeginationModel =
           AllProductPeginationModel.fromJson(response.responseData);
 
-      allProductsList.value = allProductPeginationModel.data;
+      productsList.addAll(allProductPeginationModel.data);
+      allProductsList.value = allProductPeginationModel.data; // Update RxList
     } else {
       _errorMessage = response.errorMessage;
     }
+
+    _inProgress = false;
+    update();
   }
 
   void onSearchQueryChangedProducts(String sessionQuery) {
     fetchAllProducts(sessionQuery);
   }
+
+  @override
+  void onInit() {
+    super.onInit();
+    getProductList(); // Initial fetch
+  }
 }
-
-

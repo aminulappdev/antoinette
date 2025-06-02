@@ -26,7 +26,7 @@ class _CustomStatusScreenState extends State<CustomStatusScreen> {
           key: _formKey,
           child: Column(
             children: [
-              heightBox20,
+              heightBox24,
               CustomAppBar(name: 'Custom status'),
               heightBox12,
               Row(

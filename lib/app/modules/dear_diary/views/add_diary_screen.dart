@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/add_diaries_controller.dart';
+import 'package:antoinette/app/modules/dear_diary/controllers/all_diaries_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/model/feeling_model.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
@@ -26,6 +27,8 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
   final TextEditingController timeController = TextEditingController();
   final AddDiariesController addDiariesController = AddDiariesController();
   final ProfileController profileController = Get.find<ProfileController>();
+  final AllDiariesController allDiariesController =
+      Get.find<AllDiariesController>();
 
   late String userAccessId;
   late String useName;
@@ -98,7 +101,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                heightBox20,
+                heightBox24,
                 CustomAppBar(name: 'Dear Diary, Just Between Us.'),
                 heightBox24,
                 Row(
@@ -307,12 +310,13 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
 
       if (isSuccess) {
         if (mounted) {
+          allDiariesController.getDiaryList(refresh: true);
           showSnackBarMessage(context, 'Diary added successfully');
           Navigator.pop(context);
           // Navigator.pushNamed(context, DearDiaryScreen.routeName);
         }
       } else {
-        if (mounted) {
+        if (mounted) { 
           showSnackBarMessage(
               context,
               addDiariesController.errorMessage ?? 'Something went wrong',

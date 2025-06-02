@@ -29,18 +29,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  AllProcuctController allProcuctController = Get.find<AllProcuctController>();
-  AllSessionController allSessionController = Get.find<AllSessionController>();
-  ProfileController profileController = Get.find<ProfileController>();
+  final AllProductController allProductController = Get.find<AllProductController>();
+  final AllSessionController allSessionController = Get.find<AllSessionController>();
+  final ProfileController profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
-    profileController.getProfileData();
-    box.write('user-name', profileController.profileModel?.data?.name);  
-    allSessionController.getSessionList();
-    print('function er age');
-    allProcuctController.getProductList();
     super.initState();
+    profileController.getProfileData();
+    box.write('user-name', profileController.profileModel?.data?.name);
+    allSessionController.getSessionList();
+    // No need to call getProductList; controller's onInit handles it
   }
 
   String getGreeting() {
@@ -83,135 +82,146 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: GetBuilder<ProfileController>(builder: (controller) {
-          return Padding(
-            padding: EdgeInsets.all(12.0.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                heightBox20,
-                HomePageHeader(
-                  circleText: controller.inProgress
-                      ? ''
-                      : '${controller.profileData?.name?[0]}',
-                  onTapNotification: () {
-                    Navigator.pushNamed(context, NotificationScreen.routeName);
-                  },
-                  
-                ),
-                heightBox16,
-                WelcomeTextHomePage(
-                  time: getGreeting(),
-                  name: controller.inProgress
-                      ? ''
-                      : '${controller.profileData?.name ?? ''} 👋',
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                  child: SizedBox(
-                    height: 290.h,
-                    child: GridView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 4,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await allProductController.refreshProducts();
+          await allSessionController.getSessionList();
+          await profileController.getProfileData();
+        },
+        child: SingleChildScrollView(
+          child: GetBuilder<ProfileController>(builder: (controller) {
+            return Padding(
+              padding: EdgeInsets.all(12.0.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  heightBox24,
+                  HomePageHeader(
+                    circleText: controller.inProgress
+                        ? ''
+                        : '${controller.profileData?.name?[0]}',
+                    onTapNotification: () {
+                      Navigator.pushNamed(context, NotificationScreen.routeName);
+                    },
+                  ),
+                  heightBox16,
+                  WelcomeTextHomePage(
+                    time: getGreeting(),
+                    name: controller.inProgress
+                        ? ''
+                        : '${controller.profileData?.name ?? ''} 👋',
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                    child: SizedBox(
+                      height: 290.h,
+                      child: GridView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 4,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: 1.15,
                           crossAxisSpacing: 24,
                           mainAxisSpacing: 24,
-                          crossAxisCount: 2),
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, gridList[index].navigationPath,
-                                arguments: true);
-                          },
-                          child: GridFeature(
-                            icon: gridList[index].icon,
-                            title: gridList[index].title,
-                            subtitle: gridList[index].subtitle,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                SeeAllSection(
-                  title: 'Expert Psychological Support at Your Fingertips',
-                  ontap: () {
-                    Navigator.pushNamed(context, SessionScreen.routeName,
-                        arguments: true);
-                  },
-                ),
-                heightBox8,
-                GetBuilder<AllSessionController>(builder: (controller) {
-                  if (controller.inProgress && controller.page == 1) {
-                    return SessionItemShimmerEffectWidget();
-                  } else if (controller.sessionsList.isEmpty) {
-                    return SizedBox(
-                      height: 100,
-                      child: Center(child: Text('No data available')));
-                  } else {
-                    return SizedBox(
-                      height: 175,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.sessionsList.length,
+                          crossAxisCount: 2,
+                        ),
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4.w),
-                            child: PsychoSupportCard(
-                              sessionItemModel: controller.sessionsList[index],
-                            ),
-                          );
-                        }, 
-                      ),
-                    );
-                  }
-                }),
-                heightBox12,
-                SeeAllSection( 
-                  title: 'Shop Your Health Must-Haves',
-                  ontap: () {
-                    Navigator.pushNamed(context, ProductScreen.routeName,
-                        arguments: true);
-                  },
-                ),
-                heightBox8,
-                GetBuilder<AllProcuctController>(builder: (controller) {
-                  if (controller.inProgress) {
-                    return ProductItemShimmerEffectWidget();
-                  } else if (controller.allProductList.isEmpty) {
-                    return SizedBox(
-                      height: 100,
-                      child: Center(child: Text('No data available')));
-                  } else {
-                    return SizedBox(
-                      height: 134.h,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.productsList.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4.w),
-                            child: ProductCard(
-                              productsModel: controller.productsList[index],
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                gridList[index].navigationPath,
+                                arguments: true,
+                              );
+                            },
+                            child: GridFeature(
+                              icon: gridList[index].icon,
+                              title: gridList[index].title,
+                              subtitle: gridList[index].subtitle,
                             ),
                           );
                         },
                       ),
-                    );
-                  }
-                }),
-              ],
-            ),
-          );
-        }),
+                    ),
+                  ),
+                  SeeAllSection(
+                    title: 'Expert Psychological Support at Your Fingertips',
+                    ontap: () {
+                      Navigator.pushNamed(context, SessionScreen.routeName,
+                          arguments: true);
+                    },
+                  ),
+                  heightBox8,
+                  GetBuilder<AllSessionController>(builder: (controller) {
+                    if (controller.inProgress && controller.page == 1) {
+                      return SessionItemShimmerEffectWidget();
+                    } else if (controller.sessionsList.isEmpty) {
+                      return const SizedBox(
+                        height: 100,
+                        child: Center(child: Text('No data available')),
+                      );
+                    } else {
+                      return SizedBox(
+                        height: 175,
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.sessionsList.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.w),
+                              child: PsychoSupportCard(
+                                sessionItemModel: controller.sessionsList[index],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  }),
+                  heightBox12,
+                  SeeAllSection(
+                    title: 'Shop Your Health Must-Haves',
+                    ontap: () {
+                      Navigator.pushNamed(context, ProductScreen.routeName,
+                          arguments: true);
+                    },
+                  ),
+                  heightBox8,
+                  GetBuilder<AllProductController>(builder: (controller) {
+                    if (controller.inProgress && controller.initialInProgress) {
+                      return ProductItemShimmerEffectWidget();
+                    } else if (controller.productsList.isEmpty) {
+                      return const SizedBox(
+                        height: 100,
+                        child: Center(child: Text('No data available')),
+                      );
+                    } else {
+                      return SizedBox(
+                        height: 134.h,
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.productsList.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.w),
+                              child: ProductCard(
+                                productsModel: controller.productsList[index],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  }),
+                ],
+              ),
+            );
+          }),
+        ),
       ),
     );
   }
