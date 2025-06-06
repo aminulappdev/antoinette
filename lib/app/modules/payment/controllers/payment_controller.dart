@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 class PaymentController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
-
+ 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
