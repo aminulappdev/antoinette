@@ -6,7 +6,7 @@ void showSnackBarMessage(BuildContext context, String msg, [bool isError = false
     isError ? 'Failed' : 'Success', // Title based on isError
     msg, // Message
     backgroundColor: isError
-        ? const Color.fromARGB(255, 229, 73, 73)
+        ? const Color(0xffC37D60)
         : const Color(0xffC37D60),
     colorText: Colors.white, // Text color for better visibility
     snackPosition: SnackPosition.TOP, // Position at bottom

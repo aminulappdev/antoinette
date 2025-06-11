@@ -1,10 +1,12 @@
+// message_controller.dart
 import 'package:antoinette/app/modules/chatting/model/chat_message_model.dart';
 import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
 import 'package:get/get.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
-import 'package:antoinette/app/urls.dart'; 
+import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
+import 'package:intl/intl.dart';
 
 class MessageController extends GetxController {
   bool _inProgress = false;
@@ -19,7 +21,6 @@ class MessageController extends GetxController {
   var message = ChatMessageModel().obs;
   var messageList = <MessageData>[].obs;
 
-  // 🔁 Server থেকে মেসেজ এনে socketService.messageList এ সেভ করে
   Future<void> getMessages({required String chatId}) async {
     _inProgress = true;
     isLoading(true);
@@ -33,11 +34,11 @@ class MessageController extends GetxController {
     if (response.isSuccess) {
       messageList.clear();
       message.value = ChatMessageModel.fromJson(response.responseData);
-      messageList.addAll(message.value.data!);
+      messageList.addAll(message.value.data ?? []);
 
       print('📦 Messages loaded from API: ${messageList.length}');
 
-      // 🔁 আগের মেসেজ clear করে নতুন মেসেজ socket messageList এ add করা হচ্ছে
+      // Clear socket messageList and populate with API messages
       socketService.messageList.clear();
 
       for (final msg in messageList) {
@@ -49,6 +50,7 @@ class MessageController extends GetxController {
           "senderId": msg.sender?.id?.toString(),
           "receiverId": msg.receiver?.id?.toString(),
           "chat": msg.chat.toString(),
+          "createdAt": msg.createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
         });
       }
     } else {
@@ -57,5 +59,33 @@ class MessageController extends GetxController {
 
     isLoading(false);
     update();
+  }
+
+  // Method to send auto-message from therapist
+  void sendAutoTherapistMessage({
+    required String chatId,
+    required String receiverId,
+    required String therapistName,
+  }) {
+    // Check if auto-message was already sent for this chatId
+    if (box.read('autoMessageSent_$chatId') == true) {
+      print('📩 Auto-message already sent for chatId: $chatId');
+      return;
+    }
+
+    final autoMessage = {
+      "id": DateTime.now().millisecondsSinceEpoch.toString(),
+      "text": "Hi, I’m $therapistName. You’re safe here. Everything we talk about stays between us. How are you feeling today?",
+      "imageUrl": null,
+      "seen": false,
+      "senderId": receiverId, // Therapist is the sender
+      "receiverId": null, // User's ID can be set if needed
+      "chat": chatId,
+      "createdAt": DateTime.now().toIso8601String(),
+    };
+
+    socketService.messageList.add(autoMessage);
+    box.write('autoMessageSent_$chatId', true); // Persist the flag
+    print('📩 Auto-message from therapist added: ${autoMessage["text"]}');
   }
 }

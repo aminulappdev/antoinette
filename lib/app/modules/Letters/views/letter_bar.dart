@@ -10,7 +10,7 @@ class LetterBar extends StatefulWidget {
   @override
   State<LetterBar> createState() => _LetterBarState();
 }
-
+ 
 class _LetterBarState extends State<LetterBar> {
   int selectedPage = 0;
   @override

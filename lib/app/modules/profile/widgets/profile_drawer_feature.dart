@@ -43,7 +43,7 @@ class ProfileDrawerFeature extends StatelessWidget {
                     widthBox8,
                     Text(
                       feature,
-                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                      style: GoogleFonts.poppins(fontSize: 13.sp),
                     ),
                   ],
                 ),

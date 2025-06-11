@@ -24,6 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
 
     final isLoggedIn = box.read('user-login-access-token') != null;
+    print('isLoggedIn: $isLoggedIn');
+    print('user-login-access-token: ${box.read('user-login-access-token')}');
     Navigator.pushReplacementNamed(
       context,
       isLoggedIn

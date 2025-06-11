@@ -57,35 +57,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 heightBox12,
                 ProfileDrawerFeature(
-                  feature: 'Account',
+                  feature: 'Your Details',
                   icon: Icons.person,
                   ontap: () {
                     Navigator.pushNamed(context, AccountScreen.routeName);
                   },
                 ),
                 ProfileDrawerFeature(
-                  feature: 'My Orders',
+                  feature: 'Things You’ve Chosen',
                   icon: Icons.shopping_bag,
                   ontap: () {
                     Navigator.pushNamed(context, MyOrderScreen.routeName);
                   },
                 ),
                 ProfileDrawerFeature(
-                  feature: 'History',
+                  feature: 'Where You’ve Been',
                   icon: Icons.history,
                   ontap: () {
                     Navigator.pushNamed(context, HistoryScreen.routeName);
                   },
                 ),
                 ProfileDrawerFeature(
-                  feature: 'Address',
+                  feature: 'Where We Send Care',
                   icon: Icons.location_on,
                   ontap: () {
                     Navigator.pushNamed(context, AdderssScreen.routeName);
                   },
                 ),
                 ProfileDrawerFeature(
-                  feature: 'Trusted Contacts',
+                  feature: 'People Who’ll Be Notified If You’re Not Okay',
                   icon: Icons.people,
                   ontap: () {
                     Navigator.pushNamed(context, ContactScreen.routeName);
@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 ProfileDrawerFeature(
-                  feature: 'Bookmarks',
+                  feature: 'Saved for When You’re Ready',
                   icon: Icons.bookmark,
                   ontap: () {
                     Navigator.pushNamed(context, BookmarkScreen.routeName);
@@ -113,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 heightBox4,
                 ProfileDrawerFeature(
-                  feature: 'Notification',
+                  feature: 'Messages From Us',
                   icon: Icons.notifications,
                   ontap: () {
                     Navigator.pushNamed(context, NotificationScreen.routeName);
@@ -132,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ProfileDrawerFeature(
-                          feature: 'Policies',
+                          feature: 'How We Keep You Safe',
                           icon: Icons.security,
                           ontap: () {
                             Navigator.pushNamed(context, InfoScreen.routeName,
@@ -144,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         ),
                         ProfileDrawerFeature(
-                          feature: 'Terms & Condition',
+                          feature: 'The Rules We Live By',
                           icon: Icons.help,
                           ontap: () {
                             Navigator.pushNamed(context, InfoScreen.routeName,
@@ -156,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         ),
                         ProfileDrawerFeature(
-                          feature: 'About Us',
+                          feature: 'Why We Exist',
                           icon: Icons.info,
                           ontap: () {
                             Navigator.pushNamed(

@@ -30,16 +30,18 @@ class _CheckInScreenState extends State<CheckInScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // যদি "Access denied!" এরর থাকে, তবে MainButtonNavbarScreen-এ ফিরে যাবে
-        if (Get.find<AllCheckInController>().errorMessage?.contains("Access denied!") == true) {
+        if (Get.find<AllCheckInController>()
+                .errorMessage
+                ?.contains("Access denied!") ==
+            true) {
           Navigator.pushNamedAndRemoveUntil(
             context,
             MainButtonNavbarScreen.routeName,
             (Route<dynamic> route) => false,
           );
-          return false; // ডিফল্ট ব্যাক নেভিগেশন বন্ধ
+          return false;
         }
-        return true; // অন্য ক্ষেত্রে ডিফল্ট ব্যাক নেভিগেশন
+        return true;
       },
       child: Scaffold(
         body: Padding(
@@ -52,14 +54,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
               GetBuilder<AllCheckInController>(builder: (controller) {
                 if (controller.inProgress) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (controller.errorMessage?.contains("Access denied!") == true) {
+                } else if (controller.errorMessage
+                        ?.contains("Access denied!") ==
+                    true) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     showDialog(
                       context: context,
-                      barrierDismissible: true, // ডায়ালগ বাইরে ক্লিকে বন্ধ হবে
+                      barrierDismissible: true,
                       builder: (context) => WillPopScope(
-                        onWillPop: () async {
-                          // ডায়ালগে ব্যাক বাটন চাপলে MainButtonNavbarScreen-এ যাবে
+                        onWillPop: () async {                      
                           Navigator.pushNamedAndRemoveUntil(
                             context,
                             MainButtonNavbarScreen.routeName,
@@ -73,8 +76,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           title: Center(
                             child: Text(
                               textAlign: TextAlign.center,
-                              'You are not eligible for this feature. Would you like to purchase a subscription?',
-                              style: GoogleFonts.poppins(fontSize: 16),
+                              'This feature requires a subscription. Unlock check-ins and more by upgrading your plan.',
+                              style: GoogleFonts.poppins(fontSize: 14.sp),
                             ),
                           ),
                           actions: [
@@ -90,14 +93,16 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 width: 120.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: const Color(0xff305FA1).withOpacity(0.1),
-                                  border: Border.all(color: const Color(0xff305FA1)),
+                                  color:
+                                      const Color(0xffF7EDE6),
+                                  border: Border.all(
+                                      color: const Color(0xff305FA1)),
                                 ),
                                 child: const Center(
                                   child: Text(
-                                    'YES',
+                                    'Upgrade Now',
                                     style: TextStyle(
-                                        color: Color(0xff305FA1), fontSize: 14),
+                                        color: Color.fromARGB(255, 3, 3, 3), fontSize: 14),
                                   ),
                                 ),
                               ),
@@ -115,14 +120,16 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 width: 120.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: const Color(0xffA13430).withOpacity(0.1),
-                                  border: Border.all(color: const Color(0xffA13430)),
+                                  color:
+                                      const Color(0xffA13430).withOpacity(0.1),
+                                  border: Border.all(
+                                      color: const Color(0xffA13430)),
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'NO',
+                                    'Maybe Late',
                                     style: TextStyle(
-                                        color: const Color(0xffA13430),
+                                        color: const Color(0xff8C543F),
                                         fontSize: 14.sp),
                                   ),
                                 ),
@@ -151,8 +158,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           // Convert to local time if needed
                           DateTime localDate = utcDate.toLocal();
                           // Format it
-                          String formatted =
-                              DateFormat('d MMMM yyyy, h:mm a').format(localDate);
+                          String formatted = DateFormat('d MMMM yyyy, h:mm a')
+                              .format(localDate);
 
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -166,15 +173,17 @@ class _CheckInScreenState extends State<CheckInScreen> {
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           '${controller.checkInList?[index].quickCheckIn}',
-                                          style:
-                                              GoogleFonts.poppins(fontSize: 15.sp),
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 15.sp),
                                         ),
                                         Row(
                                           children: [
@@ -189,7 +198,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     ),
                                     Text(
                                       formatted,
-                                      style: GoogleFonts.poppins(fontSize: 12.sp),
+                                      style:
+                                          GoogleFonts.poppins(fontSize: 12.sp),
                                     ),
                                   ],
                                 ),

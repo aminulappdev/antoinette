@@ -69,7 +69,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heightBox30,
-            Row(
+            Row( 
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(

@@ -35,7 +35,6 @@ class _SetJournalPasswordScreenState extends State<SetJournalPasswordScreen> {
   Future<void> _checkPasswordStatus() async {
     _isPasswordSet = await setJournalPasswordController.isPasswordSet();
     if (_isPasswordSet && mounted) {
-      
       Navigator.pushReplacementNamed(
           context, ChangeJournalPasswordScreen.routeName);
     }
@@ -71,6 +70,7 @@ class _SetJournalPasswordScreenState extends State<SetJournalPasswordScreen> {
                               color: Color(0xff626262))),
                       heightBox8,
                       TextFormField(
+                        maxLength: 4,
                         controller: passwordCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
@@ -94,7 +94,7 @@ class _SetJournalPasswordScreenState extends State<SetJournalPasswordScreen> {
                               });
                             },
                           ),
-                          hintText: '***********',
+                          hintText: '****',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),

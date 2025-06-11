@@ -60,6 +60,7 @@ class _ChangeJournalPasswordScreenState
                             color: Color(0xff626262))),
                     heightBox8,
                     TextFormField(
+                      maxLength: 4,
                       controller: oldPasswordCtrl,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
@@ -83,7 +84,7 @@ class _ChangeJournalPasswordScreenState
                             });
                           },
                         ),
-                        hintText: '***********',
+                        hintText: '****',
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
@@ -95,6 +96,7 @@ class _ChangeJournalPasswordScreenState
                             color: Color(0xff626262))),
                     heightBox8,
                     TextFormField(
+                      maxLength: 4,
                       controller: newPasswordCtrl,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
@@ -118,7 +120,7 @@ class _ChangeJournalPasswordScreenState
                             });
                           },
                         ),
-                        hintText: '***********',
+                        hintText: '****',
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),

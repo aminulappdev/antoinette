@@ -117,7 +117,7 @@ class _SessionScreenState extends State<SessionScreen> {
                 child: SizedBox(
                   width: 300.w,
                   child: Text(
-                    'Expert Psychological Support at Your Fingertips',
+                    'Let’s talk about what’s been heavy.',
                     style: GoogleFonts.poppins(fontSize: 20),
                   ),
                 ),
