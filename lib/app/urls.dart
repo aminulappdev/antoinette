@@ -1,8 +1,9 @@
 class Urls {
- //static const String _baseUrl = 'http://172.252.13.74:5001/api/v1';
-   static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
- //static const String socketUrl = 'http://172.252.13.74:4001/';
-    static const String socketUrl = 'http://192.168.10.144:4001/';
+ static const String _baseUrl = 'http://172.252.13.83:7001/api/v1';
+  //  static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
+
+ static const String socketUrl = 'http://172.252.13.74:4001/';
+    // static const String socketUrl = 'http://192.168.10.144:4001/';
 
 //   static const String _baseUrl = 'https://www.api.dearhenrietta.com/api/v1';
 //  static const String socketUrl = 'https://www.socket.dearhenrietta.com/';
@@ -54,6 +55,7 @@ class Urls {
   static const String pannicUrl = '$_baseUrl/trusted-contracts/send-message';
   static const String notificationStatusUrl = '$_baseUrl/users/configure-notify';
   static const String mySubscriptionUrl = '$_baseUrl/subscriptions/my-subscriptions';
+  static const String deliverChargeUrl= '$_baseUrl/delivery-charge';
 
   
 

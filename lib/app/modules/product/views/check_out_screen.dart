@@ -1,5 +1,6 @@
 import 'package:antoinette/app/modules/payment/controllers/payment_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
+import 'package:antoinette/app/modules/product/controllers/delivery_charge_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/product_order_controller.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/widgets/checkout_user_info.dart';
@@ -30,47 +31,69 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   final PaymentController paymentController = PaymentController();
   final ProductOrderController productOrderController =
       Get.find<ProductOrderController>();
-  ProfileController profileController = Get.find<ProfileController>();
+  final ProfileController profileController = Get.find<ProfileController>();
   final PaymentService paymentService = PaymentService();
+  final DeliveryChargeController deliveryChargeController =
+      Get.find<DeliveryChargeController>();
 
   int quantity = 1;
   late String myUserId;
-  String deliveryAddress = '';
-  String? selectedShippingMethod = 'standard';
+  String? selectedShippingMethod = 'SD';
+  String? deliveryMethod = 'Standard Delivery';
 
   double price = 0.0;
   double totalPrice = 0.0;
   double mainTotalPrice = 0.0;
   int discount = 0;
   int item = 1;
+  double deliveryCharge = 0.0;
 
   Map<String, dynamic>? shippingInfo;
+  bool isLoadingDeliveryCharges = true;
 
   @override
   void initState() {
     super.initState();
-    profileController.getProfileData();
-    // Fetch initial shipping information
-    _loadShippingInfo();
-    myUserId = profileController.profileData?.id ?? '';
-    price = (widget.productModel.amount ?? 0.0) * quantity;
-    discount = widget.productModel.discount ?? 0;
-    _calculateTotalPrice();
-  }
-
-  void _loadShippingInfo() {
-    setState(() {
-      shippingInfo =
-          StorageUtil.getData('shipping-information') as Map<String, dynamic>?;
-      deliveryAddress = shippingInfo != null
-          ? '${shippingInfo!['street_address']}, ${shippingInfo!['appartment']}, ${shippingInfo!['town_city']}, ${shippingInfo!['state']}, ${shippingInfo!['country']}'
-          : profileController.profileData?.homeAddress ??
-              'Please update your address';
+    // Defer data fetching to avoid build phase issues
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await profileController.getProfileData();
+      await deliveryChargeController.deliveryCharge();
+      if (mounted) {
+        setState(() {
+          isLoadingDeliveryCharges = false;
+          myUserId = profileController.profileData?.id ?? '';
+          price = (widget.productModel.amount ?? 0.0) * quantity;
+          discount = widget.productModel.discount ?? 0;
+          _loadShippingInfo();
+          _calculateTotalPrice();
+        });
+      }
     });
   }
 
+  void _loadShippingInfo() {
+    shippingInfo =
+        StorageUtil.getData('shipping-information') as Map<String, dynamic>?;
+  }
+
   void _calculateTotalPrice() {
-    totalPrice = (price + 5.0) * ((100 - discount) / 100);
+    if (selectedShippingMethod == 'IT' &&
+        deliveryChargeController.deliverChargeData != null) {
+      deliveryCharge =
+          deliveryChargeController.deliverChargeData![0].charge?.toDouble() ??
+              0.0;
+    } else if (selectedShippingMethod == 'OT' &&
+        deliveryChargeController.deliverChargeData != null) {
+      deliveryCharge =
+          deliveryChargeController.deliverChargeData![1].charge?.toDouble() ??
+              0.0;
+    } else if (selectedShippingMethod == 'SD' &&
+        deliveryChargeController.deliverChargeData != null) {
+      deliveryCharge =
+          deliveryChargeController.deliverChargeData![2].charge?.toDouble() ??
+              0.0;
+    }
+    totalPrice = (price + deliveryCharge) * ((100 - discount) / 100);
     mainTotalPrice = double.parse(totalPrice.toStringAsFixed(2));
   }
 
@@ -92,26 +115,38 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   style: GoogleFonts.poppins(
                       fontSize: 15.sp, fontWeight: FontWeight.w500),
                 ),
-                // Show InkWell only when shippingInfo is null or empty
+                heightBox5,
                 if (shippingInfo == null || shippingInfo!.isEmpty)
-                  InkWell(
-                    onTap: () async {
-                      // Navigate to AddAddressScreen and wait for result
-                      await Get.to(() => const AddAdderssScreen());
-                      // Reload shipping info after returning
-                      _loadShippingInfo();
-                    },
-                    child: Row(children: [
-                      Text(
-                        '+ Add Shipping Information',
-                        style: GoogleFonts.poppins(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.iconButtonThemeColor),
+                  Container(
+                    width: 250,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppColors.iconButtonThemeColor),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Center(
+                        child: InkWell(
+                          onTap: () async {
+                            await Get.to(() => const AddAdderssScreen());
+                            if (mounted) {
+                              setState(() {
+                                _loadShippingInfo();
+                              });
+                            }
+                          },
+                          child: Text(
+                            '+ Add Shipping Information',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.iconButtonThemeColor,
+                            ),
+                          ),
+                        ),
                       ),
-                    ]),
+                    ),
                   ),
-                // Show Card with CheckoutUserInfo only when shippingInfo is not null and not empty
                 if (shippingInfo != null && shippingInfo!.isNotEmpty)
                   Stack(
                     children: [
@@ -135,28 +170,30 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             town: shippingInfo!['town_city']?.toString() ?? '',
                             state: shippingInfo!['state']?.toString() ?? '',
                             country: shippingInfo!['country']?.toString() ?? '',
+                            note: shippingInfo!['note']?.toString() ?? '',
                           ),
                         ),
                       ),
                       Positioned(
-                          right: 10,
-                          top: 10,
-                          child: InkWell(
-                            onTap: () {
-                              // Navigate to AddAddressScreen and wait for result
-                              Get.to(() => const AddAdderssScreen());
-                              // Reload shipping info after returning
-                              _loadShippingInfo();
-                            },
-                            child: CircleAvatar(
-                                radius: 18.r,
-                                backgroundColor: AppColors.iconButtonThemeColor,
-                                child: const Icon(
-                                  Icons.edit,
-                                  size: 18,
-                                  color: Colors.white,
-                                )),
-                          ))
+                        right: 10,
+                        top: 10,
+                        child: InkWell(
+                          onTap: () async {
+                            await Get.to(() => const AddAdderssScreen());
+                            if (mounted) {
+                              setState(() {
+                                _loadShippingInfo();
+                              });
+                            }
+                          },
+                          child: CircleAvatar(
+                            radius: 18.r,
+                            backgroundColor: AppColors.iconButtonThemeColor,
+                            child: const Icon(Icons.edit,
+                                size: 18, color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 heightBox4,
@@ -165,63 +202,71 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   style: GoogleFonts.poppins(
                       fontSize: 15.sp, fontWeight: FontWeight.w500),
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RadioListTile<String>(
-                      activeColor: AppColors.iconButtonThemeColor,
-                      value: 'standard',
-                      groupValue: selectedShippingMethod,
-                      title: Text(
-                        'Standard Delivery',
-                        style: GoogleFonts.poppins(fontSize: 14.sp),
+                isLoadingDeliveryCharges
+                    ? const Center(child: CircularProgressIndicator())
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RadioListTile<String>(
+                            activeColor: AppColors.iconButtonThemeColor,
+                            value: 'IT',
+                            groupValue: selectedShippingMethod,
+                            title: Text(
+                              'In State - ₦${deliveryChargeController.deliverChargeData?[0].charge ?? 0}',
+                              style: GoogleFonts.roboto(fontSize: 13.sp),
+                            ),
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            visualDensity: const VisualDensity(vertical: -4),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedShippingMethod = value;
+                                deliveryMethod = 'In State';
+                                _calculateTotalPrice();
+                              });
+                            },
+                          ),
+                          RadioListTile<String>(
+                            activeColor: AppColors.iconButtonThemeColor,
+                            value: 'OT',
+                            groupValue: selectedShippingMethod,
+                            title: Text(
+                              'Out Town - ₦${deliveryChargeController.deliverChargeData?[1].charge ?? 0}',
+                              style: GoogleFonts.roboto(fontSize: 13.sp),
+                            ),
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            visualDensity: const VisualDensity(vertical: -4),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedShippingMethod = value;
+                                deliveryMethod = 'Out State';
+                                _calculateTotalPrice();
+                              });
+                            },
+                          ),
+                          RadioListTile<String>(
+                            activeColor: AppColors.iconButtonThemeColor,
+                            value: 'SD',
+                            groupValue: selectedShippingMethod,
+                            title: Text(
+                              'Standard Delivery - ₦${deliveryChargeController.deliverChargeData?[2].charge ?? 0}',
+                              style: GoogleFonts.roboto(fontSize: 13.sp),
+                            ),
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            visualDensity: const VisualDensity(vertical: -4),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedShippingMethod = value;
+                                deliveryMethod = 'Standard Delivery';
+                                _calculateTotalPrice();
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      visualDensity: const VisualDensity(vertical: -4),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedShippingMethod = value;
-                        });
-                      },
-                    ),
-                    RadioListTile<String>(
-                      activeColor: AppColors.iconButtonThemeColor,
-                      value: 'express',
-                      groupValue: selectedShippingMethod,
-                      title: Text(
-                        'Express Delivery',
-                        style: GoogleFonts.poppins(fontSize: 14.sp),
-                      ),
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      visualDensity: const VisualDensity(vertical: -4),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedShippingMethod = value;
-                        });
-                      },
-                    ),
-                    RadioListTile<String>(
-                      activeColor: AppColors.iconButtonThemeColor,
-                      value: 'next_day',
-                      groupValue: selectedShippingMethod,
-                      title: Text(
-                        'Next Day Delivery',
-                        style: GoogleFonts.poppins(fontSize: 14.sp),
-                      ),
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      visualDensity: const VisualDensity(vertical: -4),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedShippingMethod = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
                 heightBox12,
                 priceCalculator(context),
                 heightBox12,
@@ -240,7 +285,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 heightBox8,
                 PriceRow(
                   name: 'Shipping Fee',
-                  price: '₦5.00',
+                  price: '₦${(deliveryCharge).toStringAsFixed(2)}',
                   nameSize: 14,
                   priceSize: 14,
                 ),
@@ -278,65 +323,40 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
                         child: SizedBox(
-                            width: 159.w,
-                            height: 42.h,
-                            child: GetBuilder<ProductOrderController>(
-                              builder: (orderController) {
-                                bool isLoading = orderController.inProgress;
-                                return Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    IgnorePointer(
-                                      ignoring: isLoading,
-                                      child: GradientElevatedButton(
-                                        onPressed: () {
-                                          if (deliveryAddress ==
-                                              'Please update your address') {
-                                            showSnackBarMessage(
-                                              context,
-                                              'Please fill-up your address',
-                                              true,
-                                            );
-                                          } else {
-                                            productOrderFunction(
-                                              profileController
-                                                      .profileData?.id ??
-                                                  '',
-                                              '5',
-                                              shippingInfo?['full_name']
-                                                      ?.toString() ??
-                                                  profileController
-                                                      .profileData?.name ??
-                                                  'Name',
-                                              '10-10-2024',
-                                              deliveryAddress,
-                                              shippingInfo?['phone_number']
-                                                      ?.toString() ??
-                                                  profileController.profileData
-                                                      ?.contactNumber ??
-                                                  '+49 176 12345678',
-                                              profileController
-                                                      .profileData?.email ??
-                                                  '',
-                                            );
-                                          }
-                                        },
-                                        text: isLoading ? '' : 'Place order',
+                          width: 159.w,
+                          height: 42.h,
+                          child: GetBuilder<ProductOrderController>(
+                            builder: (orderController) {
+                              bool isLoading = orderController.inProgress;
+                              return Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  IgnorePointer(
+                                    ignoring: isLoading,
+                                    child: GradientElevatedButton(
+                                      onPressed: () {
+                                        productOrderFunction(
+                                          profileController.profileData?.id ??
+                                              '',
+                                        );
+                                      },
+                                      text: isLoading ? '' : 'Place order',
+                                    ),
+                                  ),
+                                  if (isLoading)
+                                    const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                    if (isLoading)
-                                      const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                  ],
-                                );
-                              },
-                            )),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -384,7 +404,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Standard delivery',
+                      deliveryMethod!,
                       style: GoogleFonts.poppins(fontSize: 14.sp),
                     ),
                     heightBox14,
@@ -453,28 +473,24 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   Future<void> productOrderFunction(
     String userId,
-    String deliveryCharge,
-    String billingName,
-    String pickupDate,
-    String address,
-    String phoneNumber,
-    String email,
   ) async {
     final bool isSuccess = await productOrderController.orderProduct(
-      widget.productModel.sId!,
-      quantity,
-      price,
-      mainTotalPrice,
-      discount.toString(),
-      userId,
-      mainTotalPrice,
-      deliveryCharge,
-      billingName,
-      pickupDate,
-      address,
-      phoneNumber,
-      email,
-    );
+        productId: widget.productModel.sId!,
+        quantity: quantity,
+        price: price,
+        totalPrice: totalPrice,
+        amount: totalPrice,
+        discount: discount.toString(),
+        userId: userId,
+        deliveryCharge: deliveryCharge.toInt(),
+        billingName: shippingInfo?['full_name']?.toString() ?? '',
+        streetAddress: shippingInfo?['street_address']?.toString() ?? '',
+        phoneNumber: shippingInfo?['phone_number']?.toString() ?? '',
+        apartment: shippingInfo?['appartment']?.toString() ?? '',
+        town: shippingInfo?['town_city']?.toString() ?? '',
+        state: shippingInfo?['state']?.toString() ?? '',
+        country: shippingInfo?['country']?.toString() ?? '',
+        note: shippingInfo?['note']?.toString() ?? '');
 
     if (isSuccess) {
       if (mounted) {

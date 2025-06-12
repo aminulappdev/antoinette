@@ -4,12 +4,11 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-
 class PdfController extends GetxController {
   // final PaymentController paymentController = Get.find();
-  
 
-  Future<void> generateAndSavePDF(String date, String transactionId, String price, String name) async {
+  Future<void> generateAndSavePDF(
+      String date, String transactionId, String price, String name) async {
     try {
       final pdf = pw.Document();
 
@@ -18,6 +17,90 @@ class PdfController extends GetxController {
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
+              pw.SizedBox(height: 100),
+              pw.Container(
+                decoration: pw.BoxDecoration(
+                    borderRadius: pw.BorderRadius.circular(10),
+                    border: pw.Border.all(color: pw.GridPaper.lineColor)),
+                child: pw.Column(
+                  children: [
+                    pw.Container(
+                      height: 50,
+                      child: pw.Center(
+                        child: pw.Text(
+                          'Payment Summary',
+                          style: pw.TextStyle(
+                              fontSize: 18, fontWeight: pw.FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Text(
+                          'Date',
+                          style: pw.TextStyle(
+                              fontSize: 14, fontWeight: pw.FontWeight.normal),
+                        ),
+                        pw.Text(
+                          '10-05-2025',
+                          style: pw.TextStyle(
+                              fontSize: 14, fontWeight: pw.FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                     pw.SizedBox(height: 10),
+                     pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Text(
+                          'Date',
+                          style: pw.TextStyle(
+                              fontSize: 14, fontWeight: pw.FontWeight.normal),
+                        ),
+                        pw.Text(
+                          '10-05-2025',
+                          style: pw.TextStyle(
+                              fontSize: 14, fontWeight: pw.FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                     pw.SizedBox(height: 10),
+                     pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Text(
+                          'Date',
+                          style: pw.TextStyle(
+                              fontSize: 14, fontWeight: pw.FontWeight.normal),
+                        ),
+                        pw.Text(
+                          '10-05-2025',
+                          style: pw.TextStyle(
+                              fontSize: 14, fontWeight: pw.FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                     pw.SizedBox(height: 10),
+                     pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Text(
+                          'Date',
+                          style: pw.TextStyle(
+                              fontSize: 14, fontWeight: pw.FontWeight.normal),
+                        ),
+                        pw.Text(
+                          '10-05-2025',
+                          style: pw.TextStyle(
+                              fontSize: 14, fontWeight: pw.FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                     pw.SizedBox(height: 10),
+                  ],
+                ),
+              ),
               pw.Text(
                 'Payment Receipt',
                 style: pw.TextStyle(
@@ -87,7 +170,7 @@ class PdfController extends GetxController {
         'PDF receipt has been generated and saved',
         snackPosition: SnackPosition.BOTTOM,
       );
-    print('My file is $file');
+      print('My file is $file');
       // Optional: Open the PDF file
       await OpenFile.open(file.path);
     } catch (e) {

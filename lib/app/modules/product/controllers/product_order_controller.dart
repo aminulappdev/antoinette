@@ -16,21 +16,24 @@ class ProductOrderController extends GetxController {
   OrderResponseModel? orderResponseModel;
   OrderResponseItemModel? get orderResponseData => orderResponseModel?.data;
 
-  Future<bool> orderProduct(
-    String productId,
-    int quantity,
-    double price,
-    double totalPrice,
-    String discount,
-    String userId,
-    double amount,
-    String deliveryCharge,
-    String billingName,
-    String pickupDate,
-    String address,
-    String phoneNumber,
-    String email,
-  ) async {
+  Future<bool> orderProduct({
+    required String productId,
+    required int quantity,
+    required double price,
+    required double totalPrice,
+    required String discount,
+    required String userId,
+    required double amount,
+    required int deliveryCharge,
+    required String billingName,
+    required String streetAddress,
+    required String phoneNumber,
+    required String apartment,
+    required String town,
+    required String state,
+    required String country,
+    required String note,
+  }) async {
     _inProgress = true;
     update();
 
@@ -39,23 +42,27 @@ class ProductOrderController extends GetxController {
     Map<String, dynamic> requestBody = {
       "items": [
         {
-          "product": productId,
+          "product": productId, // add productID
           "quantity": quantity,
-          "price": price.toInt(),
-          "totalPrice": totalPrice.toInt(),
+          "price": price, // calculate form frontent
+          "totalPrice":
+              totalPrice, // calculate form frontent total product price
           "discount": discount
         }
       ],
       "orderData": {
-        "user": userId,
-        "amount": amount.toInt(),
+        "user": userId, // add userId
+        "amount": totalPrice, // calculate form frontend
         "deliveryCharge": deliveryCharge,
+        // billing details sent form frontend
         "billingDetails": {
           "name": billingName,
-          "pickupDate": pickupDate,
-          "address": address,
           "phoneNumber": phoneNumber,
-          "email": email
+          "streetAddress": streetAddress,
+          "apartment": apartment,
+          "town": town,
+          "state": state,
+          "note": note
         }
       }
     };

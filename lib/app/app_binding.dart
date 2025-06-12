@@ -52,6 +52,7 @@ import 'package:antoinette/app/modules/payment/controllers/payment_url_controlle
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
 import 'package:antoinette/app/modules/letters/controllers/article_details_controller.dart';
+import 'package:antoinette/app/modules/product/controllers/delivery_charge_controller.dart';
 import 'package:antoinette/app/modules/product/controllers/product_details_controllers.dart';
 import 'package:antoinette/app/modules/product/controllers/product_order_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/content_controller.dart';
@@ -135,6 +136,7 @@ class ControllerBinder extends Bindings {
     Get.put(ChangeNotificationController());
     Get.put(MySubscriptionController());
     Get.put(DeleteBookmarkController());
+    Get.put(DeliveryChargeController());
 
   
     

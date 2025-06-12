@@ -11,13 +11,19 @@ class CheckoutUserInfo extends StatelessWidget {
   final String appartment;
   final String town;
   final String state;
-  final String country; 
-
+  final String country;
+  final String note;
 
   const CheckoutUserInfo({
     super.key,
     required this.name,
-    required this.number, required this.streetAddress, required this.appartment, required this.town, required this.state, required this.country,
+    required this.number,
+    required this.streetAddress,
+    required this.appartment,
+    required this.town,
+    required this.state,
+    required this.country,
+    required this.note,
   });
 
   @override
@@ -27,8 +33,10 @@ class CheckoutUserInfo extends StatelessWidget {
       children: [
         Text(
           'Personal information',
-          style:
-              GoogleFonts.poppins(fontSize: 14.sp, fontWeight: FontWeight.w500,color: AppColors.iconButtonThemeColor),
+          style: GoogleFonts.poppins(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.iconButtonThemeColor),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -40,10 +48,12 @@ class CheckoutUserInfo extends StatelessWidget {
         heightBox20,
         Text(
           'Shipping address',
-          style:
-              GoogleFonts.poppins(fontSize: 14.sp, fontWeight: FontWeight.w500,color: AppColors.iconButtonThemeColor),
+          style: GoogleFonts.poppins(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.iconButtonThemeColor),
         ),
-        heightBox8,
+        heightBox4,
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             'Street address',
@@ -54,7 +64,7 @@ class CheckoutUserInfo extends StatelessWidget {
             style: GoogleFonts.poppins(fontSize: 14.sp),
           ),
         ]),
-        heightBox8,
+        heightBox5,
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -62,7 +72,7 @@ class CheckoutUserInfo extends StatelessWidget {
             dataColumn('Town/City', town),
           ],
         ),
-        heightBox8,
+        heightBox5,
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -70,6 +80,17 @@ class CheckoutUserInfo extends StatelessWidget {
             dataColumn('Country', country),
           ],
         ),
+        heightBox4,
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Note',
+            style: GoogleFonts.poppins(fontSize: 12.sp),
+          ),
+          Text(
+            note,
+            style: GoogleFonts.poppins(fontSize: 14.sp,fontStyle: FontStyle.italic),
+          ),
+        ]),
       ],
     );
   }

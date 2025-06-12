@@ -79,7 +79,8 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
     super.initState();
     Get.find<ProfileController>().getProfileData();
     // Load existing shipping information from storage
-    final storedShippingInfo = StorageUtil.getData('shipping-information') as Map<String, dynamic>?;
+    final storedShippingInfo =
+        StorageUtil.getData('shipping-information') as Map<String, dynamic>?;
     if (storedShippingInfo != null) {
       shippingInfo = storedShippingInfo;
       // Set initial values for controllers
@@ -89,7 +90,7 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
       appartmentCtrl.text = storedShippingInfo['appartment']?.toString() ?? '';
       townCtrl.text = storedShippingInfo['town_city']?.toString() ?? '';
       countryCtrl.text = storedShippingInfo['country']?.toString() ?? '';
-      noteCtrl.text = storedShippingInfo['delivery_note']?.toString() ?? '';
+      noteCtrl.text = storedShippingInfo['note']?.toString() ?? '';
       // Set initial state for dropdown
       selectedState = storedShippingInfo['state']?.toString();
     }
@@ -292,7 +293,7 @@ class _AddAdderssScreenState extends State<AddAdderssScreen> {
                                             'town_city': townCtrl.text,
                                             'country': countryCtrl.text,
                                             'state': selectedState ?? '',
-                                            'delivery_note': noteCtrl.text,
+                                            'note': noteCtrl.text,
                                           };
 
                                           // Save to storage

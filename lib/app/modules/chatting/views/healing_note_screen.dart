@@ -40,6 +40,8 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox24,
+              Center(child: Text('Healing notes',style: TextStyle(fontSize: 17.5, fontWeight: FontWeight.w500),)),
+              heightBox10,
               Row(
                 children: [
                   Expanded(

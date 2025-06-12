@@ -98,7 +98,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
         readableDate = DateFormat('MMMM dd, yyyy').format(parsedDate);
       } catch (e) {
         readableDate = 'Unknown Date';
-      }
+      } 
     }
 
     return Scaffold(
