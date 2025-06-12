@@ -1,3 +1,4 @@
+import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,12 +7,17 @@ import 'package:google_fonts/google_fonts.dart';
 class CheckoutUserInfo extends StatelessWidget {
   final String name;
   final String number;
+  final String streetAddress;
+  final String appartment;
+  final String town;
+  final String state;
+  final String country; 
+
 
   const CheckoutUserInfo({
     super.key,
     required this.name,
-    required this.number,
-
+    required this.number, required this.streetAddress, required this.appartment, required this.town, required this.state, required this.country,
   });
 
   @override
@@ -19,58 +25,74 @@ class CheckoutUserInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          'Personal information',
+          style:
+              GoogleFonts.poppins(fontSize: 14.sp, fontWeight: FontWeight.w500,color: AppColors.iconButtonThemeColor),
+        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              name,
-              style: GoogleFonts.poppins(fontSize: 14.sp),
-            ),
-           
+            dataColumn('Name', name),
+            dataColumn('Contact', number),
           ],
         ),
+        heightBox20,
         Text(
-          number,
-          style: GoogleFonts.poppins(fontSize: 12.sp, color: Color(0xff626262)),
+          'Shipping address',
+          style:
+              GoogleFonts.poppins(fontSize: 14.sp, fontWeight: FontWeight.w500,color: AppColors.iconButtonThemeColor),
         ),
         heightBox8,
-        // Container(
-        //   height: 19.h,
-        //   width: 49.w,
-        //   decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(12),
-        //       color: const Color.fromARGB(255, 218, 211, 211)),
-        //   child: Center(
-        //     child: Text(
-        //       status,
-        //       style: TextStyle(fontSize: 12.sp),
-        //     ),
-        //   ),
-        // ),
-        // heightBox8,
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     Row(
-        //       children: [
-        //         SizedBox(
-        //             width: 170,
-        //             child: Text(
-        //               address,
-        //               style: GoogleFonts.poppins(fontSize: 10.sp),
-        //             )),
-        //         Icon(Icons.location_on_rounded)
-        //       ],
-        //     ),
-        //     GestureDetector(
-        //         onTap: addressArrowOntap,
-        //         child: Icon(
-        //           Icons.arrow_forward_ios_rounded,
-        //           size: 18.h,
-        //         ))
-        //   ],
-        // ),
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Street address',
+            style: GoogleFonts.poppins(fontSize: 12.sp),
+          ),
+          Text(
+            streetAddress,
+            style: GoogleFonts.poppins(fontSize: 14.sp),
+          ),
+        ]),
+        heightBox8,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            dataColumn('Appartment/Suite', appartment),
+            dataColumn('Town/City', town),
+          ],
+        ),
+        heightBox8,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            dataColumn('State', state),
+            dataColumn('Country', country),
+          ],
+        ),
       ],
+    );
+  }
+
+  Widget dataColumn(
+    String key,
+    String value,
+  ) {
+    return SizedBox(
+      width: 150,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            key,
+            style: GoogleFonts.poppins(fontSize: 12.sp),
+          ),
+          Text(
+            value,
+            style: GoogleFonts.poppins(fontSize: 14.sp),
+          ),
+        ],
+      ),
     );
   }
 }

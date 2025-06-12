@@ -7,7 +7,6 @@ import 'package:antoinette/app/modules/profile/controllers/content_controller.da
 import 'package:antoinette/app/modules/profile/controllers/delete_account_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/views/account_screen.dart';
-import 'package:antoinette/app/modules/profile/views/address_screen.dart';
 import 'package:antoinette/app/modules/profile/views/info_screen.dart';
 import 'package:antoinette/app/modules/profile/widgets/profile_drawer_feature.dart';
 import 'package:antoinette/app/modules/profile/widgets/profile_info.dart';
@@ -49,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                heightBox20,
+                heightBox24,
                 ProfileInfo(
                   name: '${controller.profileData?.name}',
                   email: '${controller.profileModel?.data?.email}',
@@ -77,13 +76,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.pushNamed(context, HistoryScreen.routeName);
                   },
                 ),
-                ProfileDrawerFeature(
-                  feature: 'Where We Send Care',
-                  icon: Icons.location_on,
-                  ontap: () {
-                    Navigator.pushNamed(context, AdderssScreen.routeName);
-                  },
-                ),
+                // ProfileDrawerFeature(
+                //   feature: 'Where We Send Care',
+                //   icon: Icons.location_on,
+                //   ontap: () {
+                //     Navigator.pushNamed(context, AdderssScreen.routeName);
+                //   },
+                // ),
                 ProfileDrawerFeature(
                   feature: 'People Who’ll Be Notified If You’re Not Okay',
                   icon: Icons.people,

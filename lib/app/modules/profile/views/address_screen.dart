@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class AdderssScreen extends StatefulWidget {
-  static const String routeName = '/profile-address-screen'; 
+  static const String routeName = '/profile-address-screen';
   const AdderssScreen({super.key});
 
   @override
@@ -30,7 +30,7 @@ class _AdderssScreenState extends State<AdderssScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-               heightBox24,
+              heightBox24,
               CustomAppBar(name: 'Address'),
               heightBox14,
               AddressCardWidget(

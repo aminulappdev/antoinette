@@ -256,9 +256,9 @@ class AppRoutes {
 
 
     AddAdderssScreen.routeName: (context) {
-      final args = ModalRoute.of(context)!.settings.arguments as String;
+     
       return AddAdderssScreen(
-        type: args,
+       
       );
     },
 
