@@ -74,6 +74,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   void _loadShippingInfo() {
     shippingInfo =
         StorageUtil.getData('shipping-information') as Map<String, dynamic>?;
+    // Set default shipping method based on shopAddress and userState
+    final String shopAddress = widget.productModel.storeAddress ?? '';
+    final String userState = shippingInfo?['state']?.toString() ?? '';
+    if (shopAddress == userState) {
+      selectedShippingMethod = 'IT';
+      deliveryMethod = 'In State';
+    } else {
+      selectedShippingMethod = 'OT';
+      deliveryMethod = 'Out State';
+    }
   }
 
   void _calculateTotalPrice() {
@@ -99,6 +109,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String shopAddress = widget.productModel.storeAddress ?? '';
+    final String userState = shippingInfo?['state']?.toString() ?? '';
     return Scaffold(
       body: GetBuilder<ProfileController>(builder: (controller) {
         return SingleChildScrollView(
@@ -219,13 +231,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             contentPadding: EdgeInsets.zero,
                             dense: true,
                             visualDensity: const VisualDensity(vertical: -4),
-                            onChanged: (value) {
-                              setState(() {
-                                selectedShippingMethod = value;
-                                deliveryMethod = 'In State';
-                                _calculateTotalPrice();
-                              });
-                            },
+                            onChanged: shopAddress == userState
+                                ? (value) {
+                                    setState(() {
+                                      selectedShippingMethod = value;
+                                      deliveryMethod = 'In State';
+                                      _calculateTotalPrice();
+                                    });
+                                  }
+                                : null, // Disable if shopAddress != userState
                           ),
                           RadioListTile<String>(
                             activeColor: AppColors.iconButtonThemeColor,
@@ -238,13 +252,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             contentPadding: EdgeInsets.zero,
                             dense: true,
                             visualDensity: const VisualDensity(vertical: -4),
-                            onChanged: (value) {
-                              setState(() {
-                                selectedShippingMethod = value;
-                                deliveryMethod = 'Out State';
-                                _calculateTotalPrice();
-                              });
-                            },
+                            onChanged: shopAddress != userState
+                                ? (value) {
+                                    setState(() {
+                                      selectedShippingMethod = value;
+                                      deliveryMethod = 'Out State';
+                                      _calculateTotalPrice();
+                                    });
+                                  }
+                                : null, // Disable if shopAddress == userState
                           ),
                           RadioListTile<String>(
                             activeColor: AppColors.iconButtonThemeColor,
@@ -390,9 +406,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      image: widget.productModel.images?.isNotEmpty == true
-                          ? NetworkImage(
-                              '${widget.productModel.images?[0].url}')
+                      image: widget.productModel.images.isNotEmpty == true
+                          ? NetworkImage('${widget.productModel.images[0].url}')
                           : const NetworkImage(
                               'https://defaultimageurl.com/default.png'),
                       fit: BoxFit.fill,
@@ -475,7 +490,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     String userId,
   ) async {
     final bool isSuccess = await productOrderController.orderProduct(
-        productId: widget.productModel.sId!,
+        productId: widget.productModel.id!,
         quantity: quantity,
         price: price,
         totalPrice: totalPrice,

@@ -69,7 +69,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heightBox30,
-            Row( 
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
@@ -100,8 +100,14 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Center(
-                      child: Icon(Icons.add,
-                          color: AppColors.iconButtonThemeColor),
+                      child: Text(
+                        '+ Write new diary entry',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: AppColors.iconButtonThemeColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -138,7 +144,7 @@ class _DearDiaryScreenState extends State<DearDiaryScreen> {
             Expanded(
               child: GetBuilder<AllDiariesController>(builder: (controller) {
                 if (controller.inProgress) {
-                  return const Center(child:  CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (controller.allDiaryList.isEmpty) {
                   return const Center(child: Text("No diaries available"));

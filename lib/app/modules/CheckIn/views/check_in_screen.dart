@@ -58,7 +58,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         ?.contains("Access denied!") ==
                     true) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    showDialog(
+                    showDialog( 
                       context: context,
                       barrierDismissible: true,
                       builder: (context) => WillPopScope(

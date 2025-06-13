@@ -20,8 +20,10 @@ class ArticleScreen extends StatefulWidget {
 }
 
 class _ArticleScreenState extends State<ArticleScreen> {
-  AllArticlesController allArticlesController = Get.find<AllArticlesController>();
-  ArticleDetailsController articletDetailsController = ArticleDetailsController();
+  AllArticlesController allArticlesController =
+      Get.find<AllArticlesController>();
+  ArticleDetailsController articletDetailsController =
+      ArticleDetailsController();
   final ScrollController scrollController = ScrollController();
   final TextEditingController searcCtrl = TextEditingController();
   String search = '';
@@ -53,7 +55,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
     return WillPopScope(
       onWillPop: () async {
         // যদি "Access denied!" এরর থাকে, তবে MainButtonNavbarScreen-এ ফিরে যাবে
-        if (allArticlesController.errorMessage?.contains("Access denied!") == true) {
+        if (allArticlesController.errorMessage?.contains("Access denied!") ==
+            true) {
           Navigator.pushNamedAndRemoveUntil(
             context,
             MainButtonNavbarScreen.routeName,
@@ -125,11 +128,14 @@ class _ArticleScreenState extends State<ArticleScreen> {
                 builder: (controller) {
                   if (controller.inProgress && controller.page == 1) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (controller.errorMessage?.contains("Access denied!") == true) {
+                  } else if (controller.errorMessage
+                          ?.contains("Access denied!") ==
+                      true) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       showDialog(
                         context: context,
-                        barrierDismissible: true, // ডায়ালগ বাইরে ক্লিকে বন্ধ হবে
+                        barrierDismissible:
+                            true, // ডায়ালগ বাইরে ক্লিকে বন্ধ হবে
                         builder: (context) => WillPopScope(
                           onWillPop: () async {
                             // ডায়ালগে ব্যাক বাটন চাপলে MainButtonNavbarScreen-এ যাবে
@@ -163,14 +169,17 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                   width: 120.w,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: const Color(0xff305FA1).withOpacity(0.1),
-                                    border: Border.all(color: const Color(0xff305FA1)),
+                                    color: const Color(0xff305FA1)
+                                        .withOpacity(0.1),
+                                    border: Border.all(
+                                        color: const Color(0xff305FA1)),
                                   ),
                                   child: const Center(
                                     child: Text(
                                       'YES',
                                       style: TextStyle(
-                                          color: Color(0xff305FA1), fontSize: 14),
+                                          color: Color(0xff305FA1),
+                                          fontSize: 14),
                                     ),
                                   ),
                                 ),
@@ -188,8 +197,10 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                   width: 120.w,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: const Color(0xffA13430).withOpacity(0.1),
-                                    border: Border.all(color: const Color(0xffA13430)),
+                                    color: const Color(0xffA13430)
+                                        .withOpacity(0.1),
+                                    border: Border.all(
+                                        color: const Color(0xffA13430)),
                                   ),
                                   child: Center(
                                     child: Text(
@@ -216,11 +227,14 @@ class _ArticleScreenState extends State<ArticleScreen> {
                         controller: scrollController,
                         itemCount: controller.articlesList.length,
                         itemBuilder: (context, index) {
-                          if (controller.articlesList[index].status == 'published') {
-                            var title = controller.articlesList[index].category?.title;
+                          if (controller.articlesList[index].status ==
+                              'published') {
+                            var title =
+                                controller.articlesList[index].category?.title;
                             if (searcCtrl.text.isEmpty ||
                                 (title != null &&
-                                    title.toLowerCase().contains(searcCtrl.text.toLowerCase()))) {
+                                    title.toLowerCase().contains(
+                                        searcCtrl.text.toLowerCase()))) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(vertical: 2.h),
                                 child: Stack(
@@ -234,38 +248,56 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                             },
                                       child: Container(
                                         height: 200.h,
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
                                           color: Colors.grey,
                                           image: DecorationImage(
-                                            image: controller.articlesList[index].thumbnail != null
-                                                ? NetworkImage('${controller.articlesList[index].thumbnail}')
-                                                : const AssetImage(AssetsPath.demo) as ImageProvider,
+                                            image: controller
+                                                        .articlesList[index]
+                                                        .thumbnail !=
+                                                    null
+                                                ? NetworkImage(
+                                                    '${controller.articlesList[index].thumbnail}')
+                                                : const AssetImage(
+                                                        AssetsPath.demo)
+                                                    as ImageProvider,
                                             fit: BoxFit.fill,
                                           ),
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                         ),
                                         child: Padding(
                                           padding: EdgeInsets.all(18.0.h),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
                                                 height: 27.h,
                                                 width: 200.w,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(20),
-                                                    color: const Color.fromARGB(222, 255, 255, 255)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    color: const Color.fromARGB(
+                                                        222, 255, 255, 255)),
                                                 child: Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 8.w),
                                                   child: Align(
-                                                    alignment: Alignment.centerLeft,
+                                                    alignment:
+                                                        Alignment.centerLeft,
                                                     child: Text(
-                                                      overflow: TextOverflow.ellipsis,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                       '${controller.articlesList[index].category?.title}',
-                                                      style: GoogleFonts.poppins(fontSize: 10.sp),
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 10.sp),
                                                     ),
                                                   ),
                                                 ),
@@ -274,7 +306,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                                 maxLines: 2,
                                                 '${controller.articlesList[index].title}',
                                                 style: GoogleFonts.poppins(
-                                                    fontSize: 12.sp, color: Colors.white),
+                                                    fontSize: 12.sp,
+                                                    color: Colors.white),
                                               ),
                                             ],
                                           ),
@@ -285,7 +318,9 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                       Center(
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          valueColor: AlwaysStoppedAnimation<Color>(Colors.transparent),
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.transparent),
                                         ),
                                       ),
                                   ],
@@ -314,9 +349,85 @@ class _ArticleScreenState extends State<ArticleScreen> {
       isLoading = true;
     });
 
-    final bool isSuccess = await articletDetailsController.getArticleDetails(id);
-
-    if (isSuccess) {
+    final bool isSuccess =
+        await articletDetailsController.getArticleDetails(id);
+    if (articletDetailsController.errorMessage?.contains("Access denied!") ==
+        true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (context) => WillPopScope(
+            onWillPop: () async {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                MainButtonNavbarScreen.routeName,
+                (Route<dynamic> route) => false,
+              );
+              return false;
+            },
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              title: Center(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  'This feature requires a subscription. Unlock check-ins and more by upgrading your plan.',
+                  style: GoogleFonts.poppins(fontSize: 14.sp),
+                ),
+              ),
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      SubscriptionScreen.routeName,
+                    );
+                  },
+                  child: Container(
+                    height: 32.h,
+                    width: 120.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color(0xffF7EDE6),
+                      border: Border.all(color: const Color(0xff305FA1)),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Upgrade Now',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 3, 3, 3), fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: 32.h,
+                    width: 120.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color(0xffA13430).withOpacity(0.1),
+                      border: Border.all(color: const Color(0xffA13430)),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Maybe Late',
+                        style: TextStyle(
+                            color: const Color(0xff8C543F), fontSize: 14.sp),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+    } else if (isSuccess) {
       if (mounted) {
         Navigator.pushNamed(
           context,
@@ -326,7 +437,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, articletDetailsController.errorMessage!, true);
+        showSnackBarMessage(
+            context, articletDetailsController.errorMessage!, true);
       }
     }
 

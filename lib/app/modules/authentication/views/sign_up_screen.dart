@@ -7,9 +7,7 @@ import 'package:antoinette/app/modules/authentication/views/verify_email_screen.
 import 'package:antoinette/app/modules/authentication/widgets/agree_condition_widget.dart';
 import 'package:antoinette/app/modules/authentication/widgets/footer_section.dart';
 import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart';
-import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/image_picker.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
@@ -244,7 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               },
                               child: Container(
                                 height: 40,
-                                width: 220,
+                                width: 250,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black),
                                     borderRadius: BorderRadius.circular(10)),
@@ -252,9 +250,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Add your identification'),
+                                    Text('Add your identification (JPG, JPEG, PNG)',style: TextStyle(fontSize: 10.sp),),
                                     widthBox4,
-                                    Icon(Icons.upload)
+                                    Icon(Icons.upload,size: 20,)
                                   ],
                                 )),
                               ),

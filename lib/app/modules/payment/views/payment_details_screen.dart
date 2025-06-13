@@ -97,6 +97,14 @@ class _PaymentDetailsScreen extends State<PaymentDetailsScreen> {
                               nameSize: 14,
                               priceSize: 14,
                             ),
+                            heightBox8,
+                            PriceRow(
+                              name: 'Name',
+                              price:
+                                  '${controller.confirmedPaymentResponseModel!.data?.account?.name}',
+                              nameSize: 14,
+                              priceSize: 14,
+                            ),
                             heightBox30,
                             Container(
                               height: 1,

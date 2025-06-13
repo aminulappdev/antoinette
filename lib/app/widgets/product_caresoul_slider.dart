@@ -6,7 +6,7 @@ import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/modules/product/model/product_details_model.dart'; // Ensure this model is imported
 
 class HomeCarouselSlider extends StatefulWidget {
-  final List<Images> images;  // List of Images objects
+  final List<Images> images;  
   const HomeCarouselSlider({
     super.key, required this.images,
   });

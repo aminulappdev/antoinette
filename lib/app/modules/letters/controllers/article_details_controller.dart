@@ -12,9 +12,9 @@ class ArticleDetailsController extends GetxController {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  String? _accessToken; 
+  String? _accessToken;
   String? get accessToken => _accessToken;
- 
+
   ArticlesDetailsModel? articlesDetailsModel;
 
   ArticleModel? get articleModel => articlesDetailsModel?.data;
@@ -22,26 +22,29 @@ class ArticleDetailsController extends GetxController {
   int? lastPage;
 
   Future<bool> getArticleDetails(String id) async {
-   
-    bool isSuccess = false; 
+    bool isSuccess = false;
 
     _inProgress = true;
-
     update();
 
-    final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.articleUrlsById(id), accesToken: box.read('user-login-access-token'));
-   
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
+        Urls.articleUrlsById(id),
+        accesToken: box.read('user-login-access-token'));
+
     print('response data is : ${response.responseData}');
 
-    articlesDetailsModel = ArticlesDetailsModel.fromJson(response.responseData);
-    print('my id is : $id\nmy data is ${ArticlesDetailsModel.fromJson(response.responseData).data?.author}');
-
-    if (response.isSuccess) {
+    if (response.isSuccess && response.responseData != null) {
+      articlesDetailsModel =
+          ArticlesDetailsModel.fromJson(response.responseData);
       _errorMessage = null;
       isSuccess = true;
     } else {
       _errorMessage = response.errorMessage;
+      if (response.errorMessage.contains("Access denied!") == true) {
+        _errorMessage =
+            'Access denied! Your free trial has expired. Please subscribe.';
+        print('Access denied!');
+      }
     }
 
     _inProgress = false;

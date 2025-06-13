@@ -1,142 +1,155 @@
 class ProductDetailsModel {
-  bool? success;
-  int? statusCode;
-  String? message;
-  ProductModel? data;
+    ProductDetailsModel({
+        required this.success,
+        required this.statusCode,
+        required this.message,
+        required this.data,
+    });
 
-  ProductDetailsModel({this.success, this.statusCode, this.message, this.data});
+    final bool? success;
+    final int? statusCode;
+    final String? message;
+    final ProductModel? data;
 
-  ProductDetailsModel.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    statusCode = json['statusCode'];
-    message = json['message'];
-    data = json['data'] != null ? ProductModel.fromJson(json['data']) : null;
-  }
+    factory ProductDetailsModel.fromJson(Map<String, dynamic> json){ 
+        return ProductDetailsModel(
+            success: json["success"],
+            statusCode: json["statusCode"],
+            message: json["message"],
+            data: json["data"] == null ? null : ProductModel.fromJson(json["data"]),
+        );
+    }
+
 }
 
 class ProductModel {
-  String? sId;
-  String? name;
-  List<Images>? images;
-  String? description;
-  Category? category;
-  int? quantity;
-  int? sold;
-  int? discount;
-  String? faq;
-  bool? restockAlert;
-  bool? isStock;
-  String? size;
-  String? warrantyPolicy;
-  String? returnAndRefundPolicy;
-  String? replacementPolicy;
-  bool? isDeleted;
-  String? id;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
-  double? amount;
+    ProductModel({
+        required this.id,
+        required this.name,
+        required this.images,
+        required this.description,
+        required this.category,
+        required this.quantity,
+        required this.sold,
+        required this.amount,
+        required this.discount,
+        required this.faq,
+        required this.restockAlert,
+        required this.isStock,
+        required this.size,
+        required this.storeAddress,
+        required this.warrantyPolicy,
+        required this.returnAndRefundPolicy,
+        required this.replacementPolicy,
+        required this.isDeleted,
+        required this.dataId,
+        required this.createdAt,
+        required this.updatedAt,
+        required this.v,
+    });
 
-  ProductModel({
-    this.sId,
-    this.name,
-    this.images,
-    this.description,
-    this.category,
-    this.quantity,
-    this.sold,
-    this.discount,
-    this.faq,
-    this.restockAlert,
-    this.isStock,
-    this.size,
-    this.warrantyPolicy,
-    this.returnAndRefundPolicy,
-    this.replacementPolicy,
-    this.isDeleted,
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.iV,
-    this.amount,
-  });
+    final String? id;
+    final String? name;
+    final List<Images> images;
+    final String? description;
+    final Category? category;
+    final int? quantity;
+    final int? sold;
+    final double? amount;
+    final int? discount;
+    final String? faq;
+    final bool? restockAlert;
+    final bool? isStock;
+    final String? size;
+    final String? storeAddress;
+    final String? warrantyPolicy;
+    final String? returnAndRefundPolicy;
+    final String? replacementPolicy;
+    final bool? isDeleted;
+    final String? dataId;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
+    final int? v;
 
-  ProductModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    if (json['images'] != null) {
-      images = <Images>[];
-      json['images'].forEach((v) {
-        images!.add(Images.fromJson(v));
-      });
+    factory ProductModel.fromJson(Map<String, dynamic> json){ 
+        return ProductModel(
+            id: json["_id"],
+            name: json["name"],
+            images: json["images"] == null ? [] : List<Images>.from(json["images"]!.map((x) => Images.fromJson(x))),
+            description: json["description"],
+            category: json["category"] == null ? null : Category.fromJson(json["category"]),
+            quantity: json["quantity"],
+            sold: json["sold"],
+            amount: json["amount"],
+            discount: json["discount"],
+            faq: json["faq"],
+            restockAlert: json["restockAlert"],
+            isStock: json["isStock"],
+            size: json["size"],
+            storeAddress: json["storeAddress"],
+            warrantyPolicy: json["warrantyPolicy"],
+            returnAndRefundPolicy: json["returnAndRefundPolicy"],
+            replacementPolicy: json["replacementPolicy"],
+            isDeleted: json["isDeleted"],
+            dataId: json["id"],
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+            v: json["__v"],
+        );
     }
-    description = json['description'];
-    category = json['category'] != null ? Category.fromJson(json['category']) : null;
-    quantity = json['quantity'];
-    sold = json['sold'];
-    discount = json['discount'];
-    faq = json['faq'];
-    restockAlert = json['restockAlert'];
-    isStock = json['isStock'];
-    size = json['size'];
-    warrantyPolicy = json['warrantyPolicy'];
-    returnAndRefundPolicy = json['returnAndRefundPolicy'];
-    replacementPolicy = json['replacementPolicy'];
-    isDeleted = json['isDeleted'];
-    id = json['id'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
-    
-    // Handle int or double for amount
-    amount = json['amount'] != null
-        ? (json['amount'] is int
-            ? (json['amount'] as int).toDouble()
-            : json['amount'])
-        : null;
-  }
-}
 
-class Images {
-  String? key;
-  String? url;
-  String? sId;
-
-  Images({this.key, this.url, this.sId});
-
-  Images.fromJson(Map<String, dynamic> json) {
-    key = json['key'];
-    url = json['url'];
-    sId = json['_id'];
-  }
 }
 
 class Category {
-  String? sId;
-  String? title;
-  String? thumbnail;
-  bool? isDeleted;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
+    Category({
+        required this.id,
+        required this.title,
+        required this.thumbnail,
+        required this.isDeleted,
+        required this.createdAt,
+        required this.updatedAt,
+        required this.v,
+    });
 
-  Category({
-    this.sId,
-    this.title,
-    this.thumbnail,
-    this.isDeleted,
-    this.createdAt,
-    this.updatedAt,
-    this.iV,
-  });
+    final String? id;
+    final String? title;
+    final String? thumbnail;
+    final bool? isDeleted;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
+    final int? v;
 
-  Category.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    title = json['title'];
-    thumbnail = json['thumbnail'];
-    isDeleted = json['isDeleted'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
-  }
+    factory Category.fromJson(Map<String, dynamic> json){ 
+        return Category(
+            id: json["_id"],
+            title: json["title"],
+            thumbnail: json["thumbnail"],
+            isDeleted: json["isDeleted"],
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+            v: json["__v"],
+        );
+    }
+
+}
+
+class Images {
+    Images({
+        required this.key,
+        required this.url,
+        required this.id,
+    });
+
+    final String? key;
+    final String? url;
+    final String? id;
+
+    factory Images.fromJson(Map<String, dynamic> json){ 
+        return Images(
+            key: json["key"],
+            url: json["url"],
+            id: json["_id"],
+        );
+    }
+
 }

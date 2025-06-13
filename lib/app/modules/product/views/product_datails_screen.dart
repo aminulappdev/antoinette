@@ -89,7 +89,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             onPressed: () {
                               //  Navigator.pushNamed(context, CheckOutScreen.routeName,arguments: widget.productModel);
                               Navigator.pushNamed(context, CheckOutScreen.routeName,arguments: widget.productModel);
-                              print('Product id : ${widget.productModel.sId}');
+                              print('Product id : ${widget.productModel.id}');
                             }, text: 'Buy now'),
                       ),
                     ),
