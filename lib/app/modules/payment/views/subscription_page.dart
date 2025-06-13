@@ -4,6 +4,7 @@ import 'package:antoinette/app/modules/payment/controllers/payment_services.dart
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
+import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
@@ -22,13 +23,17 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-   final ProfileController profileController = Get.find<ProfileController>();
-  final SubscriptionController subscriptionController = Get.put(SubscriptionController());
-  final AllPackageController allPackageController = Get.find<AllPackageController>();
-  final MySubscriptionController mySubscriptionController = Get.find<MySubscriptionController>();
+  final ProfileController profileController = Get.find<ProfileController>();
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
+  final AllPackageController allPackageController =
+      Get.find<AllPackageController>();
+  final MySubscriptionController mySubscriptionController =
+      Get.find<MySubscriptionController>();
   final PaymentService paymentService = PaymentService();
   late String userId;
   bool isStudent = false;
+  final Map<String, bool> _isLoadingMap = {};
 
   @override
   void initState() {
@@ -38,8 +43,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     isStudent = profileController.profileData?.isStudent ?? false;
     mySubscriptionController.getMySubscriptions();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +69,24 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       child: GetBuilder<MySubscriptionController>(
                         builder: (controller) {
                           if (controller.inProgress) {
-                            return const Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
-                          final activeSubscriptions = controller.subscriptionData
-                                  ?.where(
-                                    (subscription) =>
-                                        subscription.paymentStatus == "unpaid" &&
-                                        subscription.status == "pending" &&
-                                        subscription.expiredAt.isAfter(DateTime.now()) &&
-                                        !subscription.isExpired &&
-                                        !subscription.isDeleted,
-                                  )
+                          final activeSubscriptions = controller
+                                  .subscriptionData
+                                  ?.where((subscription) =>
+                                      subscription.paymentStatus == "paid" &&
+                                      subscription.status == "confirmed" &&
+                                      subscription.expiredAt
+                                          .isAfter(DateTime.now()) &&
+                                      !subscription.isExpired &&
+                                      !subscription.isDeleted)
                                   .toList() ??
                               [];
 
                           if (activeSubscriptions.isEmpty) {
-                            return const Center(child: Text("No active subscription"));
+                            return const Center(
+                                child: Text("No active subscription"));
                           }
 
                           return ListView.builder(
@@ -90,37 +95,41 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             itemBuilder: (context, index) {
                               final subscription = activeSubscriptions[index];
                               DateTime expireDate = subscription.expiredAt;
-                              String formattedBookingDate = DateFormat('MMMM dd, yyyy').format(expireDate);
-                              int daysLeft = expireDate.difference(DateTime.now()).inDays;
-                              String daysLeftText = daysLeft > 0 ? '$daysLeft days left' : 'Expired';
+                              String formattedDate = DateFormat('MMMM dd, yyyy')
+                                  .format(expireDate);
+                              int daysLeft =
+                                  expireDate.difference(DateTime.now()).inDays;
+                              String daysLeftText = daysLeft > 0
+                                  ? '$daysLeft days left'
+                                  : 'Expired';
 
                               return Card(
                                 child: Container(
                                   width: double.infinity,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          subscription.package?.billingCycle.toLowerCase() == "monthly"
-                                              ? 'Monthly Plan'
-                                              : 'Yearly Plan',
-                                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          daysLeftText,
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          'Expiry date: $formattedBookingDate',
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        subscription.package?.billingCycle
+                                                    .toLowerCase() ==
+                                                "monthly"
+                                            ? 'Monthly Plan'
+                                            : 'Yearly Plan',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(daysLeftText,
+                                          style: const TextStyle(fontSize: 14)),
+                                      SizedBox(height: 4.h),
+                                      Text('Expiry date: $formattedDate',
+                                          style: const TextStyle(fontSize: 14)),
+                                    ],
                                   ),
                                 ),
                               );
@@ -142,87 +151,181 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       if (allPackageController.inProgress) {
                         return const Center(child: CircularProgressIndicator());
                       }
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: allPackageController.packageItemList!.length,  
-                        itemBuilder: (context, index) {
-                          final package = allPackageController.packageItemList![index];
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 16.h),
-                            padding: EdgeInsets.all(16.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(color: Colors.grey.shade300),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  package.title ?? 'Package',
-                                  style: TextStyle(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                      return GetBuilder<MySubscriptionController>(
+                          builder: (subController) {
+                        final activePackageIds = subController.subscriptionData
+                                ?.where((sub) =>
+                                    sub.paymentStatus == "paid" &&
+                                    sub.status == "confirmed" &&
+                                    sub.expiredAt.isAfter(DateTime.now()) &&
+                                    !sub.isExpired &&
+                                    !sub.isDeleted)
+                                .map((sub) => sub.package?.id)
+                                .toSet() ??
+                            {};
+
+                        final hasAnyActive = activePackageIds.isNotEmpty;
+
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                              allPackageController.packageItemList!.length,
+                          itemBuilder: (context, index) {
+                            final package =
+                                allPackageController.packageItemList![index];
+                            final isActive =
+                                activePackageIds.contains(package.sId);
+                            final isAnotherActive = hasAnyActive && !isActive;
+                            final isLoading =
+                                _isLoadingMap[package.sId ?? ''] ?? false;
+
+                            return GetBuilder<ProfileController>(
+                                builder: (controller) {
+                              final bool isStudent =
+                                  controller.profileData!.isStudent ?? false;
+                              return Container(
+                                margin: EdgeInsets.only(bottom: 16.h),
+                                padding: EdgeInsets.all(16.w),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  border:
+                                      Border.all(color: Colors.grey.shade300),
                                 ),
-                                SizedBox(height: 10.h),
-                                Text(
-                                  "₦${package.price}",
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(height: 16.h),
-                                Text(
-                                  "Features:",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15.sp,
-                                  ),
-                                ),
-                                SizedBox(height: 8.h),
-                                Column(
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: (package.description ?? []).map((feature) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(bottom: 4.h),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '• ',
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: Colors.grey.shade600,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              feature,
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: Colors.grey.shade600,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          package.title ?? 'Package',
+                                          style: TextStyle(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        isStudent
+                                            ? Container(
+                                                height: 36,
+                                                width: 36,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: AppColors
+                                                            .iconButtonThemeColor),
+                                                    shape: BoxShape.circle),
+                                                child: Icon(
+                                                  Icons.school,
+                                                  color: Colors.black,
+                                                ),
+                                              )
+                                            : Container()
+                                      ],
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    isStudent
+                                        ? Row(
+                                            children: [
+                                              Text(
+                                                "\u20A6${package.price}",
+                                                style: GoogleFonts.roboto(
+                                                    color: Colors.red,
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    decoration: TextDecoration
+                                                        .lineThrough),
                                               ),
+                                              widthBox4,
+                                              Text(
+                                                "\u20A6${package.price! / 2}",
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 16.sp,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ],
+                                          )
+                                        : Text(
+                                            "\u20A6${package.price}",
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                    SizedBox(height: 16.h),
+                                    Text(
+                                      "Features:",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15.sp),
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: (package.description ?? [])
+                                          .map((feature) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(bottom: 4.h),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text('• ',
+                                                  style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      color: Colors
+                                                          .grey.shade600)),
+                                              Expanded(
+                                                child: Text(
+                                                  feature,
+                                                  style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      color:
+                                                          Colors.grey.shade600),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                    SizedBox(height: 16.h),
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        GradientElevatedButton(
+                                          onPressed: (isActive ||
+                                                  isLoading ||
+                                                  isAnotherActive)
+                                              ? () {} // Do nothing
+                                              : () =>
+                                                  buyNowBTN(package.sId ?? ''),
+                                          text: isActive
+                                              ? 'Active'
+                                              : isAnotherActive
+                                                  ? 'Already Subscribed'
+                                                  : 'Buy Now',
+                                        ),
+                                        if (isLoading)
+                                          const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                              strokeWidth: 2,
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 16.h),
-                                GradientElevatedButton(
-                                  onPressed: () => buyNowBTN(package.sId ?? ''),
-                                  text:  'Buy Now',
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
+                              );
+                            });
+                          },
+                        );
+                      });
                     }),
                     SizedBox(height: 20.h),
                   ],
@@ -236,6 +339,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   Future<void> buyNowBTN(String packageId) async {
+    if (_isLoadingMap[packageId] ?? false) return;
+
+    setState(() {
+      _isLoadingMap[packageId] = true;
+    });
+
     try {
       final bool isSuccess =
           await subscriptionController.getSubcription(userId, packageId);
@@ -263,6 +372,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     } catch (e) {
       if (mounted) {
         showSnackBarMessage(context, "An error occurred: $e", true);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingMap[packageId] = false;
+        });
       }
     }
   }

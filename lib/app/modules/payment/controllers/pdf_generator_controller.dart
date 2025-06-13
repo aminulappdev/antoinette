@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,7 +19,6 @@ class PdfController extends GetxController {
       final primaryColor = PdfColors.deepPurple; // Custom purple color
       final borderColor = PdfColors.grey300; // Subtle border color
       final textColor = PdfColors.black; // Main text color
-      final secondaryColor = PdfColors.green600; // For "Secured by Paystack"
       final ByteData imageData = await DefaultAssetBundle.of(Get.context!).load(AssetsPath.appLogo);
       final Uint8List imageBytes = imageData.buffer.asUint8List();
       final robotoBold = await PdfGoogleFonts.robotoBold();
