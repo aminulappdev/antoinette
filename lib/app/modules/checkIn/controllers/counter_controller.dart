@@ -40,7 +40,7 @@ class CountdownController extends GetxController {
   void showTimeUpDialog() {
     Get.defaultDialog(
       title: "Check-In Time's Up!",
-      middleText: "Are you OK?",
+      middleText: "Are you Safe?",
       barrierDismissible: false,
       actions: [
         GestureDetector(

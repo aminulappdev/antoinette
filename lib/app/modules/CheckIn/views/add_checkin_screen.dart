@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_controller.dart';
@@ -79,7 +81,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                       style: GoogleFonts.poppins(fontSize: 15.sp)),
                 ],
               ),
-              Container(
+              SizedBox(
                 height: 230.h,
                 child: CupertinoTimerPicker(
                   mode: CupertinoTimerPickerMode.hms,

@@ -40,7 +40,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     super.initState();
     userId = profileController.profileData?.id ?? '';
     allPackageController.getAllPackage();
-    isStudent = profileController.profileData?.isStudent ?? false;
+    isStudent =
+        profileController.profileData!.studentVerify?.status == 'approved'
+            ? true
+            : false;
     mySubscriptionController.getMySubscriptions();
   }
 
@@ -183,8 +186,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
                             return GetBuilder<ProfileController>(
                                 builder: (controller) {
-                              final bool isStudent =
-                                  controller.profileData!.isStudent ?? false;
+                              final bool isStudent = controller
+                                          .profileData!.studentVerify?.status ==
+                                      'approved'
+                                  ? true
+                                  : false;
                               return Container(
                                 margin: EdgeInsets.only(bottom: 16.h),
                                 padding: EdgeInsets.all(16.w),
@@ -292,33 +298,78 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                       }).toList(),
                                     ),
                                     SizedBox(height: 16.h),
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        GradientElevatedButton(
-                                          onPressed: (isActive ||
-                                                  isLoading ||
-                                                  isAnotherActive)
-                                              ? () {} // Do nothing
-                                              : () =>
-                                                  buyNowBTN(package.sId ?? ''),
-                                          text: isActive
-                                              ? 'Active'
-                                              : isAnotherActive
-                                                  ? 'Already Subscribed'
-                                                  : 'Buy Now',
-                                        ),
-                                        if (isLoading)
-                                          const SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                              strokeWidth: 2,
-                                            ),
-                                          ),
-                                      ],
-                                    ),
+                                    isActive
+                                        ? Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Opacity(
+                                                opacity: 0.5,
+                                                child: GradientElevatedButton(
+                                                    onPressed: () {},
+                                                    text: 'Already Subscribed'),
+                                              ),
+                                              if (isLoading)
+                                                const SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Colors.white,
+                                                    strokeWidth: 2,
+                                                  ),
+                                                ),
+                                            ],
+                                          )
+                                        : isAnotherActive
+                                            ? Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  Opacity(
+                                                     opacity: 0.5,
+                                                    child: GradientElevatedButton(
+                                                        onPressed: () {},
+                                                        text: 'Another plan actived'),
+                                                  ),
+                                                  if (isLoading)
+                                                    const SizedBox(
+                                                      height: 20,
+                                                      width: 20,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: Colors.white,
+                                                        strokeWidth: 2,
+                                                      ),
+                                                    ),
+                                                ],
+                                              )
+                                            : Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  GradientElevatedButton(
+                                                    onPressed: (isActive ||
+                                                            isLoading ||
+                                                            isAnotherActive)
+                                                        ? () {} // Do nothing
+                                                        : () => buyNowBTN(
+                                                            package.sId ?? ''),
+                                                    text: isActive
+                                                        ? 'Active'
+                                                        : isAnotherActive
+                                                            ? 'Already Subscribed'
+                                                            : 'Buy Now',
+                                                  ),
+                                                  if (isLoading)
+                                                    const SizedBox(
+                                                      height: 20,
+                                                      width: 20,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: Colors.white,
+                                                        strokeWidth: 2,
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
                                   ],
                                 ),
                               );

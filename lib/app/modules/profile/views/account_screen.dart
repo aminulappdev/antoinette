@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class AccountScreen extends StatefulWidget {
   static const String routeName = '/profile-account-screen';
@@ -49,6 +50,17 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GetBuilder<ProfileController>(builder: (controller) {
+        final isStudent =
+            controller.profileData?.studentVerify?.status == 'approved'
+                ? true
+                : false;
+        // Format the expireAt date
+        String formattedDate = '';
+        if (controller.profileData?.studentVerify?.expireAt != null) {
+          final expireAt = controller.profileData!.studentVerify!.expireAt;
+          formattedDate = DateFormat('dd MMM yyyy').format(expireAt!);
+        }
+
         return Padding(
           padding: EdgeInsets.all(16.0.h),
           child: Form(
@@ -58,78 +70,118 @@ class _AccountScreenState extends State<AccountScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   heightBox24,
-                  CustomAppBar(name: 'Update profile'),
+                  CustomAppBar(name: 'Your Details'),
                   heightBox12,
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Stack(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            radius: 25.r,
-                            child: image != null
-                                ? ClipOval(
-                                    child: Image.file(
-                                      image!,
-                                      width: 50.h,
-                                      height: 50.h,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: controller.profileData
-                                                        ?.photoUrl ==
-                                                    null
-                                                ? AssetImage(AssetsPath.demo)
-                                                : NetworkImage(
-                                                    '${controller.profileData?.photoUrl}'),
-                                            fit: BoxFit.fill)),
-                                  ),
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 25.r,
+                                child: image != null
+                                    ? ClipOval(
+                                        child: Image.file(
+                                          image!,
+                                          width: 50.h,
+                                          height: 50.h,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 50,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                image: controller.profileData
+                                                            ?.photoUrl ==
+                                                        null
+                                                    ? AssetImage(
+                                                        AssetsPath.demo)
+                                                    : NetworkImage(
+                                                        '${controller.profileData?.photoUrl}'),
+                                                fit: BoxFit.fill)),
+                                      ),
+                              ),
+                              Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: InkWell(
+                                    onTap: () {
+                                      _imagePickerHelper.showAlertDialog(
+                                          context, (File pickedImage) {
+                                        setState(() {
+                                          image = pickedImage;
+                                        });
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            AppColors.iconButtonThemeColor,
+                                        radius: 12.r,
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                          size: 16.h,
+                                        )),
+                                  ))
+                            ],
                           ),
-                          Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: InkWell(
-                                onTap: () {
-                                  _imagePickerHelper.showAlertDialog(context,
-                                      (File pickedImage) {
-                                    setState(() {
-                                      image = pickedImage;
-                                    });
-                                  });
-                                },
-                                child: CircleAvatar(
-                                    backgroundColor:
-                                        AppColors.iconButtonThemeColor,
-                                    radius: 12.r,
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: Colors.white,
-                                      size: 16.h,
-                                    )),
-                              ))
+                          widthBox8,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              isStudent
+                                  ? Row(
+                                      children: [
+                                        Text(
+                                          '${controller.profileData?.name}',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14.sp),
+                                        ),
+                                        widthBox4,
+                                        Icon(
+                                          size: 16,
+                                          Icons.verified,
+                                          color: Colors.green,
+                                        )
+                                      ],
+                                    )
+                                  : Text(
+                                      '${controller.profileData?.name}',
+                                      style:
+                                          GoogleFonts.poppins(fontSize: 14.sp),
+                                    ),
+                              Text(
+                                '${controller.profileData?.email}',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 12.sp, color: Color(0xff626262)),
+                              ),
+                            ],
+                          )
                         ],
                       ),
-                      widthBox8,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${controller.profileData?.name}',
-                            style: GoogleFonts.poppins(fontSize: 14.sp),
-                          ),
-                          Text(
-                            '${controller.profileData?.email}',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp, color: Color(0xff626262)),
-                          ),
-                        ],
-                      )
+                      isStudent
+                          ? Container(
+                              height: 36.h,
+                              width: 120.w,
+                              decoration: BoxDecoration(
+                                  color: AppColors.iconButtonThemeColor
+                                      .withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(5.r)),
+                              child: Center(
+                                child: Text(
+                                  'Validity: $formattedDate',
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 10.sp, color: Colors.black),
+                                ),
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                   heightBox12,
@@ -201,7 +253,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             onPressed: controller.inProgress
                                 ? () {}
                                 : () => onTapToNextButton(),
-                            text: controller.inProgress ? '' : 'Save',
+                            text: controller.inProgress ? '' : 'Update',
                           ),
                           if (controller.inProgress)
                             SizedBox(
@@ -231,7 +283,7 @@ class _AccountScreenState extends State<AccountScreen> {
         isNameUpdate: true,
         name: nameCtrl.text,
         number: numberCtrl.text,
-        image: image, // 🟢 এটুকু যোগ করো
+        image: image,
       );
 
       if (isSuccess) {
@@ -239,15 +291,9 @@ class _AccountScreenState extends State<AccountScreen> {
           Get.find<ProfileController>().getProfileData();
           showSnackBarMessage(context, 'Profile updated');
           Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, updateProfileController.errorMessage!, true);
-          }
         }
       } else {
         if (mounted) {
-          // print('Error show ----------------------------------');
           showSnackBarMessage(
               context, updateProfileController.errorMessage!, true);
         }

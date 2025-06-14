@@ -16,7 +16,7 @@ class PanicAlertDialog extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: Center(
-          child: Text('Are you OK?',
+          child: Text('Are you Safe?',
               style: GoogleFonts.poppins(fontSize: 20))),
       actions: [
         GestureDetector(

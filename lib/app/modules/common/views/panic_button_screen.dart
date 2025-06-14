@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, avoid_print
+
 import 'dart:async';
 import 'package:antoinette/app/modules/common/controllers/pannic_controller.dart';
 import 'package:antoinette/app/modules/common/views/panic_alert_dialoge.dart';

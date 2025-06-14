@@ -25,6 +25,7 @@ class ProfileModel {
 class ProfileData {
     ProfileData({
         required this.journalVerification,
+        required this.studentVerify,
         required this.id,
         required this.name,
         required this.email,
@@ -36,13 +37,13 @@ class ProfileData {
         required this.age,
         required this.status,
         required this.documents,
-        required this.isStudent,
         required this.dataId,
         required this.createdAt,
         required this.updatedAt,
     });
 
     final JournalVerification? journalVerification;
+    final StudentVerify? studentVerify;
     final String? id;
     final String? name;
     final String? email;
@@ -53,8 +54,7 @@ class ProfileData {
     final dynamic photoUrl;
     final dynamic age;
     final String? status;
-    final dynamic documents;
-    final bool? isStudent;
+    final String? documents;
     final String? dataId;
     final DateTime? createdAt;
     final DateTime? updatedAt;
@@ -62,6 +62,7 @@ class ProfileData {
     factory ProfileData.fromJson(Map<String, dynamic> json){ 
         return ProfileData(
             journalVerification: json["journalVerification"] == null ? null : JournalVerification.fromJson(json["journalVerification"]),
+            studentVerify: json["studentVerify"] == null ? null : StudentVerify.fromJson(json["studentVerify"]),
             id: json["_id"],
             name: json["name"],
             email: json["email"],
@@ -73,7 +74,6 @@ class ProfileData {
             age: json["age"],
             status: json["status"],
             documents: json["documents"],
-            isStudent: json["isStudent"],
             dataId: json["id"],
             createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
             updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
@@ -110,6 +110,24 @@ class FaceLock {
     factory FaceLock.fromJson(Map<String, dynamic> json){ 
         return FaceLock(
             key: json["key"],
+        );
+    }
+
+}
+
+class StudentVerify {
+    StudentVerify({
+        required this.status,
+        required this.expireAt,
+    });
+
+    final String? status;
+    final DateTime? expireAt;
+
+    factory StudentVerify.fromJson(Map<String, dynamic> json){ 
+        return StudentVerify(
+            status: json["status"],
+            expireAt: DateTime.tryParse(json["expireAt"] ?? ""),
         );
     }
 

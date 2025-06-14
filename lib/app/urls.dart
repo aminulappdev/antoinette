@@ -1,6 +1,6 @@
 class Urls {
- static const String _baseUrl = 'http://172.252.13.83:7001/api/v1';
-  //  static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
+ // static const String _baseUrl = 'http://172.252.13.83:7001/api/v1';
+   static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
 
  static const String socketUrl = 'http://172.252.13.74:4001/';
     // static const String socketUrl = 'http://192.168.10.144:4001/';
