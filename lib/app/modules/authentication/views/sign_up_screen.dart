@@ -7,6 +7,7 @@ import 'package:antoinette/app/modules/authentication/views/verify_email_screen.
 import 'package:antoinette/app/modules/authentication/widgets/agree_condition_widget.dart';
 import 'package:antoinette/app/modules/authentication/widgets/footer_section.dart';
 import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart';
+import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/image_picker.dart';
@@ -250,9 +251,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Add your identification (JPG, JPEG, PNG)',style: TextStyle(fontSize: 10.sp),),
+                                    Text(
+                                      'Add your identification (JPG, JPEG, PNG)',
+                                      style: TextStyle(fontSize: 10.sp),
+                                    ),
                                     widthBox4,
-                                    Icon(Icons.upload,size: 20,)
+                                    Icon(
+                                      Icons.upload,
+                                      size: 20,
+                                    )
                                   ],
                                 )),
                               ),
@@ -344,8 +351,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (isSuccess) {
         if (mounted) {
           showSnackBarMessage(context, 'New user created');
-          Navigator.pushNamed(context, VerifyEmailScreen.routeName,
-              arguments: signUpController.token);
+          isStudentChecked
+              ? Navigator.pushNamed(context, MainButtonNavbarScreen.routeName)
+              : Navigator.pushNamed(context, VerifyEmailScreen.routeName,
+                  arguments: signUpController.token);
         } else {
           if (mounted) {
             showSnackBarMessage(context, signUpController.errorMessage!, true);
