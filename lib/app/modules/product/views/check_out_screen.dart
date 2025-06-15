@@ -41,9 +41,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   String? selectedShippingMethod = 'SD';
   String? deliveryMethod = 'Standard Delivery';
 
-  double price = 0.0;
-  double totalPrice = 0.0;
-  double mainTotalPrice = 0.0;
+  dynamic price = 0.0;
+  dynamic totalPrice = 0.0;
+  dynamic mainTotalPrice = 0.0;
   int discount = 0;
   int item = 1;
   double deliveryCharge = 0.0;

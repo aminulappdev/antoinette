@@ -55,7 +55,7 @@ class ProductModel {
     final Category? category;
     final int? quantity;
     final int? sold;
-    final double? amount;
+    final dynamic amount;
     final int? discount;
     final String? faq;
     final bool? restockAlert;
