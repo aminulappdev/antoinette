@@ -151,15 +151,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Sms sent all trusted contact');
+        // showSnackBarMessage(context, 'Sms sent all trusted contact');
         setState(() {
           allNotificationController.getNotificationList();
         });      
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(
-            context, changeNotificationController.errorMessage!, true);
+        // showSnackBarMessage(
+        //     context, changeNotificationController.errorMessage!, true);
       }
     }
   }

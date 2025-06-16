@@ -59,7 +59,7 @@ class UpdateProfileController extends GetxController {
       // ✅ Set 'data' field with JSON-encoded string
       Map<String, dynamic> jsonFields = {
         "name": isNameUpdate == true ? name : profileController.profileData?.name ?? name,
-        "contractNo": number,
+        "contactNumber": number,
       };
 
       if (address != null && address.isNotEmpty) {
@@ -104,6 +104,7 @@ class UpdateProfileController extends GetxController {
       var decodedResponse = jsonDecode(responseBody);
 
       if (streamedResponse.statusCode == 200) {
+         print('response data is : ${decodedResponse}');
         _errorMessage = null;
         isSuccess = true;
       } else {

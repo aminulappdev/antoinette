@@ -41,7 +41,9 @@ class _AccountScreenState extends State<AccountScreen> {
       await profileController.getProfileData();
 
       nameCtrl.text = profileController.profileData?.name ?? '';
-      numberCtrl.text = profileController.profileData?.contactNumber ?? '';
+      numberCtrl.text = profileController.profileData?.contactNumber ?? 'No data';
+      print('Number eta : ${profileController.profileData?.contactNumber}');
+      
       setState(() {}); // If needed
     });
   }
@@ -238,6 +240,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   heightBox4,
                   TextFormField(
+                    keyboardType: TextInputType.number,
+                    maxLength: 15,
                     controller: numberCtrl,
                     decoration: InputDecoration(),
                   ),

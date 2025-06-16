@@ -497,7 +497,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         amount: totalPrice,
         discount: discount.toString(),
         userId: userId,
-        deliveryCharge: deliveryCharge.toInt(),
+        deliveryCharge: deliveryCharge.toDouble(),
         billingName: shippingInfo?['full_name']?.toString() ?? '',
         streetAddress: shippingInfo?['street_address']?.toString() ?? '',
         phoneNumber: shippingInfo?['phone_number']?.toString() ?? '',

@@ -300,7 +300,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _scrollToEnd();
           });
-          showSnackBarMessage(context, 'Message sent successfully');
+          // showSnackBarMessage(context, 'Message sent successfully');
         }
       } else {
         if (mounted) {

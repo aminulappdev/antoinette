@@ -18,8 +18,7 @@ class HealingNoteScreen extends StatefulWidget {
 
 class _HealingNoteScreenState extends State<HealingNoteScreen> {
   final SocketService socketService = Get.put(SocketService());
-  final FriendController friendController =
-      Get.put(FriendController()); // Get the controller
+  final FriendController friendController = Get.put(FriendController());
   final TextEditingController searcCtrl = TextEditingController();
   String search = '';
 
@@ -27,7 +26,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
   void initState() {
     super.initState();
     socketService.init();
-    friendController.getAllFriends(); // Ensure data is loaded when screen is initialized
+    friendController.getAllFriends();
   }
 
   @override
@@ -40,8 +39,6 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox24,
-              Center(child: Text('Healing notes',style: TextStyle(fontSize: 17.5, fontWeight: FontWeight.w500),)),
-              heightBox10,
               Row(
                 children: [
                   Expanded(
@@ -100,7 +97,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                     }
 
                     if (controller.friendList.isEmpty) {
-                      return const Center(child: Text('No Therapist Found'));
+                      return const Center(child: Text('No Friends Found'));
                     }
 
                     return ListView.builder(
@@ -109,15 +106,28 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                       itemBuilder: (context, index) {
                         var friend = controller.friendList[index];
                         var chat = friend.chat;
-                        var name = chat?.participants?[0].name ?? 'Unknown';
-                        var photoUrl = chat?.participants?[0].photoUrl ?? '';
+
+                        // Add null and empty checks for participants
+                        var name = chat?.participants?.isNotEmpty == true
+                            ? chat!.participants![0].name ?? 'Unknown'
+                            : 'Unknown';
+                        var photoUrl = chat?.participants?.isNotEmpty == true
+                            ? chat!.participants![0].photoUrl ?? ''
+                            : '';
                         var messageText = friend.message?.text ?? 'No Message';
                         var chatId = chat?.id ?? '';
-                        var receiverId = chat?.participants?[0].id ?? '';
-                        var receiverName = chat?.participants?[0].name ?? 'Unknown';
-                        var receiverImage = chat?.participants?[0].photoUrl ?? '';
+                        var receiverId = chat?.participants?.isNotEmpty == true
+                            ? chat!.participants![0].id ?? ''
+                            : '';
+                        var receiverName = chat?.participants?.isNotEmpty == true
+                            ? chat!.participants![0].name ?? 'Unknown'
+                            : 'Unknown';
+                        var receiverImage = chat?.participants?.isNotEmpty == true
+                            ? chat!.participants![0].photoUrl ?? ''
+                            : '';
 
-                        if (searcCtrl.text.isEmpty || name.toLowerCase().contains(searcCtrl.text.toLowerCase())) {
+                        if (searcCtrl.text.isEmpty ||
+                            name.toLowerCase().contains(searcCtrl.text.toLowerCase())) {
                           return Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: GestureDetector(
@@ -145,10 +155,15 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                                         width: 50.w,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(8),
-                                          image: DecorationImage(
-                                            image: NetworkImage(photoUrl),
-                                            fit: BoxFit.fill,
-                                          ),
+                                          image: photoUrl.isNotEmpty
+                                              ? DecorationImage(
+                                                  image: NetworkImage(photoUrl),
+                                                  fit: BoxFit.fill,
+                                                )
+                                              : const DecorationImage(
+                                                  image: AssetImage('assets/placeholder_image.png'),
+                                                  fit: BoxFit.fill,
+                                                ),
                                         ),
                                       ),
                                       widthBox8,
@@ -160,15 +175,17 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                                             Text(
                                               name,
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w500),
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                             heightBox12,
                                             Text(
                                               messageText,
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w400),
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                              ),
                                             ),
                                           ],
                                         ),

@@ -36,10 +36,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    profileController.getProfileData();
-    box.write('user-name', profileController.profileModel?.data?.name);
-    allSessionController.getSessionList();
-    // No need to call getProductList; controller's onInit handles it
+    // Defer data fetching until after the build phase
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await profileController.getProfileData();
+      // Only write to storage if profile data is available
+      if (profileController.profileModel?.data?.name != null) {
+        box.write('user-name', profileController.profileModel!.data!.name);
+      }
+      await allSessionController.getSessionList();
+    });
   }
 
   String getGreeting() {
@@ -87,6 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
           await allProductController.refreshProducts();
           await allSessionController.getSessionList();
           await profileController.getProfileData();
+          // Update storage after refresh
+          if (profileController.profileModel?.data?.name != null) {
+            box.write('user-name', profileController.profileModel!.data!.name);
+          }
         },
         child: SingleChildScrollView(
           child: GetBuilder<ProfileController>(builder: (controller) {
@@ -99,7 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomePageHeader(
                     circleText: controller.inProgress
                         ? ''
-                        : '${controller.profileData?.name?[0]}',
+                        : controller.profileData?.name?.isNotEmpty == true
+                            ? controller.profileData!.name![0]
+                            : '',
                     onTapNotification: () {
                       Navigator.pushNamed(context, NotificationScreen.routeName);
                     },
@@ -109,7 +120,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     time: getGreeting(),
                     name: controller.inProgress
                         ? ''
-                        : '${controller.profileData?.name ?? ''} 👋',
+                        : controller.profileData?.name?.isNotEmpty == true
+                            ? '${controller.profileData!.name} 👋'
+                            : 'User 👋',
                   ),
                   Padding(
                     padding:

@@ -17,22 +17,17 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  final AllProductController allProductController = Get.find<AllProductController>();
+  final AllProductController allProductController =
+      Get.find<AllProductController>();
   final TextEditingController searchController = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(_loadMoreData);
+
     // Initial fetch
     allProductController.fetchAllProducts(null);
-  }
-
-  void _loadMoreData() {
-    if (scrollController.position.extentAfter < 500 && !allProductController.inProgress) {
-      allProductController.fetchAllProducts(null); // Trigger fetch more data
-    }
   }
 
   void _onSearch(String query) {
@@ -111,14 +106,17 @@ class _ProductScreenState extends State<ProductScreen> {
             heightBox12,
             Expanded(
               child: Obx(() {
-                if (allProductController.inProgress && allProductController.allProductsList.isEmpty) {
+                if (allProductController.inProgress &&
+                    allProductController.allProductsList.isEmpty) {
                   return Center(child: CircularProgressIndicator());
                 }
                 final filteredList = searchController.text.isEmpty
                     ? allProductController.allProductsList
                     : allProductController.allProductsList
                         .where((product) =>
-                            product.name?.toLowerCase().contains(searchController.text.toLowerCase()) ?? false)
+                            product.name?.toLowerCase().contains(
+                                searchController.text.toLowerCase()) ??
+                            false)
                         .toList();
                 if (filteredList.isEmpty && !allProductController.inProgress) {
                   return Center(
