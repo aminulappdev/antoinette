@@ -54,7 +54,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
     senderId = profileController.profileModel!.data!.id!;
     print('Sender ID: $senderId');
 
-    socketService.init(); // Initialize the socket connection
+    socketService.init();
     updatesenderId = '67dfad3574eb1ff506ea4f82';
     updatereceiverId = widget.receiverId;
 
