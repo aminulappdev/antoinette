@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "281937422333",
-    "project_id": "antoinette-98252",
-    "storage_bucket": "antoinette-98252.firebasestorage.app"
+    "project_number": "300445513181",
+    "project_id": "dear-henrietta",
+    "storage_bucket": "dear-henrietta.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:281937422333:android:1a3ef71161721576b41b94",
+        "mobilesdk_app_id": "1:300445513181:android:52f28dce93cc7d9acbb234",
         "android_client_info": {
           "package_name": "com.antoinette.antoinette"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAjnMZ4fcwDkiLRLyVOULORih2AjcDHZiM"
+          "current_key": "AIzaSyAxPfKGB4s5lgIRE-jtKdfdt4ufU-HarLM"
         }
       ],
       "services": {

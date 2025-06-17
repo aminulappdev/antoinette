@@ -61,5 +61,12 @@
 	<key>GIDClientID</key>
 	<!-- Replace with CLIENT_ID from GoogleService-Info.plist -->
 	<string>281937422333-abcdefg.apps.googleusercontent.com</string>
+	<!-- Added Privacy Usage Descriptions -->
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to allow you to capture photos for your profile or events within the app.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need access to your location to provide location-based services, such as finding nearby events or services, even when the app is in use or running in the background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location to provide location-based services, such as finding nearby events or services, while the app is in use.</string>
 </dict>
 </plist>
