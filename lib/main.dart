@@ -11,15 +11,16 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
-  // ignore: unused_local_variable
-  SocketService socketService = Get.put(SocketService());
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); 
+  await Firebase.initializeApp(); // Firebase initialized first
   await GetStorage.init();
+
+  SocketService socketService = Get.put(SocketService()); // Now safe to use
   await socketService.init();
+
   runApp(const AntoinetteApp());
 }
- 
+
 class AntoinetteApp extends StatelessWidget {
   const AntoinetteApp({super.key});
 
@@ -28,23 +29,23 @@ class AntoinetteApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       minTextAdapt: true,
-      splitScreenMode: true, 
-      builder: (context, child) { 
+      splitScreenMode: true,
+      builder: (context, child) {
         return GetMaterialApp(
-  initialBinding: ControllerBinder(),
-  debugShowCheckedModeBanner: false,
-  title: 'antoinette',
-  theme: ThemeData(
-    primaryColor: Color(0xffA57EA5).withOpacity(0.1),
-    scaffoldBackgroundColor: AppColors.primaryBackgroundColor,
-    inputDecorationTheme: inputDecoration(),
-    useMaterial3: true,
-    fontFamily: 'Poppins',
-    textTheme: TextTheme(),
-  ),
-  initialRoute: AppRoutes.initialRoute, // Line 31
-  routes: AppRoutes.appRoutes,
-);
+          initialBinding: ControllerBinder(),
+          debugShowCheckedModeBanner: false,
+          title: 'antoinette',
+          theme: ThemeData(
+            primaryColor: Color(0xffA57EA5).withOpacity(0.1),
+            scaffoldBackgroundColor: AppColors.primaryBackgroundColor,
+            inputDecorationTheme: inputDecoration(),
+            useMaterial3: true,
+            fontFamily: 'Poppins',
+            textTheme: TextTheme(),
+          ),
+          initialRoute: AppRoutes.initialRoute,
+          routes: AppRoutes.appRoutes,
+        );
       },
     );
   }
