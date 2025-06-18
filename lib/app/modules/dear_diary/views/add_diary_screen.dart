@@ -175,6 +175,9 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                   ),
                 ),
                 heightBox4,
+                Center(
+                  child: Text('Private & encrypted',style: GoogleFonts.poppins(fontSize: 10.sp,color: Colors.grey),),
+                ),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Column(

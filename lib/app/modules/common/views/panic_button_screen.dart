@@ -165,7 +165,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
           setState(() {
             isPressed = true; // Set isPressed only on success
           });
-          showSnackBarMessage(context, 'Sms sent all trusted contact');
+          showSnackBarMessage(context, 'Sms sent to all trusted contact');
           // Navigator.pop(context);
         }
       } else {

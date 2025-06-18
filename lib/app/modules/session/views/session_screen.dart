@@ -2,6 +2,7 @@ import 'package:antoinette/app/modules/session/controllers/all_session_controlle
 import 'package:antoinette/app/modules/session/controllers/session_details_controller.dart';
 import 'package:antoinette/app/modules/session/views/session_details.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
+import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _SessionScreenState extends State<SessionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              heightBox20,
+              heightBox24,
               Row(
                 children: [
                   GestureDetector(
@@ -111,6 +112,17 @@ class _SessionScreenState extends State<SessionScreen> {
                   ),
                 ],
               ),
+               heightBox8,
+              Container(
+                height: 180,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  image: DecorationImage(
+                      image: AssetImage(AssetsPath.womenBookRead),
+                      fit: BoxFit.fill),
+                ),
+              ),
               heightBox12,
               Align(
                 alignment: Alignment.bottomLeft,
@@ -121,7 +133,7 @@ class _SessionScreenState extends State<SessionScreen> {
                     style: GoogleFonts.poppins(fontSize: 20),
                   ),
                 ),
-              ),
+              ),          
               heightBox12,
               GetBuilder<AllSessionController>(builder: (controller) {
                 if (controller.inProgress && controller.page == 1) {
@@ -189,7 +201,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   color: Colors.green),
                                             ),
                                             Text(
-                                              'Per session: ${controller.allProductList[index].fee ?? 0}₦',
+                                              'Per session: ₦${controller.allProductList[index].fee ?? 0}',
                                               style: GoogleFonts.roboto(
                                                   fontSize: 16.sp,
                                                   color: Colors.white),
@@ -276,7 +288,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                               heightBox50,
                                               heightBox30,
                                               Text(
-                                                'Per session: ${controller.allProductList[index].fee ?? 0}₦',
+                                                'Per session: ₦${controller.allProductList[index].fee ?? 0}',
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 12.sp,
                                                     color: Colors.white),
@@ -303,7 +315,10 @@ class _SessionScreenState extends State<SessionScreen> {
                                                   maxLines: 2,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  controller.allProductList[index].title ?? '',
+                                                  controller
+                                                          .allProductList[index]
+                                                          .title ??
+                                                      '',
                                                   style: GoogleFonts.poppins(
                                                       fontSize: 12.sp,
                                                       color: Colors.black,
@@ -347,7 +362,9 @@ class _SessionScreenState extends State<SessionScreen> {
     } else {
       if (mounted) {
         showSnackBarMessage(
-            context, sessionDetailsController.errorMessage ?? "Something went wrong", true);
+            context,
+            sessionDetailsController.errorMessage ?? "Something went wrong",
+            true);
       }
     }
   }

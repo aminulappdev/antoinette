@@ -159,7 +159,7 @@ class PdfController extends GetxController {
                             ),
                           ),
                           pw.Text(
-                            '₦$price',
+                            '$price₦',
                             style: pw.TextStyle(
                               fontSize: 14,
                               font: robotoBold, // Use Roboto Bold font

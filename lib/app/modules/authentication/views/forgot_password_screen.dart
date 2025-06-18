@@ -44,7 +44,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               AuthHeaderText(
                 title: 'No worries!',
                 subtitle:
-                    'Enter your registered email address or mobile number and we’ll send you instructions to reset your password. Let’s get you back on track quickly and securely!"',
+                    'Enter your registered email address or mobile number and we’ll send you instructions to reset your password. Let’s get you back on track quickly and securely!',
                 titleFontSize: 15,
                 subtitleFontSize: 12,
                 sizeBoxHeight: 400,

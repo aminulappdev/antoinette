@@ -8,6 +8,7 @@ import 'package:antoinette/app/modules/authentication/widgets/agree_condition_wi
 import 'package:antoinette/app/modules/authentication/widgets/footer_section.dart';
 import 'package:antoinette/app/modules/authentication/widgets/welcome_text.dart';
 import 'package:antoinette/app/modules/common/views/main_bottom_nav_bar.dart';
+import 'package:antoinette/app/modules/profile/controllers/content_controller.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/image_picker.dart';
@@ -35,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   SignUpController signUpController = Get.put(SignUpController());
   final StudentSignUpController studentSignUpController =
       Get.find<StudentSignUpController>();
+  
 
   File? image;
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
@@ -48,6 +50,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showButton = !showButton;
     });
   }
+
+  @override
+  
 
   @override
   Widget build(BuildContext context) {
@@ -180,6 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                         // ignore: curly_braces_in_flow_control_structures
                         else if (value.length < 6)
+                          // ignore: curly_braces_in_flow_control_structures
                           return 'Password must be at least 6 characters';
                         return null;
                       },

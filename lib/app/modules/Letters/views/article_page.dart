@@ -415,7 +415,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Maybe Late',
+                        'Maybe Later',
                         style: TextStyle(
                             color: const Color(0xff8C543F), fontSize: 14.sp),
                       ),
