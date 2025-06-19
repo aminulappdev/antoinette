@@ -1,6 +1,7 @@
 import 'package:antoinette/app/modules/product/controllers/all_product_controller.dart';
 import 'package:antoinette/app/modules/product/widgets/product_card.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
+import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,9 +26,10 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
-
-    // Initial fetch
-    allProductController.fetchAllProducts(null);
+    // Defer fetch until after the build phase
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      allProductController.fetchAllProducts(null);
+    });
   }
 
   void _onSearch(String query) {
@@ -47,7 +49,7 @@ class _ProductScreenState extends State<ProductScreen> {
               children: [
                 if (widget.shouldBackButton)
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Get.back(), // Use Get.back() for navigation
                     child: CircleAvatar(
                       backgroundColor: Theme.of(context).primaryColor,
                       radius: 24.r,
@@ -79,11 +81,15 @@ class _ProductScreenState extends State<ProductScreen> {
                           child: TextFormField(
                             controller: searchController,
                             onChanged: _onSearch,
+                            textAlignVertical: TextAlignVertical
+                                .center, // Centers the text vertically
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.zero,
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 18.h,
+                                  horizontal: 0), // Adjust vertical padding
                               hintText: 'Search products...',
                               hintStyle: GoogleFonts.poppins(fontSize: 14.sp),
                             ),
@@ -94,6 +100,18 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                 ),
               ],
+            ),
+            heightBox12,
+            heightBox8,
+            Container(
+              height: 180,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: DecorationImage(
+                    image: AssetImage(AssetsPath.therapyHeader),
+                    fit: BoxFit.fill),
+              ),
             ),
             heightBox12,
             SizedBox(
@@ -121,7 +139,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 if (filteredList.isEmpty && !allProductController.inProgress) {
                   return Center(
                     child: Text(
-                      'Data session available',
+                      'No products available',
                       style: GoogleFonts.poppins(fontSize: 16.sp),
                     ),
                   );

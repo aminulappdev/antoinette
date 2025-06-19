@@ -111,18 +111,7 @@ class _SessionScreenState extends State<SessionScreen> {
                     ),
                   ),
                 ],
-              ),
-               heightBox8,
-              Container(
-                height: 180,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                      image: AssetImage(AssetsPath.therapyHeader),
-                      fit: BoxFit.fill),
-                ),
-              ),
+              ),           
               heightBox12,
               Align(
                 alignment: Alignment.bottomLeft,
