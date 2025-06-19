@@ -119,7 +119,7 @@ class _SessionScreenState extends State<SessionScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   image: DecorationImage(
-                      image: AssetImage(AssetsPath.womenBookRead),
+                      image: AssetImage(AssetsPath.therapyHeader),
                       fit: BoxFit.fill),
                 ),
               ),

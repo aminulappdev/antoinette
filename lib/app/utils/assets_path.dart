@@ -20,6 +20,8 @@ class AssetsPath {
   static const String demo = '$imagePath/demo.jpg';
   static const String spBackground = '$imagePath/Splash_screen.svg';
   static const String appLogo = '$imagePath/appLogo.png';
+  static const String therapyHeader = '$imagePath/therapy_header.png';
+  static const String spBg = '$imagePath/spBg.png';
 
 
 }
