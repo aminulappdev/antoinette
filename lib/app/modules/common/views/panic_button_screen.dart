@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, avoid_print
-
 import 'dart:async';
 import 'package:antoinette/app/modules/common/controllers/pannic_controller.dart';
 import 'package:antoinette/app/modules/common/views/panic_alert_dialoge.dart';
@@ -20,13 +18,31 @@ class PanicButtonScreen extends StatefulWidget {
   State<PanicButtonScreen> createState() => _PanicButtonScreenState();
 }
 
-class _PanicButtonScreenState extends State<PanicButtonScreen> {
+class _PanicButtonScreenState extends State<PanicButtonScreen>
+    with SingleTickerProviderStateMixin {
   final PannicController pannicController = PannicController();
   double? latitude;
   double? longitude;
   bool isPressed = false;
   late Timer _timer;
   bool isHolding = false;
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize animation controller
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    // Define scale animation
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
 
   void _onLongPressEnd(LongPressEndDetails details) {
     if (_timer.isActive) {
@@ -35,6 +51,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
     setState(() {
       isHolding = false;
     });
+    _animationController.stop();
   }
 
   @override
@@ -42,6 +59,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
     if (_timer.isActive) {
       _timer.cancel();
     }
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -63,8 +81,8 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
                   },
                   child: CircleAvatar(
                     radius: 24.r,
-                    backgroundColor: Color(0xffA57EA5).withOpacity(0.1),
-                    child: Icon(Icons.close, color: Colors.black),
+                    backgroundColor: const Color(0xffA57EA5).withOpacity(0.1),
+                    child: const Icon(Icons.close, color: Colors.black),
                   ),
                 ),
               ),
@@ -86,29 +104,38 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
               GestureDetector(
                 onLongPress: _onLongPress,
                 onLongPressEnd: _onLongPressEnd,
-                child: Container(
-                  height: 217.h,
-                  width: 217.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isPressed ? Colors.green : Color(0xffFA7875),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 10,
-                        spreadRadius: 2,
-                      )
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      isPressed ? 'Alert Sent!' : 'Panic Button',
-                      style: GoogleFonts.poppins(
-                          fontSize: 22.sp,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                child: AnimatedBuilder(
+                  animation: _scaleAnimation,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: isHolding ? _scaleAnimation.value : 1.0,
+                      child: Container(
+                        height: 217.h,
+                        width: 217.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: isPressed ? Colors.green : const Color(0xffFA7875),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                              offset: Offset(0, isHolding ? 4 : 2),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            isPressed ? 'Alert Sent!' : 'Panic Button',
+                            style: GoogleFonts.poppins(
+                                fontSize: 22.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -122,13 +149,11 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
     setState(() {
       isHolding = true;
     });
+    _animationController.forward();
 
-    _timer = Timer(Duration(seconds: 2), () {
+    _timer = Timer(const Duration(seconds: 2), () {
       if (isHolding) {
-        setState(() {
-          // isPressed = true; // Removed to set only on success
-        });
-
+        _animationController.stop();
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -136,8 +161,10 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
             onYesPressed: () {
               Navigator.pop(context);
               setState(() {
-                isPressed = false; // Reset if user presses YES
+                isPressed = false;
+                isHolding = false;
               });
+              _animationController.reset();
             },
             onNoPressed: () async {
               print('Pannic start');
@@ -147,7 +174,6 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
               await onTapToNextButton();
 
               Navigator.pop(context);
-              // Handle NO action (can add an emergency function here)
             },
           ),
         );
@@ -163,22 +189,28 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
       if (isSuccess) {
         if (mounted) {
           setState(() {
-            isPressed = true; // Set isPressed only on success
+            isPressed = true;
+            isHolding = false;
           });
           showSnackBarMessage(context, 'Sms sent to all trusted contact');
-          // Navigator.pop(context);
         }
       } else {
         if (mounted) {
           setState(() {
-            isPressed = false; // Ensure isPressed is false on error
+            isPressed = false;
+            isHolding = false;
           });
           showSnackBarMessage(context, pannicController.errorMessage!, true);
         }
       }
+      _animationController.reset();
     } else {
       if (mounted) {
         showSnackBarMessage(context, 'Location not available', true);
+        setState(() {
+          isHolding = false;
+        });
+        _animationController.reset();
       }
     }
   }
@@ -186,9 +218,8 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
   Future<void> requestLocationPermission() async {
     final ph.PermissionStatus status = await ph.Permission.location.request();
     if (status.isGranted) {
-      // Permission granted; you can now retrieve the location.
+      // Permission granted
     } else if (status.isDenied) {
-      // Permission denied.
       print('Location_permission_denied');
     }
   }
@@ -202,9 +233,7 @@ class _PanicButtonScreenState extends State<PanicButtonScreen> {
         longitude = locationData.longitude!;
         print('Location is $latitude and $longitude');
       });
-      // Handle the location data as needed.
     } catch (e) {
-      // Handle errors, such as permissions not granted or location services disabled.
       print('Error getting location: $e');
     }
   }

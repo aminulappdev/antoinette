@@ -37,8 +37,15 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
               heightBox24,
+              Text(
+                'Healing Notes',
+                style: GoogleFonts.poppins(
+                    fontSize: 18.sp, fontWeight: FontWeight.w400),
+              ),
+              heightBox8,
               Row(
                 children: [
                   Expanded(
@@ -97,7 +104,22 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                     }
 
                     if (controller.friendList.isEmpty) {
-                      return const Center(child: Text('No Therapist Found'));
+                      return Center(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Your Chats with a Therapist Will Appear Here.',
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                          heightBox4,
+                          Text(
+                            'No Therapist Found at this time',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ));
                     }
 
                     return ListView.builder(
@@ -119,15 +141,19 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                         var receiverId = chat?.participants?.isNotEmpty == true
                             ? chat!.participants![0].id ?? ''
                             : '';
-                        var receiverName = chat?.participants?.isNotEmpty == true
-                            ? chat!.participants![0].name ?? 'Unknown'
-                            : 'Unknown';
-                        var receiverImage = chat?.participants?.isNotEmpty == true
-                            ? chat!.participants![0].photoUrl ?? ''
-                            : '';
+                        var receiverName =
+                            chat?.participants?.isNotEmpty == true
+                                ? chat!.participants![0].name ?? 'Unknown'
+                                : 'Unknown';
+                        var receiverImage =
+                            chat?.participants?.isNotEmpty == true
+                                ? chat!.participants![0].photoUrl ?? ''
+                                : '';
 
                         if (searcCtrl.text.isEmpty ||
-                            name.toLowerCase().contains(searcCtrl.text.toLowerCase())) {
+                            name
+                                .toLowerCase()
+                                .contains(searcCtrl.text.toLowerCase())) {
                           return Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: GestureDetector(
@@ -147,21 +173,24 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.w),
                                   child: Row(
                                     children: [
                                       Container(
                                         height: 50.h,
                                         width: 50.w,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                           image: photoUrl.isNotEmpty
                                               ? DecorationImage(
                                                   image: NetworkImage(photoUrl),
                                                   fit: BoxFit.fill,
                                                 )
                                               : const DecorationImage(
-                                                  image: AssetImage('assets/placeholder_image.png'),
+                                                  image: AssetImage(
+                                                      'assets/placeholder_image.png'),
                                                   fit: BoxFit.fill,
                                                 ),
                                         ),
@@ -170,7 +199,8 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                                       Padding(
                                         padding: EdgeInsets.all(4.0.h),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               name,

@@ -55,7 +55,7 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
         'motivated', Color(0xffFF9318).withAlpha(10), Color(0xffFF9318), () {},
         fontColor: Color(0xffFF9318), emojiPath: AssetsPath.muscle),
   ];
- 
+
   @override
   void initState() {
     super.initState();
@@ -176,7 +176,11 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
                 ),
                 heightBox4,
                 Center(
-                  child: Text('Private & encrypted',style: GoogleFonts.poppins(fontSize: 10.sp,color: Colors.grey),),
+                  child: Text(
+                    'Private & encrypted',
+                    style: GoogleFonts.poppins(
+                        fontSize: 10.sp, color: Colors.grey),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
@@ -314,12 +318,13 @@ class _AddDiaryScreenState extends State<AddDiaryScreen> {
       if (isSuccess) {
         if (mounted) {
           allDiariesController.getDiaryList(refresh: true);
+          profileController.getProfileData();
           showSnackBarMessage(context, 'Diary added successfully');
           Navigator.pop(context);
           // Navigator.pushNamed(context, DearDiaryScreen.routeName);
         }
       } else {
-        if (mounted) { 
+        if (mounted) {
           showSnackBarMessage(
               context,
               addDiariesController.errorMessage ?? 'Something went wrong',
