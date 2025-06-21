@@ -97,7 +97,7 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                     }
 
                     if (controller.friendList.isEmpty) {
-                      return const Center(child: Text('No Friends Found'));
+                      return const Center(child: Text('No Therapist Found'));
                     }
 
                     return ListView.builder(
