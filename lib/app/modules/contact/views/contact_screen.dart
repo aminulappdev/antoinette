@@ -4,7 +4,6 @@ import 'package:antoinette/app/modules/contact/controllers/delete_contact_contro
 import 'package:antoinette/app/modules/contact/views/add_contact_screen.dart';
 import 'package:antoinette/app/modules/contact/views/edit_contact_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';

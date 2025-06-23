@@ -239,7 +239,7 @@ class NetworkCaller {
       String url, int statusCode, Map<String, String>? headers, String body,
       [String? errorMessage]) {
     if (errorMessage != null) {
-      _logger.e('URL => $url\Error Message => $errorMessage');
+      _logger.e('URL => ${url}Error Message => $errorMessage');
     } else {
       _logger.i(
           'URL => $url\nHeaders => $headers\nStatusCode => $statusCode \nBODY => $body');

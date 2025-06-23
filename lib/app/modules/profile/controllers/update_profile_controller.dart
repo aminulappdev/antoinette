@@ -104,7 +104,7 @@ class UpdateProfileController extends GetxController {
       var decodedResponse = jsonDecode(responseBody);
 
       if (streamedResponse.statusCode == 200) {
-         print('response data is : ${decodedResponse}');
+         print('response data is : $decodedResponse');
         _errorMessage = null;
         isSuccess = true;
       } else {

@@ -22,7 +22,7 @@ class _CameraScreenState extends State<CameraScreen> {
   double _baseScale = 1.0;
   double _minZoom = 1.0;
   double _maxZoom = 1.0;
-  int _pointers = 0;
+  final int _pointers = 0;
 
   @override
   void initState() {

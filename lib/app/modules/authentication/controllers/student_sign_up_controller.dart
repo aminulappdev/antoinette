@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
 import 'package:antoinette/app/urls.dart';
-import 'package:antoinette/app/utils/get_storage.dart';
 
 class StudentSignUpController extends GetxController {
   bool _inProgress = false;

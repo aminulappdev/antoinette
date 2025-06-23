@@ -135,7 +135,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     );
                   },
                 ),
-              ) : Container(
+              ) : SizedBox(
                 height: 600,
                 child: Center(child: Text('No notification')),)
             ],

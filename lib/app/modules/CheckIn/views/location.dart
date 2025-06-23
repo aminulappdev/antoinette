@@ -5,7 +5,7 @@ import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart' as ph;
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

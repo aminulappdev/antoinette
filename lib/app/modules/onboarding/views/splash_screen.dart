@@ -3,7 +3,6 @@ import 'package:antoinette/app/modules/onboarding/views/onboarding_screen.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = '/';

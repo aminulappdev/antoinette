@@ -130,24 +130,24 @@ class _HealingNoteScreenState extends State<HealingNoteScreen> {
                         var chat = friend.chat;
 
                         // Add null and empty checks for participants
-                        var name = chat?.participants?.isNotEmpty == true
-                            ? chat!.participants![0].name ?? 'Unknown'
+                        var name = chat?.participants.isNotEmpty == true
+                            ? chat!.participants[0].name ?? 'Unknown'
                             : 'Unknown';
-                        var photoUrl = chat?.participants?.isNotEmpty == true
-                            ? chat!.participants![0].photoUrl ?? ''
+                        var photoUrl = chat?.participants.isNotEmpty == true
+                            ? chat!.participants[0].photoUrl ?? ''
                             : '';
                         var messageText = friend.message?.text ?? 'No Message';
                         var chatId = chat?.id ?? '';
-                        var receiverId = chat?.participants?.isNotEmpty == true
-                            ? chat!.participants![0].id ?? ''
+                        var receiverId = chat?.participants.isNotEmpty == true
+                            ? chat!.participants[0].id ?? ''
                             : '';
                         var receiverName =
-                            chat?.participants?.isNotEmpty == true
-                                ? chat!.participants![0].name ?? 'Unknown'
+                            chat?.participants.isNotEmpty == true
+                                ? chat!.participants[0].name ?? 'Unknown'
                                 : 'Unknown';
                         var receiverImage =
-                            chat?.participants?.isNotEmpty == true
-                                ? chat!.participants![0].photoUrl ?? ''
+                            chat?.participants.isNotEmpty == true
+                                ? chat!.participants[0].photoUrl ?? ''
                                 : '';
 
                         if (searcCtrl.text.isEmpty ||

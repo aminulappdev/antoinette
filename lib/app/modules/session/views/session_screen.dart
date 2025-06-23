@@ -171,7 +171,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                               image: NetworkImage(
-                                                  '${controller.allProductList[index].thumbnail ?? ''}'),
+                                                  controller.allProductList[index].thumbnail ?? ''),
                                               fit: BoxFit.fill),
                                           borderRadius:
                                               BorderRadius.circular(8)),
@@ -184,7 +184,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              '${controller.allProductList[index].status ?? ''}',
+                                              controller.allProductList[index].status ?? '',
                                               style: GoogleFonts.poppins(
                                                   fontSize: 16.sp,
                                                   color: Colors.green),
@@ -206,7 +206,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                         children: [
                                           CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                                '${controller.allProductList[index].thumbnail ?? ''}'),
+                                                controller.allProductList[index].thumbnail ?? ''),
                                             radius: 18.r,
                                           ),
                                           widthBox4,
@@ -216,7 +216,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                               child: Text(
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
-                                                '${controller.allProductList[index].title ?? ''}',
+                                                controller.allProductList[index].title ?? '',
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 14.sp,
                                                     color: Colors.black,
@@ -258,7 +258,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 image: NetworkImage(
-                                                    '${controller.allProductList[index].thumbnail ?? ''}'),
+                                                    controller.allProductList[index].thumbnail ?? ''),
                                                 fit: BoxFit.fill),
                                             borderRadius:
                                                 BorderRadius.circular(8)),
@@ -269,7 +269,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                '${controller.allProductList[index].status ?? ''}',
+                                                controller.allProductList[index].status ?? '',
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 10.sp,
                                                     color: Colors.green),
@@ -293,7 +293,7 @@ class _SessionScreenState extends State<SessionScreen> {
                                           children: [
                                             CircleAvatar(
                                               backgroundImage: NetworkImage(
-                                                  '${controller.allProductList[index].thumbnail ?? ''}'),
+                                                  controller.allProductList[index].thumbnail ?? ''),
                                               radius: 16.r,
                                             ),
                                             widthBox4,

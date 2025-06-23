@@ -1,5 +1,4 @@
 import 'package:antoinette/app/modules/bookmark/controller/bookmark_article_controller.dart';
-import 'package:antoinette/app/modules/bookmark/controller/bookmark_podcast_controller.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';

@@ -6,7 +6,6 @@ import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
-import 'package:intl/intl.dart';
 
 class MessageController extends GetxController {
   bool _inProgress = false;

@@ -55,13 +55,13 @@ class FriendController extends GetxController {
       if (friendList.isNotEmpty) {
         for (var i = 0; i < friendList.length; i++) {
           var chat = friendList[i].chat;
-          if (chat != null && chat.participants != null && chat.participants!.isNotEmpty) {
+          if (chat != null && chat.participants.isNotEmpty) {
             socketService.socketTherapistList.add({
               "id": chat.id ?? 'No ID',
-              "name": chat.participants![0].name ?? 'No Name',
-              "email": chat.participants![0].email ?? 'No Email',
-              "phoneNumber": chat.participants![0].contactNumber ?? 'No Phone Number',
-              "image": chat.participants![0].photoUrl ?? 'No Image',
+              "name": chat.participants[0].name ?? 'No Name',
+              "email": chat.participants[0].email ?? 'No Email',
+              "phoneNumber": chat.participants[0].contactNumber ?? 'No Phone Number',
+              "image": chat.participants[0].photoUrl ?? 'No Image',
               "lastMessage": friendList[i].message?.text ?? 'No Message',
             });
           } else {
