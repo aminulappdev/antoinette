@@ -175,7 +175,7 @@ class _ContactScreenState extends State<ContactScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Contact added');
+        showSnackBarMessage(context, 'Contact deleted');
         Get.find<AllContactController>().getContactList();
       } else {
         if (mounted) {

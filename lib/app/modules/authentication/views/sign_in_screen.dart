@@ -36,7 +36,6 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
 
-
   final SignInController signInController = Get.put(SignInController());
   final ResendOTPController resendOTPController =
       Get.put(ResendOTPController());
@@ -71,7 +70,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                   ),
-                  
                   Text(
                     'Sign In',
                     style: GoogleFonts.poppins(
@@ -88,7 +86,7 @@ class _SignInScreenState extends State<SignInScreen> {
               heightBox16,
               WelcomeText(
                 title: 'Hi, Welcome back!',
-                subtitle: 'Sign in to continue exploring the best deals',
+                subtitle: '',
               ),
               heightBox50,
               Form(
@@ -130,7 +128,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return 'Enter password';
-                          
                         } else if (value.length < 6)
                           return 'Password must be at least 6 characters';
                         return null;
@@ -232,7 +229,6 @@ class _SignInScreenState extends State<SignInScreen> {
       if (message.contains('credentials')) {
         if (context.mounted) {
           showDialog(
-           
             context: context,
             builder: (_) => AlertDialog(
               title: Text("Account problem"),

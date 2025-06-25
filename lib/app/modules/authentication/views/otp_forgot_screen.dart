@@ -75,7 +75,7 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'OTP successfully sent');
+        showSnackBarMessage(context, 'OTP Successfully sent');
         clearTextField(); // Clear OTP field after successful resend
       }
     } else {

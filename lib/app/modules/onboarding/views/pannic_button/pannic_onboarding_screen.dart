@@ -136,14 +136,7 @@ class _PannicOnboardingScreenState extends State<PannicOnboardingScreen> {
                   child: SizedBox(
                     height: 600,
                     child: ListView(
-                      children: [
-                        Text(
-                          '5. Remember:',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        bulletPoint(
-                            'It’s a quick and easy way to send a help request with minimal effort.'),
+                      children: [                    
                         SizedBox(height: 20),
                         Center(
                           child: Text(

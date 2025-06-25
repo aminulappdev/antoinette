@@ -141,7 +141,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
                 children: [
                   AddCheckInFeature(
                     icon: '💼',
-                    feature: 'Travel alone',
+                    feature: 'Travelling alone',
                     ontap: () {
                       quickChekIn = 'Travel alone';
                       isSelectedTR = false;

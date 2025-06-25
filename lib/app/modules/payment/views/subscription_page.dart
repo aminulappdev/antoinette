@@ -328,7 +328,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                                      opacity: 0.5,
                                                     child: GradientElevatedButton(
                                                         onPressed: () {},
-                                                        text: 'Another plan actived'),
+                                                        text: 'Another plan activated'),
                                                   ),
                                                   if (isLoading)
                                                     const SizedBox(

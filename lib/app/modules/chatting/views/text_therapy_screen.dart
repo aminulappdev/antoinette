@@ -234,7 +234,7 @@ class _TextTherapyScreenState extends State<TextTherapyScreen> {
                       child: TextFormField(
                         controller: messageController,
                         decoration: InputDecoration(
-                          hintText: 'Type your message',
+                          hintText: 'Send A Message',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

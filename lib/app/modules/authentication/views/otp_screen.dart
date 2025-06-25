@@ -66,7 +66,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'OTP succsessfully sent');
+        showSnackBarMessage(context, 'OTP Succsessfully sent');
       } else {
         if (mounted) {
           showSnackBarMessage(context, resendOTPController.errorMessage!, true);

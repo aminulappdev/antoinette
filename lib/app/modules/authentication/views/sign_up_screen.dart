@@ -355,7 +355,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'New user created');
+          // showSnackBarMessage(context, 'New user created');
           isStudentChecked
               ? Navigator.pushNamed(context, MainButtonNavbarScreen.routeName)
               : Navigator.pushNamed(context, VerifyEmailScreen.routeName,
@@ -384,7 +384,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'New student user created');
+          // showSnackBarMessage(context, 'New student user created');
           Navigator.pushNamed(context, VerifyEmailScreen.routeName,
               arguments: studentSignUpController.token);
         } else {
