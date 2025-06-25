@@ -9,7 +9,7 @@ class CountdownController extends GetxController {
       CheckInRequestController();
 
   Rx<Duration> remainingTime = Duration(minutes: 15).obs;
-  late Timer _timer;
+  Timer? _timer;
 
   String? _checkId;
 
@@ -22,7 +22,7 @@ class CountdownController extends GetxController {
     update();
   }
 
-  // This method starts the countdown
+  // ✅ Start countdown
   void startCountdown(Duration duration) {
     remainingTime.value = duration;
 
@@ -30,35 +30,33 @@ class CountdownController extends GetxController {
       if (remainingTime.value.inSeconds > 0) {
         remainingTime.value -= Duration(seconds: 1);
       } else {
-        _timer.cancel();
-        showTimeUpDialog(); // When time ends
+        stopCountdown();
+        showTimeUpDialog();
       }
     });
   }
 
-  // Show the time-up dialog
+  // ✅ Show dialog when time's up
   void showTimeUpDialog() {
+    if (Get.isDialogOpen == true) return;
+
     Get.defaultDialog(
       title: "Check-In Time's Up!",
       middleText: "Are you Safe?",
       barrierDismissible: false,
       actions: [
         GestureDetector(
-          onTap: () async {
-            final bool isSuccess =
-                await checkInRequestController.checkInRequest(_checkId ?? '');
-
-            if (isSuccess) {
-              print("Check in done.....");
-            } else {
-              print("Check in not work.....");
+          onTap: () {
+            if (Get.isDialogOpen == true) {
+              Get.back(); // Close the dialog
             }
-            Get.back();
             print("User pressed YES");
           },
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.green, borderRadius: BorderRadius.circular(10.r)),
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
             padding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 16.0.h),
             child: Text(
               "YES",
@@ -68,13 +66,39 @@ class CountdownController extends GetxController {
         ),
         SizedBox(width: 10.w),
         GestureDetector(
-          onTap: () {
+          onTap: () async {
+            final bool isSuccess =
+                await checkInRequestController.checkInRequest(_checkId ?? '');
+
+            if (isSuccess) {
+              Get.back();
+              Get.snackbar(
+                "Success",
+                "Sms sent to all trusted contacts",
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Color(0xffC37D60),
+                colorText: Colors.white,
+              );
+              print("Check in done.....");
+            } else {
+              Get.snackbar(
+                "Failed",
+                "Could not send SMS to trusted contacts",
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+              );
+              print("Check in not work.....");
+            }
+
+        
             print("User pressed NO");
-            Get.back();
           },
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.red, borderRadius: BorderRadius.circular(10.r)),
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
             padding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 16.0.w),
             child: Text(
               "NO",
@@ -86,13 +110,15 @@ class CountdownController extends GetxController {
     );
   }
 
+  // ✅ Stop countdown
   void stopCountdown() {
-    _timer.cancel();
+    _timer?.cancel();
   }
 
+  // ✅ Clear timer on controller dispose
   @override
   void onClose() {
     super.onClose();
-    _timer.cancel();
+    stopCountdown();
   }
 }

@@ -17,11 +17,7 @@ class PannicOnboardingScreen extends StatefulWidget {
 }
 
 class _PannicOnboardingScreenState extends State<PannicOnboardingScreen> {
-  List<String> buttonTexts = [
-    'Next',
-    'Next',
-    'Enter App'
-  ];
+  List<String> buttonTexts = ['Next', 'Next', 'Enter App'];
 
   final PageController _pageController = PageController();
   int _currentPage = 0;
@@ -43,9 +39,7 @@ class _PannicOnboardingScreenState extends State<PannicOnboardingScreen> {
             children: [
               PannicOnboardingPage(
                 showBackButton: false,
-  
                 onBoardingRow: false,
-      
                 pageController: _pageController,
                 content: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -54,12 +48,12 @@ class _PannicOnboardingScreenState extends State<PannicOnboardingScreen> {
                     child: ListView(
                       children: [
                         Text(
-                          '1. What is the Panic Button?',
+                          '1. Your silent way to say: I don’t feel safe.',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         bulletPoint(
-                            'The Panic Button is a safety feature designed to alert your trusted contacts when you\'re in a potential emergency situation.'),
+                            'The Panic Button is a personal safety tool. If you ever feel unsafe or in danger, pressing it quietly alerts your trusted contacts — without needing to say a word.'),
                         SizedBox(height: 20),
                         Text(
                           '2. How does it work?',
@@ -67,16 +61,16 @@ class _PannicOnboardingScreenState extends State<PannicOnboardingScreen> {
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         numberPoint(
-                            '1. If you ever feel threatened or unsafe, press and hold the Panic Button in the app for 3 seconds.'),
+                            '1. Hold the Panic Button in the app for 3 seconds.'),
                         numberPoint(
-                            '2. After 3 seconds, a popup will appear asking "Are you safe?" with two options:'),
+                            '2. A question will appear: “Are you safe?”'),
                         bulletPoint(
-                            'Yes: If you are safe, press Yes — no alert will be sent.'),
+                            'Tap Yes if it was a false alarm — no alert will be sent.'),
                         bulletPoint(
-                            'No: If you are in danger, press No — an immediate alert with your last known location will be sent to your trusted contacts.'),
+                            'Tap No if you need help — an instant SOS will be triggered.'),
                         SizedBox(height: 10),
                         Text(
-                          'They will receive a message with your last known location and an urgent message to take action.',
+                          'Your trusted contacts will get a real-time alert with your last known location and a message urging them to take action immediately.',
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -86,10 +80,7 @@ class _PannicOnboardingScreenState extends State<PannicOnboardingScreen> {
               ),
               PannicOnboardingPage(
                 showBackButton: true,
-          
                 onBoardingRow: true,
-              
-               
                 pageController: _pageController,
                 content: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -112,14 +103,12 @@ class _PannicOnboardingScreenState extends State<PannicOnboardingScreen> {
                             'An SOS-style message indicating you\'re in an emergency.'),
                         SizedBox(height: 20),
                         Text(
-                          '4. Why it’s important:',
+                          '4. Why it matters',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         bulletPoint(
-                            'The Panic Button ensures that someone is always alerted when you need help, even if you can’t call them yourself.'),
-                        bulletPoint(
-                            'It’s a quick and easy way to send a help request with minimal effort.'),
+                            'You shouldn’t have to call or explain. With one press, someone you trust will know you’re in trouble. It’s protection in your pocket built for real life.'),
                       ],
                     ),
                   ),
@@ -127,16 +116,14 @@ class _PannicOnboardingScreenState extends State<PannicOnboardingScreen> {
               ),
               PannicOnboardingPage(
                 showBackButton: true,
-             
                 onBoardingRow: false,
-               
                 pageController: _pageController,
                 content: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: SizedBox(
                     height: 600,
                     child: ListView(
-                      children: [                    
+                      children: [
                         SizedBox(height: 20),
                         Center(
                           child: Text(

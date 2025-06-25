@@ -20,7 +20,7 @@ class PaymentService {
 
     if (isSuccess) {
       // Directly use context without mounted check
-      showSnackBarMessage(context, 'Payment request done');
+      // showSnackBarMessage(context, 'Payment request done');
       Navigator.pushNamed(
         context,
         PaymentWebviewScreen.routeName,  
