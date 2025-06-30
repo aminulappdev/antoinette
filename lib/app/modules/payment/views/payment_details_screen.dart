@@ -190,7 +190,7 @@ class _PaymentDetailsScreen extends State<PaymentDetailsScreen> {
                 children: [
                   Icon(
                     Icons.arrow_back,
-                    color: AppColors.iconButtonThemeColor,
+                    color: AppColors.iconButtonThemeColor, 
                   ),
                   widthBox8,
                   Text(

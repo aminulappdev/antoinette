@@ -1,18 +1,18 @@
 class Urls {
-  static const String _baseUrl = 'http://172.252.13.74:5001/api/v1';
+  //static const String _baseUrl = 'http://172.252.13.74:5001/api/v1';
+  static const String _baseUrl = 'https://2647-115-127-156-9.ngrok-free.app/api/v1';
   // static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
 
- static const String socketUrl = 'http://172.252.13.74:4001/';
-    // static const String socketUrl = 'http://192.168.10.144:4001/';
+  static const String socketUrl = 'http://172.252.13.74:4001/';
+  // static const String socketUrl = 'http://192.168.10.144:4001/';
 
 //   static const String _baseUrl = 'https://www.api.dearhenrietta.com/api/v1';
 //  static const String socketUrl = 'https://www.socket.dearhenrietta.com/';
 
-
   static const String signUp = '$_baseUrl/users/register';
   static const String verifOtp = '$_baseUrl/otp/verify-otp';
   static const String signIn = '$_baseUrl/auth/login';
-  static const String forgotPassword = '$_baseUrl/auth/forget-password'; 
+  static const String forgotPassword = '$_baseUrl/auth/forget-password';
   static const String resendOTP = '$_baseUrl/otp/resend-otp';
   static const String resetPassword = '$_baseUrl/auth/reset-password';
   static const String googleAuth = '$_baseUrl/auth/google';
@@ -45,7 +45,8 @@ class Urls {
   static const String paymentCheckoutUrl = '$_baseUrl/payments/checkout';
   static const String allBookingUrl = '$_baseUrl/bookings/my-bookings';
   static const String allOrderUrl = '$_baseUrl/orders/my-orders';
-  static const String allNotificationUrl = '$_baseUrl/notification/my-notification';
+  static const String allNotificationUrl =
+      '$_baseUrl/notification/my-notification';
   static const String allFriendsChatnUrl = '$_baseUrl/chats/my-chat-list';
   static const String addChatnUrl = '$_baseUrl/chats';
   static const String sendMessageUrl = '$_baseUrl/messages/send-messages';
@@ -53,20 +54,25 @@ class Urls {
   static const String reschduleBookingtUrl = '$_baseUrl/products';
   static const String refundPaymentUrl = '$_baseUrl/payments/refound-payment';
   static const String pannicUrl = '$_baseUrl/trusted-contracts/send-message';
-  static const String notificationStatusUrl = '$_baseUrl/users/configure-notify';
-  static const String mySubscriptionUrl = '$_baseUrl/subscriptions/my-subscriptions';
-  static const String deliverChargeUrl= '$_baseUrl/delivery-charge';
-
-  
-
+  static const String notificationStatusUrl =
+      '$_baseUrl/users/configure-notify';
+  static const String mySubscriptionUrl =
+      '$_baseUrl/subscriptions/my-subscriptions';
+  static const String deliverChargeUrl = '$_baseUrl/delivery-charge';
 
   // static String allProductUrl(
   //   String searchQuery,
   // ) {
   //   return '$_baseUrl/products/$searchQuery';
   // }
-  
-   static searchProductsUrl(String? query) => query?.isNotEmpty ?? false
+
+  static String cancelSubscriptionById(
+    String id,
+  ) {
+    return '$_baseUrl/payments/cancel/$id';
+  }
+
+  static searchProductsUrl(String? query) => query?.isNotEmpty ?? false
       ? "$_baseUrl/products?searchTerm=$query"
       : "$_baseUrl/products"; // If query is null or empty, omit searchTerm //done
 
@@ -76,7 +82,7 @@ class Urls {
     return '$_baseUrl/payments/reference/$id';
   }
 
-   static String deleteBookmarkId(
+  static String deleteBookmarkId(
     String id,
   ) {
     return '$_baseUrl/content-bookmarks/$id';
@@ -88,7 +94,7 @@ class Urls {
     return '$_baseUrl/users/$id';
   }
 
-    static String checkingResuestId(
+  static String checkingResuestId(
     String id,
   ) {
     return '$_baseUrl/check-in/$id';
@@ -99,14 +105,14 @@ class Urls {
   ) {
     return '$_baseUrl/orders/$id';
   }
-  
+
   static String orderDetailsById(
     String id,
   ) {
     return '$_baseUrl/orders/$id';
   }
 
-   static String rescheduleBookingById(
+  static String rescheduleBookingById(
     String id,
   ) {
     return '$_baseUrl/bookings/reschedule/$id';

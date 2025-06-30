@@ -8,6 +8,7 @@ import 'package:antoinette/app/modules/profile/controllers/delete_account_contro
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/modules/profile/views/account_screen.dart';
 import 'package:antoinette/app/modules/profile/views/info_screen.dart';
+import 'package:antoinette/app/modules/profile/views/static_screen.dart';
 import 'package:antoinette/app/modules/profile/widgets/profile_drawer_feature.dart';
 import 'package:antoinette/app/modules/profile/widgets/profile_info.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
@@ -130,6 +131,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        ProfileDrawerFeature(
+                          feature: 'In Case You Need It',
+                          icon: Icons.person,
+                          ontap: () {
+                            Get.to(StaticScreen());
+                          },
+                        ),
                         ProfileDrawerFeature(
                           feature: 'How We Keep You Safe',
                           icon: Icons.security,

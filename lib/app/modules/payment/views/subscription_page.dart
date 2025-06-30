@@ -1,4 +1,5 @@
 import 'package:antoinette/app/modules/payment/controllers/all_package_controller.dart';
+import 'package:antoinette/app/modules/payment/controllers/cancel_subscription_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/my_subscription_controller.dart';
 import 'package:antoinette/app/modules/payment/controllers/payment_services.dart';
 import 'package:antoinette/app/modules/payment/controllers/subscription_controller.dart';
@@ -31,6 +32,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   final MySubscriptionController mySubscriptionController =
       Get.find<MySubscriptionController>();
   final PaymentService paymentService = PaymentService();
+  final CancelSubscriptionController cancelSubscriptionController =
+      CancelSubscriptionController();
   late String userId;
   bool isStudent = false;
   final Map<String, bool> _isLoadingMap = {};
@@ -38,6 +41,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   void initState() {
     super.initState();
+
     userId = profileController.profileData?.id ?? '';
     allPackageController.getAllPackage();
     isStudent =
@@ -45,6 +49,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ? true
             : false;
     mySubscriptionController.getMySubscriptions();
+
   }
 
   @override
@@ -52,6 +57,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return Scaffold(
       body: GetBuilder<AllPackageController>(
         builder: (controller) {
+          
           if (controller.inProgress) {
             return const Center(child: CircularProgressIndicator());
           } else if (controller.packageItemList == null ||
@@ -82,11 +88,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                       subscription.status == "confirmed" &&
                                       subscription.expiredAt
                                           .isAfter(DateTime.now()) &&
-                                      !subscription.isExpired &&
-                                      !subscription.isDeleted)
+                                      subscription.isExpired &&
+                                      subscription.isDeleted)
                                   .toList() ??
                               [];
-
+                          print('length is ${activeSubscriptions.length}');
                           if (activeSubscriptions.isEmpty) {
                             return const Center(
                                 child: Text("No active subscription"));
@@ -116,15 +122,49 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        subscription.package?.billingCycle
-                                                    .toLowerCase() ==
-                                                "monthly"
-                                            ? 'Monthly Plan'
-                                            : 'Yearly Plan',
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            subscription.package?.billingCycle
+                                                        .toLowerCase() ==
+                                                    "monthly"
+                                                ? 'Monthly Plan'
+                                                : 'Yearly Plan',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              cancelSubscription(
+                                                  subscription.id);
+                                            },
+                                            child: Container(
+                                                height: 20,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: AppColors
+                                                        .iconButtonThemeColor),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 4,
+                                                      vertical: 2),
+                                                  child: Text(
+                                                    'Cancel auto subscription',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                )),
+                                          )
+                                        ],
                                       ),
                                       SizedBox(height: 4.h),
                                       Text(daysLeftText,
@@ -325,10 +365,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                                 alignment: Alignment.center,
                                                 children: [
                                                   Opacity(
-                                                     opacity: 0.5,
+                                                    opacity: 0.5,
                                                     child: GradientElevatedButton(
                                                         onPressed: () {},
-                                                        text: 'Another plan activated'),
+                                                        text:
+                                                            'Another plan activated'),
                                                   ),
                                                   if (isLoading)
                                                     const SizedBox(
@@ -429,6 +470,28 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         setState(() {
           _isLoadingMap[packageId] = false;
         });
+      }
+    }
+  }
+
+  Future<void> cancelSubscription(String subscriptionId) async {
+    final bool isSuccess =
+        await cancelSubscriptionController.cancelSubscription(subscriptionId);
+    if (isSuccess) {
+      if (mounted) {
+        print('Sucess hoiche');
+        showSnackBarMessage(
+          context,
+          "Cancel successfully done",
+        );
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+          context,
+          subscriptionController.errorMessage ?? "Something went wrong",
+          true,
+        );
       }
     }
   }

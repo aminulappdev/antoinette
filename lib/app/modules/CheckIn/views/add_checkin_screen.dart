@@ -8,7 +8,7 @@ import 'package:antoinette/app/modules/contact/controllers/all_contact_controlle
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -278,7 +278,9 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
               ),
               heightBox12,
               // Check-In button logic with condition
-              latitude != null && quickChekIn != null && selectedContacts.isNotEmpty
+              latitude != null &&
+                      quickChekIn != null &&
+                      selectedContacts.isNotEmpty
                   ? GradientElevatedButton(
                       onPressed: () {
                         print('check in called');
@@ -313,7 +315,7 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Checking Added');
+          showSnackBarMessage(context, 'Check-In added successfully');
           Get.find<AllCheckInController>().getCheckInList();
 
           Navigator.pop(context);
