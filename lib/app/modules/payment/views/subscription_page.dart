@@ -33,7 +33,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       Get.find<MySubscriptionController>();
   final PaymentService paymentService = PaymentService();
   final CancelSubscriptionController cancelSubscriptionController =
-      CancelSubscriptionController();
+      Get.put(CancelSubscriptionController());
   late String userId;
   bool isStudent = false;
   final Map<String, bool> _isLoadingMap = {};
@@ -41,15 +41,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   void initState() {
     super.initState();
-
     userId = profileController.profileData?.id ?? '';
     allPackageController.getAllPackage();
     isStudent =
-        profileController.profileData!.studentVerify?.status == 'approved'
-            ? true
-            : false;
+        profileController.profileData!.studentVerify?.status == 'approved';
     mySubscriptionController.getMySubscriptions();
-
   }
 
   @override
@@ -57,7 +53,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return Scaffold(
       body: GetBuilder<AllPackageController>(
         builder: (controller) {
-          
           if (controller.inProgress) {
             return const Center(child: CircularProgressIndicator());
           } else if (controller.packageItemList == null ||
@@ -85,14 +80,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                   .subscriptionData
                                   ?.where((subscription) =>
                                       subscription.paymentStatus == "paid" &&
-                                      subscription.status == "confirmed" &&
-                                      subscription.expiredAt
+                                      (subscription.status == "active" ||
+                                          subscription.status == "confirmed") &&
+                                      subscription.expiredAt!
                                           .isAfter(DateTime.now()) &&
-                                      subscription.isExpired &&
-                                      subscription.isDeleted)
+                                      !subscription.isDeleted!)
                                   .toList() ??
                               [];
-                          print('length is ${activeSubscriptions.length}');
+
                           if (activeSubscriptions.isEmpty) {
                             return const Center(
                                 child: Text("No active subscription"));
@@ -103,7 +98,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             itemCount: activeSubscriptions.length,
                             itemBuilder: (context, index) {
                               final subscription = activeSubscriptions[index];
-                              DateTime expireDate = subscription.expiredAt;
+                              DateTime expireDate = subscription.expiredAt!;
                               String formattedDate = DateFormat('MMMM dd, yyyy')
                                   .format(expireDate);
                               int daysLeft =
@@ -127,7 +122,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            subscription.package?.billingCycle
+                                            subscription.package?.billingCycle!
                                                         .toLowerCase() ==
                                                     "monthly"
                                                 ? 'Monthly Plan'
@@ -136,34 +131,66 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600),
                                           ),
-                                          InkWell(
-                                            onTap: () {
-                                              cancelSubscription(
-                                                  subscription.id);
-                                            },
-                                            child: Container(
-                                                height: 20,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: AppColors
-                                                        .iconButtonThemeColor),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 4,
-                                                      vertical: 2),
-                                                  child: Text(
-                                                    'Cancel auto subscription',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                          subscription.autoRenew == 'disabled'
+                                              ? Opacity(
+                                                  opacity: 0.5,
+                                                  child: Container(
+                                                    height: 20,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: AppColors
+                                                          .iconButtonThemeColor,
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 4,
+                                                          vertical: 2),
+                                                      child: Text(
+                                                        'Auto renew disabled',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
-                                                )),
-                                          )
+                                                )
+                                              : InkWell(
+                                                  onTap: () async {
+                                                    await cancelSubscription(
+                                                        subscription.id ?? "");
+                                                  },
+                                                  child: Container(
+                                                    height: 20,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: AppColors
+                                                          .iconButtonThemeColor,
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 4,
+                                                          vertical: 2),
+                                                      child: Text(
+                                                        'Cancel auto renew',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                         ],
                                       ),
                                       SizedBox(height: 4.h),
@@ -199,10 +226,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         final activePackageIds = subController.subscriptionData
                                 ?.where((sub) =>
                                     sub.paymentStatus == "paid" &&
-                                    sub.status == "confirmed" &&
-                                    sub.expiredAt.isAfter(DateTime.now()) &&
-                                    !sub.isExpired &&
-                                    !sub.isDeleted)
+                                    (sub.status == "active" ||
+                                        sub.status == "confirmed") &&
+                                    sub.expiredAt!.isAfter(DateTime.now()) &&
+                                    !sub.isDeleted!)
                                 .map((sub) => sub.package?.id)
                                 .toSet() ??
                             {};
@@ -390,7 +417,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                                     onPressed: (isActive ||
                                                             isLoading ||
                                                             isAnotherActive)
-                                                        ? () {} // Do nothing
+                                                        ? () {}
                                                         : () => buyNowBTN(
                                                             package.sId ?? ''),
                                                     text: isActive
@@ -450,7 +477,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             subscriptionController.subscriptionResponseData!.id!,
           );
           await mySubscriptionController.getMySubscriptions();
-          setState(() {});
+          setState(() {
+            mySubscriptionController.update();
+          });
         }
       } else {
         if (mounted) {
@@ -475,23 +504,28 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   Future<void> cancelSubscription(String subscriptionId) async {
-    final bool isSuccess =
-        await cancelSubscriptionController.cancelSubscription(subscriptionId);
-    if (isSuccess) {
-      if (mounted) {
-        print('Sucess hoiche');
-        showSnackBarMessage(
-          context,
-          "Cancel successfully done",
-        );
+    try {
+      final bool isSuccess =
+          await cancelSubscriptionController.cancelSubscription(subscriptionId, context);
+      if (isSuccess) {
+        if (mounted) {
+          await mySubscriptionController.getMySubscriptions();
+          setState(() {
+            mySubscriptionController.update();
+          });
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+            context,
+            cancelSubscriptionController.errorMessage ?? "Something went wrong",
+            true,
+          );
+        }
       }
-    } else {
+    } catch (e) {
       if (mounted) {
-        showSnackBarMessage(
-          context,
-          subscriptionController.errorMessage ?? "Something went wrong",
-          true,
-        );
+        showSnackBarMessage(context, "An error occurred: $e", true);
       }
     }
   }

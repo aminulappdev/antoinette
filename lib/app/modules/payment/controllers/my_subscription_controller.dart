@@ -25,11 +25,11 @@ class MySubscriptionController extends GetxController {
       (subscription) =>
           subscription.paymentStatus == "paid" &&
           subscription.status == "confirmed" &&
-          subscription.package?.billingCycle.toLowerCase() ==
+          subscription.package!.billingCycle?.toLowerCase() ==
               billingCycle.toLowerCase() &&
-          subscription.expiredAt.isAfter(DateTime.now()) &&
-          !subscription.isExpired &&
-          !subscription.isDeleted,
+          subscription.expiredAt!.isAfter(DateTime.now()) &&
+          !subscription.isExpired! &&
+          !subscription.isDeleted!,
     );
   }
 

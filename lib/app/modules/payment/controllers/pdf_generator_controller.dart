@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:antoinette/app/utils/assets_path.dart';
