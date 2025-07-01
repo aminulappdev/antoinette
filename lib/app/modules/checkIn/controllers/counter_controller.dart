@@ -46,26 +46,6 @@ class CountdownController extends GetxController {
       barrierDismissible: false,
       actions: [
         GestureDetector(
-          onTap: () {
-            if (Get.isDialogOpen == true) {
-              Get.back(); // Close the dialog
-            }
-            print("User pressed YES");
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 16.0.h),
-            child: Text(
-              "YES",
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.w),
-        GestureDetector(
           onTap: () async {
             final bool isSuccess =
                 await checkInRequestController.checkInRequest(_checkId ?? '');
@@ -74,7 +54,7 @@ class CountdownController extends GetxController {
               Get.back();
               Get.snackbar(
                 "Success",
-                "Sms sent to all trusted contacts",
+                "Thanks for your response",
                 snackPosition: SnackPosition.TOP,
                 backgroundColor: Color(0xffC37D60),
                 colorText: Colors.white,
@@ -91,7 +71,33 @@ class CountdownController extends GetxController {
               print("Check in not work.....");
             }
 
-        
+            print("User pressed YES");
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 16.0.h),
+            child: Text(
+              "YES",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ),
+        SizedBox(width: 10.w),
+        GestureDetector(
+          onTap: () {
+            if (Get.isDialogOpen == true) {
+              Get.back(); // Close the dialog
+            }
+            Get.snackbar(
+              "Success",
+              "Sms sent to all trusted contacts",
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: Color(0xffC37D60),
+              colorText: Colors.white,
+            );
             print("User pressed NO");
           },
           child: Container(

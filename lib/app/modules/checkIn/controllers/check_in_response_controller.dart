@@ -9,7 +9,7 @@ class CheckInRequestController extends GetxController {
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
-  String? get errorMessage => _errorMessage;
+  String? get errorMessage => _errorMessage; 
 
   String? _accessToken;
   String? get accessToken => _accessToken;

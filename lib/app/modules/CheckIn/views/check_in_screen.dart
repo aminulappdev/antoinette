@@ -170,7 +170,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
-                              child: Padding(
+                              child: Padding( 
                                 padding: EdgeInsets.all(12.0),
                                 child: Row(
                                   mainAxisAlignment:
@@ -183,7 +183,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                         Text(
                                           '${controller.checkInList?[index].quickCheckIn}',
                                           style: GoogleFonts.poppins(
-                                              fontSize: 15.sp),
+                                              fontSize: 15.sp), 
                                         ),
                                         Row(
                                           children: [
