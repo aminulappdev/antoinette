@@ -1,3 +1,4 @@
+import 'package:antoinette/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:antoinette/app/urls.dart';
@@ -18,11 +19,16 @@ class SocketService extends GetxController {
   RxList<Map<String, dynamic>> get messageList => _messageList;
   RxList<Map<String, dynamic>> get socketTherapistList => _socketTherapistList;
 
+  String? userIID;
+
   IO.Socket get sokect => _socket;
 
   Future<SocketService> init() async {
+    profileController.getProfileData();
     final token = await box.read('user-login-access-token');
-    final userId = "67dfad3574eb1ff506ea4f82"; // এখানে আপনি চাইলে profile থেকে নিতে পারেন
+    print('user Id socket theke : ${StorageUtil.getData('user-id')}');
+    final userId = StorageUtil.getData('user-id') ??
+        'Id ekhono ase nay'; // এখানে আপনি চাইলে profile থেকে নিতে পারেন
 
     _socket = IO.io(Urls.socketUrl, <String, dynamic>{
       'transports': ['websocket'],
@@ -43,6 +49,11 @@ class SocketService extends GetxController {
     // 🎯 নতুন মেসেজ এলে add করে messageList-এ
     _socket.on('new-message', (data) {
       _handleIncomingMessage(data);
+    });
+
+    _socket.on('checking_notification', (data) {
+      print('Check in data from socket');
+      print(data);
     });
 
     // 🎯 নতুন friend এলে add করে socketTherapistList-এ

@@ -1,11 +1,14 @@
+import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
 import 'package:antoinette/app/modules/profile/model/profile_model.dart';
 import 'package:antoinette/app/urls.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
+import 'package:antoinette/get_storage.dart';
 import 'package:antoinette/services/network_caller/network_caller.dart';
 import 'package:antoinette/services/network_caller/network_response.dart';
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
+  
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -25,18 +28,20 @@ class ProfileController extends GetxController {
 
     update();
 
-    final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.profileUrl, accesToken: box.read('user-login-access-token'));
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
+        Urls.profileUrl,
+        accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
       _errorMessage = null;
       isSuccess = true;
-        
+      print(
+          "user id controller theke : ${response.responseData['data']['_id']}");
+      StorageUtil.saveData('user-id', response.responseData['data']['_id']);
+     
       profileModel = ProfileModel.fromJson(response.responseData);
       print('Controller data..................................');
       print(profileModel?.data?.email);
-   
-
     } else {
       _errorMessage = response.errorMessage;
     }
@@ -45,4 +50,4 @@ class ProfileController extends GetxController {
     update();
     return isSuccess;
   }
-} 
+}
