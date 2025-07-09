@@ -18,10 +18,10 @@ class SeeAllSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-            width: 250.w,
+            width: 290.w,
             child: Text(
               title,
-              style: GoogleFonts.poppins(fontSize: 16.sp),
+              style: GoogleFonts.poppins(fontSize: 14.sp),
             )),
         GestureDetector(
           onTap: ontap,

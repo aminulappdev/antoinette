@@ -1,4 +1,8 @@
+import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:antoinette/get_storage.dart';
+import 'package:antoinette/services/network_caller/network_caller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:antoinette/app/urls.dart';
@@ -10,6 +14,7 @@ class SocketService extends GetxController {
 
   RxBool isLoading = false.obs;
   final ProfileController profileController = Get.put(ProfileController());
+  final NetworkCaller networkCaller = Get.put(NetworkCaller());
 
   // 🟢 RxList রাখা হয়েছে যাতে UI Obx দিয়ে observe করতে পারে
   final _messageList = <Map<String, dynamic>>[].obs;
@@ -54,6 +59,14 @@ class SocketService extends GetxController {
     _socket.on('checking_notification', (data) {
       print('Check in data from socket');
       print(data);
+    });
+
+    _socket.on('checking_notification::${StorageUtil.getData('user-id')}',
+        (data) {
+      Get.snackbar('Success', 'Sms sent to all trusted contacts',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Color(0xffC37D60),
+          colorText: Colors.white);
     });
 
     // 🎯 নতুন friend এলে add করে socketTherapistList-এ

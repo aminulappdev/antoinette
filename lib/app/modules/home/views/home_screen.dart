@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SeeAllSection(
-                    title: 'Expert Psychological Support at Your Fingertips',
+                    title: 'Soft landings for hard days. Because not everything should be carried alone.',
                     ontap: () {
                       Navigator.pushNamed(context, SessionScreen.routeName,
                           arguments: true);
@@ -196,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
                   heightBox12,
                   SeeAllSection(
-                    title: 'Shop Your Health Must-Haves',
+                    title: 'Your Quiet Shelf of Care',
                     ontap: () {
                       Navigator.pushNamed(context, ProductScreen.routeName,
                           arguments: true);

@@ -4,9 +4,11 @@ import 'dart:async';
 import 'package:antoinette/app/modules/checkIn/controllers/add_checkIn_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/all_checkIn_list_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/counter_controller.dart';
+import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
+import 'package:antoinette/get_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,6 +47,8 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
   double? latitude;
   double? longitude;
 
+ 
+
   AddCheckInController addCheckInController = AddCheckInController();
   CountdownController countdownController =
       Get.put(CountdownController()); // Global instance
@@ -52,6 +56,8 @@ class _AddCheckInScreenState extends State<AddCheckInScreen> {
   @override
   void initState() {
     super.initState();
+    
+    
     Get.find<AllContactController>().getContactList();
   }
 

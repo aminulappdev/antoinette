@@ -163,7 +163,7 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
                     ),
                     child: Center(
                       child: Icon(
-                        Icons.list_alt_outlined,
+                        Icons.email,
                         color: Colors.white,
                         size: 30.sp,
                       ),

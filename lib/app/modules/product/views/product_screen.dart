@@ -117,7 +117,7 @@ class _ProductScreenState extends State<ProductScreen> {
             SizedBox(
               width: 200.w,
               child: Text(
-                'Shop Your Health Must-Haves',
+                'Your Quiet Shelf of Care',
                 style: GoogleFonts.poppins(fontSize: 20.sp),
               ),
             ),
