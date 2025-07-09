@@ -231,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Center(
           child: Text(
             textAlign: TextAlign.center,
-            'Do you want to log out this profile?',
+            'Do you want to log out from this account?',
             style: GoogleFonts.poppins(fontSize: 20),
           ),
         ),

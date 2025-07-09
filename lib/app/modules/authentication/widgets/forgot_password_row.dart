@@ -22,7 +22,7 @@ class _ForgotPasswordRowState extends State<ForgotPasswordRow> {
     return GestureDetector(
       onTap: widget.ontap,
       child: Text(
-        'Forgot password?',
+        'Lost your letter? Recover here.',
         style: TextStyle(
           color: Color(0xffFF503C), 
           fontWeight: FontWeight.w700,

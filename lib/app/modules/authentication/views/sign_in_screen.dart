@@ -400,8 +400,8 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               heightBox16,
               WelcomeText(
-                title: 'Hi, Welcome back!',
-                subtitle: '',
+                title: 'Hi, Welcome back! ',
+                subtitle: "Let's continue your journey.",
               ),
               heightBox50,
               Form(
