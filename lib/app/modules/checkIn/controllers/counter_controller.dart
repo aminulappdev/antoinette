@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:antoinette/app/modules/CheckIn/controllers/no_checking_response_controller.dart';
 import 'package:antoinette/app/modules/checkIn/controllers/check_in_response_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,8 @@ import 'package:get/get.dart';
 class CountdownController extends GetxController {
   final CheckInRequestController checkInRequestController =
       CheckInRequestController();
+  final NoCheckInRequestController noCheckInRequestController =
+      NoCheckInRequestController();
 
   Rx<Duration> remainingTime = Duration(minutes: 15).obs;
   Timer? _timer;
@@ -87,17 +90,31 @@ class CountdownController extends GetxController {
         ),
         SizedBox(width: 10.w),
         GestureDetector(
-          onTap: () {
-            if (Get.isDialogOpen == true) {
-              Get.back(); // Close the dialog
+          onTap: () async {
+            final bool isSuccess =
+                await noCheckInRequestController.checkInRequest(_checkId ?? '');
+
+            if (isSuccess) {
+              Get.back();
+              Get.snackbar(
+                "Success",
+                "Sms sent to all trusted contacts", 
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Color(0xffC37D60),
+                colorText: Colors.white,
+              );
+              print("Check in done.....");
+            } else {
+              Get.snackbar(
+                "Failed",
+                "Could not send SMS to trusted contacts",
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+              );
+              print("Check in not work.....");
             }
-            Get.snackbar(
-              "Success",
-              "Sms sent to all trusted contacts",
-              snackPosition: SnackPosition.TOP,
-              backgroundColor: Color(0xffC37D60),
-              colorText: Colors.white,
-            );
+
             print("User pressed NO");
           },
           child: Container(

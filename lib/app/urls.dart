@@ -1,6 +1,7 @@
 class Urls {
   //static const String _baseUrl = 'http://172.252.13.74:5001/api/v1';
-  static const String _baseUrl = 'https://d64f-103-159-73-161.ngrok-free.app/api/v1';
+  static const String _baseUrl =
+      'https://d32c6ab1799b.ngrok-free.app/api/v1';
   // static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
 
   static const String socketUrl = 'http://172.252.13.74:4001/';
@@ -70,6 +71,12 @@ class Urls {
     String id,
   ) {
     return '$_baseUrl/payments/cancel/$id';
+  }
+
+  static String changerecievedResponse(
+    String id,
+  ) {
+    return '$_baseUrl/check-in/receive-response/$id';
   }
 
   static searchProductsUrl(String? query) => query?.isNotEmpty ?? false

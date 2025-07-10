@@ -31,8 +31,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
-  final DeleteAccountController deleteAccountController = DeleteAccountController();
+  final DeleteAccountController deleteAccountController =
+      DeleteAccountController();
   @override
   void initState() {
     Get.find<ContentController>().getContent();
@@ -192,17 +192,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontSize: 12, fontWeight: FontWeight.w500),
                         ),
                         heightBox4,
-                        GetBuilder<ProfileController>(
-                          builder: (controller) {
-                            return ProfileDrawerFeature(
-                              feature: 'Delete account',
-                              icon: Icons.delete,
-                              ontap: () {
-                                onTapDeleteBTN('${controller.profileData?.id}');                             
-                              },
-                            );
-                          }
-                        ),
+                        GetBuilder<ProfileController>(builder: (controller) {
+                          return ProfileDrawerFeature(
+                            feature: 'Delete account',
+                            icon: Icons.delete,
+                            ontap: () {
+                              onTapDeleteBTN('${controller.profileData?.id}');
+                            },
+                          );
+                        }),
                       ],
                     );
                   },
@@ -243,6 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Google Sign-Out
               try {
                 await GoogleSignIn().signOut();
+
                 print('Google signed out');
               } catch (e) {
                 print('Error signing out from Google: $e');
@@ -250,6 +249,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               // Clear local token
               box.remove('user-login-access-token');
+              box.remove('isJournalPasswordSet');
+
               print(
                   'Token after logout: ${box.read('user-login-access-token')}');
 
@@ -299,7 +300,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  
   void onTapDeleteBTN(String id) {
     showDialog(
       context: context,
@@ -317,19 +317,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           GestureDetector(
             onTap: () async {
               // Google Sign-Out
-              try { 
+              try {
                 await GoogleSignIn().signOut();
-                 final bool isSuccess = await deleteAccountController.deleteProfile(id);
-                 if(isSuccess){
+                final bool isSuccess =
+                    await deleteAccountController.deleteProfile(id);
+                if (isSuccess) {
                   print('User account deleted');
-                 }
+                }
                 print('Google signed out');
               } catch (e) {
                 print('Error signing out from Google: $e');
               }
 
               // Clear local token
-              box.remove('user-login-access-token');          
+              box.remove('user-login-access-token');
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 SignInScreen.routeName,

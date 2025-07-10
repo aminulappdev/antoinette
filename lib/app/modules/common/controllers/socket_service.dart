@@ -54,7 +54,7 @@ class SocketService extends GetxController {
     // 🎯 নতুন মেসেজ এলে add করে messageList-এ
     _socket.on('new-message', (data) {
       _handleIncomingMessage(data);
-    });
+    }); 
 
     _socket.on('checking_notification', (data) {
       print('Check in data from socket');

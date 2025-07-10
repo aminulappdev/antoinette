@@ -1,11 +1,14 @@
 import 'package:antoinette/app/modules/dear_diary/controllers/set_password_controller.dart';
 import 'package:antoinette/app/modules/dear_diary/views/change_password_screen.dart';
+import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
 import 'package:antoinette/app/widgets/costom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SetJournalPasswordScreen extends StatefulWidget {
@@ -22,6 +25,7 @@ class _SetJournalPasswordScreenState extends State<SetJournalPasswordScreen> {
   TextEditingController passwordCtrl = TextEditingController();
   SetJournalPasswordController setJournalPasswordController =
       SetJournalPasswordController();
+  ProfileController profileController = Get.find<ProfileController>();
 
   bool _obscureText = true;
   bool _isPasswordSet = false;
@@ -143,6 +147,7 @@ class _SetJournalPasswordScreenState extends State<SetJournalPasswordScreen> {
         if (mounted) {
           clearTextField();
           showSnackBarMessage(context, 'Set password successfully done');
+            profileController.getProfileData();
           Navigator.pop(context);
         }
       } else {
