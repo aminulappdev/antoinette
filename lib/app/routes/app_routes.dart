@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
+import 'package:antoinette/app/modules/checkin/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/bookmark/model/bookmark_article_details_model.dart';
 import 'package:antoinette/app/modules/bookmark/model/bookmark_podcast_details_model.dart';
 import 'package:antoinette/app/modules/bookmark/views/bookmark_article_details_page.dart';

@@ -7,6 +7,7 @@ import 'package:antoinette/app/modules/checkIn/controllers/counter_controller.da
 import 'package:antoinette/app/modules/common/controllers/socket_service.dart';
 import 'package:antoinette/app/modules/contact/controllers/all_contact_controller.dart';
 import 'package:antoinette/app/utils/app_colors.dart';
+import 'package:antoinette/app/widgets/custom_app_bar.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:antoinette/get_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:antoinette/app/modules/checkIn/views/custom_status_screen.dart';
 import 'package:antoinette/app/modules/checkIn/widgets/add_checkIn_feature.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/costom_app_bar.dart';
+
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/toggle_button.dart';
 import 'package:location/location.dart' as loc;

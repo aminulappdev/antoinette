@@ -1,7 +1,7 @@
 import 'package:antoinette/app/modules/product/model/product_details_model.dart';
 import 'package:antoinette/app/modules/product/views/check_out_screen.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/costom_app_bar.dart';
+import 'package:antoinette/app/widgets/custom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/product_caresoul_slider.dart';
 import 'package:flutter/material.dart';

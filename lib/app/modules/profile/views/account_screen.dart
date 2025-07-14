@@ -6,7 +6,7 @@ import 'package:antoinette/app/modules/profile/controllers/update_profile_contro
 import 'package:antoinette/app/utils/app_colors.dart';
 import 'package:antoinette/app/utils/assets_path.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/costom_app_bar.dart';
+import 'package:antoinette/app/widgets/custom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/image_picker.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';

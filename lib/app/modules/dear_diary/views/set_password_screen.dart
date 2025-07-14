@@ -2,7 +2,7 @@ import 'package:antoinette/app/modules/dear_diary/controllers/set_password_contr
 import 'package:antoinette/app/modules/dear_diary/views/change_password_screen.dart';
 import 'package:antoinette/app/modules/profile/controllers/profile_controller.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/costom_app_bar.dart';
+import 'package:antoinette/app/widgets/custom_app_bar.dart';
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';

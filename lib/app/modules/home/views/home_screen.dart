@@ -1,4 +1,4 @@
-import 'package:antoinette/app/modules/CheckIn/views/check_in_screen.dart';
+import 'package:antoinette/app/modules/checkin/views/check_in_screen.dart';
 import 'package:antoinette/app/modules/common/views/notification_screen.dart';
 import 'package:antoinette/app/modules/home/widgets/product_item_shimmer.dart';
 import 'package:antoinette/app/modules/home/widgets/session_item_shimmer.dart';

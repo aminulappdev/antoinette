@@ -5,7 +5,7 @@ import 'package:antoinette/app/modules/authentication/views/reset_password_scree
 import 'package:antoinette/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:antoinette/app/utils/get_storage.dart';
 import 'package:antoinette/app/utils/responsive_size.dart';
-import 'package:antoinette/app/widgets/costom_app_bar.dart';
+
 import 'package:antoinette/app/widgets/gradiant_elevated_button.dart';
 import 'package:antoinette/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
+import '../../../widgets/custom_app_bar.dart';
 
 class OTPVerifyForgotScreen extends StatefulWidget {
   static const String routeName = '/otp-forgot-screen';
