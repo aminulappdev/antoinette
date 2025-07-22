@@ -15,13 +15,13 @@ class SignInController extends GetxController {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
-  Future<bool> signIn(String email, String password, bool isChecked) async {
+  Future<bool> signIn(String email, String password, bool isChecked, {String? fcmToken}) async {
     bool isSuccess = false;
 
     _inProgress = true; 
     update();
 
-    Map<String, dynamic> requestBody = {"email": email, "password": password};
+    Map<String, dynamic> requestBody = {"email": email, "password": password, "fcmToken": fcmToken};
 
     final NetworkResponse response =
         await Get.find<NetworkCaller>().postRequest(Urls.signIn, requestBody);

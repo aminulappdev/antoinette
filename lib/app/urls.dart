@@ -1,7 +1,6 @@
 class Urls {
   //static const String _baseUrl = 'http://172.252.13.74:5001/api/v1';
-  static const String _baseUrl =
-      'https://d32c6ab1799b.ngrok-free.app/api/v1';
+  static const String _baseUrl = 'https://6ff364830275.ngrok-free.app/api/v1';
   // static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
 
   static const String socketUrl = 'http://172.252.13.74:4001/';

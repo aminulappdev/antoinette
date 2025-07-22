@@ -41,48 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCT_4g3y82mxF7nK_d6JHpHyeIRsFN5Zrg',
-    appId: '1:300445513181:web:fda64cd03e536662cbb234',
-    messagingSenderId: '300445513181',
-    projectId: 'dear-henrietta',
-    authDomain: 'dear-henrietta.firebaseapp.com',
-    storageBucket: 'dear-henrietta.firebasestorage.app',
-    measurementId: 'G-41PK09GVYC',
+    apiKey: 'AIzaSyBjmE8ARZZwIoQFMfnKa7ynGdcp0r-phcA',
+    appId: '1:607906174839:web:11aa475c78bbbff2907372',
+    messagingSenderId: '607906174839',
+    projectId: 'dear-henrietta-a31cb',
+    authDomain: 'dear-henrietta-a31cb.firebaseapp.com',
+    storageBucket: 'dear-henrietta-a31cb.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAxPfKGB4s5lgIRE-jtKdfdt4ufU-HarLM',
-    appId: '1:300445513181:android:52f28dce93cc7d9acbb234',
-    messagingSenderId: '300445513181',
-    projectId: 'dear-henrietta',
-    storageBucket: 'dear-henrietta.firebasestorage.app',
+    apiKey: 'AIzaSyArB2NVFyXCFV4KwUm7GPI7t-lOeb2k2pA',
+    appId: '1:607906174839:android:e486da9544aa589b907372',
+    messagingSenderId: '607906174839',
+    projectId: 'dear-henrietta-a31cb',
+    storageBucket: 'dear-henrietta-a31cb.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAcaDzGV7j_vZj7URPWwovPkpddic4xeto',
-    appId: '1:300445513181:ios:5ade22a4d6e4a64dcbb234',
-    messagingSenderId: '300445513181',
-    projectId: 'dear-henrietta',
-    storageBucket: 'dear-henrietta.firebasestorage.app',
+    apiKey: 'AIzaSyAmwZOp3M3TD10tTjLrPE2BVmBX4xIblpA',
+    appId: '1:607906174839:ios:d112ffce98d774c6907372',
+    messagingSenderId: '607906174839',
+    projectId: 'dear-henrietta-a31cb',
+    storageBucket: 'dear-henrietta-a31cb.firebasestorage.app',
     iosBundleId: 'com.antoinette.antoinette',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAcaDzGV7j_vZj7URPWwovPkpddic4xeto',
-    appId: '1:300445513181:ios:1ab7b1f644e8ca50cbb234',
-    messagingSenderId: '300445513181',
-    projectId: 'dear-henrietta',
-    storageBucket: 'dear-henrietta.firebasestorage.app',
+    apiKey: 'AIzaSyAmwZOp3M3TD10tTjLrPE2BVmBX4xIblpA',
+    appId: '1:607906174839:ios:a130a278ea39a6e3907372',
+    messagingSenderId: '607906174839',
+    projectId: 'dear-henrietta-a31cb',
+    storageBucket: 'dear-henrietta-a31cb.firebasestorage.app',
     iosBundleId: 'com.example.antoinette',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCT_4g3y82mxF7nK_d6JHpHyeIRsFN5Zrg',
-    appId: '1:300445513181:web:cc4c2254b097013bcbb234',
-    messagingSenderId: '300445513181',
-    projectId: 'dear-henrietta',
-    authDomain: 'dear-henrietta.firebaseapp.com',
-    storageBucket: 'dear-henrietta.firebasestorage.app',
-    measurementId: 'G-97BT22LHL5',
+    apiKey: 'AIzaSyBjmE8ARZZwIoQFMfnKa7ynGdcp0r-phcA',
+    appId: '1:607906174839:web:915c8aebccbe6d4a907372',
+    messagingSenderId: '607906174839',
+    projectId: 'dear-henrietta-a31cb',
+    authDomain: 'dear-henrietta-a31cb.firebaseapp.com',
+    storageBucket: 'dear-henrietta-a31cb.firebasestorage.app',
   );
+
 }
