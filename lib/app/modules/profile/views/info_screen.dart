@@ -21,7 +21,7 @@ class InfoScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               heightBox24,
+               heightBox24, 
               CustomAppBar(name: appBarTitle),
               heightBox8,
               Text(
