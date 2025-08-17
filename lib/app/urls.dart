@@ -1,9 +1,9 @@
 class Urls {
   //static const String _baseUrl = 'http://172.252.13.74:5001/api/v1';
-  static const String _baseUrl = 'https://6ff364830275.ngrok-free.app/api/v1';
+  static const String _baseUrl = 'https://api.dearhenriettaapp.com/api/v1';
   // static const String _baseUrl = 'http://192.168.10.144:5001/api/v1';
 
-  static const String socketUrl = 'http://172.252.13.74:4001/';
+  static const String socketUrl = 'https://socket.dearhenriettaapp.com/';
   // static const String socketUrl = 'http://192.168.10.144:4001/';
 
 //   static const String _baseUrl = 'https://www.api.dearhenrietta.com/api/v1';
