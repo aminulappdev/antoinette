@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyAcaDzGV7j_vZj7URPWwovPkpddic4xeto</string>
+	<string>AIzaSyAmwZOp3M3TD10tTjLrPE2BVmBX4xIblpA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>300445513181</string>
+	<string>607906174839</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.antoinette</string>
 	<key>PROJECT_ID</key>
-	<string>dear-henrietta</string>
+	<string>dear-henrietta-a31cb</string>
 	<key>STORAGE_BUCKET</key>
-	<string>dear-henrietta.firebasestorage.app</string>
+	<string>dear-henrietta-a31cb.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:300445513181:ios:1ab7b1f644e8ca50cbb234</string>
+	<string>1:607906174839:ios:a130a278ea39a6e3907372</string>
 </dict>
 </plist>
