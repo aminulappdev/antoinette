@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +9,9 @@ class PushNotificationService {
   PushNotificationService._internal();
 
   final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-    // Firebase core
-    await Firebase.initializeApp();
-
     // Request permission
     await _requestPermission();
 
@@ -30,9 +27,8 @@ class PushNotificationService {
       _showNotification(message.notification?.title, message.notification?.body);
     });
 
-    // Get FCM Token
-    final token = await FirebaseMessaging.instance.getToken();
-    debugPrint("📱 FCM Token: $token");
+    // Handle APNs + FCM token flow
+    await _initFCMToken();
   }
 
   Future<void> _requestPermission() async {
@@ -48,6 +44,26 @@ class PushNotificationService {
     } else {
       debugPrint("❌ Permission denied");
     }
+  }
+
+  Future<void> _initFCMToken() async {
+    if (Platform.isIOS) {
+      // Wait until APNs token is available
+      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      debugPrint("📡 Current APNs token: $apnsToken");
+      if (apnsToken == null) {
+        debugPrint("⏳ Waiting for APNs token...");
+        // Listen for changes
+        FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+          debugPrint("📱 iOS FCM Token (via refresh): $newToken");
+        });
+        return;
+      }
+    }
+
+    // Once APNs token exists (or Android), get FCM token
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    debugPrint("📱 FCM Token: $fcmToken");
   }
 
   Future<void> _initializeLocalNotifications() async {
@@ -96,7 +112,5 @@ class PushNotificationService {
 
 // Background handler (must be a top-level function)
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
   debugPrint("🔙 Background: ${message.notification?.title}");
-  
 }
